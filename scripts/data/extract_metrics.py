@@ -39,24 +39,33 @@ CATALOG = [
     ('营业总收入', ['营业总收入']),
     ('营业收入', ['营业收入']),
     ('归母净利润', ['归属于上市公司股东的净利润', '归属于母公司股东的净利润',
-                    '归属于母公司所有者的净利润']),
+                    '归属于母公司所有者的净利润', '归属于本行股东的净利润',
+                    '归属于本公司股东的净利润']),
     ('扣非归母净利润', ['归属于上市公司股东的扣除非经常性损益的净利润',
                         '归属于母公司股东的扣除非经常性损益的净利润',
                         '归属于母公司所有者的扣除非经常性损益的净利润',
                         '扣除非经常性损益后的归属于上市公司股东的净利润',
                         '扣除非经常性损益后归属于上市公司股东的净利润',
-                        '扣除非经常性损益后归属于母公司股东的净利润']),
+                        '扣除非经常性损益后归属于母公司股东的净利润',
+                        '扣除非经常性损益后归属于本行股东的净利润',
+                        '归属于本公司股东的扣除非经常性损益的净利润',
+                        '归属于母公司股东的扣除非经常性损益后的净利润',
+                        '扣除非经常性损益后归属于本公司股东的净利润']),
     ('经营现金流净额', ['经营活动产生的现金流量净额']),
     ('基本每股收益', ['基本每股收益']),
     ('稀释每股收益', ['稀释每股收益']),
     ('扣非基本每股收益', ['扣除非经常性损益后的基本每股收益']),
-    ('加权平均净资产收益率', ['加权平均净资产收益率']),
+    ('加权平均净资产收益率', ['加权平均净资产收益率', '净资产收益率（加权平均）',
+                              '净资产收益率(加权平均)']),
     ('扣非加权平均净资产收益率', ['扣除非经常性损益后的加权平均净资产收益率']),
     ('总资产', ['总资产', '资产总额', '资产总计']),
     ('归母净资产', ['归属于上市公司股东的净资产', '归属于母公司股东的净资产',
-                    '归属于母公司所有者权益', '归属于上市公司股东的所有者权益']),
+                    '归属于母公司所有者权益', '归属于上市公司股东的所有者权益',
+                    '归属于本行股东权益', '归属于母公司股东权益', '归属于本公司股东权益',
+                    '归属于本行股东的净资产', '归属于本公司股东的净资产']),
     ('每股净资产', ['归属于上市公司股东的每股净资产', '归属于母公司股东的每股净资产',
-                    '归属于上市公司普通股股东的每股净资产', '每股净资产']),
+                    '归属于上市公司普通股股东的每股净资产', '归属于本行普通股股东的每股净资产',
+                    '每股净资产']),
     ('营业收入扣除后金额', ['营业收入扣除后金额', '扣除后营业收入']),
 ]
 
@@ -84,6 +93,22 @@ def match_metric(text):
         return metric
     return None
 
+
+def match_metric_at(text):
+    '''同 match_metric，另外给出命中位置。标签里常把上一行的小节标题、上一行的
+    脚注也吸进来，显示时从命中处截断更干净（「总资产」而不是「第二章会计数据
+    和财务指标摘要……总资产」）。'''
+    if not text:
+        return None, -1
+    for alias, metric, _ in ALIASES:
+        pos = text.find(alias)
+        if pos < 0:
+            continue
+        if text[pos + len(alias):].startswith(NEVER_AFTER):
+            continue
+        return metric, pos
+    return None, -1
+
 OUT_FIELDS = ['code', 'name', 'fiscal_year', 'metric', 'value', 'unit', 'page',
               'col_source', 'col_mode', 'label', 'source_file']
 CORE_FIELDS = ['code', 'name', 'year', 'metric', 'value', 'unit', 'page',
@@ -98,6 +123,12 @@ X_GAP = 6.0
 HEADER_GROUP_GAP = 16.0
 HEADER_MAX_ABOVE = 300.0
 YEAR_COL_TOL = 48.0
+# 折行标签的搜索窗：标签碎片离数字行不超过这个距离，就进候选
+LABEL_WIN = 62.0
+# 碎片与数字行「同处一行」的纵向容差（同处一行的标签不许借给邻行用）
+LABEL_SIT = 12.0
+# 只差一个「（元）（元/股）（亿元）」这类单位时，把这段也吃进标签
+UNIT_FRAG_RE = re.compile(r'^[（(][^（）()]{0,10}[）)]$')
 MIN_YEAR = 2021
 MAX_YEAR = 2025
 
@@ -269,8 +300,26 @@ def heading_ys(rows):
     return out
 
 
-def extract_from_page(page, report_year):
-    '''抽一页，返回 (rows_found, col_mode, page_unit, n_header_groups)。
+def tail_carry(rows, report_year):
+    '''上一页那张表的年份表头，给跨页续表用 —— 只有「表在页底被切断、
+    之后没再起新小节」才算数，否则宁可返回 None。'''
+    groups = year_header_groups(rows, report_year)
+    if not groups:
+        return None
+    heads = heading_ys(rows)
+    g = groups[-1]
+    if any(hy > g[0] for hy in heads):
+        return None
+    below = [r for r in rows if r['yc'] > g[0] and any('num' in c for c in r['cells'])]
+    if not below:
+        return None
+    return g[1]
+
+
+def extract_from_page(page, report_year, carry_cols=None):
+    '''抽一页，返回 (rows_found, col_mode, page_unit, n_header_groups, carry_cols)。
+
+    carry_cols：上一页那张跨页表的年份表头；续表页自己往往不重复表头，借过来用。
     rows_found: [{'metric','label','unit','years':{财年: 数值},'n_vals'}, ...]
     '''
     rows = page_rows(page)
@@ -282,37 +331,85 @@ def extract_from_page(page, report_year):
                 c['xc'] = (c['x0'] + c['x1']) / 2
     num_rows = [r for r in rows if sum(1 for c in r['cells'] if 'num' in c) >= 2]
     if not num_rows:
-        return [], 'none', None, 0
+        return [], 'none', None, 0, None
 
     groups = year_header_groups(rows, report_year)
-    if not groups:
+    if not groups and not carry_cols:
         # 没有可信的年份表头，就整页放弃：宁可缺数据，也绝不把「季度数」「比率」
         # 按位置硬套成年报数 —— 那种错法不会报错，只会悄悄污染整张表。
-        return [], 'none', declared_unit(rows) or common_label_unit(rows), 0
+        return [], 'none', declared_unit(rows) or common_label_unit(rows), 0, None
     heads = heading_ys(rows)
     col_mode = 'header'
     page_declared = declared_unit(rows) or common_label_unit(rows)
 
     num_left = min(c['x0'] for r in num_rows for c in r['cells'] if 'num' in c)
+    # 标签一定起在数字列的左边，所以按「左边界」判断；按右边界判断会把长标签
+    # （如「加权平均净资产收益率（%）」「归属于上市公司股东的净利润（元）」）
+    # 整行滤掉 —— 它们的右边界本来就压在数字列上。
     frags = [c for r in rows for c in r['cells']
-             if 'num' not in c and c['x1'] <= num_left + 1.5 and 0 < len(c['text']) <= 40]
+             if 'num' not in c and c['x0'] < num_left + 1.5 and 0 < len(c['text']) <= 40]
+
+    def near_frags(row):
+        return sorted([f for f in frags if abs(f['yc'] - row['yc']) <= LABEL_WIN],
+                      key=lambda c: c['yc'])
+
+    # 老做法：每个标签碎片归给纵向最近的那个数字行，再按纵坐标拼回来。
     buckets = [[] for _ in num_rows]
     for f in frags:
         best = min(range(len(num_rows)), key=lambda i: abs(num_rows[i]['yc'] - f['yc']))
         buckets[best].append(f)
+    for b in buckets:
+        b.sort(key=lambda c: c['yc'])
+
+    def label_options(i):
+        '''候选标签，按可信度从高到低：
+          ① 本行自己那一桶；
+          ② 上一桶的尾巴 + 本桶 / 本桶 + 下一桶的开头 —— 折行标签的末行常被
+             算到下一行头上（神华的「归属于本公司股东 / 的扣除非经常性损 /
+             益的净利润」三段，末段更靠近下一行）。
+        借来的碎片必须「没有跟别的数字行同处一行」（LABEL_SIT），否则宁可不要 ——
+        招行、平安那种密集单行表里，邻行标签就贴在它自己的数字行上，不许借。'''
+        own = buckets[i]
+        out = [own]
+        if i + 1 < len(buckets):
+            base = num_rows[i + 1]['yc']
+            for d in (1, 2):
+                nxt = buckets[i + 1][:d]
+                if len(nxt) == d and all(abs(f['yc'] - base) > LABEL_SIT for f in nxt):
+                    out.append(own + nxt)
+        if i > 0:
+            base = num_rows[i - 1]['yc']
+            for d in (1, 2):
+                prev = buckets[i - 1][-d:]
+                if len(prev) == d and all(abs(f['yc'] - base) > LABEL_SIT for f in prev):
+                    out.append(prev + own)
+        return out
 
     found = []
+    found_metrics = set()
     for i, row in enumerate(num_rows):
-        strict = norm(''.join(f['text'] for f in sorted(buckets[i], key=lambda c: c['yc'])))
-        metric = match_metric(strict)
-        label = strict
-        if metric is None or metric in [f['metric'] for f in found]:
+        strict = metric = None
+        for fs in label_options(i):
+            text = norm(''.join(f['text'] for f in fs))
+            m, pos = match_metric_at(text)
+            if m and m not in found_metrics:
+                strict, metric = text[pos:], m
+                break
+        if metric is None:
             continue
+        found_metrics.add(metric)
+        label = strict
         # 表头组和本行之间只要夹着小节标题，就说明这行不属于这张表（例如
         # 「六、分季度主要财务指标」下面的表没有年份，绝不能借用上面的年度表头）。
         above = [g for g in groups if 2.0 < row['yc'] - g[0] <= HEADER_MAX_ABOVE
                  and not any(g[0] < hy < row['yc'] for hy in heads)]
-        cols = above[-1][1] if above else None
+        if above:
+            cols = above[-1][1]
+        elif carry_cols and not any(hy < row['yc'] for hy in heads):
+            # 续表页：本行上方没有表头、也没有新小节 ⇒ 借上一页那张表的年份列
+            cols = carry_cols
+        else:
+            cols = None
         nums = [c for c in row['cells'] if 'num' in c]
         years = {}
         for xc, yr in cols or []:
@@ -331,7 +428,7 @@ def extract_from_page(page, report_year):
     for f in found:
         if not f['unit']:
             f['unit'] = page_declared
-    return found, col_mode, page_declared, len(groups)
+    return found, col_mode, page_declared, len(groups), tail_carry(rows, report_year)
 
 def parse_pdf(path, report_year):
     '''扫全篇：凡含「主要会计数据 / 主要财务指标」的页都抽一遍，按指标合并。
@@ -341,14 +438,20 @@ def parse_pdf(path, report_year):
     '''
     doc = pymupdf.open(path)
     merged, conflicts, pages_used = {}, [], []
+    carry, prev_used = None, False
     try:
         for i in range(len(doc)):
             text = doc[i].get_text()
-            if '主要会计数据' not in text and '主要财务指标' not in text:
+            hit = ('主要会计数据' in text) or ('主要财务指标' in text)
+            if not hit and not prev_used:
+                carry = None
                 continue
-            found, mode, unit, _n_groups = extract_from_page(doc[i], report_year)
+            found, mode, unit, _n_groups, carry = extract_from_page(
+                doc[i], report_year, carry if prev_used else None)
             if not found:
+                prev_used = False
                 continue
+            prev_used = True
             pages_used.append(i + 1)
             for rec in found:
                 rec['page'] = i + 1
