@@ -1,0 +1,35 @@
+{
+  "started_at": "2026-09-27T17:54:12+08:00",
+  "finished_at": "2026-09-27T17:54:21+08:00",
+  "as_of": "2026-09-27",
+  "policy": "first",
+  "refresh": false,
+  "script_sha256": "639fd3a4ad7db2f328c7e47a2074b8ae12b9d42684c4955e357240523cba8b35",
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "companies": [
+    [
+      "600519",
+      "贵州茅台",
+      "sse"
+    ],
+    [
+      "000858",
+      "五粮液",
+      "szse"
+    ],
+    [
+      "600887",
+      "伊利股份",
+      "sse"
+    ]
+  ],
+  "years": [
+    2023,
+    2024,
+    2025
+  ],
+  "reused": 9,
+  "downloaded": 0,
+  "verified": 0,
+  "failures": 0
+}
