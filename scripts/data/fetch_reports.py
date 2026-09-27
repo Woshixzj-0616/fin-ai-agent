@@ -48,6 +48,7 @@ COMPANIES = [('600519', '贵州茅台', 'sse'),
              ('000858', '五粮液', 'szse'),
              ('600887', '伊利股份', 'sse')]
 YEARS = [2023, 2024, 2025]
+SCOPE = ROOT / 'data' / 'scope.csv'
 BASE = 'https://www.cninfo.com.cn'
 STATIC = 'https://static.cninfo.com.cn/'
 TZ = dt.timezone(dt.timedelta(hours=8))
@@ -61,6 +62,21 @@ MANIFEST_FIELDS = ['code', 'name', 'year', 'title', 'publish_date', 'announcemen
 
 def now():
     return dt.datetime.now(TZ).isoformat(timespec='seconds')
+
+
+def load_scope():
+    '''读 data/scope.csv 的样本清单：(代码, 名称, 板块, 起始年, 结束年)；没有就退回内置三个。'''
+    if SCOPE.exists():
+        items = []
+        with SCOPE.open(encoding='utf-8-sig', newline='') as stream:
+            for row in csv.DictReader(stream):
+                if not (row.get('code') or '').strip():
+                    continue
+                items.append((row['code'].strip(), row['name'].strip(), row['market'].strip(),
+                              int(row['start_year']), int(row['end_year'])))
+        if items:
+            return items
+    return [(code, name, column, YEARS[0], YEARS[-1]) for code, name, column in COMPANIES]
 
 
 def digest(blob):
@@ -298,11 +314,12 @@ def run(args):
     folder = RUNS / run_id
     folder.mkdir(parents=True, exist_ok=False)
     old = load_manifest()
+    scope = load_scope()
     rows, failures = [], 0
     counts = {'复用': 0, '下载': 0, '核对一致': 0}
     started = now()
-    for code, name, column in COMPANIES:
-        for year in YEARS:
+    for code, name, column, first_year, last_year in scope:
+        for year in range(first_year, last_year + 1):
             try:
                 row, action = fetch_one(args.client, folder, code, name, column,
                                         year, args, old.get((code, year)), run_id)
@@ -320,7 +337,7 @@ def run(args):
                     stream.write(json.dumps(error, ensure_ascii=False) + '\n')
                 print(f'{code} {year}: 失败（{type(exc).__name__}），见本次 failures.jsonl')
             time.sleep(0.5)
-    order = {code: index for index, (code, _, _) in enumerate(COMPANIES)}
+    order = {item[0]: index for index, item in enumerate(scope)}
     rows.sort(key=lambda row: (order[row['code']], int(row['year'])))
     write_manifest(rows)
     for row in rows:
@@ -329,7 +346,8 @@ def run(args):
     write_json(folder / 'run.json', {
         'started_at': started, 'finished_at': now(), 'as_of': args.as_of.isoformat(),
         'policy': args.policy, 'refresh': bool(args.refresh), 'script_sha256': script_sha,
-        'python': sys.version, 'companies': COMPANIES, 'years': YEARS,
+        'python': sys.version, 'companies': [list(item[:3]) for item in scope],
+        'years': sorted({year for item in scope for year in range(item[3], item[4] + 1)}),
         'reused': counts.get('复用', 0), 'downloaded': counts.get('下载', 0),
         'verified': counts.get('核对一致', 0), 'failures': failures,
     })
