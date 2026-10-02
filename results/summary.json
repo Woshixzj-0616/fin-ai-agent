@@ -1,0 +1,19 @@
+{
+  "run_id": "20261002_212513_c6880429",
+  "finished_at": "2026-10-02T21:25:13+08:00",
+  "output_sha256": {
+    "run.json": "b0d48095c4382c44de13008859a2a413901db3f0b019c0a21162acf26cc117ad",
+    "test_results.txt": "95b0e0fbd55629a0ea5b59f63cad13d26f785baab970b2bad7d7e7f07fdbbff0",
+    "test_summary.json": "c3b54b729c4d4bfddef6a38de53ff23620761af3d1c352c316ed05a7c1e944e0"
+  },
+  "history_policy": {
+    "keep_runs": 20,
+    "max_uncompressed_bytes": 52428800,
+    "oversized_latest": "保留完整本次运行，清除更早历史"
+  },
+  "status": "ok",
+  "tests": 62,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0
+}

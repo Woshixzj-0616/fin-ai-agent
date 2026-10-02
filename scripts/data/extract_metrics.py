@@ -21,13 +21,25 @@
     data/extracted/financials.csv   长表，一行 = 一家公司 x 一个财年 x 一个指标
     data/extracted/metrics.csv      旧口径（4 个核心指标 x 本年列），保持向后兼容
     logs/extract_run.txt            每个文件命中/未命中明细
+
+版式解析引擎见 agent/words.py（单一事实源）——本脚本只负责指标目录、CSV 口径与日志。
 '''
 import csv
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 
 import pymupdf
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'agent'))
+from words import (  # noqa: E402  版式几何引擎（单一事实源）
+    AMOUNT_UNITS, HEADER_GROUP_GAP, HEADER_MAX_ABOVE, HEADING_KEYS, HEADING_RE,
+    LABEL_SIT, LABEL_WIN, NEVER_AFTER, NUM_RE, PAREN_RE, UNIT_KEYS, UNIT_RE,
+    X_GAP, YEAR_CELL_RE, YEAR_COL_TOL, Y_TOL,
+    classify_unit, common_label_unit, declared_unit, heading_ys, norm, page_rows,
+    row_unit, tail_carry, to_num, year_header_groups,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / 'data' / 'raw'
@@ -114,206 +126,15 @@ OUT_FIELDS = ['code', 'name', 'fiscal_year', 'metric', 'value', 'unit', 'page',
 CORE_FIELDS = ['code', 'name', 'year', 'metric', 'value', 'unit', 'page',
                'n_cols', 'label', 'source_file']
 
-NUM_RE = re.compile(r'^\d+(\.\d+)?$')
-YEAR_CELL_RE = re.compile(r'^((?:19|20)\d{2})(?:年1[-—–~至]12月|年12月31日|年末|年度|年)?$')
-# 指标别名命中后，若后面紧跟这些词，说明命中的是「另一个更长的比率名」，不是本指标。
-NEVER_AFTER = ('回报率', '周转率', '收益率', '增长率', '变动率', '费用率', '比率', '周转天数')
-Y_TOL = 3.0
-X_GAP = 6.0
-HEADER_GROUP_GAP = 16.0
-HEADER_MAX_ABOVE = 300.0
-YEAR_COL_TOL = 48.0
-# 折行标签的搜索窗：标签碎片离数字行不超过这个距离，就进候选
-LABEL_WIN = 62.0
-# 碎片与数字行「同处一行」的纵向容差（同处一行的标签不许借给邻行用）
-LABEL_SIT = 12.0
 # 只差一个「（元）（元/股）（亿元）」这类单位时，把这段也吃进标签
 UNIT_FRAG_RE = re.compile(r'^[（(][^（）()]{0,10}[）)]$')
 MIN_YEAR = 2021
 MAX_YEAR = 2025
 
-
-def norm(s):
-    return re.sub(r'[ \u3000\t]', '', s)
-
-
-def to_num(s):
-    '''把年报里的数字串转成 float。括号表示负数；带 % 的比率也当数字（数值本身）。'''
-    t = s.strip().replace(',', '').replace('，', '')
-    neg = False
-    for a, b in (('（', '）'), ('(', ')'), ('〔', '〕')):
-        if t.startswith(a) and t.endswith(b):
-            t = t[1:-1]
-            neg = True
-            break
-    if t.endswith('%') or t.endswith('％'):
-        t = t[:-1]
-    for sign in ('-', '－', '−'):
-        if t.startswith(sign):
-            t = t[1:]
-            neg = True
-            break
-    if not NUM_RE.match(t):
-        return None
-    return -float(t) if neg else float(t)
-
-
-def page_rows(page):
-    '''把一页切成「表格行」，行内按横坐标切成「单元格」。'''
-    words = page.get_text('words')
-    items = [{'t': w[4], 'x0': w[0], 'x1': w[2], 'yc': (w[1] + w[3]) / 2}
-             for w in words if w[4].strip()]
-    items.sort(key=lambda i: (i['yc'], i['x0']))
-    rows = []
-    for it in items:
-        hit = None
-        for r in rows:
-            if abs(r['yc'] - it['yc']) <= Y_TOL:
-                hit = r
-                break
-        if hit:
-            hit['items'].append(it)
-            hit['yc'] = sum(x['yc'] for x in hit['items']) / len(hit['items'])
-        else:
-            rows.append({'yc': it['yc'], 'items': [it]})
-    rows.sort(key=lambda r: r['yc'])
-    out = []
-    for r in rows:
-        r['items'].sort(key=lambda i: i['x0'])
-        cells, cur = [], None
-        for it in r['items']:
-            if cur is None or it['x0'] - cur['x1'] > X_GAP:
-                cur = {'text': it['t'], 'x0': it['x0'], 'x1': it['x1'], 'yc': it['yc']}
-                cells.append(cur)
-            else:
-                cur['text'] += it['t']
-                cur['x1'] = it['x1']
-        out.append({'yc': r['yc'], 'cells': cells})
-    return out
-
-UNIT_KEYS = (('百万', '百万元'), ('亿', '亿元'), ('万', '万元'), ('千', '千元'),
-             ('元/股', '元/股'), ('元／股', '元/股'), ('元', '元'),
-             ('%', '%'), ('％', '%'))
-UNIT_RE = re.compile(r'单位[:：]?(.{0,10})')
-
-
-def classify_unit(tail):
-    for key, val in UNIT_KEYS:
-        if key in tail:
-            return val
-    return None
-
-
-def declared_unit(rows):
-    '''页面上「单位：元 / 人民币百万元」这类声明。'''
-    for r in rows:
-        joined = norm(''.join(c['text'] for c in r['cells']))
-        m = UNIT_RE.search(joined)
-        if m:
-            u = classify_unit(m.group(1))
-            if u:
-                return u
-    return None
-
-
-AMOUNT_UNITS = ('百万元', '亿元', '万元', '千元', '元')
-PAREN_RE = re.compile(r'[（(]([^（）()]{1,14})[）)]')
 # 这几个指标的单位是「指标本身决定的」，不该靠版式猜。
 METRIC_UNIT = {'加权平均净资产收益率': '%', '扣非加权平均净资产收益率': '%',
                '基本每股收益': '元/股', '稀释每股收益': '元/股',
                '扣非基本每股收益': '元/股', '每股净资产': '元/股'}
-
-
-def row_unit(text):
-    '''扫一段文字里所有括号组，取第一个「金额单位」（排除 元/股、%）。'''
-    for m in PAREN_RE.finditer(text):
-        u = classify_unit(m.group(1))
-        if u in AMOUNT_UNITS:
-            return u
-    return None
-
-
-def common_label_unit(rows):
-    '''页面没有「单位：」声明时，看标签里出现最多的「金额单位」（排除 元/股、%）。'''
-    counts = Counter()
-    for r in rows:
-        u = row_unit(norm(''.join(c['text'] for c in r['cells'])))
-        if u:
-            counts[u] += 1
-    if not counts:
-        return None
-    return counts.most_common(1)[0][0]
-
-
-def year_header_groups(rows, report_year):
-    '''把「年份格」按纵向聚成表头组，返回 [(组下沿 y, [(列中心 x, 财年), ...]), ...]。
-
-    只认整格就是「20XX年 / 20XX年末 / 20XX年12月31日」的单元格；跨页续表里的
-    '20.2X年'、正文里的日期串都不符合，自然被丢掉。年份必须左→右递减且含报告年份。
-    '''
-    marks = []
-    for r in rows:
-        for c in r['cells']:
-            m = YEAR_CELL_RE.match(norm(c['text']))
-            if m:
-                marks.append((r['yc'], (c['x0'] + c['x1']) / 2, int(m.group(1))))
-    marks.sort()
-    groups = []
-    for yc, xc, y in marks:
-        if groups and yc - groups[-1]['yc'] <= HEADER_GROUP_GAP:
-            groups[-1]['yc'] = max(groups[-1]['yc'], yc)
-            groups[-1]['marks'].append((xc, y))
-        else:
-            groups.append({'yc': yc, 'marks': [(xc, y)]})
-    out = []
-    for g in groups:
-        cols = []
-        for xc, y in sorted(g['marks']):
-            if cols and xc - cols[-1][0] < 20.0:
-                continue
-            cols.append((xc, y))
-        years = [y for _, y in cols]
-        if len(cols) < 2 or len(set(years)) != len(years):
-            continue
-        if any(years[i] <= years[i + 1] for i in range(len(years) - 1)):
-            continue
-        if report_year not in years:
-            continue
-        out.append((g['yc'], cols))
-    out.sort()
-    return out
-
-
-HEADING_RE = re.compile(r'^[（(]?[一二三四五六七八九十]{1,3}[）)、]')
-HEADING_KEYS = ('主要会计数据', '主要财务指标', '分季度')
-
-
-def heading_ys(rows):
-    '''小节标题所在的纵坐标。用来防止「张冠李戴」借到别的小节表头。'''
-    out = []
-    for r in rows:
-        t = norm(''.join(c['text'] for c in r['cells']))
-        if not t:
-            continue
-        if any(k in t for k in HEADING_KEYS) or (HEADING_RE.match(t) and len(t) <= 30):
-            out.append(r['yc'])
-    return out
-
-
-def tail_carry(rows, report_year):
-    '''上一页那张表的年份表头，给跨页续表用 —— 只有「表在页底被切断、
-    之后没再起新小节」才算数，否则宁可返回 None。'''
-    groups = year_header_groups(rows, report_year)
-    if not groups:
-        return None
-    heads = heading_ys(rows)
-    g = groups[-1]
-    if any(hy > g[0] for hy in heads):
-        return None
-    below = [r for r in rows if r['yc'] > g[0] and any('num' in c for c in r['cells'])]
-    if not below:
-        return None
-    return g[1]
 
 
 def extract_from_page(page, report_year, carry_cols=None):
@@ -412,7 +233,7 @@ def extract_from_page(page, report_year, carry_cols=None):
             cols = None
         nums = [c for c in row['cells'] if 'num' in c]
         years = {}
-        for xc, yr in cols or []:
+        for xc, yr, _cell in cols or []:
             best = None
             for c in nums:
                 d = abs(c['xc'] - xc)

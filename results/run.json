@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "run_id": "20261002_212513_c6880429",
+  "started_at": "2026-10-02T21:25:13+08:00",
+  "command": "test",
+  "parameters": {},
+  "versions": {
+    "python": "3.14.6",
+    "PyMuPDF": "1.28.2"
+  },
+  "python_executable": "D:\\python\\python.exe",
+  "code_sha256": {
+    "main.py": "2b2df8f9bb1a471299ea189e54a6ede93829ac6e72d8b1b5c85208598e7e890c",
+    "materials.py": "5f5244fc4cac39a99511de044e746f55716055a84b07fd64941ae6eb8a3462e7",
+    "extract.py": "873257fc293870ce4a26f11089b761e37dde3a0b44936142a017a8f92d9f2fd0",
+    "finance.py": "24debf26ea4b99605b0cc29f1ca58675ad59ee8a7355f6353aecb12609ce05b3",
+    "llm_check.py": "2b4fcf2b1cc06800b7919ead4c2493e495775db2e5043d74d768ee37f4e9deec",
+    "test.py": "1c5d4a9071d5a89c30b0b795141e6aa93ab4932cf76b6154f12eab3920a35b62"
+  }
+}

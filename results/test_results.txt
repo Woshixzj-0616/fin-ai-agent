@@ -1,0 +1,68 @@
+test_absolute_base_requires_explicit_policy (__main__.DecimalRulesTests.test_absolute_base_requires_explicit_policy) ... ok
+test_comparable_evidence_with_unit_conversion (__main__.DecimalRulesTests.test_comparable_evidence_with_unit_conversion) ... ok
+test_context_conflicts_are_not_compared (__main__.DecimalRulesTests.test_context_conflicts_are_not_compared) ... ok
+test_current_zero_yoy (__main__.DecimalRulesTests.test_current_zero_yoy) ... ok
+test_float_and_nonfinite_rejected (__main__.DecimalRulesTests.test_float_and_nonfinite_rejected) ... ok
+test_half_rounding_boundaries (__main__.DecimalRulesTests.test_half_rounding_boundaries) ... ok
+test_missing_prior_not_replaced_with_other_year (__main__.DecimalRulesTests.test_missing_prior_not_replaced_with_other_year) ... ok
+test_missing_yoy (__main__.DecimalRulesTests.test_missing_yoy) ... ok
+test_negative_base_default_review (__main__.DecimalRulesTests.test_negative_base_default_review) ... ok
+test_parentheses_negative (__main__.DecimalRulesTests.test_parentheses_negative) ... ok
+test_percentage_points_are_difference (__main__.DecimalRulesTests.test_percentage_points_are_difference) ... ok
+test_positive_yoy (__main__.DecimalRulesTests.test_positive_yoy) ... ok
+test_ratio_zero_and_missing (__main__.DecimalRulesTests.test_ratio_zero_and_missing) ... ok
+test_restatement_after_is_usable (__main__.DecimalRulesTests.test_restatement_after_is_usable) ... ok
+test_rounded_amount_matches (__main__.DecimalRulesTests.test_rounded_amount_matches) ... ok
+test_unit_conversion_exact (__main__.DecimalRulesTests.test_unit_conversion_exact) ... ok
+test_unknown_unit_not_assumed (__main__.DecimalRulesTests.test_unknown_unit_not_assumed) ... ok
+test_wrong_unit_detected (__main__.DecimalRulesTests.test_wrong_unit_detected) ... ok
+test_zero_base (__main__.DecimalRulesTests.test_zero_base) ... ok
+test_zero_is_not_missing (__main__.DecimalRulesTests.test_zero_is_not_missing) ... ok
+test_as_of_cutoff (__main__.DownloadRulesTests.test_as_of_cutoff) ... ok
+test_first_latest_and_correction_notice (__main__.DownloadRulesTests.test_first_latest_and_correction_notice) ... ok
+test_inconsistent_pagination_metadata (__main__.DownloadRulesTests.test_inconsistent_pagination_metadata) ... ok
+test_non_allowlisted_url_rejected (__main__.DownloadRulesTests.test_non_allowlisted_url_rejected) ... ok
+test_notice_is_not_full_report (__main__.DownloadRulesTests.test_notice_is_not_full_report) ... ok
+test_other_company_rejected (__main__.DownloadRulesTests.test_other_company_rejected) ... ok
+test_pagination_reaches_second_page (__main__.DownloadRulesTests.test_pagination_reaches_second_page) ... ok
+test_premature_empty_page_fails (__main__.DownloadRulesTests.test_premature_empty_page_fails) ... ok
+test_repeated_page_fails (__main__.DownloadRulesTests.test_repeated_page_fails) ... ok
+test_archive_write_failure_preserves_previous_zip (__main__.FlatOutputTests.test_archive_write_failure_preserves_previous_zip) ... ok
+test_history_keeps_recent_complete_runs (__main__.FlatOutputTests.test_history_keeps_recent_complete_runs) ... ok
+test_history_preserves_outputs_without_nested_folders (__main__.FlatOutputTests.test_history_preserves_outputs_without_nested_folders) ... ok
+test_nested_output_paths_are_rejected (__main__.FlatOutputTests.test_nested_output_paths_are_rejected) ... ok
+test_oversized_latest_is_complete_and_older_history_removed (__main__.FlatOutputTests.test_oversized_latest_is_complete_and_older_history_removed) ... ok
+test_adjusted_comparative_preferred (__main__.GeometryTests.test_adjusted_comparative_preferred) ... ok
+test_missing_current_value_preserved (__main__.GeometryTests.test_missing_current_value_preserved) ... ok
+test_total_revenue_is_not_revenue (__main__.GeometryTests.test_total_revenue_is_not_revenue) ... ok
+test_year_and_adjustment_use_geometry (__main__.GeometryTests.test_year_and_adjustment_use_geometry) ... ok
+test_company_and_metric_failures_are_explicit (__main__.LLMFlowTests.test_company_and_metric_failures_are_explicit) ... ok
+test_explicit_scope_and_forecasts_are_not_overridden (__main__.LLMFlowTests.test_explicit_scope_and_forecasts_are_not_overridden) ... ok
+test_fabricated_numeric_value_is_not_used (__main__.LLMFlowTests.test_fabricated_numeric_value_is_not_used) ... ok
+test_fuzzy_and_unspecified_profit_require_review (__main__.LLMFlowTests.test_fuzzy_and_unspecified_profit_require_review) ... ok
+test_http_error_never_echoes_authentication_body (__main__.LLMFlowTests.test_http_error_never_echoes_authentication_body) ... ok
+test_json_mode_does_not_parse_markdown_fences (__main__.LLMFlowTests.test_json_mode_does_not_parse_markdown_fences) ... ok
+test_missing_sentence_is_not_silently_accepted (__main__.LLMFlowTests.test_missing_sentence_is_not_silently_accepted) ... ok
+test_model_cannot_drop_unit_multipliers (__main__.LLMFlowTests.test_model_cannot_drop_unit_multipliers) ... ok
+test_program_handles_decline_and_expected_value (__main__.LLMFlowTests.test_program_handles_decline_and_expected_value) ... ok
+test_schema_refuses_extra_fields_and_float_values (__main__.LLMFlowTests.test_schema_refuses_extra_fields_and_float_values) ... ok
+test_transport_to_report_without_storing_credentials (__main__.LLMFlowTests.test_transport_to_report_without_storing_credentials) ... ok
+test_duplicate_version_and_tamper (__main__.MaterialTests.test_duplicate_version_and_tamper) ... ok
+test_error_page_rejected (__main__.MaterialTests.test_error_page_rejected) ... ok
+test_identity_mismatch (__main__.MaterialTests.test_identity_mismatch) ... ok
+test_verified_metadata_not_downgraded_by_legacy_import (__main__.MaterialTests.test_verified_metadata_not_downgraded_by_legacy_import) ... ok
+test_all_disclosed_yoy_match_precision (__main__.RealReportIntegrationTests.test_all_disclosed_yoy_match_precision)
+凡年报披露了同比的行，按披露精度算完必须一致；核心 4 指标 × 9 份至少 36 行。 ... ok
+test_all_nine_reports_have_current_four_metrics (__main__.RealReportIntegrationTests.test_all_nine_reports_have_current_four_metrics) ... ok
+test_eight_structured_claims (__main__.RealReportIntegrationTests.test_eight_structured_claims) ... ok
+test_evidence_coordinates_and_source_references (__main__.RealReportIntegrationTests.test_evidence_coordinates_and_source_references) ... ok
+test_fixed_visual_reference (__main__.RealReportIntegrationTests.test_fixed_visual_reference) ... ok
+test_report_exposes_all_disclosure_checks (__main__.RealReportIntegrationTests.test_report_exposes_all_disclosure_checks) ... ok
+test_comparison_uses_disclosed_precision (__main__.ReportTests.test_comparison_uses_disclosed_precision) ... ok
+test_disagreement_visible_in_markdown (__main__.ReportTests.test_disagreement_visible_in_markdown) ... ok
+test_missing_and_uncomputable_are_not_passes (__main__.ReportTests.test_missing_and_uncomputable_are_not_passes) ... ok
+
+----------------------------------------------------------------------
+Ran 62 tests in 19.435s
+
+OK
