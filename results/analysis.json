@@ -1,0 +1,617 @@
+{
+  "rows": [
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "basic_eps",
+      "metric_name": "基本每股收益",
+      "current": "68.64",
+      "previous": "59.49",
+      "previous_adjustment": "as_reported",
+      "scope": "unknown",
+      "currency": "CNY",
+      "unit": null,
+      "yoy": {
+        "status": "not_comparable",
+        "value": null,
+        "reasons": [
+          "scope 未明确"
+        ]
+      },
+      "reported_yoy": {
+        "value": "15.38",
+        "unit": "%",
+        "bbox": [
+          424.63,
+          530.519,
+          451.03,
+          541.079
+        ],
+        "header": {
+          "text": "本期比上年同",
+          "bbox": [
+            387.31,
+            502.799,
+            450.438,
+            513.359
+          ]
+        }
+      },
+      "reported_yoy_check": null,
+      "evidence_id": "c69ffacebcce2a488d68af8d",
+      "previous_evidence_id": "d749e17e6b9b4f823d9239b0",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [
+        "unit_unknown"
+      ],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "diluted_eps",
+      "metric_name": "稀释每股收益",
+      "current": "68.64",
+      "previous": "59.49",
+      "previous_adjustment": "as_reported",
+      "scope": "unknown",
+      "currency": "CNY",
+      "unit": null,
+      "yoy": {
+        "status": "not_comparable",
+        "value": null,
+        "reasons": [
+          "scope 未明确"
+        ]
+      },
+      "reported_yoy": {
+        "value": "15.38",
+        "unit": "%",
+        "bbox": [
+          424.63,
+          544.679,
+          451.03,
+          555.239
+        ],
+        "header": {
+          "text": "本期比上年同",
+          "bbox": [
+            387.31,
+            502.799,
+            450.438,
+            513.359
+          ]
+        }
+      },
+      "reported_yoy_check": null,
+      "evidence_id": "94f3d030298ed9ef688955cb",
+      "previous_evidence_id": "96d56680b344d79a92226234",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [
+        "unit_unknown"
+      ],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "weighted_roe",
+      "metric_name": "加权平均净资产收益率",
+      "current": "36.02",
+      "previous": "34.19",
+      "previous_adjustment": "as_reported",
+      "scope": "unknown",
+      "currency": "CNY",
+      "unit": null,
+      "yoy": {
+        "status": "not_comparable",
+        "value": null,
+        "reasons": [
+          "scope 未明确"
+        ]
+      },
+      "reported_yoy": null,
+      "reported_yoy_check": null,
+      "evidence_id": "a0e1776a179c8937ee8bd1b8",
+      "previous_evidence_id": "e50e9994e1808089cc16984e",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [
+        "unit_unknown"
+      ],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "revenue",
+      "metric_name": "营业收入",
+      "current": "170899152276.34",
+      "previous": "147693604994.14",
+      "previous_adjustment": "as_reported",
+      "scope": "consolidated",
+      "currency": "CNY",
+      "unit": "元",
+      "yoy": {
+        "status": "ok",
+        "value": "15.71195129479080718889266823791667239671",
+        "unit": "%",
+        "operands": {
+          "current": "170899152276.34",
+          "previous": "147693604994.14"
+        },
+        "formula": "(current - previous) / previous * 100",
+        "negative_policy": "review",
+        "evidence_ids": [
+          "138f1426f6b43b79d3f2384a",
+          "3ac0c3bc647151a7c51cccf1"
+        ]
+      },
+      "reported_yoy": {
+        "value": "15.71",
+        "unit": "%",
+        "bbox": [
+          411.55,
+          265.799,
+          434.155,
+          274.799
+        ],
+        "header": {
+          "text": "期增减",
+          "bbox": [
+            405.19,
+            240.689,
+            432.19,
+            249.689
+          ]
+        }
+      },
+      "reported_yoy_check": {
+        "status": "match",
+        "calculated_rounded": "15.71",
+        "reported": "15.71",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "source_page": 5,
+        "source_bbox": [
+          411.55,
+          265.799,
+          434.155,
+          274.799
+        ]
+      },
+      "evidence_id": "138f1426f6b43b79d3f2384a",
+      "previous_evidence_id": "3ac0c3bc647151a7c51cccf1",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "parent_net_profit",
+      "metric_name": "归母净利润",
+      "current": "86228146421.62",
+      "previous": "74734071550.75",
+      "previous_adjustment": "as_reported",
+      "scope": "parent_shareholders",
+      "currency": "CNY",
+      "unit": "元",
+      "yoy": {
+        "status": "ok",
+        "value": "15.37996610162563831869509284431564842752",
+        "unit": "%",
+        "operands": {
+          "current": "86228146421.62",
+          "previous": "74734071550.75"
+        },
+        "formula": "(current - previous) / previous * 100",
+        "negative_policy": "review",
+        "evidence_ids": [
+          "eb72c72a30ca3604e5ed522a",
+          "40991eb1243b6956e138aec8"
+        ]
+      },
+      "reported_yoy": {
+        "value": "15.38",
+        "unit": "%",
+        "bbox": [
+          411.55,
+          285.119,
+          434.155,
+          294.119
+        ],
+        "header": {
+          "text": "期增减",
+          "bbox": [
+            405.19,
+            240.689,
+            432.19,
+            249.689
+          ]
+        }
+      },
+      "reported_yoy_check": {
+        "status": "match",
+        "calculated_rounded": "15.38",
+        "reported": "15.38",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "source_page": 5,
+        "source_bbox": [
+          411.55,
+          285.119,
+          434.155,
+          294.119
+        ]
+      },
+      "evidence_id": "eb72c72a30ca3604e5ed522a",
+      "previous_evidence_id": "40991eb1243b6956e138aec8",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "metric_name": "扣非归母净利润",
+      "current": "86240905977.42",
+      "previous": "74752564425.52",
+      "previous_adjustment": "as_reported",
+      "scope": "parent_shareholders",
+      "currency": "CNY",
+      "unit": "元",
+      "yoy": {
+        "status": "ok",
+        "value": "15.36849155636185901177786695461418625684",
+        "unit": "%",
+        "operands": {
+          "current": "86240905977.42",
+          "previous": "74752564425.52"
+        },
+        "formula": "(current - previous) / previous * 100",
+        "negative_policy": "review",
+        "evidence_ids": [
+          "3d7ed42fa89add6f714a2e67",
+          "bb99903c18174b47590064e2"
+        ]
+      },
+      "reported_yoy": {
+        "value": "15.37",
+        "unit": "%",
+        "bbox": [
+          411.55,
+          308.999,
+          434.155,
+          317.999
+        ],
+        "header": {
+          "text": "期增减",
+          "bbox": [
+            405.19,
+            240.689,
+            432.19,
+            249.689
+          ]
+        }
+      },
+      "reported_yoy_check": {
+        "status": "match",
+        "calculated_rounded": "15.37",
+        "reported": "15.37",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "source_page": 5,
+        "source_bbox": [
+          411.55,
+          308.999,
+          434.155,
+          317.999
+        ]
+      },
+      "evidence_id": "3d7ed42fa89add6f714a2e67",
+      "previous_evidence_id": "bb99903c18174b47590064e2",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "operating_cash_flow",
+      "metric_name": "经营现金流净额",
+      "current": "92463692168.43",
+      "previous": "66593247721.09",
+      "previous_adjustment": "as_reported",
+      "scope": "consolidated",
+      "currency": "CNY",
+      "unit": "元",
+      "yoy": {
+        "status": "ok",
+        "value": "38.84844985439396421824958230167705590454",
+        "unit": "%",
+        "operands": {
+          "current": "92463692168.43",
+          "previous": "66593247721.09"
+        },
+        "formula": "(current - previous) / previous * 100",
+        "negative_policy": "review",
+        "evidence_ids": [
+          "44358824717e64c5fb562b77",
+          "3d0f2337c1890086a8dc6a9b"
+        ]
+      },
+      "reported_yoy": {
+        "value": "38.85",
+        "unit": "%",
+        "bbox": [
+          411.55,
+          332.879,
+          434.155,
+          341.879
+        ],
+        "header": {
+          "text": "期增减",
+          "bbox": [
+            405.19,
+            240.689,
+            432.19,
+            249.689
+          ]
+        }
+      },
+      "reported_yoy_check": {
+        "status": "match",
+        "calculated_rounded": "38.85",
+        "reported": "38.85",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "source_page": 5,
+        "source_bbox": [
+          411.55,
+          332.879,
+          434.155,
+          341.879
+        ]
+      },
+      "evidence_id": "44358824717e64c5fb562b77",
+      "previous_evidence_id": "3d0f2337c1890086a8dc6a9b",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "parent_equity",
+      "metric_name": "归母净资产",
+      "current": "233105984399.47",
+      "previous": "215668571607.43",
+      "previous_adjustment": "as_reported",
+      "scope": "unknown",
+      "currency": "CNY",
+      "unit": "元",
+      "yoy": {
+        "status": "not_comparable",
+        "value": null,
+        "reasons": [
+          "scope 未明确"
+        ]
+      },
+      "reported_yoy": {
+        "value": "8.09",
+        "unit": "%",
+        "bbox": [
+          416.11,
+          415.559,
+          434.17,
+          424.559
+        ],
+        "header": {
+          "text": "期增减",
+          "bbox": [
+            405.19,
+            240.689,
+            432.19,
+            249.689
+          ]
+        }
+      },
+      "reported_yoy_check": null,
+      "evidence_id": "19dd186b0592a8a03293fd71",
+      "previous_evidence_id": "9594da77fd260378d0995f2b",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "total_assets",
+      "metric_name": "总资产",
+      "current": "298944579918.70",
+      "previous": "272699660092.25",
+      "previous_adjustment": "as_reported",
+      "scope": "unknown",
+      "currency": "CNY",
+      "unit": "元",
+      "yoy": {
+        "status": "not_comparable",
+        "value": null,
+        "reasons": [
+          "scope 未明确"
+        ]
+      },
+      "reported_yoy": {
+        "value": "9.62",
+        "unit": "%",
+        "bbox": [
+          416.11,
+          434.879,
+          434.17,
+          443.879
+        ],
+        "header": {
+          "text": "期增减",
+          "bbox": [
+            405.19,
+            240.689,
+            432.19,
+            249.689
+          ]
+        }
+      },
+      "reported_yoy_check": null,
+      "evidence_id": "5275c487530b757d3429a3ed",
+      "previous_evidence_id": "521d3b678b1cfb61e630ee29",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "deducted_basic_eps",
+      "metric_name": "扣非基本每股收益",
+      "current": "68.65",
+      "previous": "59.51",
+      "previous_adjustment": "as_reported",
+      "scope": "unknown",
+      "currency": "CNY",
+      "unit": "元/股",
+      "yoy": {
+        "status": "not_comparable",
+        "value": null,
+        "reasons": [
+          "scope 未明确"
+        ]
+      },
+      "reported_yoy": {
+        "value": "15.37",
+        "unit": "%",
+        "bbox": [
+          424.63,
+          565.559,
+          451.03,
+          576.119
+        ],
+        "header": {
+          "text": "本期比上年同",
+          "bbox": [
+            387.31,
+            502.799,
+            450.438,
+            513.359
+          ]
+        }
+      },
+      "reported_yoy_check": null,
+      "evidence_id": "ef306d2c531acb15daf1f34e",
+      "previous_evidence_id": "15332c2752566833f1d4d9a5",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "deducted_weighted_roe",
+      "metric_name": "扣非加权平均净资产收益率",
+      "current": "36.03",
+      "previous": "34.20",
+      "previous_adjustment": "as_reported",
+      "scope": "unknown",
+      "currency": "CNY",
+      "unit": "%",
+      "yoy": {
+        "status": "not_comparable",
+        "value": null,
+        "reasons": [
+          "scope 未明确"
+        ]
+      },
+      "reported_yoy": null,
+      "reported_yoy_check": null,
+      "evidence_id": "b1617571ce747525af7633b5",
+      "previous_evidence_id": "223033deadcb13b87b556d43",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    },
+    {
+      "company_code": "600519",
+      "company_name": "贵州茅台",
+      "report_year": 2024,
+      "metric": "total_revenue",
+      "metric_name": "营业总收入",
+      "current": "174144069958.25",
+      "previous": "150560330316.45",
+      "previous_adjustment": "as_reported",
+      "scope": "consolidated",
+      "currency": "CNY",
+      "unit": "元",
+      "yoy": {
+        "status": "ok",
+        "value": "15.66397974302483004865752174628155532994",
+        "unit": "%",
+        "operands": {
+          "current": "174144069958.25",
+          "previous": "150560330316.45"
+        },
+        "formula": "(current - previous) / previous * 100",
+        "negative_policy": "review",
+        "evidence_ids": [
+          "76005cbee571f03305659334",
+          "e4af5219be30f7a5878d923a"
+        ]
+      },
+      "reported_yoy": null,
+      "reported_yoy_check": null,
+      "evidence_id": "76005cbee571f03305659334",
+      "previous_evidence_id": "e4af5219be30f7a5878d923a",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 63,
+      "issues": [],
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    }
+  ],
+  "signals": [
+    {
+      "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+      "type": "profit_minus_adjusted_profit",
+      "description": "归母净利润减扣非归母净利润（辅助观察非经常性项目影响）",
+      "value": "-12759555.80",
+      "unit": "元",
+      "formula": "parent_net_profit - adjusted_parent_net_profit",
+      "evidence_ids": [
+        "eb72c72a30ca3604e5ed522a",
+        "3d7ed42fa89add6f714a2e67"
+      ],
+      "interpretation": "这是差额计算，不构成错误或财务造假结论。"
+    }
+  ],
+  "basis": "使用同一份年度报告中的本年与上年比较值，调整后列优先。",
+  "limits": "结论相对于所选原始文件；未自动认定其为截至今日最新有效披露版本。"
+}
