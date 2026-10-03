@@ -168,6 +168,8 @@ def parser() -> argparse.ArgumentParser:
     checker.add_argument("--model", help="模型名；也可设置LLM_MODEL")
     checker.add_argument("--format", choices=["json_schema", "json_object"], help="默认读取LLM_FORMAT，否则使用json_schema")
     checker.add_argument("--ask-key", action="store_true", help="交互输入临时密钥，不回显、不保存；否则读取LLM_API_KEY")
+    checker.add_argument("--no-loop", action="store_true",
+                         help="跳过 JSON 多步工具循环，只用单次拆解（回退模式）")
     return app
 
 
@@ -236,10 +238,11 @@ def main() -> int:
         if args.command == "check-text":
             if failures:
                 raise LLMError("材料抽取不完整，本次未调用模型；请先检查failures.json")
-            bundle = check_text(args.file, facts, run, client)
+            bundle = check_text(args.file, facts, run, client, use_loop=not args.no_loop)
             run.finish(status="ok", materials=len(materials), evidence_count=len(facts),
-                       checks=len(bundle["checks"]), counts=bundle["counts"])
-            print(f"已完成 {len(bundle['checks'])} 项草稿核查；报告：{run.folder / 'text_report.md'}")
+                       checks=len(bundle["checks"]), counts=bundle["counts"],
+                       mode=bundle.get("mode"), tools_used=len(bundle.get("tools_used") or []))
+            print(f"已完成 {len(bundle['checks'])} 项草稿核查（{bundle.get('mode')}）；报告：{run.folder / 'text_report.md'}")
             return 0
         if args.command == "check-gold":
             gold_path = ROOT / "data" / "agent" / "samples.json"

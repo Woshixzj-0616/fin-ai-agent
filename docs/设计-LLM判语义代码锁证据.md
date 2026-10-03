@@ -568,3 +568,11 @@ LLM 服务不可用或 tool_calls 不支持时：
 - `finance.py`：`compare_number/compare_amount` 支持 `eq|approx|exceed|at_least|at_most|below` + 容差（默认 2%、上限 5%、超限打 warning）  
 - `llm_check.py`：新 Schema（claim_type/operator/interpretation/verification_action）+ 新 Prompt + **双轨报告** A/B/C  
 - 测试 67 → **77 全绿**；错误注入评测不回退  
+
+### P3 落地记录（JSON 多步工具循环）
+
+- `agent/tools.py`：`list_catalog` / `find_evidence` / `compute_yoy` / **`compare_claim`（唯一裁决口）** / `search_text` + `dispatch`
+- `agent/agent_loop.py`：每轮 `call_tools | submit_claims` 二选一；≤5 轮、≤30 次工具；verdict 模型不得改写
+- `LLMClient.chat`：多步帧通道；`check_text(use_loop=True)` 默认走循环，失败自动回退单次拆解
+- CLI：`check-text` 新增 `--no-loop`；`text_checks.json` 带 `mode` / `tools_used`
+- 测试 77 → **84 全绿**（工具契约 + 循环执行 + 预算）

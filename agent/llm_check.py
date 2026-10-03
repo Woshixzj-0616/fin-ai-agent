@@ -261,6 +261,34 @@ class LLMClient:
         run.event("llm_response", response_format=self.mode, item_count=len(parsed["items"]), usage=usage)
         return parsed
 
+    def chat(self, messages: list[dict], run) -> str:
+        """JSON 多步协议用：不锁 json_schema，只要求返回文本（调用方自己 json.loads）。"""
+        payload = {"model": self.model, "stream": False, "temperature": 0,
+                   "messages": messages}
+        request = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers={
+            "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
+        run.event("llm_chat", provider_host=self.host, model=self.model,
+                  message_count=len(messages))
+        try:
+            with urllib.request.build_opener(NoRedirect()).open(request, timeout=60) as response:
+                blob = response.read(2 * 1024 * 1024 + 1)
+        except urllib.error.HTTPError as exc:
+            raise LLMError(f"模型接口HTTP {exc.code}；请核实服务地址与模型权限") from None
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
+            raise LLMError("模型接口连接失败或超时；请核实网络后重试") from None
+        if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):
+            raise LLMError("模型响应疑似含凭证，已拒绝保存")
+        try:
+            body = json.loads(blob)
+            choice = body["choices"][0]
+            if choice.get("finish_reason") not in {"stop", "length", None} or choice["message"].get("refusal"):
+                raise LLMError("模型未正常完成多步协议帧")
+            return choice["message"]["content"] or ""
+        except (ValueError, KeyError, IndexError, TypeError) as exc:
+            if isinstance(exc, LLMError):
+                raise
+            raise LLMError("模型响应不是 chat/completions 协议") from None
+
 
 def split_draft(draft: str) -> list[dict]:
     if not draft.strip() or len(draft) > MAX_DRAFT_CHARS:
@@ -480,23 +508,42 @@ def render_report(results: list[dict], *, model: str, run_id: str) -> str:
     return "\n".join(lines)
 
 
-def check_text(path: Path, facts: list[dict], run, client: LLMClient) -> dict:
+def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
+               use_loop: bool = True) -> dict:
     draft = path.read_text(encoding="utf-8-sig")
     if client.key in draft or SECRET_PATTERN.search(draft):
         raise LLMError("草稿疑似包含凭证，已停止读取后续流程；请使用单独的纯草稿文件")
     sentences = split_draft(draft)
     run.event("draft_loaded", characters=len(draft), sha256=sha256(draft.encode("utf-8")), sentences=len(sentences))
-    # 不保存请求头、API密钥、完整服务端响应或自由格式输出。
-    payload = client.extract(sentences, run)
+    mode = "fallback_single_shot"
+    tools_used: list[dict] = []
+    if use_loop and hasattr(client, "chat"):
+        try:
+            from agent_loop import run_loop, tool_summary
+            loop_out = run_loop(client, draft, facts, run, sentences=sentences)
+            payload = loop_out["payload"]
+            tools_used = loop_out["tools_used"]
+            mode = loop_out["mode"]
+            run.event("tool_summary", tools=tool_summary(tools_used),
+                      rounds=loop_out.get("rounds"), budget_left=loop_out.get("budget_left"))
+        except LLMError as exc:
+            run.event("loop_fallback", reason=str(exc))
+            payload = client.extract(sentences, run)
+    else:
+        payload = client.extract(sentences, run)
     results = check_payload(payload, sentences, draft, facts)
-    bundle = {"schema_version": 1, "run_id": run.id, "status": "completed",
-              "model": client.model, "provider_host": client.host, "response_format": client.mode,
+    bundle = {"schema_version": 2, "run_id": run.id, "status": "completed",
+              "mode": mode, "model": client.model, "provider_host": client.host,
+              "response_format": client.mode,
               "sentences": sentences, "parsed": payload, "checks": results,
-              "counts": dict(Counter(row["status"] for row in results))}
+              "tools_used": tools_used,
+              "counts": dict(Counter(row["status"] for row in results)),
+              "tracks": dict(Counter(row.get("track") or "review" for row in results))}
     run.output("checked_draft.txt").write_text(draft, encoding="utf-8")
     write_json(run.output("text_checks.json"), bundle)
     run.output("text_report.md").write_text(render_report(results, model=client.model, run_id=run.id), encoding="utf-8")
     for result in results:
         run.event("text_claim_checked", claim_id=result["claim_id"], status=result["status"],
-                  reason_code=result["reason_code"], evidence_ids=result["evidence_ids"])
+                  reason_code=result["reason_code"], track=result.get("track"),
+                  evidence_ids=result["evidence_ids"])
     return bundle

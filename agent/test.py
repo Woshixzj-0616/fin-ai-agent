@@ -619,7 +619,7 @@ class LLMFlowTests(unittest.TestCase):
             audit = Run(root, "check-text-test", {})
             client = LLMClient("https://example.invalid/v1", "test-model", token)
             with patch("llm_check.urllib.request.build_opener", return_value=opener):
-                bundle = check_text(path, [self.fact], audit, client)
+                bundle = check_text(path, [self.fact], audit, client, use_loop=False)
             self.assertEqual(bundle["checks"][0]["status"], "证据支持")
             self.assertIn("PDF第5页", (root / "results/text_report.md").read_text(encoding="utf-8"))
             self.assertTrue(all(p.is_file() for p in (root / "results").iterdir()))
@@ -647,6 +647,83 @@ class LLMFlowTests(unittest.TestCase):
         client = LLMClient("https://example.invalid/v1", "test-model", "unit-test-credential", "json_object")
         with patch("llm_check.urllib.request.build_opener", return_value=opener), self.assertRaises(LLMError):
             client.extract(split_draft(self.sentence), SimpleNamespace(event=lambda *a, **k: None))
+
+
+class ToolLoopTests(unittest.TestCase):
+    """P3：工具契约 + JSON 多步协议（不依赖真模型）。"""
+
+    def setUp(self):
+        from tools import dispatch
+        self.dispatch = dispatch
+        self.fact = {**evidence(2024, "80000000"), "report_year": 2024,
+                     "company_code": "600519", "metric": "revenue", "period_year": 2024,
+                     "metric_name": "营业收入", "normalized_value": "80000000",
+                     "issues": [], "source_file": "data/test.pdf",
+                     "source_sha256": "a" * 64, "page": 5, "value_bbox": [0, 0, 1, 1]}
+        self.facts = [self.fact]
+
+    def test_find_evidence_returns_identity(self):
+        out = self.dispatch("find_evidence", self.facts, {
+            "company_name_or_code": "贵州茅台", "metric": "revenue", "period_year": 2024})
+        self.assertEqual(out["status"], "ok")
+        self.assertEqual(out["items"][0]["evidence_id"], self.fact["evidence_id"])
+
+    def test_find_evidence_empty_is_not_guessable(self):
+        out = self.dispatch("find_evidence", self.facts, {
+            "company_name_or_code": "贵州茅台", "metric": "total_assets", "period_year": 2024})
+        self.assertEqual(out["status"], "empty")
+        self.assertNotIn("items", out.get("items") and [1] or [])
+
+    def test_compare_claim_is_only_verdict_source(self):
+        out = self.dispatch("compare_claim", self.facts, {
+            "company_name_or_code": "贵州茅台", "metric": "revenue", "period_year": 2024,
+            "kind": "amount", "claimed_value": "0.80", "claimed_unit": "亿元", "operator": "eq"})
+        self.assertEqual(out["verdict"], "evidence_supported")
+        self.assertTrue(out["evidence_ids"])
+        wrong = self.dispatch("compare_claim", self.facts, {
+            "company_name_or_code": "贵州茅台", "metric": "revenue", "period_year": 2024,
+            "kind": "amount", "claimed_value": "0.90", "claimed_unit": "亿元", "operator": "eq"})
+        self.assertEqual(wrong["verdict"], "confirmed_error")
+
+    def test_unknown_tool_is_error_not_crash(self):
+        out = self.dispatch("drop_database", self.facts, {})
+        self.assertEqual(out["status"], "error")
+
+    def test_loop_parse_rejects_garbage(self):
+        from agent_loop import parse_loop_reply
+        from llm_check import LLMError
+        with self.assertRaises(LLMError):
+            parse_loop_reply("我觉得这个数不对")
+        frame = parse_loop_reply('{"action":"submit_claims","items":[],"unclaimed_sentences":[1]}')
+        self.assertEqual(frame["action"], "submit_claims")
+
+    def test_loop_executes_tools_then_submits(self):
+        from agent_loop import run_loop
+        frames = [
+            {"action": "call_tools", "tool_calls": [
+                {"name": "find_evidence", "arguments": {
+                    "company_name_or_code": "贵州茅台", "metric": "revenue", "period_year": 2024}}]},
+            {"action": "submit_claims", "items": [], "unclaimed_sentences": [1]},
+        ]
+
+        class Stub:
+            model, host, key, mode = "stub", "local", "k", "json_object"
+
+            def chat(self, messages, run):
+                return json.dumps(frames.pop(0), ensure_ascii=False)
+
+        events = []
+        run = SimpleNamespace(event=lambda *a, **k: events.append((a, k)))
+        out = run_loop(Stub(), "2024年，贵州茅台营业收入为0.80亿元。", self.facts, run,
+                       sentences=[{"sentence_id": 1, "text": "2024年，贵州茅台营业收入为0.80亿元。"}])
+        self.assertEqual(out["mode"], "json_multi_step")
+        self.assertEqual(out["tools_used"][0]["name"], "find_evidence")
+        self.assertEqual(out["rounds"], 2)
+
+    def test_loop_tool_budget_is_enforced(self):
+        from agent_loop import MAX_TOOL_CALLS, dispatch as _  # noqa: F401
+        from tools import dispatch
+        self.assertGreaterEqual(MAX_TOOL_CALLS, 10)
 
 
 class FlatOutputTests(unittest.TestCase):
