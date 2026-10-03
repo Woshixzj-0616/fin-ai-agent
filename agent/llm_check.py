@@ -224,7 +224,7 @@ class LLMClient:
         system = SYSTEM_PROMPT + "\n公司白名单：" + json.dumps(COMPANIES, ensure_ascii=False)
         system += "\n指标词典：" + json.dumps(METRICS, ensure_ascii=False)
         system += "\nJSON Schema：" + json.dumps(contract, ensure_ascii=False)
-        payload = {"model": self.model, "stream": False, "response_format": response_format,
+        payload = {"model": self.model, "stream": False, "temperature": 0, "response_format": response_format,
                    "messages": [{"role": "system", "content": system},
                                 {"role": "user", "content": json.dumps({"sentences": sentences}, ensure_ascii=False)}]}
         request = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers={
