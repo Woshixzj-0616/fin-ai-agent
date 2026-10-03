@@ -55,18 +55,30 @@ function renderMaterials() {
 /* ---------- 证据与溯源 ---------- */
 function renderEvidence() {
   const metricSel = $('#ev-metric');
+  const coSel = $('#ev-company');
   if (!metricSel.options.length) {
     const metrics = [...new Set(DATA.evidence.map((e) => e.metric_name))];
     metricSel.innerHTML = '<option value="">全部指标</option>' +
       metrics.map((m) => `<option>${m}</option>`).join('');
     metricSel.addEventListener('change', renderEvidence);
   }
+  if (coSel && !coSel.options.length) {
+    const cos = [...new Map(DATA.evidence.map((e) =>
+      [e.company_code, e.company_name || e.company_code])).entries()];
+    coSel.innerHTML = '<option value="">全部公司</option>' +
+      cos.map(([code, name]) => `<option value="${code}">${name}</option>`).join('');
+    coSel.addEventListener('change', renderEvidence);
+  }
   const filter = metricSel.value;
-  const rows = DATA.evidence.filter((e) => !filter || e.metric_name === filter)
-    .sort((a, b) => a.metric_name.localeCompare(b.metric_name) || a.period_year - b.period_year);
+  const coFilter = coSel ? coSel.value : '';
+  const rows = DATA.evidence.filter((e) =>
+      (!filter || e.metric_name === filter) && (!coFilter || e.company_code === coFilter))
+    .sort((a, b) => (a.company_code || '').localeCompare(b.company_code || '') ||
+      a.metric_name.localeCompare(b.metric_name) || a.period_year - b.period_year);
   $('#ev-count').textContent = `${rows.length} 条证据 · 点击行定位原文`;
   $('#ev-table tbody').innerHTML = rows.map((e, i) => `
     <tr class="clickable" data-idx="${DATA.evidence.indexOf(e)}">
+      <td>${e.company_name || e.company_code || ''}</td>
       <td>${e.metric_name}</td>
       <td class="num">${e.period_year}${e.adjustment !== 'as_reported' ? ' <span class="muted">' + e.adjustment + '</span>' : ''}</td>
       <td class="num mono">${fmtNum(e.value)}</td>
@@ -86,7 +98,7 @@ function renderEvidence() {
 function showSource(e) {
   $('#src-title').textContent =
     `${e.company_name} ${e.report_year} 年报 · 第 ${e.page} 页 · ${e.metric_name}`;
-  const imgPath = DATA.page_images[e.page];
+  const imgPath = e.page_image || DATA.page_images[e.page];
   const meta = `
     <div class="src-meta">
       <b>原始标签</b> ${e.original_label || '—'}<br>
