@@ -791,6 +791,25 @@ def _dedupe(facts: list[dict]) -> list[dict]:
     return list(best.values())
 
 
+def _scanned_pdf_hint(document, texts: list[str]) -> str | None:
+    """扫描版/无文字层：给出人话拒收原因，而不是抽到一半说版式不支持。"""
+    pages = len(texts)
+    if pages == 0:
+        return "PDF 无法解析出任何页面，可能已损坏或加密，请换一份可读的年报 PDF。"
+    nonempty = sum(1 for t in texts if len(norm(t)) >= 20)
+    # 整本几乎无字 → 扫描件；只翻前 12 页加速
+    sample = texts[:12]
+    sample_ok = sum(1 for t in sample if len(norm(t)) >= 20)
+    if nonempty == 0 or (sample and sample_ok == 0):
+        return ("这份 PDF 几乎没有文字层（像是扫描版/影印件），当前版本不支持 OCR，"
+                "无法抽取财务数据。请提供带文字层的年度报告 PDF；"
+                "可在阅读器里选中表格里的数字来确认是否有文字层。")
+    if nonempty < max(2, pages // 10):
+        return (f"PDF 文字层过少（约 {nonempty}/{pages} 页可检索），更像影印件；"
+                "若确认原档如此，请改用官方文字版年报。")
+    return None
+
+
 def extract_material(root, material: dict, run: Run) -> list[dict]:
     path = within(root, root / material["local_file"])
     blob = run.read(path)
@@ -798,6 +817,9 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
         raise ValueError("提取前指纹复核失败")
     with pymupdf.open(stream=blob, filetype="pdf") as document:
         texts = [page.get_text() for page in document]
+        scanned = _scanned_pdf_hint(document, texts)
+        if scanned:
+            raise ValueError(scanned)
         currency = document_currency(document, texts)
 
         # ── 通道 1：表格线网格（gold 口径） ──
@@ -839,7 +861,9 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
 
         facts = _dedupe(grid_facts + words_facts + total_facts)
         if not facts:
-            raise ValueError(grid_error or "未识别年度主要会计数据表；可能无文字层或版式不支持")
+            raise ValueError(grid_error or (
+                "未识别到「主要会计数据」摘要表。可能原因：①扫描版无文字层 ②版式过新/过偏 ③该 PDF 不是年度报告。"
+                "请用阅读器打开确认表格内数字可选中复制，或换官方文字版年报。"))
 
         # 指标固有单位（元/股、%）兜底：版式没写也不该报 unit_unknown。
         for f in facts:

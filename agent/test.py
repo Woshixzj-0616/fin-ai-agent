@@ -309,6 +309,13 @@ class GeometryTests(unittest.TestCase):
         self.assertEqual(out[0]["normalized_value"], "407149600000")
         self.assertNotIn("unit_unknown", out[0]["issues"])
 
+    def test_scanned_pdf_gets_human_error(self):
+        from extract import _scanned_pdf_hint
+        self.assertIn("扫描", _scanned_pdf_hint(None, ["", " ", "　"]))
+        self.assertIn("扫描", _scanned_pdf_hint(None, ["x"] * 30))
+        self.assertIsNone(_scanned_pdf_hint(None, ["营业收入 1,234 元 " * 3] * 20))
+        self.assertIn("无法解析", _scanned_pdf_hint(None, []))
+
 
 class MaterialTests(unittest.TestCase):
     def test_error_page_rejected(self):
