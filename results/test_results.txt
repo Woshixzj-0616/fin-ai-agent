@@ -33,7 +33,9 @@ test_history_preserves_outputs_without_nested_folders (__main__.FlatOutputTests.
 test_nested_output_paths_are_rejected (__main__.FlatOutputTests.test_nested_output_paths_are_rejected) ... ok
 test_oversized_latest_is_complete_and_older_history_removed (__main__.FlatOutputTests.test_oversized_latest_is_complete_and_older_history_removed) ... ok
 test_adjusted_comparative_preferred (__main__.GeometryTests.test_adjusted_comparative_preferred) ... ok
+test_dedupe_backfills_unit_and_recomputes_normalized (__main__.GeometryTests.test_dedupe_backfills_unit_and_recomputes_normalized) ... ok
 test_missing_current_value_preserved (__main__.GeometryTests.test_missing_current_value_preserved) ... ok
+test_statement_title_normalized (__main__.GeometryTests.test_statement_title_normalized) ... ok
 test_total_revenue_is_not_revenue (__main__.GeometryTests.test_total_revenue_is_not_revenue) ... ok
 test_year_and_adjustment_use_geometry (__main__.GeometryTests.test_year_and_adjustment_use_geometry) ... ok
 test_company_absent_from_draft_still_stops (__main__.LLMFlowTests.test_company_absent_from_draft_still_stops) ... ok
@@ -66,6 +68,6 @@ test_disagreement_visible_in_markdown (__main__.ReportTests.test_disagreement_vi
 test_missing_and_uncomputable_are_not_passes (__main__.ReportTests.test_missing_and_uncomputable_are_not_passes) ... ok
 
 ----------------------------------------------------------------------
-Ran 65 tests in 16.595s
+Ran 67 tests in 17.178s
 
 OK

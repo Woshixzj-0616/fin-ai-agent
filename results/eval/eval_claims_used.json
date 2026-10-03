@@ -799,6 +799,120 @@
  },
  {
   "id": "E043",
+  "sentence": "2023年，比亚迪经营现金流净额为1697.25亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1697.25",
+  "unit": "亿元",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "d7273495f1d264b436dde9dc",
+  "evidence_page": 11
+ },
+ {
+  "id": "E044",
+  "sentence": "2023年，比亚迪经营现金流净额为1951.84亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1951.84",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_value",
+  "evidence_id": "d7273495f1d264b436dde9dc",
+  "evidence_page": 11
+ },
+ {
+  "id": "E045",
+  "sentence": "2023年，比亚迪经营现金流净额为1697.25万元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1697.25",
+  "unit": "万元",
+  "gold_expect": "确认错误",
+  "error_type": "error_unit",
+  "evidence_id": "d7273495f1d264b436dde9dc",
+  "evidence_page": 11
+ },
+ {
+  "id": "E046",
+  "sentence": "2023年，比亚迪经营现金流净额为1408.38亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1408.38",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_year",
+  "evidence_id": "d7273495f1d264b436dde9dc",
+  "evidence_page": 11
+ },
+ {
+  "id": "E047",
+  "sentence": "2023年，比亚迪经营现金流净额同比增长20.51%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "20.51",
+  "unit": "%",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "d7273495f1d264b436dde9dc",
+  "evidence_page": 11
+ },
+ {
+  "id": "E048",
+  "sentence": "2023年，比亚迪经营现金流净额同比下降20.51%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "-20.51",
+  "unit": "%",
+  "gold_expect": "确认错误",
+  "error_type": "error_sign",
+  "evidence_id": "d7273495f1d264b436dde9dc",
+  "evidence_page": 11
+ },
+ {
+  "id": "E049",
   "sentence": "2023年，比亚迪归母净利润为300.41亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -817,7 +931,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E044",
+  "id": "E050",
   "sentence": "2023年，比亚迪归母净利润为345.47亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -836,7 +950,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E045",
+  "id": "E051",
   "sentence": "2023年，比亚迪归母净利润为300.41万元。",
   "kind": "amount",
   "company_code": "002594",
@@ -855,7 +969,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E046",
+  "id": "E052",
   "sentence": "2023年，比亚迪归母净利润为166.22亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -874,7 +988,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E047",
+  "id": "E053",
   "sentence": "2023年，比亚迪归母净利润同比增长80.72%。",
   "kind": "yoy",
   "company_code": "002594",
@@ -893,7 +1007,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E048",
+  "id": "E054",
   "sentence": "2023年，比亚迪归母净利润同比下降80.72%。",
   "kind": "yoy",
   "company_code": "002594",
@@ -912,7 +1026,121 @@
   "evidence_page": 11
  },
  {
-  "id": "E049",
+  "id": "E055",
+  "sentence": "2023年，比亚迪营业收入为6023.15亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "6023.15",
+  "unit": "亿元",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "afbb77e226f0bf72534e94e9",
+  "evidence_page": 11
+ },
+ {
+  "id": "E056",
+  "sentence": "2023年，比亚迪营业收入为6926.62亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "6926.62",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_value",
+  "evidence_id": "afbb77e226f0bf72534e94e9",
+  "evidence_page": 11
+ },
+ {
+  "id": "E057",
+  "sentence": "2023年，比亚迪营业收入为6023.15万元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "6023.15",
+  "unit": "万元",
+  "gold_expect": "确认错误",
+  "error_type": "error_unit",
+  "evidence_id": "afbb77e226f0bf72534e94e9",
+  "evidence_page": 11
+ },
+ {
+  "id": "E058",
+  "sentence": "2023年，比亚迪营业收入为4240.61亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "4240.61",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_year",
+  "evidence_id": "afbb77e226f0bf72534e94e9",
+  "evidence_page": 11
+ },
+ {
+  "id": "E059",
+  "sentence": "2023年，比亚迪营业收入同比增长42.04%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "42.04",
+  "unit": "%",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "afbb77e226f0bf72534e94e9",
+  "evidence_page": 11
+ },
+ {
+  "id": "E060",
+  "sentence": "2023年，比亚迪营业收入同比下降42.04%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2023,
+  "period_year": 2023,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "-42.04",
+  "unit": "%",
+  "gold_expect": "确认错误",
+  "error_type": "error_sign",
+  "evidence_id": "afbb77e226f0bf72534e94e9",
+  "evidence_page": 11
+ },
+ {
+  "id": "E061",
   "sentence": "2024年，比亚迪扣非归母净利润为369.83亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -931,7 +1159,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E050",
+  "id": "E062",
   "sentence": "2024年，比亚迪扣非归母净利润为425.30亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -950,7 +1178,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E051",
+  "id": "E063",
   "sentence": "2024年，比亚迪扣非归母净利润为369.83万元。",
   "kind": "amount",
   "company_code": "002594",
@@ -969,7 +1197,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E052",
+  "id": "E064",
   "sentence": "2024年，比亚迪扣非归母净利润为284.62亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -988,7 +1216,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E053",
+  "id": "E065",
   "sentence": "2024年，比亚迪扣非归母净利润同比增长29.94%。",
   "kind": "yoy",
   "company_code": "002594",
@@ -1007,7 +1235,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E054",
+  "id": "E066",
   "sentence": "2024年，比亚迪扣非归母净利润同比下降29.94%。",
   "kind": "yoy",
   "company_code": "002594",
@@ -1026,7 +1254,121 @@
   "evidence_page": 11
  },
  {
-  "id": "E055",
+  "id": "E067",
+  "sentence": "2024年，比亚迪经营现金流净额为1334.54亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1334.54",
+  "unit": "亿元",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "1f05eb824e81c477a413b82a",
+  "evidence_page": 11
+ },
+ {
+  "id": "E068",
+  "sentence": "2024年，比亚迪经营现金流净额为1534.72亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1534.72",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_value",
+  "evidence_id": "1f05eb824e81c477a413b82a",
+  "evidence_page": 11
+ },
+ {
+  "id": "E069",
+  "sentence": "2024年，比亚迪经营现金流净额为1334.54万元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1334.54",
+  "unit": "万元",
+  "gold_expect": "确认错误",
+  "error_type": "error_unit",
+  "evidence_id": "1f05eb824e81c477a413b82a",
+  "evidence_page": 11
+ },
+ {
+  "id": "E070",
+  "sentence": "2024年，比亚迪经营现金流净额为1697.25亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "1697.25",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_year",
+  "evidence_id": "1f05eb824e81c477a413b82a",
+  "evidence_page": 11
+ },
+ {
+  "id": "E071",
+  "sentence": "2024年，比亚迪经营现金流净额同比下降21.37%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "-21.37",
+  "unit": "%",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "1f05eb824e81c477a413b82a",
+  "evidence_page": 11
+ },
+ {
+  "id": "E072",
+  "sentence": "2024年，比亚迪经营现金流净额同比增长21.37%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "operating_cash_flow",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "21.37",
+  "unit": "%",
+  "gold_expect": "确认错误",
+  "error_type": "error_sign",
+  "evidence_id": "1f05eb824e81c477a413b82a",
+  "evidence_page": 11
+ },
+ {
+  "id": "E073",
   "sentence": "2024年，比亚迪归母净利润为402.54亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -1045,7 +1387,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E056",
+  "id": "E074",
   "sentence": "2024年，比亚迪归母净利润为462.92亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -1064,7 +1406,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E057",
+  "id": "E075",
   "sentence": "2024年，比亚迪归母净利润为402.54万元。",
   "kind": "amount",
   "company_code": "002594",
@@ -1083,7 +1425,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E058",
+  "id": "E076",
   "sentence": "2024年，比亚迪归母净利润为300.41亿元。",
   "kind": "amount",
   "company_code": "002594",
@@ -1102,7 +1444,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E059",
+  "id": "E077",
   "sentence": "2024年，比亚迪归母净利润同比增长34.00%。",
   "kind": "yoy",
   "company_code": "002594",
@@ -1121,7 +1463,7 @@
   "evidence_page": 11
  },
  {
-  "id": "E060",
+  "id": "E078",
   "sentence": "2024年，比亚迪归母净利润同比下降34.00%。",
   "kind": "yoy",
   "company_code": "002594",
@@ -1140,7 +1482,121 @@
   "evidence_page": 11
  },
  {
-  "id": "E061",
+  "id": "E079",
+  "sentence": "2024年，比亚迪营业收入为7771.02亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "7771.02",
+  "unit": "亿元",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "e94f1d93b15fba8c591466fa",
+  "evidence_page": 10
+ },
+ {
+  "id": "E080",
+  "sentence": "2024年，比亚迪营业收入为8936.67亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "8936.67",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_value",
+  "evidence_id": "e94f1d93b15fba8c591466fa",
+  "evidence_page": 10
+ },
+ {
+  "id": "E081",
+  "sentence": "2024年，比亚迪营业收入为7771.02万元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "7771.02",
+  "unit": "万元",
+  "gold_expect": "确认错误",
+  "error_type": "error_unit",
+  "evidence_id": "e94f1d93b15fba8c591466fa",
+  "evidence_page": 10
+ },
+ {
+  "id": "E082",
+  "sentence": "2024年，比亚迪营业收入为6023.15亿元。",
+  "kind": "amount",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "6023.15",
+  "unit": "亿元",
+  "gold_expect": "确认错误",
+  "error_type": "error_year",
+  "evidence_id": "e94f1d93b15fba8c591466fa",
+  "evidence_page": 10
+ },
+ {
+  "id": "E083",
+  "sentence": "2024年，比亚迪营业收入同比增长29.02%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "29.02",
+  "unit": "%",
+  "gold_expect": "证据支持",
+  "error_type": "accurate",
+  "evidence_id": "e94f1d93b15fba8c591466fa",
+  "evidence_page": 10
+ },
+ {
+  "id": "E084",
+  "sentence": "2024年，比亚迪营业收入同比下降29.02%。",
+  "kind": "yoy",
+  "company_code": "002594",
+  "company_name": "比亚迪",
+  "source_report_year": 2024,
+  "period_year": 2024,
+  "period_kind": "annual",
+  "metric": "revenue",
+  "scope": "consolidated",
+  "currency": "CNY",
+  "value": "-29.02",
+  "unit": "%",
+  "gold_expect": "确认错误",
+  "error_type": "error_sign",
+  "evidence_id": "e94f1d93b15fba8c591466fa",
+  "evidence_page": 10
+ },
+ {
+  "id": "E085",
   "sentence": "2023年，恒瑞医药扣非归母净利润为41.41亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1159,7 +1615,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E062",
+  "id": "E086",
   "sentence": "2023年，恒瑞医药扣非归母净利润为47.62亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1178,7 +1634,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E063",
+  "id": "E087",
   "sentence": "2023年，恒瑞医药扣非归母净利润为41.41万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1197,7 +1653,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E064",
+  "id": "E088",
   "sentence": "2023年，恒瑞医药扣非归母净利润为34.10亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1216,7 +1672,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E065",
+  "id": "E089",
   "sentence": "2023年，恒瑞医药扣非归母净利润同比增长21.46%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1235,7 +1691,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E066",
+  "id": "E090",
   "sentence": "2023年，恒瑞医药扣非归母净利润同比下降21.46%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1254,7 +1710,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E067",
+  "id": "E091",
   "sentence": "2023年，恒瑞医药经营现金流净额为76.44亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1273,7 +1729,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E068",
+  "id": "E092",
   "sentence": "2023年，恒瑞医药经营现金流净额为87.91亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1292,7 +1748,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E069",
+  "id": "E093",
   "sentence": "2023年，恒瑞医药经营现金流净额为76.44万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1311,7 +1767,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E070",
+  "id": "E094",
   "sentence": "2023年，恒瑞医药经营现金流净额为12.65亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1330,7 +1786,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E071",
+  "id": "E095",
   "sentence": "2023年，恒瑞医药经营现金流净额同比增长504.12%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1349,7 +1805,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E072",
+  "id": "E096",
   "sentence": "2023年，恒瑞医药经营现金流净额同比下降504.12%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1368,7 +1824,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E073",
+  "id": "E097",
   "sentence": "2023年，恒瑞医药归母净利润为43.02亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1387,7 +1843,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E074",
+  "id": "E098",
   "sentence": "2023年，恒瑞医药归母净利润为49.47亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1406,7 +1862,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E075",
+  "id": "E099",
   "sentence": "2023年，恒瑞医药归母净利润为43.02万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1425,7 +1881,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E076",
+  "id": "E100",
   "sentence": "2023年，恒瑞医药归母净利润为39.06亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1444,7 +1900,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E077",
+  "id": "E101",
   "sentence": "2023年，恒瑞医药归母净利润同比增长10.14%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1463,7 +1919,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E078",
+  "id": "E102",
   "sentence": "2023年，恒瑞医药归母净利润同比下降10.14%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1482,7 +1938,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E079",
+  "id": "E103",
   "sentence": "2023年，恒瑞医药营业收入为228.20亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1501,7 +1957,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E080",
+  "id": "E104",
   "sentence": "2023年，恒瑞医药营业收入为262.43亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1520,7 +1976,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E081",
+  "id": "E105",
   "sentence": "2023年，恒瑞医药营业收入为228.20万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1539,7 +1995,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E082",
+  "id": "E106",
   "sentence": "2023年，恒瑞医药营业收入为212.75亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1558,7 +2014,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E083",
+  "id": "E107",
   "sentence": "2023年，恒瑞医药营业收入同比增长7.26%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1577,7 +2033,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E084",
+  "id": "E108",
   "sentence": "2023年，恒瑞医药营业收入同比下降7.26%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1596,7 +2052,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E085",
+  "id": "E109",
   "sentence": "2024年，恒瑞医药扣非归母净利润为61.78亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1615,7 +2071,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E086",
+  "id": "E110",
   "sentence": "2024年，恒瑞医药扣非归母净利润为71.05亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1634,7 +2090,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E087",
+  "id": "E111",
   "sentence": "2024年，恒瑞医药扣非归母净利润为61.78万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1653,7 +2109,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E088",
+  "id": "E112",
   "sentence": "2024年，恒瑞医药扣非归母净利润为41.41亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1672,7 +2128,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E089",
+  "id": "E113",
   "sentence": "2024年，恒瑞医药扣非归母净利润同比增长49.18%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1691,7 +2147,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E090",
+  "id": "E114",
   "sentence": "2024年，恒瑞医药扣非归母净利润同比下降49.18%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1710,7 +2166,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E091",
+  "id": "E115",
   "sentence": "2024年，恒瑞医药经营现金流净额为74.23亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1729,7 +2185,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E092",
+  "id": "E116",
   "sentence": "2024年，恒瑞医药经营现金流净额为85.36亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1748,7 +2204,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E093",
+  "id": "E117",
   "sentence": "2024年，恒瑞医药经营现金流净额为74.23万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1767,7 +2223,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E094",
+  "id": "E118",
   "sentence": "2024年，恒瑞医药经营现金流净额为76.44亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1786,7 +2242,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E095",
+  "id": "E119",
   "sentence": "2024年，恒瑞医药经营现金流净额同比下降2.89%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1805,7 +2261,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E096",
+  "id": "E120",
   "sentence": "2024年，恒瑞医药经营现金流净额同比增长2.89%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1824,7 +2280,7 @@
   "evidence_page": 7
  },
  {
-  "id": "E097",
+  "id": "E121",
   "sentence": "2024年，恒瑞医药归母净利润为63.37亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1843,7 +2299,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E098",
+  "id": "E122",
   "sentence": "2024年，恒瑞医药归母净利润为72.88亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1862,7 +2318,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E099",
+  "id": "E123",
   "sentence": "2024年，恒瑞医药归母净利润为63.37万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1881,7 +2337,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E100",
+  "id": "E124",
   "sentence": "2024年，恒瑞医药归母净利润为43.02亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1900,7 +2356,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E101",
+  "id": "E125",
   "sentence": "2024年，恒瑞医药归母净利润同比增长47.28%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1919,7 +2375,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E102",
+  "id": "E126",
   "sentence": "2024年，恒瑞医药归母净利润同比下降47.28%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -1938,7 +2394,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E103",
+  "id": "E127",
   "sentence": "2024年，恒瑞医药营业收入为279.85亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1957,7 +2413,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E104",
+  "id": "E128",
   "sentence": "2024年，恒瑞医药营业收入为321.83亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1976,7 +2432,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E105",
+  "id": "E129",
   "sentence": "2024年，恒瑞医药营业收入为279.85万元。",
   "kind": "amount",
   "company_code": "600276",
@@ -1995,7 +2451,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E106",
+  "id": "E130",
   "sentence": "2024年，恒瑞医药营业收入为228.20亿元。",
   "kind": "amount",
   "company_code": "600276",
@@ -2014,7 +2470,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E107",
+  "id": "E131",
   "sentence": "2024年，恒瑞医药营业收入同比增长22.63%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -2033,7 +2489,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E108",
+  "id": "E132",
   "sentence": "2024年，恒瑞医药营业收入同比下降22.63%。",
   "kind": "yoy",
   "company_code": "600276",
@@ -2052,7 +2508,7 @@
   "evidence_page": 6
  },
  {
-  "id": "E109",
+  "id": "E133",
   "sentence": "2023年，贵州茅台扣非归母净利润为747.53亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2071,7 +2527,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E110",
+  "id": "E134",
   "sentence": "2023年，贵州茅台扣非归母净利润为859.66亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2090,7 +2546,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E111",
+  "id": "E135",
   "sentence": "2023年，贵州茅台扣非归母净利润为747.53万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2109,7 +2565,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E112",
+  "id": "E136",
   "sentence": "2023年，贵州茅台经营现金流净额为665.93亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2128,7 +2584,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E113",
+  "id": "E137",
   "sentence": "2023年，贵州茅台经营现金流净额为765.82亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2147,7 +2603,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E114",
+  "id": "E138",
   "sentence": "2023年，贵州茅台经营现金流净额为665.93万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2166,7 +2622,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E115",
+  "id": "E139",
   "sentence": "2023年，贵州茅台归母净利润为747.34亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2185,7 +2641,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E116",
+  "id": "E140",
   "sentence": "2023年，贵州茅台归母净利润为859.44亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2204,7 +2660,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E117",
+  "id": "E141",
   "sentence": "2023年，贵州茅台归母净利润为747.34万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2223,7 +2679,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E118",
+  "id": "E142",
   "sentence": "2023年，贵州茅台营业收入为1476.94亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2242,7 +2698,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E119",
+  "id": "E143",
   "sentence": "2023年，贵州茅台营业收入为1698.48亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2261,7 +2717,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E120",
+  "id": "E144",
   "sentence": "2023年，贵州茅台营业收入为1476.94万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2280,7 +2736,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E121",
+  "id": "E145",
   "sentence": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2299,7 +2755,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E122",
+  "id": "E146",
   "sentence": "2024年，贵州茅台扣非归母净利润为991.77亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2318,7 +2774,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E123",
+  "id": "E147",
   "sentence": "2024年，贵州茅台扣非归母净利润为862.41万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2337,7 +2793,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E124",
+  "id": "E148",
   "sentence": "2024年，贵州茅台扣非归母净利润为747.53亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2356,7 +2812,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E125",
+  "id": "E149",
   "sentence": "2024年，贵州茅台扣非归母净利润同比增长15.37%。",
   "kind": "yoy",
   "company_code": "600519",
@@ -2375,7 +2831,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E126",
+  "id": "E150",
   "sentence": "2024年，贵州茅台扣非归母净利润同比下降15.37%。",
   "kind": "yoy",
   "company_code": "600519",
@@ -2394,7 +2850,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E127",
+  "id": "E151",
   "sentence": "2024年，贵州茅台经营现金流净额为924.64亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2413,7 +2869,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E128",
+  "id": "E152",
   "sentence": "2024年，贵州茅台经营现金流净额为1063.34亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2432,7 +2888,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E129",
+  "id": "E153",
   "sentence": "2024年，贵州茅台经营现金流净额为924.64万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2451,7 +2907,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E130",
+  "id": "E154",
   "sentence": "2024年，贵州茅台经营现金流净额为665.93亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2470,7 +2926,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E131",
+  "id": "E155",
   "sentence": "2024年，贵州茅台经营现金流净额同比增长38.85%。",
   "kind": "yoy",
   "company_code": "600519",
@@ -2489,7 +2945,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E132",
+  "id": "E156",
   "sentence": "2024年，贵州茅台经营现金流净额同比下降38.85%。",
   "kind": "yoy",
   "company_code": "600519",
@@ -2508,7 +2964,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E133",
+  "id": "E157",
   "sentence": "2024年，贵州茅台归母净利润为862.28亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2527,7 +2983,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E134",
+  "id": "E158",
   "sentence": "2024年，贵州茅台归母净利润为991.62亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2546,7 +3002,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E135",
+  "id": "E159",
   "sentence": "2024年，贵州茅台归母净利润为862.28万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2565,7 +3021,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E136",
+  "id": "E160",
   "sentence": "2024年，贵州茅台归母净利润为747.34亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2584,7 +3040,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E137",
+  "id": "E161",
   "sentence": "2024年，贵州茅台归母净利润同比增长15.38%。",
   "kind": "yoy",
   "company_code": "600519",
@@ -2603,7 +3059,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E138",
+  "id": "E162",
   "sentence": "2024年，贵州茅台归母净利润同比下降15.38%。",
   "kind": "yoy",
   "company_code": "600519",
@@ -2622,7 +3078,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E139",
+  "id": "E163",
   "sentence": "2024年，贵州茅台营业收入为1708.99亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2641,7 +3097,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E140",
+  "id": "E164",
   "sentence": "2024年，贵州茅台营业收入为1965.34亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2660,7 +3116,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E141",
+  "id": "E165",
   "sentence": "2024年，贵州茅台营业收入为1708.99万元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2679,7 +3135,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E142",
+  "id": "E166",
   "sentence": "2024年，贵州茅台营业收入为1476.94亿元。",
   "kind": "amount",
   "company_code": "600519",
@@ -2698,7 +3154,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E143",
+  "id": "E167",
   "sentence": "2024年，贵州茅台营业收入同比增长15.71%。",
   "kind": "yoy",
   "company_code": "600519",
@@ -2717,7 +3173,7 @@
   "evidence_page": 5
  },
  {
-  "id": "E144",
+  "id": "E168",
   "sentence": "2024年，贵州茅台营业收入同比下降15.71%。",
   "kind": "yoy",
   "company_code": "600519",

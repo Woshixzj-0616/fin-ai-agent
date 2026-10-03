@@ -13,7 +13,8 @@ if sys.version_info < (3, 11):
 
 import pymupdf
 
-from materials import ROOT, TZ, Run, fetch, import_legacy, load_materials, verify_registry, write_csv, write_json
+from materials import (ROOT, TZ, Run, fetch, import_legacy, load_materials, register,
+                       verify_registry, write_csv, write_json)
 from extract import extract_material
 from finance import analyze, check_claim, decimal
 from llm_check import LLMClient, LLMError, check_text
@@ -154,6 +155,12 @@ def parser() -> argparse.ArgumentParser:
         command.add_argument("--render", action="store_true", help="渲染证据所在页供复核")
     demo = commands.add_parser("demo", help="贵州茅台2024单报告示例（8条结构化陈述）")
     demo.add_argument("--render", action="store_true")
+    live = commands.add_parser("live", help="决赛现场一键：登记/抽取/分析/出报告")
+    live.add_argument("--pdf", type=Path, help="现场新材料 PDF；需同时给 --code --name --year")
+    live.add_argument("--code", help="证券代码（已登记材料可只给 code/year）")
+    live.add_argument("--name", help="公司简称（仅 --pdf 时必填）")
+    live.add_argument("--year", type=int, help="报告年度（--pdf 时必填）")
+    live.add_argument("--render", action="store_true", help="渲染证据所在页 PNG")
     commands.add_parser("check-gold", help="比较固定参考答案；不自动生成或修改参考答案")
     checker = commands.add_parser("check-text", help="模型拆解自然语言草稿，再由Python规则逐项核查")
     checker.add_argument("--file", type=Path, required=True, help="UTF-8纯草稿文件，不要选含凭证的接入说明")
@@ -205,8 +212,26 @@ def main() -> int:
             run.finish(status="failed" if failed else "ok", checked=len(results), passed=passed)
             print(f"材料核验：{passed}/{len(results)}")
             return int(failed)
+        if args.command == "live" and args.pdf:
+            if not (args.code and args.name and args.year):
+                raise ValueError("现场新材料必须同时给 --pdf --code --name --year")
+            blob = args.pdf.read_bytes()
+            stamp = datetime.now(TZ).strftime("%Y%m%d%H%M%S")
+            record = register(ROOT, blob, {
+                "company_code": args.code, "company_name": args.name,
+                "report_year": int(args.year), "announcement_id": stamp,
+                "title": f"{args.name}{args.year}年年度报告（现场登记）",
+                "disclosed_at": datetime.now(TZ).date().isoformat(),
+                "disclosure_date_status": "onsite_unverified",
+                "source_url": f"onsite://{args.pdf.name}",
+                "version_policy": "first", "license_status": "public_disclosure",
+            }, run)
+            print(f"已登记现场材料：{record['document_id']}")
         code = "600519" if args.command == "demo" else getattr(args, "code", None)
         year = 2024 if args.command == "demo" else getattr(args, "year", None)
+        if args.command == "live":
+            code = args.code
+            year = args.year
         materials, facts, failures = extract_selected(ROOT, run, code, year, getattr(args, "render", False))
         if args.command == "check-text":
             if failures:
@@ -238,6 +263,17 @@ def main() -> int:
                     run.event("structured_sample_check", **check)
             run.output("demo_report.md" if args.command == "demo" else "report.md").write_text(
                 report_markdown(analysis, materials, checks), encoding="utf-8")
+        if args.command == "live":
+            analysis = analyze(facts, run)
+            write_json(run.output("analysis.json"), analysis)
+            issues = [f for f in facts if f.get("issues")]
+            report = report_markdown(analysis, materials, None)
+            report += "\n\n## 现场运行摘要\n\n"
+            report += f"- 材料 {len(materials)} 份；证据 **{len(facts)}** 条；待复核字段 {len(issues)} 条。\n"
+            report += f"- 运行目录：`{run.folder}`（含 run.json / evidence.json / events.jsonl）。\n"
+            report += "- 下一步：`python scripts/site_build.py` 打包审计台；草稿核查用 `check-text`。\n"
+            run.output("live_report.md").write_text(report, encoding="utf-8")
+            print(f"现场报告：{run.folder / 'live_report.md'}（证据 {len(facts)} 条，待复核 {len(issues)}）")
         run.finish(status="partial_failure" if failures else "ok",
                    materials=len(materials), evidence_count=len(facts), failures=len(failures),
                    records_needing_review=sum(bool(f["issues"]) for f in facts))

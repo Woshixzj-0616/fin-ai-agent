@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "run_id": "20261003_202641_e172ae4e",
-  "started_at": "2026-10-03T20:26:41+08:00",
+  "run_id": "20261003_205020_b4d11af9",
+  "started_at": "2026-10-03T20:50:20+08:00",
   "command": "test",
   "parameters": {},
   "versions": {
@@ -10,11 +10,11 @@
   },
   "python_executable": "D:\\python\\python.exe",
   "code_sha256": {
-    "main.py": "2b2df8f9bb1a471299ea189e54a6ede93829ac6e72d8b1b5c85208598e7e890c",
+    "main.py": "49c45eeb8c36ef80787c2413fdef33a4f52633e9a7fedd5aab9e98a68b133a10",
     "materials.py": "5f5244fc4cac39a99511de044e746f55716055a84b07fd64941ae6eb8a3462e7",
-    "extract.py": "c50d3543b315ff85258326be62f7c2ba1aff37680af3f0c4e7fd0708befe2684",
+    "extract.py": "b350252e765fa2560e9b811d13c1a4b2030e4c08177e2eab0f6700e2c15a3da9",
     "finance.py": "24debf26ea4b99605b0cc29f1ca58675ad59ee8a7355f6353aecb12609ce05b3",
     "llm_check.py": "6480dd64f41dc3ee35ad548bf374dc515a05eb5b8ff167da2383401b68c61bae",
-    "test.py": "ac346ffaf8f1582faaa3a84fd9657b1729ee103df9b7afe1bba0ec3b9f4fb326"
+    "test.py": "b8199b74d3a413b22a28891209232c46f15ffcd42fef313554083a345e7c1aa6"
   }
 }

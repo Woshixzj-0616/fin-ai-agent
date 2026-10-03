@@ -11,7 +11,7 @@
       "previous_adjustment": "as_reported",
       "scope": "unknown",
       "currency": "CNY",
-      "unit": null,
+      "unit": "元/股",
       "yoy": {
         "status": "not_comparable",
         "value": null,
@@ -43,9 +43,7 @@
       "previous_evidence_id": "d749e17e6b9b4f823d9239b0",
       "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
       "page": 5,
-      "issues": [
-        "unit_unknown"
-      ],
+      "issues": [],
       "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
     },
     {
@@ -59,7 +57,7 @@
       "previous_adjustment": "as_reported",
       "scope": "unknown",
       "currency": "CNY",
-      "unit": null,
+      "unit": "元/股",
       "yoy": {
         "status": "not_comparable",
         "value": null,
@@ -91,9 +89,7 @@
       "previous_evidence_id": "96d56680b344d79a92226234",
       "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
       "page": 5,
-      "issues": [
-        "unit_unknown"
-      ],
+      "issues": [],
       "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
     },
     {
@@ -107,7 +103,7 @@
       "previous_adjustment": "as_reported",
       "scope": "unknown",
       "currency": "CNY",
-      "unit": null,
+      "unit": "%",
       "yoy": {
         "status": "not_comparable",
         "value": null,
@@ -121,9 +117,7 @@
       "previous_evidence_id": "e50e9994e1808089cc16984e",
       "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
       "page": 5,
-      "issues": [
-        "unit_unknown"
-      ],
+      "issues": [],
       "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
     },
     {

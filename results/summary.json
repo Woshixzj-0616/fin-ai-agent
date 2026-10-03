@@ -1,10 +1,10 @@
 {
-  "run_id": "20261003_202641_e172ae4e",
-  "finished_at": "2026-10-03T20:26:41+08:00",
+  "run_id": "20261003_205020_b4d11af9",
+  "finished_at": "2026-10-03T20:50:20+08:00",
   "output_sha256": {
-    "run.json": "0516c09ca4ba28422250ac377f643eb5558887aaef9d62a226a91c33951ab701",
-    "test_results.txt": "300c9871f4579afcd4c9d6745dcb2e9b77fb43f47a0349f15fd5486a2b117b09",
-    "test_summary.json": "76b67248d57a05540c217dbbd43a0a9ea86489bba583cbf8a6bb80154b0ffa6a"
+    "run.json": "0e9cb03e234f7200c5c928ec5945ebe7528f0b48da303bef0866225b4887e73c",
+    "test_results.txt": "2584a59cfb934ede4c86d2ddd779587d0b62e03017832653433ae64c1826c8ce",
+    "test_summary.json": "1224dd42f8c614390aa6c02e02cb9794a6ccf8cea6b692500a9c0800126ce4f6"
   },
   "history_policy": {
     "keep_runs": 20,
@@ -12,7 +12,7 @@
     "oversized_latest": "保留完整本次运行，清除更早历史"
   },
   "status": "ok",
-  "tests": 65,
+  "tests": 67,
   "failures": 0,
   "errors": 0,
   "skipped": 0

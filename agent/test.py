@@ -247,6 +247,28 @@ class GeometryTests(unittest.TestCase):
         self.assertIsNone(current["value"])
         self.assertIn("value_missing", current["issues"])
 
+    def test_statement_title_normalized(self):
+        from extract import _statement_title
+        self.assertEqual(_statement_title("2024 年度合并及公司利润表"), "合并利润表")
+        self.assertEqual(_statement_title("2024 年度合并及公司利润表(续)"), "合并利润表")
+        self.assertEqual(_statement_title("合并利润表"), "合并利润表")
+        self.assertEqual(_statement_title("一、合并现金流量表"), "合并现金流量表")
+        self.assertIsNone(_statement_title("在合并利润表中单列项目反映"))
+
+    def test_dedupe_backfills_unit_and_recomputes_normalized(self):
+        from extract import _dedupe
+        grid = {"metric": "revenue", "period_year": 2024, "adjustment": "as_reported",
+                "extraction_method": "grid_cells_and_geometric_headers",
+                "value": "407149600", "unit": None, "normalized_value": "407149600",
+                "issues": ["unit_unknown"], "reported_yoy": None, "adjustment_header": None}
+        words = {**grid, "extraction_method": "words_geometry", "unit": "千元",
+                 "normalized_value": "407149600000", "issues": []}
+        out = _dedupe([grid, words])
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0]["unit"], "千元")
+        self.assertEqual(out[0]["normalized_value"], "407149600000")
+        self.assertNotIn("unit_unknown", out[0]["issues"])
+
 
 class MaterialTests(unittest.TestCase):
     def test_error_page_rejected(self):

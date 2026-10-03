@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import re
+from decimal import Decimal
 
 import pymupdf
 
@@ -165,15 +166,31 @@ def document_currency(document, texts: list[str]) -> dict | None:
     return None
 
 
+def _statement_title(raw: str) -> str | None:
+    """把各家报表标题归一到「合并/母公司 利润表/现金流量表」。
+
+    美的写「2024 年度合并及公司利润表(续)」，茅台写「合并利润表」——只认
+    完整小节标题，不认附注里顺带出现的「…利润表中…」。
+    """
+    title = norm(raw)
+    # 先去「2024 年度 / 2024年」，再清序号；顺序反了会把年份数字当序号吃掉。
+    title = re.sub(r"^\d{4}\s*年度?\s*", "", title)
+    title = re.sub(r"^[\d一二三四五六七八九、.（()）\s]+", "", title)
+    title = re.sub(r"[\s(（]*续[\s)）]*$", "", title)
+    title = title.replace("及公司", "").replace("及母公司", "")
+    m = re.fullmatch(r"((?:合并|母公司)(?:利润表|现金流量表))", title)
+    return m[1] if m else None
+
+
 def statement_sections(document) -> list[dict]:
     markers = []
     for index, page in enumerate(document):
         for block in page.get_text("dict")["blocks"]:
             for line in block.get("lines", []):
-                title = norm("".join(span["text"] for span in line["spans"]))
-                match = re.fullmatch(r"[\d一二三四五六、.（()）]*((?:合并|母公司)(?:利润表|现金流量表))", title)
-                if match:
-                    markers.append({"title": match[1], "page": index, "bbox": box(line["bbox"])})
+                raw = "".join(span["text"] for span in line["spans"])
+                title = _statement_title(raw)
+                if title:
+                    markers.append({"title": title, "page": index, "bbox": box(line["bbox"])})
     markers.sort(key=lambda item: (item["page"], item["bbox"][1]))
     for i, marker in enumerate(markers):
         marker["end"] = markers[i + 1] if i + 1 < len(markers) else None
@@ -184,10 +201,32 @@ def corroborate_scope(document, sections: list[dict], fact: dict) -> dict | None
     wanted = "合并利润表" if fact["metric"] in PARENT_METRICS or fact["metric"] in ("revenue", "total_revenue") \
         else "合并现金流量表"
     alias = METRICS[fact["metric"]][1][0]
-    value = decimal(fact["value"])
-    if value is None or fact["unit"] != "元":
+    # 报表原文金额常是千元/万元；旁证按**归一到元**后的值去原文搜。
+    value = decimal(fact.get("normalized_value"))
+    if value is None:
+        value = decimal(fact["value"])
+        if value is not None and fact.get("unit") and fact["unit"] != "元":
+            try:
+                value = convert(fact["value"], fact["unit"], "元")
+            except ValueError:
+                return None
+    if value is None:
         return None
-    formatted = format(value, ",.2f")
+    # 原文按报表单位印（元/千元/百万元），归一到元后位数对不上会搜不到
+    # ⇒ 归一值与常见缩放写法都搜（摘要表元、利润表千元/百万元，同一数字不同印法）。
+    candidates: list[str] = []
+    scales = [Decimal(1), Decimal(1000), Decimal(10000), Decimal(1000000)]
+    for scale in scales:
+        v = value / scale
+        candidates += [format(v, ",.2f"), format(v, ".2f"), format(v, ",.0f")]
+        if v == v.to_integral_value():
+            candidates.append(format(int(v), ","))
+    raw = decimal(fact.get("raw_value") if fact.get("raw_value") not in (None, "") else fact.get("value"))
+    if raw is not None:
+        candidates += [format(raw, ",.2f"), format(raw, ".2f"), format(raw, ",")]
+        trimmed = format(raw, ",f")
+        if trimmed.endswith(".00"):
+            candidates.append(trimmed[:-3])
     for section in sections:
         if section["title"] != wanted:
             continue
@@ -195,7 +234,11 @@ def corroborate_scope(document, sections: list[dict], fact: dict) -> dict | None
         last = min(section["page"] + 4, end["page"] if end else len(document) - 1)
         for index in range(section["page"], last + 1):
             page = document[index]
-            hits = page.search_for(formatted) or page.search_for(format(value, ".2f"))
+            hits = []
+            for form in candidates:
+                hits = page.search_for(form)
+                if hits:
+                    break
             for hit in hits:
                 if index == section["page"] and hit.y0 <= section["bbox"][3]:
                     continue
@@ -236,8 +279,12 @@ def parse_table(page, table, table_index: int, material: dict, currency_note) ->
         row_cells = [c for c in cells if abs(c["bbox"][1] - anchor["bbox"][1]) < 1
                      and c["bbox"][0] >= label_bbox[2] - 1
                      and c["bbox"][2] - c["bbox"][0] >= 25]
-        row_unit_m = re.search(r"[（(](?:人民币)?(亿元|万元|元)[）)]", label)
+        row_unit_m = re.search(r"[（(](?:人民币)?(亿元|万元|千元|百万元|元/股|元／股|元|%|％)[）)]", label)
         unit = row_unit_m[1] if row_unit_m else unit_match[1] if unit_match else None
+        if unit:
+            unit = {"％": "%", "元／股": "元/股"}.get(unit, unit)
+        else:
+            unit = row_unit(label) or METRIC_UNIT.get(metric)
         reported_yoy = None
         for cell in row_cells:
             rate_header = header_for(cell, cells, r".*本[年期].*比.*增减.*")
@@ -705,7 +752,7 @@ def _apply_scope(document, sections, facts, material):
 
 def _dedupe(facts: list[dict]) -> list[dict]:
     """同 (metric, period_year, adjustment) 只留一条；两通道都有时优先网格路径（护 gold），
-    但缺 reported_yoy 的一方要把披露同比补进来 —— 宁可字段更全。"""
+    但缺字段要从输家补 —— 宁可字段更全（unit / reported_yoy / adjustment_header / 坐标框）。"""
     order = {"grid_cells_and_geometric_headers": 0, "words_geometry": 1,
              "words_order_inference": 2, "income_statement_total_revenue": 3}
     best: dict[tuple, dict] = {}
@@ -721,6 +768,25 @@ def _dedupe(facts: list[dict]) -> list[dict]:
             winner["reported_yoy"] = loser["reported_yoy"]
         if not winner.get("adjustment_header") and loser.get("adjustment_header"):
             winner["adjustment_header"] = loser["adjustment_header"]
+        # 网格路径常缺单位/标签框；words 认得出却因优先级被丢掉会假报 unit_unknown。
+        if not winner.get("unit") and loser.get("unit"):
+            winner["unit"] = loser["unit"]
+            winner["unit_evidence"] = loser.get("unit_evidence") or {
+                "unit": loser["unit"], "basis": loser.get("extraction_method")}
+            if "unit_unknown" in winner.get("issues", []):
+                winner["issues"] = [i for i in winner["issues"] if i != "unit_unknown"]
+            # 单位补上后要按新单位重算归一值，否则旁证/比对仍按「原数=元」搜。
+            raw_v = loser.get("value") or winner.get("value")
+            if raw_v is not None and winner["unit"] not in NON_AMOUNT_UNITS:
+                try:
+                    winner["normalized_value"] = text(convert(raw_v, winner["unit"], "元"))
+                    winner["normalized_unit"] = "元"
+                except (ValueError, ArithmeticError):
+                    pass
+        if not winner.get("label_bbox") and loser.get("label_bbox"):
+            winner["label_bbox"] = loser["label_bbox"]
+        if not winner.get("original_label") and loser.get("original_label"):
+            winner["original_label"] = loser["original_label"]
         best[key] = winner
     return list(best.values())
 
@@ -774,6 +840,13 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
         facts = _dedupe(grid_facts + words_facts + total_facts)
         if not facts:
             raise ValueError(grid_error or "未识别年度主要会计数据表；可能无文字层或版式不支持")
+
+        # 指标固有单位（元/股、%）兜底：版式没写也不该报 unit_unknown。
+        for f in facts:
+            if not f.get("unit") and f["metric"] in METRIC_UNIT:
+                f["unit"] = METRIC_UNIT[f["metric"]]
+                f["unit_evidence"] = {"unit": f["unit"], "basis": "metric_intrinsic_unit"}
+                f["issues"] = [i for i in f.get("issues", []) if i != "unit_unknown"]
 
         sections = statement_sections(document)
         _apply_scope(document, sections, facts, material)
