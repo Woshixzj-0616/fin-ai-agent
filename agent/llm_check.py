@@ -12,13 +12,44 @@ from collections import Counter
 from pathlib import Path
 
 from finance import check_claim, decimal, text
-from materials import sha256, write_json
+from materials import ROOT, sha256, write_json
 
-COMPANIES = {
-    "600519": ["贵州茅台", "茅台", "贵州茅台酒股份有限公司"],
-    "000858": ["五粮液", "宜宾五粮液股份有限公司"],
-    "600887": ["伊利股份", "伊利", "内蒙古伊利实业集团股份有限公司"],
+# 别名补充；主名来自 data/scope.csv（单一事实源），load_companies() 合并两者。
+COMPANY_ALIASES = {
+    "600519": ["茅台", "贵州茅台酒股份有限公司"],
+    "000858": ["宜宾五粮液股份有限公司"],
+    "600887": ["伊利", "内蒙古伊利实业集团股份有限公司"],
+    "000333": ["美的", "美的集团股份有限公司"],
+    "000651": ["格力", "珠海格力电器股份有限公司"],
+    "600276": ["恒瑞", "江苏恒瑞医药股份有限公司"],
+    "300760": ["迈瑞", "深圳迈瑞生物医疗电子股份有限公司"],
+    "002594": ["比亚迪股份有限公司"],
+    "601088": ["神华", "中国神华能源股份有限公司"],
+    "600036": ["招行", "招商银行股份有限公司"],
+    "601318": ["平安", "中国平安保险股份有限公司", "中国平安保险(集团)股份有限公司"],
+    "000002": ["万科", "万科企业股份有限公司"],
+    "600900": ["长电", "长江电力股份有限公司"],
+    "002415": ["海康", "杭州海康威视数字技术股份有限公司"],
 }
+
+
+def load_companies(scope_csv: Path | None = None) -> dict[str, list[str]]:
+    """证券代码 → [主名, 别名…]。主名读 data/scope.csv，缺文件时退回别名表主名。"""
+    names: dict[str, list[str]] = {}
+    path = scope_csv or (ROOT / "data" / "scope.csv")
+    if path.is_file():
+        for line in path.read_text(encoding="utf-8-sig").splitlines()[1:]:
+            parts = [p.strip() for p in line.split(",")]
+            if len(parts) >= 2 and parts[0]:
+                names[parts[0]] = [parts[1]]
+    for code, aliases in COMPANY_ALIASES.items():
+        primary = names.get(code) or [aliases[0]]
+        merged = list(dict.fromkeys([*primary, *aliases]))
+        names[code] = merged
+    return names
+
+
+COMPANIES = load_companies()
 METRICS = {
     "revenue": ["营业收入", "营收"],
     "parent_net_profit": ["归母净利润", "归母净利", "归属于上市公司股东的净利润"],
@@ -187,6 +218,22 @@ def split_draft(draft: str) -> list[dict]:
     return [{"sentence_id": i, "text": line} for i, line in enumerate(lines, 1)]
 
 
+def resolve_company(name, source: str, draft: str) -> str | None:
+    """公司名 → 证券代码。必须同时：①命中白名单 ②在本句引文或整份草稿里能指到。
+
+    只认原文写法（错别字不纠正）；公司可以写在草稿开头（如「贵州茅台2024年报…」），
+    后续句子用模型补全的 company_name 时，允许在整份草稿范围内溯源，不限句级引文。
+    """
+    if not name or not isinstance(name, str):
+        return None
+    code = next((c for c, names in COMPANIES.items() if name in [c, *names]), None)
+    if not code:
+        return None
+    if name not in source and name not in draft:
+        return None
+    return code
+
+
 def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, claim_id: str) -> dict:
     output = {"claim_id": claim_id, "original_sentence": sentence, "quote": item["quote"],
               "status": "口径冲突／需人工复核", "reason_code": None, "reason": None,
@@ -200,10 +247,9 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
     if not quote or quote not in sentence or (context and context not in draft):
         return stop("ungrounded_quote", "模型给出的原文或上下文无法在草稿中逐字定位")
     source = quote + "\n" + sentence + "\n" + context
-    name = item["company_name"]
-    code = next((code for code, names in COMPANIES.items() if name in [code, *names]), None)
-    if not code or name not in source:
-        return stop("unresolved_company", "原文公司名称/代码未能与白名单唯一对应，不猜测公司", "证据不足")
+    code = resolve_company(item["company_name"], source, draft)
+    if not code:
+        return stop("unresolved_company", "原文公司名称/代码未能与白名单唯一对应，或无法在草稿中定位，不猜测公司", "证据不足")
     year = item["period_year"]
     if year is None or not re.search(rf"(?<!\d){year}(?!\d)", source):
         return stop("unresolved_period", "年度未明确或无法从原文定位，不猜测相对日期", "证据不足")

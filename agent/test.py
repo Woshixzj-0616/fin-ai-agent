@@ -435,6 +435,28 @@ class LLMFlowTests(unittest.TestCase):
         result = self.check(unsupported)
         self.assertEqual((result["status"], result["reason_code"]), ("证据不足", "unsupported_metric"))
 
+    def test_company_from_draft_intro_is_resolved(self):
+        # 公司名只写在草稿开头、本句引文没带 —— 不再吞成 unresolved_company
+        bare = "2024年营业收入为0.80亿元。"
+        item = {**self.item, "quote": bare, "company_name": "贵州茅台"}
+        draft = "贵州茅台2024年报显示如下。\n" + bare
+        result = check_one_claim(item, [self.fact], bare, draft, "C1")
+        self.assertNotEqual(result["reason_code"], "unresolved_company")
+        self.assertEqual(result["normalized_claim"]["company_code"], "600519")
+
+    def test_company_absent_from_draft_still_stops(self):
+        bare = "2024年营业收入为0.80亿元。"
+        item = {**self.item, "quote": bare, "company_name": "贵州茅台"}
+        other_draft = "五粮液2024年报显示如下。" + bare
+        result = check_one_claim(item, [self.fact], bare, other_draft, "C1")
+        self.assertEqual(result["reason_code"], "unresolved_company")
+
+    def test_whitelist_covers_scope_companies(self):
+        from llm_check import load_companies
+        companies = load_companies()
+        for code, name in (("600519", "贵州茅台"), ("000333", "美的集团"), ("002415", "海康威视")):
+            self.assertIn(name, companies[code])
+
     def test_fuzzy_and_unspecified_profit_require_review(self):
         fuzzy = {**self.item, "quote": self.sentence.replace("为", "约为")}
         self.assertEqual(self.check(fuzzy)["reason_code"], "non_exact_claim")

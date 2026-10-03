@@ -1,1287 +1,375 @@
 [
   {
     "schema_version": 1,
-    "evidence_id": "c69ffacebcce2a488d68af8d",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "basic_eps",
-    "metric_name": "基本每股收益",
-    "original_label": "基本每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "68.64",
-    "raw_value": "68.64",
-    "unit": null,
-    "normalized_value": "68.64",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      245.93,
-      528.79,
-      316.75,
-      542.83
-    ],
-    "label_bbox": [
-      90.12,
-      528.79,
-      245.93,
-      542.83
-    ],
-    "year_header": {
-      "raw": "2024年",
-      "text": "2024年",
-      "bbox": [
-        245.93,
-        501.03,
-        316.75,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.38",
-      "unit": "%",
-      "bbox": [
-        424.63,
-        530.519,
-        451.03,
-        541.079
-      ],
-      "header": {
-        "text": "本期比上年同",
-        "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "d749e17e6b9b4f823d9239b0",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "basic_eps",
-    "metric_name": "基本每股收益",
-    "original_label": "基本每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "59.49",
-    "raw_value": "59.49",
-    "unit": null,
-    "normalized_value": "59.49",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      316.75,
-      528.79,
-      381.31,
-      542.83
-    ],
-    "label_bbox": [
-      90.12,
-      528.79,
-      245.93,
-      542.83
-    ],
-    "year_header": {
-      "raw": "2023年",
-      "text": "2023年",
-      "bbox": [
-        316.75,
-        501.03,
-        381.31,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.38",
-      "unit": "%",
-      "bbox": [
-        424.63,
-        530.519,
-        451.03,
-        541.079
-      ],
-      "header": {
-        "text": "本期比上年同",
-        "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "315acf5f2e35057516ad900f",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "basic_eps",
-    "metric_name": "基本每股收益",
-    "original_label": "基本每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "49.93",
-    "raw_value": "49.93",
-    "unit": null,
-    "normalized_value": "49.93",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      456.34,
-      528.79,
-      531.364,
-      542.83
-    ],
-    "label_bbox": [
-      90.12,
-      528.79,
-      245.93,
-      542.83
-    ],
-    "year_header": {
-      "raw": "2022年",
-      "text": "2022年",
-      "bbox": [
-        456.34,
-        501.03,
-        531.364,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.38",
-      "unit": "%",
-      "bbox": [
-        424.63,
-        530.519,
-        451.03,
-        541.079
-      ],
-      "header": {
-        "text": "本期比上年同",
-        "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "94f3d030298ed9ef688955cb",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "diluted_eps",
-    "metric_name": "稀释每股收益",
-    "original_label": "稀释每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "68.64",
-    "raw_value": "68.64",
-    "unit": null,
-    "normalized_value": "68.64",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      245.93,
-      542.83,
-      316.75,
-      556.99
-    ],
-    "label_bbox": [
-      90.12,
-      542.83,
-      245.93,
-      556.99
-    ],
-    "year_header": {
-      "raw": "2024年",
-      "text": "2024年",
-      "bbox": [
-        245.93,
-        501.03,
-        316.75,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.38",
-      "unit": "%",
-      "bbox": [
-        424.63,
-        544.679,
-        451.03,
-        555.239
-      ],
-      "header": {
-        "text": "本期比上年同",
-        "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "96d56680b344d79a92226234",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "diluted_eps",
-    "metric_name": "稀释每股收益",
-    "original_label": "稀释每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "59.49",
-    "raw_value": "59.49",
-    "unit": null,
-    "normalized_value": "59.49",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      316.75,
-      542.83,
-      381.31,
-      556.99
-    ],
-    "label_bbox": [
-      90.12,
-      542.83,
-      245.93,
-      556.99
-    ],
-    "year_header": {
-      "raw": "2023年",
-      "text": "2023年",
-      "bbox": [
-        316.75,
-        501.03,
-        381.31,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.38",
-      "unit": "%",
-      "bbox": [
-        424.63,
-        544.679,
-        451.03,
-        555.239
-      ],
-      "header": {
-        "text": "本期比上年同",
-        "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "c1db49fe5730cd0373ad7c42",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "diluted_eps",
-    "metric_name": "稀释每股收益",
-    "original_label": "稀释每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "49.93",
-    "raw_value": "49.93",
-    "unit": null,
-    "normalized_value": "49.93",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      456.34,
-      542.83,
-      531.364,
-      556.99
-    ],
-    "label_bbox": [
-      90.12,
-      542.83,
-      245.93,
-      556.99
-    ],
-    "year_header": {
-      "raw": "2022年",
-      "text": "2022年",
-      "bbox": [
-        456.34,
-        501.03,
-        531.364,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.38",
-      "unit": "%",
-      "bbox": [
-        424.63,
-        544.679,
-        451.03,
-        555.239
-      ],
-      "header": {
-        "text": "本期比上年同",
-        "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "a0e1776a179c8937ee8bd1b8",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "weighted_roe",
-    "metric_name": "加权平均净资产收益率",
-    "original_label": "加权平均净资产收益率（%）",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "36.02",
-    "raw_value": "36.02",
-    "unit": null,
-    "normalized_value": "36.02",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      245.93,
-      584.71,
-      316.75,
-      612.43
-    ],
-    "label_bbox": [
-      90.12,
-      584.71,
-      245.93,
-      612.43
-    ],
-    "year_header": {
-      "raw": "2024年",
-      "text": "2024年",
-      "bbox": [
-        245.93,
-        501.03,
-        316.75,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": null,
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "e50e9994e1808089cc16984e",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "weighted_roe",
-    "metric_name": "加权平均净资产收益率",
-    "original_label": "加权平均净资产收益率（%）",
-    "report_year": 2024,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "34.19",
-    "raw_value": "34.19",
-    "unit": null,
-    "normalized_value": "34.19",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      316.75,
-      584.71,
-      381.31,
-      612.43
-    ],
-    "label_bbox": [
-      90.12,
-      584.71,
-      245.93,
-      612.43
-    ],
-    "year_header": {
-      "raw": "2023年",
-      "text": "2023年",
-      "bbox": [
-        316.75,
-        501.03,
-        381.31,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": null,
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "ab77c6b86b8938ec1524a5a9",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "weighted_roe",
-    "metric_name": "加权平均净资产收益率",
-    "original_label": "加权平均净资产收益率（%）",
-    "report_year": 2024,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "30.26",
-    "raw_value": "30.26",
-    "unit": null,
-    "normalized_value": "30.26",
-    "normalized_unit": null,
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_t2",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_t2",
-    "table_bbox": [
-      90.12,
-      501.03,
-      531.364,
-      640.34
-    ],
-    "value_bbox": [
-      456.34,
-      584.71,
-      531.364,
-      612.43
-    ],
-    "label_bbox": [
-      90.12,
-      584.71,
-      245.93,
-      612.43
-    ],
-    "year_header": {
-      "raw": "2022年",
-      "text": "2022年",
-      "bbox": [
-        456.34,
-        501.03,
-        531.364,
-        528.79
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": null,
-    "has_adjustment_columns": false,
-    "issues": [
-      "unit_unknown"
-    ],
-    "extraction_method": "grid_cells_and_geometric_headers"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "138f1426f6b43b79d3f2384a",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "404e9661285a282e9a652072",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "revenue",
     "metric_name": "营业收入",
     "original_label": "营业收入",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "170899152276.34",
-    "raw_value": "170,899,152,276.34",
-    "unit": "元",
-    "normalized_value": "170899152276.34",
+    "value": "339123",
+    "raw_value": "339,123",
+    "unit": "百万元",
+    "normalized_value": "339123000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "consolidated",
     "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 63,
-      "value_bbox": [
-        325.99,
-        316.059,
-        420.682,
-        326.619
-      ],
-      "row_context": "一、营业总收入\n\n其中：营业收入\n40\n利息收入\n41\n",
-      "section_title": "合并利润表",
-      "section_page": 63,
-      "section_bbox": [
-        284.33,
-        239.709,
-        339.417,
-        251.42
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "138f1426f6b43b79d3f2384a"
+      "basis": "project_default_consolidated",
+      "quote": "营业收入",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      219.77,
-      265.799,
-      300.752,
-      274.799
+      303.298,
+      201.42,
+      337.336,
+      212.085
     ],
     "label_bbox": [
-      89.904,
-      77.689,
-      262.348,
-      274.799
+      55.701,
+      32.284,
+      300.503,
+      210.817
     ],
     "year_header": {
-      "text": "2024年",
+      "text": "2023年",
       "bbox": [
-        242.09,
-        234.809,
-        269.21,
-        243.809
+        306.856,
+        170.417,
+        337.321,
+        181.082
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.71",
+      "value": "-1.64",
       "unit": "%",
       "bbox": [
-        411.55,
-        265.799,
-        434.155,
-        274.799
+        457.54,
+        201.69,
+        479.059,
+        212.139
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
     "has_adjustment_columns": false,
-    "issues": [],
+    "issues": [
+      "scope_unknown"
+    ],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "3ac0c3bc647151a7c51cccf1",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "e6783d988b4ddc9c3f0989d5",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "revenue",
     "metric_name": "营业收入",
     "original_label": "营业收入",
-    "report_year": 2024,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "147693604994.14",
-    "raw_value": "147,693,604,994.14",
-    "unit": "元",
-    "normalized_value": "147693604994.14",
+    "value": "344783",
+    "raw_value": "344,783",
+    "unit": "百万元",
+    "normalized_value": "344783000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "consolidated",
     "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 63,
-      "value_bbox": [
-        325.99,
-        316.059,
-        420.682,
-        326.619
-      ],
-      "row_context": "一、营业总收入\n\n其中：营业收入\n40\n利息收入\n41\n",
-      "section_title": "合并利润表",
-      "section_page": 63,
-      "section_bbox": [
-        284.33,
-        239.709,
-        339.417,
-        251.42
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "138f1426f6b43b79d3f2384a"
+      "basis": "project_default_consolidated",
+      "quote": "营业收入",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      311.57,
-      265.799,
-      392.552,
-      274.799
+      357.154,
+      201.69,
+      391.192,
+      212.139
     ],
     "label_bbox": [
-      89.904,
-      77.689,
-      262.348,
-      274.799
+      55.701,
+      32.284,
+      300.503,
+      210.817
     ],
     "year_header": {
-      "text": "2023年",
+      "text": "2022年",
       "bbox": [
-        338.59,
-        234.809,
-        365.71,
-        243.809
+        360.712,
+        170.687,
+        391.177,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.71",
+      "value": "-1.64",
       "unit": "%",
       "bbox": [
-        411.55,
-        265.799,
-        434.155,
-        274.799
+        457.54,
+        201.69,
+        479.059,
+        212.139
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
     "has_adjustment_columns": false,
-    "issues": [],
+    "issues": [
+      "scope_unknown"
+    ],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "849fc15746aca28a340f48c2",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "2b21e565378602b442d2c915",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "revenue",
     "metric_name": "营业收入",
     "original_label": "营业收入",
-    "report_year": 2024,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "124099843771.99",
-    "raw_value": "124,099,843,771.99",
-    "unit": "元",
-    "normalized_value": "124099843771.99",
+    "value": "331253",
+    "raw_value": "331,253",
+    "unit": "百万元",
+    "normalized_value": "331253000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "consolidated",
     "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 63,
-      "value_bbox": [
-        325.99,
-        316.059,
-        420.682,
-        326.619
-      ],
-      "row_context": "一、营业总收入\n\n其中：营业收入\n40\n利息收入\n41\n",
-      "section_title": "合并利润表",
-      "section_page": 63,
-      "section_bbox": [
-        284.33,
-        239.709,
-        339.417,
-        251.42
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "138f1426f6b43b79d3f2384a"
+      "basis": "project_default_consolidated",
+      "quote": "营业收入",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      444.94,
-      265.799,
-      525.922,
-      274.799
+      498.886,
+      201.69,
+      532.924,
+      212.139
     ],
     "label_bbox": [
-      89.904,
-      77.689,
-      262.348,
-      274.799
+      55.701,
+      32.284,
+      300.503,
+      210.817
     ],
     "year_header": {
-      "text": "2022年",
+      "text": "2021年",
       "bbox": [
-        471.94,
-        234.809,
-        499.06,
-        243.809
+        502.453,
+        170.687,
+        532.918,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.71",
+      "value": "-1.64",
       "unit": "%",
       "bbox": [
-        411.55,
-        265.799,
-        434.155,
-        274.799
+        457.54,
+        201.69,
+        479.059,
+        212.139
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
     "has_adjustment_columns": false,
-    "issues": [],
+    "issues": [
+      "scope_unknown"
+    ],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "eb72c72a30ca3604e5ed522a",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "7209f1326971fad0f567f218",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "parent_net_profit",
     "metric_name": "归母净利润",
-    "original_label": "归属于上市公司股东的净利润",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "86228146421.62",
-    "raw_value": "86,228,146,421.62",
-    "unit": "元",
-    "normalized_value": "86228146421.62",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "parent_shareholders",
-    "scope_evidence": {
-      "basis": "explicit_metric_label",
-      "quote": "归属于上市公司股东的净利润",
-      "page": 5
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_w",
-    "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
-    ],
-    "value_bbox": [
-      224.21,
-      285.119,
-      300.755,
-      294.119
-    ],
-    "label_bbox": [
-      95.544,
-      279.359,
-      199.476,
-      299.999
-    ],
-    "year_header": {
-      "text": "2024年",
-      "bbox": [
-        242.09,
-        234.809,
-        269.21,
-        243.809
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.38",
-      "unit": "%",
-      "bbox": [
-        411.55,
-        285.119,
-        434.155,
-        294.119
-      ],
-      "header": {
-        "text": "期增减",
-        "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "40991eb1243b6956e138aec8",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "parent_net_profit",
-    "metric_name": "归母净利润",
-    "original_label": "归属于上市公司股东的净利润",
-    "report_year": 2024,
+    "original_label": "归属于本行股东的净利润",
+    "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "74734071550.75",
-    "raw_value": "74,734,071,550.75",
-    "unit": "元",
-    "normalized_value": "74734071550.75",
+    "value": "146602",
+    "raw_value": "146,602",
+    "unit": "百万元",
+    "normalized_value": "146602000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "parent_shareholders",
     "scope_evidence": {
       "basis": "explicit_metric_label",
-      "quote": "归属于上市公司股东的净利润",
-      "page": 5
+      "quote": "归属于本行股东的净利润",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      316.03,
-      285.119,
-      392.575,
-      294.119
+      303.298,
+      257.436,
+      337.336,
+      268.101
     ],
     "label_bbox": [
-      95.544,
-      279.359,
-      199.476,
-      299.999
+      85.039,
+      257.833,
+      186.559,
+      266.833
     ],
     "year_header": {
       "text": "2023年",
       "bbox": [
-        338.59,
-        234.809,
-        365.71,
-        243.809
+        306.856,
+        170.417,
+        337.321,
+        181.082
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.38",
+      "value": "6.22",
       "unit": "%",
       "bbox": [
-        411.55,
-        285.119,
-        434.155,
-        294.119
+        460.789,
+        257.706,
+        479.059,
+        268.155
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -1291,90 +379,90 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "3d1787e1f1cdccb30f415e0d",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "c679c7ec492900c53e241233",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "parent_net_profit",
     "metric_name": "归母净利润",
-    "original_label": "归属于上市公司股东的净利润",
-    "report_year": 2024,
+    "original_label": "归属于本行股东的净利润",
+    "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "62717467870.12",
-    "raw_value": "62,717,467,870.12",
-    "unit": "元",
-    "normalized_value": "62717467870.12",
+    "value": "138012",
+    "raw_value": "138,012",
+    "unit": "百万元",
+    "normalized_value": "138012000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "parent_shareholders",
     "scope_evidence": {
       "basis": "explicit_metric_label",
-      "quote": "归属于上市公司股东的净利润",
-      "page": 5
+      "quote": "归属于本行股东的净利润",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      449.38,
-      285.119,
-      525.925,
-      294.119
+      357.154,
+      257.706,
+      391.192,
+      268.155
     ],
     "label_bbox": [
-      95.544,
-      279.359,
-      199.476,
-      299.999
+      85.039,
+      257.833,
+      186.559,
+      266.833
     ],
     "year_header": {
       "text": "2022年",
       "bbox": [
-        471.94,
-        234.809,
-        499.06,
-        243.809
+        360.712,
+        170.687,
+        391.177,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.38",
+      "value": "6.22",
       "unit": "%",
       "bbox": [
-        411.55,
-        285.119,
-        434.155,
-        294.119
+        460.789,
+        257.706,
+        479.059,
+        268.155
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -1384,90 +472,90 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "3d7ed42fa89add6f714a2e67",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "adjusted_parent_net_profit",
-    "metric_name": "扣非归母净利润",
-    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
+    "evidence_id": "22396ada3949b2ef35422df4",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "parent_net_profit",
+    "metric_name": "归母净利润",
+    "original_label": "归属于本行股东的净利润",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "86240905977.42",
-    "raw_value": "86,240,905,977.42",
-    "unit": "元",
-    "normalized_value": "86240905977.42",
+    "value": "119922",
+    "raw_value": "119,922",
+    "unit": "百万元",
+    "normalized_value": "119922000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "parent_shareholders",
     "scope_evidence": {
       "basis": "explicit_metric_label",
-      "quote": "归属于上市公司股东的扣除非经常性损益的净利润",
-      "page": 5
+      "quote": "归属于本行股东的净利润",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      224.21,
-      308.999,
-      300.755,
-      317.999
+      498.886,
+      257.706,
+      532.924,
+      268.155
     ],
     "label_bbox": [
-      95.544,
-      303.119,
-      199.476,
-      323.879
+      85.039,
+      257.833,
+      186.559,
+      266.833
     ],
     "year_header": {
-      "text": "2024年",
+      "text": "2021年",
       "bbox": [
-        242.09,
-        234.809,
-        269.21,
-        243.809
+        502.453,
+        170.687,
+        532.918,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.37",
+      "value": "6.22",
       "unit": "%",
       "bbox": [
-        411.55,
-        308.999,
-        434.155,
-        317.999
+        460.789,
+        257.706,
+        479.059,
+        268.155
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -1477,90 +565,90 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "bb99903c18174b47590064e2",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "81e2d0ffa498578168ad7dc0",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "adjusted_parent_net_profit",
     "metric_name": "扣非归母净利润",
-    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润",
-    "report_year": 2024,
+    "original_label": "扣除非经常性损益后归属于本行股东的净利润",
+    "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "74752564425.52",
-    "raw_value": "74,752,564,425.52",
-    "unit": "元",
-    "normalized_value": "74752564425.52",
+    "value": "146047",
+    "raw_value": "146,047",
+    "unit": "百万元",
+    "normalized_value": "146047000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "parent_shareholders",
     "scope_evidence": {
       "basis": "explicit_metric_label",
-      "quote": "归属于上市公司股东的扣除非经常性损益的净利润",
-      "page": 5
+      "quote": "扣除非经常性损益后归属于本行股东的净利润",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      316.03,
-      308.999,
-      392.575,
-      317.999
+      303.298,
+      271.44,
+      337.336,
+      282.105
     ],
     "label_bbox": [
-      95.544,
-      303.119,
-      199.476,
-      323.879
+      85.039,
+      271.837,
+      269.827,
+      280.837
     ],
     "year_header": {
       "text": "2023年",
       "bbox": [
-        338.59,
-        234.809,
-        365.71,
-        243.809
+        306.856,
+        170.417,
+        337.321,
+        181.082
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.37",
+      "value": "6.18",
       "unit": "%",
       "bbox": [
-        411.55,
-        308.999,
-        434.155,
-        317.999
+        460.789,
+        271.71,
+        479.059,
+        282.159
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -1570,90 +658,90 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "d2aa458b8b7554b0b9cb8246",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "1a6fa535c01daae69682f230",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "adjusted_parent_net_profit",
     "metric_name": "扣非归母净利润",
-    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润",
-    "report_year": 2024,
+    "original_label": "扣除非经常性损益后归属于本行股东的净利润",
+    "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "62792896829.57",
-    "raw_value": "62,792,896,829.57",
-    "unit": "元",
-    "normalized_value": "62792896829.57",
+    "value": "137551",
+    "raw_value": "137,551",
+    "unit": "百万元",
+    "normalized_value": "137551000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "parent_shareholders",
     "scope_evidence": {
       "basis": "explicit_metric_label",
-      "quote": "归属于上市公司股东的扣除非经常性损益的净利润",
-      "page": 5
+      "quote": "扣除非经常性损益后归属于本行股东的净利润",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      449.38,
-      308.999,
-      525.925,
-      317.999
+      357.154,
+      271.71,
+      391.192,
+      282.159
     ],
     "label_bbox": [
-      95.544,
-      303.119,
-      199.476,
-      323.879
+      85.039,
+      271.837,
+      269.827,
+      280.837
     ],
     "year_header": {
       "text": "2022年",
       "bbox": [
-        471.94,
-        234.809,
-        499.06,
-        243.809
+        360.712,
+        170.687,
+        391.177,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.37",
+      "value": "6.18",
       "unit": "%",
       "bbox": [
-        411.55,
-        308.999,
-        434.155,
-        317.999
+        460.789,
+        271.71,
+        479.059,
+        282.159
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -1663,107 +751,90 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "44358824717e64c5fb562b77",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "operating_cash_flow",
-    "metric_name": "经营现金流净额",
-    "original_label": "经营活动产生的现金流量净额",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
+    "evidence_id": "74accfb6c9f99966841afdd5",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "adjusted_parent_net_profit",
+    "metric_name": "扣非归母净利润",
+    "original_label": "扣除非经常性损益后归属于本行股东的净利润",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "92463692168.43",
-    "raw_value": "92,463,692,168.43",
-    "unit": "元",
-    "normalized_value": "92463692168.43",
+    "value": "119430",
+    "raw_value": "119,430",
+    "unit": "百万元",
+    "normalized_value": "119430000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
-    "scope": "consolidated",
+    "scope": "parent_shareholders",
     "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 67,
-      "value_bbox": [
-        331.15,
-        275.979,
-        420.562,
-        286.539
-      ],
-      "row_context": "经营活动现金流出小计\n\n1\n经营活动产生的现金流量净额\n\n二、投资活动产生的现金流量：\n",
-      "section_title": "合并现金流量表",
-      "section_page": 66,
-      "section_bbox": [
-        273.77,
-        544.559,
-        352.87,
-        555.119
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "44358824717e64c5fb562b77"
+      "basis": "explicit_metric_label",
+      "quote": "扣除非经常性损益后归属于本行股东的净利润",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      224.21,
-      332.879,
-      300.755,
-      341.879
+      498.886,
+      271.71,
+      532.924,
+      282.159
     ],
     "label_bbox": [
-      95.544,
-      326.999,
-      199.476,
-      347.639
+      85.039,
+      271.837,
+      269.827,
+      280.837
     ],
     "year_header": {
-      "text": "2024年",
+      "text": "2021年",
       "bbox": [
-        242.09,
-        234.809,
-        269.21,
-        243.809
+        502.453,
+        170.687,
+        532.918,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "38.85",
+      "value": "6.18",
       "unit": "%",
       "bbox": [
-        411.55,
-        332.879,
-        434.155,
-        341.879
+        460.789,
+        271.71,
+        479.059,
+        282.159
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -1773,929 +844,371 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "3d0f2337c1890086a8dc6a9b",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "6572b2ec5bf3ec4b74190fad",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "operating_cash_flow",
     "metric_name": "经营现金流净额",
     "original_label": "经营活动产生的现金流量净额",
-    "report_year": 2024,
+    "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "66593247721.09",
-    "raw_value": "66,593,247,721.09",
-    "unit": "元",
-    "normalized_value": "66593247721.09",
+    "value": "357753",
+    "raw_value": "357,753",
+    "unit": "百万元",
+    "normalized_value": "357753000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "consolidated",
     "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 67,
-      "value_bbox": [
-        331.15,
-        275.979,
-        420.562,
-        286.539
-      ],
-      "row_context": "经营活动现金流出小计\n\n1\n经营活动产生的现金流量净额\n\n二、投资活动产生的现金流量：\n",
-      "section_title": "合并现金流量表",
-      "section_page": 66,
-      "section_bbox": [
-        273.77,
-        544.559,
-        352.87,
-        555.119
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "44358824717e64c5fb562b77"
+      "basis": "project_default_consolidated",
+      "quote": "经营活动产生的现金流量净额",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      316.03,
-      332.879,
-      392.575,
-      341.879
+      303.298,
+      285.444,
+      337.336,
+      296.109
     ],
     "label_bbox": [
-      95.544,
-      326.999,
-      199.476,
-      347.639
+      85.039,
+      285.841,
+      205.063,
+      294.841
     ],
     "year_header": {
       "text": "2023年",
       "bbox": [
-        338.59,
-        234.809,
-        365.71,
-        243.809
+        306.856,
+        170.417,
+        337.321,
+        181.082
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "38.85",
+      "value": "-37.25",
       "unit": "%",
       "bbox": [
-        411.55,
-        332.879,
-        434.155,
-        341.879
+        452.293,
+        285.714,
+        479.068,
+        296.163
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
     "has_adjustment_columns": false,
-    "issues": [],
+    "issues": [
+      "scope_unknown"
+    ],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "0e219c0bdd3f5e6da0c84195",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
+    "evidence_id": "697db798aaa67065de9dc288",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
     "metric": "operating_cash_flow",
     "metric_name": "经营现金流净额",
     "original_label": "经营活动产生的现金流量净额",
-    "report_year": 2024,
+    "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "36698595830.03",
-    "raw_value": "36,698,595,830.03",
-    "unit": "元",
-    "normalized_value": "36698595830.03",
+    "value": "570143",
+    "raw_value": "570,143",
+    "unit": "百万元",
+    "normalized_value": "570143000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "consolidated",
     "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 67,
-      "value_bbox": [
-        331.15,
-        275.979,
-        420.562,
-        286.539
-      ],
-      "row_context": "经营活动现金流出小计\n\n1\n经营活动产生的现金流量净额\n\n二、投资活动产生的现金流量：\n",
-      "section_title": "合并现金流量表",
-      "section_page": 66,
-      "section_bbox": [
-        273.77,
-        544.559,
-        352.87,
-        555.119
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "44358824717e64c5fb562b77"
+      "basis": "project_default_consolidated",
+      "quote": "经营活动产生的现金流量净额",
+      "page": 15
     },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      449.38,
-      332.879,
-      525.925,
-      341.879
+      357.154,
+      285.714,
+      391.192,
+      296.163
     ],
     "label_bbox": [
-      95.544,
-      326.999,
-      199.476,
-      347.639
+      85.039,
+      285.841,
+      205.063,
+      294.841
     ],
     "year_header": {
       "text": "2022年",
       "bbox": [
-        471.94,
-        234.809,
-        499.06,
-        243.809
+        360.712,
+        170.687,
+        391.177,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "38.85",
+      "value": "-37.25",
       "unit": "%",
       "bbox": [
-        411.55,
-        332.879,
-        434.155,
-        341.879
+        452.293,
+        285.714,
+        479.068,
+        296.163
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
     "has_adjustment_columns": false,
-    "issues": [],
+    "issues": [
+      "scope_unknown"
+    ],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "19dd186b0592a8a03293fd71",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "parent_equity",
-    "metric_name": "归母净资产",
-    "original_label": "归属于上市公司股东的净资产",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
+    "evidence_id": "9f7e8d8d2f02e4dcd7cdc1e8",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "operating_cash_flow",
+    "metric_name": "经营现金流净额",
+    "original_label": "经营活动产生的现金流量净额",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "233105984399.47",
-    "raw_value": "233,105,984,399.47",
-    "unit": "元",
-    "normalized_value": "233105984399.47",
+    "value": "182048",
+    "raw_value": "182,048",
+    "unit": "百万元",
+    "normalized_value": "182048000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
+    "scope": "consolidated",
+    "scope_evidence": {
+      "basis": "project_default_consolidated",
+      "quote": "经营活动产生的现金流量净额",
+      "page": 15
+    },
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      219.77,
-      415.559,
-      300.752,
-      424.559
+      498.886,
+      285.714,
+      532.924,
+      296.163
     ],
     "label_bbox": [
-      95.544,
-      409.679,
-      199.476,
-      430.319
+      85.039,
+      285.841,
+      205.063,
+      294.841
     ],
     "year_header": {
-      "text": "2024年末",
+      "text": "2021年",
       "bbox": [
-        237.65,
-        374.159,
-        273.77,
-        383.159
+        502.453,
+        170.687,
+        532.918,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "8.09",
+      "value": "-37.25",
       "unit": "%",
       "bbox": [
-        416.11,
-        415.559,
-        434.17,
-        424.559
+        452.293,
+        285.714,
+        479.068,
+        296.163
       ],
       "header": {
-        "text": "期增减",
+        "text": "本年比上年",
         "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
     "has_adjustment_columns": false,
-    "issues": [],
+    "issues": [
+      "scope_unknown"
+    ],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "9594da77fd260378d0995f2b",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "parent_equity",
-    "metric_name": "归母净资产",
-    "original_label": "归属于上市公司股东的净资产",
-    "report_year": 2024,
+    "evidence_id": "6b51535e4846eff7d3b01c99",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益(1)",
+    "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "215668571607.43",
-    "raw_value": "215,668,571,607.43",
-    "unit": "元",
-    "normalized_value": "215668571607.43",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_w",
-    "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
-    ],
-    "value_bbox": [
-      311.57,
-      415.559,
-      392.552,
-      424.559
-    ],
-    "label_bbox": [
-      95.544,
-      409.679,
-      199.476,
-      430.319
-    ],
-    "year_header": {
-      "text": "2023年末",
-      "bbox": [
-        334.03,
-        374.159,
-        370.15,
-        383.159
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "8.09",
-      "unit": "%",
-      "bbox": [
-        416.11,
-        415.559,
-        434.17,
-        424.559
-      ],
-      "header": {
-        "text": "期增减",
-        "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "1734745f0bbd58e4ab3e585a",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "parent_equity",
-    "metric_name": "归母净资产",
-    "original_label": "归属于上市公司股东的净资产",
-    "report_year": 2024,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "197480041239.46",
-    "raw_value": "197,480,041,239.46",
-    "unit": "元",
-    "normalized_value": "197480041239.46",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_w",
-    "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
-    ],
-    "value_bbox": [
-      444.94,
-      415.559,
-      525.922,
-      424.559
-    ],
-    "label_bbox": [
-      95.544,
-      409.679,
-      199.476,
-      430.319
-    ],
-    "year_header": {
-      "text": "2022年末",
-      "bbox": [
-        467.38,
-        374.159,
-        503.5,
-        383.159
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "8.09",
-      "unit": "%",
-      "bbox": [
-        416.11,
-        415.559,
-        434.17,
-        424.559
-      ],
-      "header": {
-        "text": "期增减",
-        "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "5275c487530b757d3429a3ed",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "total_assets",
-    "metric_name": "总资产",
-    "original_label": "总资产",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "298944579918.70",
-    "raw_value": "298,944,579,918.70",
-    "unit": "元",
-    "normalized_value": "298944579918.70",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_w",
-    "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
-    ],
-    "value_bbox": [
-      219.77,
-      434.879,
-      300.752,
-      443.879
-    ],
-    "label_bbox": [
-      95.544,
-      434.879,
-      122.544,
-      443.879
-    ],
-    "year_header": {
-      "text": "2024年末",
-      "bbox": [
-        237.65,
-        374.159,
-        273.77,
-        383.159
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "9.62",
-      "unit": "%",
-      "bbox": [
-        416.11,
-        434.879,
-        434.17,
-        443.879
-      ],
-      "header": {
-        "text": "期增减",
-        "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "521d3b678b1cfb61e630ee29",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "total_assets",
-    "metric_name": "总资产",
-    "original_label": "总资产",
-    "report_year": 2024,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "272699660092.25",
-    "raw_value": "272,699,660,092.25",
-    "unit": "元",
-    "normalized_value": "272699660092.25",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_w",
-    "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
-    ],
-    "value_bbox": [
-      311.57,
-      434.879,
-      392.552,
-      443.879
-    ],
-    "label_bbox": [
-      95.544,
-      434.879,
-      122.544,
-      443.879
-    ],
-    "year_header": {
-      "text": "2023年末",
-      "bbox": [
-        334.03,
-        374.159,
-        370.15,
-        383.159
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "9.62",
-      "unit": "%",
-      "bbox": [
-        416.11,
-        434.879,
-        434.17,
-        443.879
-      ],
-      "header": {
-        "text": "期增减",
-        "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "e6aca13ade3b45a198e6d011",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "total_assets",
-    "metric_name": "总资产",
-    "original_label": "总资产",
-    "report_year": 2024,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "254500826096.02",
-    "raw_value": "254,500,826,096.02",
-    "unit": "元",
-    "normalized_value": "254500826096.02",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_w",
-    "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
-    ],
-    "value_bbox": [
-      444.94,
-      434.879,
-      525.922,
-      443.879
-    ],
-    "label_bbox": [
-      95.544,
-      434.879,
-      122.544,
-      443.879
-    ],
-    "year_header": {
-      "text": "2022年末",
-      "bbox": [
-        467.38,
-        374.159,
-        503.5,
-        383.159
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "9.62",
-      "unit": "%",
-      "bbox": [
-        416.11,
-        434.879,
-        434.17,
-        443.879
-      ],
-      "header": {
-        "text": "期增减",
-        "bbox": [
-          405.19,
-          240.689,
-          432.19,
-          249.689
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "ef306d2c531acb15daf1f34e",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "deducted_basic_eps",
-    "metric_name": "扣非基本每股收益",
-    "original_label": "扣除非经常性损益后的基本每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "68.65",
-    "raw_value": "68.65",
+    "value": "5.63",
+    "raw_value": "5.63",
     "unit": "元/股",
-    "normalized_value": "68.65",
+    "normalized_value": "5.63",
     "normalized_unit": "元/股",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "unknown",
     "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      284.93,
-      565.559,
-      311.33,
-      576.119
+      319.058,
+      316.415,
+      337.328,
+      327.08
     ],
     "label_bbox": [
-      95.544,
-      558.719,
-      240.385,
-      582.959
-    ],
-    "year_header": {
-      "text": "2024年",
-      "bbox": [
-        265.37,
-        509.639,
-        297.05,
-        520.199
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "15.37",
-      "unit": "%",
-      "bbox": [
-        424.63,
-        565.559,
-        451.03,
-        576.119
-      ],
-      "header": {
-        "text": "本期比上年同",
-        "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "15332c2752566833f1d4d9a5",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "deducted_basic_eps",
-    "metric_name": "扣非基本每股收益",
-    "original_label": "扣除非经常性损益后的基本每股收益（元／股）",
-    "report_year": 2024,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "59.51",
-    "raw_value": "59.51",
-    "unit": "元/股",
-    "normalized_value": "59.51",
-    "normalized_unit": "元/股",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
-    "page_label": "",
-    "table_id": "p5_w",
-    "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
-    ],
-    "value_bbox": [
-      349.63,
-      565.559,
-      376.03,
-      576.119
-    ],
-    "label_bbox": [
-      95.544,
-      558.719,
-      240.385,
-      582.959
+      85.039,
+      302.758,
+      248.691,
+      325.816
     ],
     "year_header": {
       "text": "2023年",
       "bbox": [
-        333.19,
-        509.639,
-        364.87,
-        520.199
+        306.856,
+        170.417,
+        337.321,
+        181.082
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.37",
+      "value": "7.03",
       "unit": "%",
       "bbox": [
-        424.63,
-        565.559,
-        451.03,
-        576.119
+        460.79,
+        316.685,
+        479.06,
+        327.134
       ],
       "header": {
-        "text": "本期比上年同",
+        "text": "本年比上年",
         "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -2705,86 +1218,86 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "4c84fd9b3c44a5679a29a282",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "deducted_basic_eps",
-    "metric_name": "扣非基本每股收益",
-    "original_label": "扣除非经常性损益后的基本每股收益（元／股）",
-    "report_year": 2024,
+    "evidence_id": "05896d62d92a16547bee2b05",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益(1)",
+    "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "49.99",
-    "raw_value": "49.99",
+    "value": "5.26",
+    "raw_value": "5.26",
     "unit": "元/股",
-    "normalized_value": "49.99",
+    "normalized_value": "5.26",
     "normalized_unit": "元/股",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "unknown",
     "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      499.66,
-      565.559,
-      526.06,
-      576.119
+      372.914,
+      316.685,
+      391.184,
+      327.134
     ],
     "label_bbox": [
-      95.544,
-      558.719,
-      240.385,
-      582.959
+      85.039,
+      302.758,
+      248.691,
+      325.816
     ],
     "year_header": {
       "text": "2022年",
       "bbox": [
-        478.06,
-        509.639,
-        509.74,
-        520.199
+        360.712,
+        170.687,
+        391.177,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "15.37",
+      "value": "7.03",
       "unit": "%",
       "bbox": [
-        424.63,
-        565.559,
-        451.03,
-        576.119
+        460.79,
+        316.685,
+        479.06,
+        327.134
       ],
       "header": {
-        "text": "本期比上年同",
+        "text": "本年比上年",
         "bbox": [
-          387.31,
-          502.799,
-          450.438,
-          513.359
+          433.054,
+          156.81,
+          479.062,
+          165.81
         ]
       }
     },
@@ -2794,209 +1307,423 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "b1617571ce747525af7633b5",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "deducted_weighted_roe",
-    "metric_name": "扣非加权平均净资产收益率",
-    "original_label": "扣除非经常性损益后的加权平均净资产收益率（%）报告期末公司前三年主要会计数据和财务指标的说明□适用√不适用",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
+    "evidence_id": "a710a1b7d46f9cfbba3ff487",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益(1)",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "36.03",
-    "raw_value": "36.03",
-    "unit": "%",
-    "normalized_value": "36.03",
-    "normalized_unit": "%",
+    "value": "4.61",
+    "raw_value": "4.61",
+    "unit": "元/股",
+    "normalized_value": "4.61",
+    "normalized_unit": "元/股",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "unknown",
     "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      284.93,
-      621.029,
-      311.33,
-      631.589
+      514.646,
+      316.685,
+      532.916,
+      327.134
     ],
     "label_bbox": [
-      89.904,
-      614.159,
-      331.622,
-      697.229
+      85.039,
+      302.758,
+      248.691,
+      325.816
     ],
     "year_header": {
-      "text": "2024年",
+      "text": "2021年",
       "bbox": [
-        265.37,
-        509.639,
-        297.05,
-        520.199
+        502.453,
+        170.687,
+        532.918,
+        181.136
       ]
     },
     "adjustment_header": null,
-    "reported_yoy": null,
+    "reported_yoy": {
+      "value": "7.03",
+      "unit": "%",
+      "bbox": [
+        460.79,
+        316.685,
+        479.06,
+        327.134
+      ],
+      "header": {
+        "text": "本年比上年",
+        "bbox": [
+          433.054,
+          156.81,
+          479.062,
+          165.81
+        ]
+      }
+    },
     "has_adjustment_columns": false,
     "issues": [],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "223033deadcb13b87b556d43",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "deducted_weighted_roe",
-    "metric_name": "扣非加权平均净资产收益率",
-    "original_label": "扣除非经常性损益后的加权平均净资产收益率（%）报告期末公司前三年主要会计数据和财务指标的说明□适用√不适用",
-    "report_year": 2024,
+    "evidence_id": "b3b142dd4d1389d514e5004a",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益扣除非经常性损益后归属于本行普通股股东的",
+    "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "34.20",
-    "raw_value": "34.20",
-    "unit": "%",
-    "normalized_value": "34.20",
-    "normalized_unit": "%",
+    "value": "5.63",
+    "raw_value": "5.63",
+    "unit": "元/股",
+    "normalized_value": "5.63",
+    "normalized_unit": "元/股",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "unknown",
     "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      349.63,
-      621.029,
-      376.03,
-      631.589
+      319.058,
+      330.419,
+      337.328,
+      341.084
     ],
     "label_bbox": [
-      89.904,
-      614.159,
-      331.622,
-      697.229
+      85.04,
+      330.816,
+      269.828,
+      353.82
     ],
     "year_header": {
       "text": "2023年",
       "bbox": [
-        333.19,
-        509.639,
-        364.87,
-        520.199
+        306.856,
+        170.417,
+        337.321,
+        181.082
       ]
     },
     "adjustment_header": null,
-    "reported_yoy": null,
+    "reported_yoy": {
+      "value": "7.03",
+      "unit": "%",
+      "bbox": [
+        460.79,
+        330.689,
+        479.06,
+        341.138
+      ],
+      "header": {
+        "text": "本年比上年",
+        "bbox": [
+          433.054,
+          156.81,
+          479.062,
+          165.81
+        ]
+      }
+    },
     "has_adjustment_columns": false,
     "issues": [],
     "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "c1d904ac37f9c753691b618e",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "deducted_weighted_roe",
-    "metric_name": "扣非加权平均净资产收益率",
-    "original_label": "扣除非经常性损益后的加权平均净资产收益率（%）报告期末公司前三年主要会计数据和财务指标的说明□适用√不适用",
-    "report_year": 2024,
+    "evidence_id": "979d6e67c2a88cba3f353920",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益扣除非经常性损益后归属于本行普通股股东的",
+    "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "30.29",
-    "raw_value": "30.29",
-    "unit": "%",
-    "normalized_value": "30.29",
-    "normalized_unit": "%",
+    "value": "5.26",
+    "raw_value": "5.26",
+    "unit": "元/股",
+    "normalized_value": "5.26",
+    "normalized_unit": "元/股",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
     "scope": "unknown",
     "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p5_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 5,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p5_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      43.989,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      499.66,
-      621.029,
-      526.06,
-      631.589
+      372.914,
+      330.689,
+      391.184,
+      341.138
     ],
     "label_bbox": [
-      89.904,
-      614.159,
-      331.622,
-      697.229
+      85.04,
+      330.816,
+      269.828,
+      353.82
     ],
     "year_header": {
       "text": "2022年",
       "bbox": [
-        478.06,
-        509.639,
-        509.74,
-        520.199
+        360.712,
+        170.687,
+        391.177,
+        181.136
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "7.03",
+      "unit": "%",
+      "bbox": [
+        460.79,
+        330.689,
+        479.06,
+        341.138
+      ],
+      "header": {
+        "text": "本年比上年",
+        "bbox": [
+          433.054,
+          156.81,
+          479.062,
+          165.81
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "f42faf7d215e826fa54e1197",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益扣除非经常性损益后归属于本行普通股股东的",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "4.61",
+    "raw_value": "4.61",
+    "unit": "元/股",
+    "normalized_value": "4.61",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
+    "page_label": "",
+    "table_id": "p15_w",
+    "table_bbox": [
+      19.843,
+      30.434,
+      532.924,
+      470.145
+    ],
+    "value_bbox": [
+      514.646,
+      330.689,
+      532.916,
+      341.138
+    ],
+    "label_bbox": [
+      85.04,
+      330.816,
+      269.828,
+      353.82
+    ],
+    "year_header": {
+      "text": "2021年",
+      "bbox": [
+        502.453,
+        170.687,
+        532.918,
+        181.136
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "7.03",
+      "unit": "%",
+      "bbox": [
+        460.79,
+        330.689,
+        479.06,
+        341.138
+      ],
+      "header": {
+        "text": "本年比上年",
+        "bbox": [
+          433.054,
+          156.81,
+          479.062,
+          165.81
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "bb822835f804590ff4cea55a",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "weighted_roe",
+    "metric_name": "加权平均净资产收益率",
+    "original_label": "加权平均净资产收益率扣除非经常性损益后归属于本行普通股股东的",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "16.22",
+    "raw_value": "16.22",
+    "unit": "%",
+    "normalized_value": "16.22",
+    "normalized_unit": "%",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
+    "page_label": "",
+    "table_id": "p15_w",
+    "table_bbox": [
+      19.843,
+      30.434,
+      532.924,
+      470.145
+    ],
+    "value_bbox": [
+      313.795,
+      431.418,
+      337.321,
+      442.083
+    ],
+    "label_bbox": [
+      85.024,
+      431.815,
+      279.073,
+      454.819
+    ],
+    "year_header": {
+      "text": "2023年",
+      "bbox": [
+        306.856,
+        170.417,
+        337.321,
+        181.082
       ]
     },
     "adjustment_header": null,
@@ -3007,186 +1734,945 @@
   },
   {
     "schema_version": 1,
-    "evidence_id": "76005cbee571f03305659334",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "total_revenue",
-    "metric_name": "营业总收入",
-    "original_label": "一、营业总收入",
-    "report_year": 2024,
-    "period_year": 2024,
-    "period_start": "2024-01-01",
-    "period_end": "2024-12-31",
+    "evidence_id": "1682250da4b6338c78ee2545",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "weighted_roe",
+    "metric_name": "加权平均净资产收益率",
+    "original_label": "加权平均净资产收益率扣除非经常性损益后归属于本行普通股股东的",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "174144069958.25",
-    "raw_value": "174,144,069,958.25",
-    "unit": "元",
-    "normalized_value": "174144069958.25",
-    "normalized_unit": "元",
+    "value": "17.06",
+    "raw_value": "17.06",
+    "unit": "%",
+    "normalized_value": "17.06",
+    "normalized_unit": "%",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
     },
-    "scope": "consolidated",
-    "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 63,
-      "value_bbox": [
-        325.99,
-        302.019,
-        420.682,
-        312.579
-      ],
-      "row_context": "项目\n附注\n一、营业总收入\n\n其中：营业收入\n40\n",
-      "section_title": "合并利润表",
-      "section_page": 63,
-      "section_bbox": [
-        284.33,
-        239.709,
-        339.417,
-        251.42
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "76005cbee571f03305659334"
-    },
+    "scope": "unknown",
+    "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p63_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 63,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
     "page_label": "",
-    "table_id": "p63_w",
+    "table_id": "p15_w",
     "table_bbox": [
-      89.904,
-      44.109,
-      531.704,
-      781.146
+      19.843,
+      30.434,
+      532.924,
+      470.145
     ],
     "value_bbox": [
-      325.99,
-      302.019,
-      420.682,
-      312.579
+      367.651,
+      431.688,
+      391.177,
+      442.137
     ],
     "label_bbox": [
-      95.544,
-      302.019,
-      169.232,
-      312.579
+      85.024,
+      431.815,
+      279.073,
+      454.819
     ],
     "year_header": {
-      "text": "2024年度",
+      "text": "2022年",
       "bbox": [
-        348.79,
-        287.859,
-        393.67,
-        298.419
+        360.712,
+        170.687,
+        391.177,
+        181.136
       ]
     },
     "adjustment_header": null,
     "reported_yoy": null,
     "has_adjustment_columns": false,
     "issues": [],
-    "extraction_method": "income_statement_total_revenue"
+    "extraction_method": "words_geometry"
   },
   {
     "schema_version": 1,
-    "evidence_id": "e4af5219be30f7a5878d923a",
-    "document_id": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "company_code": "600519",
-    "company_name": "贵州茅台",
-    "metric": "total_revenue",
-    "metric_name": "营业总收入",
-    "original_label": "一、营业总收入",
-    "report_year": 2024,
+    "evidence_id": "830db34de487dc8deba97b76",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "weighted_roe",
+    "metric_name": "加权平均净资产收益率",
+    "original_label": "加权平均净资产收益率扣除非经常性损益后归属于本行普通股股东的",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "16.96",
+    "raw_value": "16.96",
+    "unit": "%",
+    "normalized_value": "16.96",
+    "normalized_unit": "%",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 15,
+      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 15,
+    "page_label": "",
+    "table_id": "p15_w",
+    "table_bbox": [
+      19.843,
+      30.434,
+      532.924,
+      470.145
+    ],
+    "value_bbox": [
+      509.383,
+      431.688,
+      532.909,
+      442.137
+    ],
+    "label_bbox": [
+      85.024,
+      431.815,
+      279.073,
+      454.819
+    ],
+    "year_header": {
+      "text": "2021年",
+      "bbox": [
+        502.453,
+        170.687,
+        532.918,
+        181.136
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": null,
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "4526b30f4e1c5b13b171d15f",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产",
+    "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "150560330316.45",
-    "raw_value": "150,560,330,316.45",
-    "unit": "元",
-    "normalized_value": "150560330316.45",
+    "value": "11028483",
+    "raw_value": "11,028,483",
+    "unit": "百万元",
+    "normalized_value": "11028483000000",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 74,
-      "quote": "本公司及境内子公司采用人民币为记账本位币",
-      "basis": "document_currency_statement"
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
     },
-    "scope": "consolidated",
-    "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 63,
-      "value_bbox": [
-        325.99,
-        302.019,
-        420.682,
-        312.579
-      ],
-      "row_context": "项目\n附注\n一、营业总收入\n\n其中：营业收入\n40\n",
-      "section_title": "合并利润表",
-      "section_page": 63,
-      "section_bbox": [
-        284.33,
-        239.709,
-        339.417,
-        251.42
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "76005cbee571f03305659334"
-    },
+    "scope": "unknown",
+    "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30|p63_w",
-    "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
-    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
-    "announcement_id": "1222993920",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-03/1222993920.PDF",
-    "page": 63,
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
     "page_label": "",
-    "table_id": "p63_w",
+    "table_id": "p16_w",
     "table_bbox": [
-      89.904,
-      44.109,
-      531.704,
-      781.146
+      56.693,
+      30.434,
+      575.433,
+      745.986
     ],
     "value_bbox": [
-      431.35,
-      302.019,
-      526.042,
-      312.579
+      298.537,
+      128.385,
+      345.841,
+      139.05
     ],
     "label_bbox": [
-      95.544,
-      302.019,
-      169.232,
-      312.579
+      56.693,
+      32.284,
+      287.655,
+      137.782
     ],
     "year_header": {
-      "text": "2023年度",
+      "text": "2023年",
       "bbox": [
-        456.22,
-        287.859,
-        501.1,
-        298.419
+        315.36,
+        86.39,
+        345.825,
+        97.055
       ]
     },
     "adjustment_header": null,
-    "reported_yoy": null,
+    "reported_yoy": {
+      "value": "8.77",
+      "unit": "%",
+      "bbox": [
+        452.284,
+        128.655,
+        470.554,
+        139.104
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
     "has_adjustment_columns": false,
     "issues": [],
-    "extraction_method": "income_statement_total_revenue"
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "f893c17f73452a38d54fb8e2",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "10138912",
+    "raw_value": "10,138,912",
+    "unit": "百万元",
+    "normalized_value": "10138912000000",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      360.898,
+      128.655,
+      408.202,
+      139.104
+    ],
+    "label_bbox": [
+      56.693,
+      32.284,
+      287.655,
+      137.782
+    ],
+    "year_header": {
+      "text": "2022年",
+      "bbox": [
+        377.73,
+        86.66,
+        408.195,
+        97.109
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "8.77",
+      "unit": "%",
+      "bbox": [
+        452.284,
+        128.655,
+        470.554,
+        139.104
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "ebbafb076744f0339ec006b1",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "9249021",
+    "raw_value": "9,249,021",
+    "unit": "百万元",
+    "normalized_value": "9249021000000",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      490.876,
+      128.655,
+      532.924,
+      139.104
+    ],
+    "label_bbox": [
+      56.693,
+      32.284,
+      287.655,
+      137.782
+    ],
+    "year_header": {
+      "text": "2021年",
+      "bbox": [
+        502.47,
+        86.651,
+        532.935,
+        97.1
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "8.77",
+      "unit": "%",
+      "bbox": [
+        452.284,
+        128.655,
+        470.554,
+        139.104
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "46fae381c16fcb4463960993",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于本行股东权益",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "1076370",
+    "raw_value": "1,076,370",
+    "unit": "百万元",
+    "normalized_value": "1076370000000",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      303.757,
+      271.369,
+      345.805,
+      282.034
+    ],
+    "label_bbox": [
+      85.003,
+      271.766,
+      168.019,
+      280.766
+    ],
+    "year_header": {
+      "text": "2023年",
+      "bbox": [
+        315.36,
+        86.39,
+        345.825,
+        97.055
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "13.84",
+      "unit": "%",
+      "bbox": [
+        447.001,
+        271.639,
+        470.527,
+        282.088
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "f45a4f23b2db6b88596d7089",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于本行股东权益",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "945503",
+    "raw_value": "945,503",
+    "unit": "百万元",
+    "normalized_value": "945503000000",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      374.128,
+      271.639,
+      408.166,
+      282.088
+    ],
+    "label_bbox": [
+      85.003,
+      271.766,
+      168.019,
+      280.766
+    ],
+    "year_header": {
+      "text": "2022年",
+      "bbox": [
+        377.73,
+        86.66,
+        408.195,
+        97.109
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "13.84",
+      "unit": "%",
+      "bbox": [
+        447.001,
+        271.639,
+        470.527,
+        282.088
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "0f99ab7f4c97305f92f1fb6c",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于本行股东权益",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "858745",
+    "raw_value": "858,745",
+    "unit": "百万元",
+    "normalized_value": "858745000000",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      498.859,
+      271.639,
+      532.897,
+      282.088
+    ],
+    "label_bbox": [
+      85.003,
+      271.766,
+      168.019,
+      280.766
+    ],
+    "year_header": {
+      "text": "2021年",
+      "bbox": [
+        502.47,
+        86.651,
+        532.935,
+        97.1
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "13.84",
+      "unit": "%",
+      "bbox": [
+        447.001,
+        271.639,
+        470.527,
+        282.088
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "28556bcd9ac4c343bfb22c24",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "book_value_per_share",
+    "metric_name": "每股净资产",
+    "original_label": "归属于本行普通股股东的每股净资产（人民币元）(1)",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "36.71",
+    "raw_value": "36.71",
+    "unit": "元/股",
+    "normalized_value": "36.71",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      322.308,
+      284.389,
+      345.834,
+      295.054
+    ],
+    "label_bbox": [
+      85.012,
+      284.762,
+      285.837,
+      293.762
+    ],
+    "year_header": {
+      "text": "2023年",
+      "bbox": [
+        315.36,
+        86.39,
+        345.825,
+        97.055
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "12.23",
+      "unit": "%",
+      "bbox": [
+        447.03,
+        284.659,
+        470.556,
+        295.108
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "ad90df4b6d9d12992d3ab716",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "book_value_per_share",
+    "metric_name": "每股净资产",
+    "original_label": "归属于本行普通股股东的每股净资产（人民币元）(1)",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "32.71",
+    "raw_value": "32.71",
+    "unit": "元/股",
+    "normalized_value": "32.71",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      384.669,
+      284.659,
+      408.195,
+      295.108
+    ],
+    "label_bbox": [
+      85.012,
+      284.762,
+      285.837,
+      293.762
+    ],
+    "year_header": {
+      "text": "2022年",
+      "bbox": [
+        377.73,
+        86.66,
+        408.195,
+        97.109
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "12.23",
+      "unit": "%",
+      "bbox": [
+        447.03,
+        284.659,
+        470.556,
+        295.108
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "cf02380fe7631837bc3d3197",
+    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "company_code": "600036",
+    "company_name": "招商银行",
+    "metric": "book_value_per_share",
+    "metric_name": "每股净资产",
+    "original_label": "归属于本行普通股股东的每股净资产（人民币元）(1)",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "29.01",
+    "raw_value": "29.01",
+    "unit": "元/股",
+    "normalized_value": "29.01",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 16,
+      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
+      "basis": "table_unit_heading"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
+    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
+    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
+    "announcement_id": "1219403503",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
+    "page": 16,
+    "page_label": "",
+    "table_id": "p16_w",
+    "table_bbox": [
+      56.693,
+      30.434,
+      575.433,
+      745.986
+    ],
+    "value_bbox": [
+      509.391,
+      284.659,
+      532.917,
+      295.108
+    ],
+    "label_bbox": [
+      85.012,
+      284.762,
+      285.837,
+      293.762
+    ],
+    "year_header": {
+      "text": "2021年",
+      "bbox": [
+        502.47,
+        86.651,
+        532.935,
+        97.1
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "12.23",
+      "unit": "%",
+      "bbox": [
+        447.03,
+        284.659,
+        470.556,
+        295.108
+      ],
+      "header": {
+        "text": "本年末比",
+        "bbox": [
+          433.818,
+          73.782,
+          470.574,
+          82.782
+        ]
+      }
+    },
+    "has_adjustment_columns": false,
+    "issues": [],
+    "extraction_method": "words_geometry"
   }
 ]

@@ -1,0 +1,2267 @@
+{
+  "overall": {
+    "tp": 96,
+    "fp": 0,
+    "fn": 0,
+    "tn": 48,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "by_type": {
+    "accurate": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "tn": 48,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "error_sign": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "error_unit": {
+      "tp": 28,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "error_value": {
+      "tp": 28,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "error_year": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "results": [
+    {
+      "id": "E001",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "eae5cd5e16681702d0fee256"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E002",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "eae5cd5e16681702d0fee256"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E003",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "eae5cd5e16681702d0fee256"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E004",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "2600a73acff6d0cfaa8c7d72"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E005",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "2600a73acff6d0cfaa8c7d72"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E006",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "2600a73acff6d0cfaa8c7d72"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E007",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "f634eed8106e9a42d28b3d0b"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E008",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "f634eed8106e9a42d28b3d0b"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E009",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "f634eed8106e9a42d28b3d0b"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E010",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "ed50d9bc647352e0f6169e3f"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E011",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ed50d9bc647352e0f6169e3f"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E012",
+      "company_code": "000858",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ed50d9bc647352e0f6169e3f"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E013",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "c0f70323d87ab782cc0227ca"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E014",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c0f70323d87ab782cc0227ca"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E015",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c0f70323d87ab782cc0227ca"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E016",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c0f70323d87ab782cc0227ca"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E017",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "c0f70323d87ab782cc0227ca",
+        "ba01543f2183d0ecab08f3e5"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E018",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c0f70323d87ab782cc0227ca",
+        "ba01543f2183d0ecab08f3e5"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E019",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "cae6b602a0646b1a77dd9238"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E020",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "cae6b602a0646b1a77dd9238"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E021",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "cae6b602a0646b1a77dd9238"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E022",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "cae6b602a0646b1a77dd9238"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E023",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "cae6b602a0646b1a77dd9238",
+        "a3f62f8b9d9d49d6f3fef3bc"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E024",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "cae6b602a0646b1a77dd9238",
+        "a3f62f8b9d9d49d6f3fef3bc"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E025",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "bb8beffdbbf137aed4a82195"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E026",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bb8beffdbbf137aed4a82195"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E027",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bb8beffdbbf137aed4a82195"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E028",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bb8beffdbbf137aed4a82195"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E029",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "bb8beffdbbf137aed4a82195",
+        "ffdb8921c68544c6750966c2"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E030",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bb8beffdbbf137aed4a82195",
+        "ffdb8921c68544c6750966c2"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E031",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "6ed986f2e1bce7859fe4e52a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E032",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "6ed986f2e1bce7859fe4e52a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E033",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "6ed986f2e1bce7859fe4e52a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E034",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "6ed986f2e1bce7859fe4e52a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E035",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "6ed986f2e1bce7859fe4e52a",
+        "e841f94dd858592863e5b9db"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E036",
+      "company_code": "000858",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "6ed986f2e1bce7859fe4e52a",
+        "e841f94dd858592863e5b9db"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E037",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "ffdd715285c2d5fbcf921ee9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E038",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ffdd715285c2d5fbcf921ee9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E039",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ffdd715285c2d5fbcf921ee9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E040",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ffdd715285c2d5fbcf921ee9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E041",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "ffdd715285c2d5fbcf921ee9",
+        "aa3132bcda1d67ce25690622"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E042",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ffdd715285c2d5fbcf921ee9",
+        "aa3132bcda1d67ce25690622"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E043",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "0fa315ebf6896fb05cb7b510"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E044",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "0fa315ebf6896fb05cb7b510"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E045",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "0fa315ebf6896fb05cb7b510"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E046",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "0fa315ebf6896fb05cb7b510"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E047",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "0fa315ebf6896fb05cb7b510",
+        "43a0f376c6bcd7a1d528ec53"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E048",
+      "company_code": "002594",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "0fa315ebf6896fb05cb7b510",
+        "43a0f376c6bcd7a1d528ec53"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E049",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "f90151e89f064dc4ea84a501"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E050",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "f90151e89f064dc4ea84a501"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E051",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "f90151e89f064dc4ea84a501"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E052",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "f90151e89f064dc4ea84a501"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E053",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "f90151e89f064dc4ea84a501",
+        "87e9c76c0e30f5ae74f4e461"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E054",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "f90151e89f064dc4ea84a501",
+        "87e9c76c0e30f5ae74f4e461"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E055",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "de654efde50a8e1a0273965a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E056",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "de654efde50a8e1a0273965a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E057",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "de654efde50a8e1a0273965a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E058",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "de654efde50a8e1a0273965a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E059",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "de654efde50a8e1a0273965a",
+        "e249e5bffe98b7782fd44b39"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E060",
+      "company_code": "002594",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "de654efde50a8e1a0273965a",
+        "e249e5bffe98b7782fd44b39"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E061",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "870e959b6180073f72f24d9d"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E062",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "870e959b6180073f72f24d9d"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E063",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "870e959b6180073f72f24d9d"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E064",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "870e959b6180073f72f24d9d"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E065",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "870e959b6180073f72f24d9d",
+        "80c18672d97dcb26f88a42c8"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E066",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "870e959b6180073f72f24d9d",
+        "80c18672d97dcb26f88a42c8"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E067",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "dc360d9eb2e77136b30f7cad"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E068",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "dc360d9eb2e77136b30f7cad"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E069",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "dc360d9eb2e77136b30f7cad"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E070",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "dc360d9eb2e77136b30f7cad"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E071",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "dc360d9eb2e77136b30f7cad",
+        "6a4f98811419a53779e6241f"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E072",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "dc360d9eb2e77136b30f7cad",
+        "6a4f98811419a53779e6241f"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E073",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "ddddbce7854593b3592eae03"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E074",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ddddbce7854593b3592eae03"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E075",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ddddbce7854593b3592eae03"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E076",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ddddbce7854593b3592eae03"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E077",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "ddddbce7854593b3592eae03",
+        "59233d4636b78ad53e8e0ef7"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E078",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ddddbce7854593b3592eae03",
+        "59233d4636b78ad53e8e0ef7"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E079",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "ae9f125776db43c4f6ced6a7"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E080",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ae9f125776db43c4f6ced6a7"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E081",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ae9f125776db43c4f6ced6a7"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E082",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ae9f125776db43c4f6ced6a7"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E083",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "ae9f125776db43c4f6ced6a7",
+        "910bcd13db8e3352336d4fcb"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E084",
+      "company_code": "600276",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "ae9f125776db43c4f6ced6a7",
+        "910bcd13db8e3352336d4fcb"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E085",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "37087763152a0ed195e8aae9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E086",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "37087763152a0ed195e8aae9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E087",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "37087763152a0ed195e8aae9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E088",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "37087763152a0ed195e8aae9"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E089",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "37087763152a0ed195e8aae9",
+        "1928c70406316da0e52c8e83"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E090",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "37087763152a0ed195e8aae9",
+        "1928c70406316da0e52c8e83"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E091",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "d807805d0070fed5a689f6eb"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E092",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "d807805d0070fed5a689f6eb"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E093",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "d807805d0070fed5a689f6eb"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E094",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "d807805d0070fed5a689f6eb"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E095",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "d807805d0070fed5a689f6eb",
+        "03fdc05350a4b29a92b1e04c"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E096",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "d807805d0070fed5a689f6eb",
+        "03fdc05350a4b29a92b1e04c"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E097",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "bbfcbb35a44e201461d956a5"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E098",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bbfcbb35a44e201461d956a5"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E099",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bbfcbb35a44e201461d956a5"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E100",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bbfcbb35a44e201461d956a5"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E101",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "bbfcbb35a44e201461d956a5",
+        "b0e7011edea7a405d4f97d26"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E102",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "bbfcbb35a44e201461d956a5",
+        "b0e7011edea7a405d4f97d26"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E103",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "c9fa71924ad19c9bc2924212"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E104",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c9fa71924ad19c9bc2924212"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E105",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c9fa71924ad19c9bc2924212"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E106",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c9fa71924ad19c9bc2924212"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E107",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "c9fa71924ad19c9bc2924212",
+        "bdf22dd55095e1eb789b6a7b"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E108",
+      "company_code": "600276",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "c9fa71924ad19c9bc2924212",
+        "bdf22dd55095e1eb789b6a7b"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E109",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "75b3941cbebc7ae0f075c879"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E110",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "75b3941cbebc7ae0f075c879"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E111",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "75b3941cbebc7ae0f075c879"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E112",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "b6de2c811bf2c9862315f5d8"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E113",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "b6de2c811bf2c9862315f5d8"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E114",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "b6de2c811bf2c9862315f5d8"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E115",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "818b8a0e6891e5394721cd71"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E116",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "818b8a0e6891e5394721cd71"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E117",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "818b8a0e6891e5394721cd71"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E118",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "6f606bd2f635bec8d03cc334"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E119",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "6f606bd2f635bec8d03cc334"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E120",
+      "company_code": "600519",
+      "source_report_year": 2023,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "6f606bd2f635bec8d03cc334"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E121",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "3d7ed42fa89add6f714a2e67"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E122",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "3d7ed42fa89add6f714a2e67"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E123",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "3d7ed42fa89add6f714a2e67"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E124",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "3d7ed42fa89add6f714a2e67"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E125",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "3d7ed42fa89add6f714a2e67",
+        "bb99903c18174b47590064e2"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E126",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "adjusted_parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "3d7ed42fa89add6f714a2e67",
+        "bb99903c18174b47590064e2"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E127",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "44358824717e64c5fb562b77"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E128",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "44358824717e64c5fb562b77"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E129",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "44358824717e64c5fb562b77"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E130",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "44358824717e64c5fb562b77"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E131",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "44358824717e64c5fb562b77",
+        "3d0f2337c1890086a8dc6a9b"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E132",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "operating_cash_flow",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "44358824717e64c5fb562b77",
+        "3d0f2337c1890086a8dc6a9b"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E133",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "eb72c72a30ca3604e5ed522a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E134",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "eb72c72a30ca3604e5ed522a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E135",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "eb72c72a30ca3604e5ed522a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E136",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "eb72c72a30ca3604e5ed522a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E137",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "eb72c72a30ca3604e5ed522a",
+        "40991eb1243b6956e138aec8"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E138",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "parent_net_profit",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "eb72c72a30ca3604e5ed522a",
+        "40991eb1243b6956e138aec8"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E139",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "138f1426f6b43b79d3f2384a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E140",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_value",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "138f1426f6b43b79d3f2384a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E141",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_unit",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "138f1426f6b43b79d3f2384a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E142",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "amount",
+      "error_type": "error_year",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "138f1426f6b43b79d3f2384a"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E143",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "accurate",
+      "gold_expect": "证据支持",
+      "predicted": "证据支持",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "138f1426f6b43b79d3f2384a",
+        "3ac0c3bc647151a7c51cccf1"
+      ],
+      "match_expect": true
+    },
+    {
+      "id": "E144",
+      "company_code": "600519",
+      "source_report_year": 2024,
+      "metric": "revenue",
+      "kind": "yoy",
+      "error_type": "error_sign",
+      "gold_expect": "确认错误",
+      "predicted": "确认错误",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "138f1426f6b43b79d3f2384a",
+        "3ac0c3bc647151a7c51cccf1"
+      ],
+      "match_expect": true
+    }
+  ],
+  "coverage": {
+    "fact_total": 394,
+    "fact_clean_core": 112,
+    "fact_with_issues": 125,
+    "claim_count": 144
+  },
+  "failures": []
+}

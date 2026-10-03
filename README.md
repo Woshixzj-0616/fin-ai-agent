@@ -22,11 +22,13 @@
 | 选题方向论证 | ✅ `docs/选题方向分析.md` |
 | 赛程与关键节点 | ✅ `docs/赛程与关键节点.md` |
 | 数据底板（下载 / 抽取 / 对账） | ✅ 70 份年报 · 14 个指标 · 抽取 710 行；9 个核心指标 70/70；对账 650 项一致 573（88.2%）—— `docs/数据底板说明.md` |
-| 纠错核查器（队友 `new/` 并入） | ✅ `agent/`：材料登记 → 证据抽取 → Decimal 确定性核查 → LLM 拆句核查；62 项测试全过 |
+| 纠错核查器（队友 `new/` 并入） | ✅ `agent/`：材料登记 → 证据抽取 → Decimal 确定性核查 → LLM 拆句核查；**65 项测试全过** |
 | 抽取器合流 | ✅ words 级主路径 + 表格线回退 + 利润表补营业总收入 + 表序推断；**70/70 全过、核心 4 指标 70/70**，指标 4 → 14 |
 | words 几何单一事实源 | ✅ `agent/words.py` 供 agent 与 `scripts/data/extract_metrics.py` 共用（200 行重复逻辑删除，输出字节级一致） |
-| 错误注入 + 评测集 | ⬜ 未开始（9 篇准确稿在 `agent/` 草稿侧，零注入） |
-| 界面（表格 + 点击溯源 + 审计日志） | ⬜ 未开始 |
+| 审计台（表格 + 点击溯源 + 审计日志） | ✅ `docs/` GitHub Pages 四栏；证据行点击后按 bbox 在 PDF 页图高亮 |
+| 修 `unresolved_company` | ✅ 白名单扩到 14 家（读 `data/scope.csv`）；公司名允许在整份草稿溯源（不再只认句级引文） |
+| 错误注入 + 评测集 | ✅ `scripts/eval/`：从真实证据生成准确/注错陈述（错值/错单位/错年份/符号反转）；**144 项 P=100% R=100% F1=1.0** —— `results/eval/` |
+| 初赛材料 | ✅ 计划书（`docs/初赛/计划书.md` + PDF）+ 5 分钟视频脚本（`docs/初赛/视频脚本.md`）|
 
 ---
 
@@ -35,6 +37,8 @@
 ```
 .
 ├─ docs/              文档（选题分析 / 赛程 / 数据底板说明）
+│   ├─ 初赛/          ★计划书（md + PDF）+ 5 分钟视频脚本
+│   └─ …              GitHub Pages 审计台（index.html / app.js / data/）
 ├─ agent/             ★纠错核查器（队友 new/ 于 2026-10-02 并入）
 │   ├─ materials.py   来料登记 / 来源台账 / 指纹校验 / 运行留痕
 │   ├─ words.py       words 级表格几何引擎（聚行切列 / 年份表头组 / 折行标签）
@@ -42,7 +46,7 @@
 │   ├─ finance.py     Decimal 计算：单位换算 / 同比 / 按陈述精度比对
 │   ├─ llm_check.py   模型只拆句，判定与计算全部本地 Python
 │   ├─ main.py        CLI：import-existing / fetch / extract / analyze / demo / check-text
-│   ├─ test.py        62 项测试（含 9 份真实年报集成测试）
+│   ├─ test.py        65 项测试（含 9 份真实年报集成测试）
 │   └─ README.md / 项目说明.md
 ├─ data/
 │   ├─ scope.csv      ★样本清单（14 家 × 2021–2025 = 70 份）
@@ -50,14 +54,17 @@
 │   ├─ sources/       每份材料一份来源档案（公告ID / 附件地址 / 指纹 / 页数 / 许可证）
 │   ├─ extracted/     程序抽出来的数字 + 对账结果（financials.csv 长表 / metrics.csv 旧口径 / crosscheck.csv）
 │   ├─ agent/         agent 自己的台账（materials.jsonl / manifest.csv / samples.json），不覆盖主仓 manifest.csv
-│   ├─ gold/          人工核对过的标准答案（待填）
+│   ├─ eval/          错误注入评测集（claims / drafts）
+│   ├─ gold/          人工核对过的标准答案（评测 gold 待复签）
 │   └─ manifest.csv   ★来源登记表（70 行汇总：出处 / 公告ID / 指纹 / 页数 / 策略 / 复核标记）
 ├─ scripts/
 │   ├─ data/          下载、抽取、排错脚本（数据底板）
-│   └─ quality/       三源对账脚本
+│   ├─ quality/       三源对账脚本
+│   ├─ eval/          错误注入评测（build_eval_set.py / run_eval.py）
+│   └─ site_build.py  从 results/ 打包 GitHub Pages 审计台
 ├─ logs/              每次运行的输出记录（可追溯的证据）
 │   └─ fetch_runs/    每次取数留痕（run.json + 候选公告清单 + 失败记录）
-├─ results/           agent 运行产出（报告 / 证据 / 运行留痕 / history.zip）
+├─ results/           agent 运行产出（报告 / 证据 / 运行留痕 / history.zip / eval/）
 └─ requirements.txt   依赖文件
 ```
 
@@ -78,9 +85,13 @@ python scripts\quality\crosscheck.py     # 和东财对账  → data\extracted\c
 # —— 纠错核查器（agent/）——
 cd agent
 python main.py import-existing --source ..   # 把主仓 70 份年报按引用登记进 agent 台账
-python -B test.py                            # 62 项测试
+python -B test.py                            # 65 项测试
 python main.py demo                          # 贵州茅台 2024 单报告示例
 python main.py check-text --file <草稿.txt>   # 模型拆句 + 本地确定性核查
+
+# —— 错误注入评测（根目录）——
+python scripts/eval/build_eval_set.py         # 生成注错草稿（data/eval/）
+python scripts/eval/run_eval.py               # 抽取证据 → 判错 → P/R（results/eval/）
 ```
 
 数据底板三条命令**可重复执行**：材料已在本地且公告ID一致就复用（不重新下载），结果覆盖写。这是赛题要的「可复现」。

@@ -1,13 +1,9 @@
 {
   "schema_version": 2,
-  "run_id": "20261002_213418_957d05e0",
-  "started_at": "2026-10-02T21:34:18+08:00",
-  "command": "demo",
-  "parameters": {
-    "command": "demo",
-    "render": false,
-    "proxy_configured": false
-  },
+  "run_id": "20261003_202641_e172ae4e",
+  "started_at": "2026-10-03T20:26:41+08:00",
+  "command": "test",
+  "parameters": {},
   "versions": {
     "python": "3.14.6",
     "PyMuPDF": "1.28.2"
@@ -18,7 +14,7 @@
     "materials.py": "5f5244fc4cac39a99511de044e746f55716055a84b07fd64941ae6eb8a3462e7",
     "extract.py": "c50d3543b315ff85258326be62f7c2ba1aff37680af3f0c4e7fd0708befe2684",
     "finance.py": "24debf26ea4b99605b0cc29f1ca58675ad59ee8a7355f6353aecb12609ce05b3",
-    "llm_check.py": "2b4fcf2b1cc06800b7919ead4c2493e495775db2e5043d74d768ee37f4e9deec",
-    "test.py": "1c5d4a9071d5a89c30b0b795141e6aa93ab4932cf76b6154f12eab3920a35b62"
+    "llm_check.py": "6480dd64f41dc3ee35ad548bf374dc515a05eb5b8ff167da2383401b68c61bae",
+    "test.py": "ac346ffaf8f1582faaa3a84fd9657b1729ee103df9b7afe1bba0ec3b9f4fb326"
   }
 }
