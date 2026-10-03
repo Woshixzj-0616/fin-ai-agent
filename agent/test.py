@@ -586,10 +586,16 @@ class LLMFlowTests(unittest.TestCase):
         forecast = {**self.item, "claim_type": "forecast", "is_forecast": True,
                     "quote": "2024年，贵州茅台营业收入预计达到0.80亿元。"}
         marked = self.check(forecast)
-        report = render_report([ok, marked], model="unit-test", run_id="R1")
+        report = render_report([ok, marked], model="unit-test", run_id="R1",
+                               tools_used=[{"round": 1, "name": "compare_claim",
+                                            "arguments": {"metric": "revenue"},
+                                            "status": "evidence_supported"}],
+                               mode="json_multi_step")
         self.assertIn("## A. 确定结论", report)
         self.assertIn("## B. 模型判断", report)
         self.assertIn("## C. 需人工", report)
+        self.assertIn("## 工具调用链", report)
+        self.assertIn("compare_claim", report)
         self.assertEqual(marked["reason_code"], "forecast_marked_only")
 
     def test_program_handles_decline_and_expected_value(self):

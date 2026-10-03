@@ -456,7 +456,9 @@ def check_payload(payload: dict, sentences: list[dict], draft: str, facts: list[
     return sorted(results, key=lambda row: row["sentence_id"])
 
 
-def render_report(results: list[dict], *, model: str, run_id: str) -> str:
+def render_report(results: list[dict], *, model: str, run_id: str,
+                  tools_used: list[dict] | None = None,
+                  mode: str = "") -> str:
     def cell(value):
         return str(value or "—").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("|", "\\|").replace("\n", " ")
 
@@ -504,7 +506,21 @@ def render_report(results: list[dict], *, model: str, run_id: str) -> str:
                       json.dumps(result["calculation"], ensure_ascii=False, indent=2), "```", ""]
     lines += ["", "## 审计", "",
               f"- 确定结论 {len(det)} 条；模型判断 {len(model_rows)} 条；需人工 {len(review)} 条。",
-              "- 模型不产生「确认错误/证据支持」；这两类仅来自本地比较程序。", ""]
+              "- 模型不产生「确认错误/证据支持」；这两类仅来自本地比较程序。",
+              f"- 运行模式：{mode or 'single_shot'}", ""]
+
+    lines += ["## 工具调用链（agent）", ""]
+    if tools_used:
+        lines += ["| # | 轮次 | 工具 | 状态 |", "|---|---|---|---|"]
+        for i, t in enumerate(tools_used, 1):
+            args = t.get("arguments") or {}
+            brief = ", ".join(f"{k}={v}" for k, v in list(args.items())[:3])
+            lines.append(f"| {i} | {t.get('round', '—')} | `{t.get('name')}` | "
+                         f"{t.get('status') or '—'} {('· ' + brief) if brief else ''} |")
+        lines += ["", "说明：`compare_claim` 是唯一产生对错的工具；其余只供取数/理解。"]
+    else:
+        lines.append("（本次为单次拆解模式，未走工具循环）")
+    lines.append("")
     return "\n".join(lines)
 
 
@@ -541,7 +557,9 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
               "tracks": dict(Counter(row.get("track") or "review" for row in results))}
     run.output("checked_draft.txt").write_text(draft, encoding="utf-8")
     write_json(run.output("text_checks.json"), bundle)
-    run.output("text_report.md").write_text(render_report(results, model=client.model, run_id=run.id), encoding="utf-8")
+    run.output("text_report.md").write_text(
+        render_report(results, model=client.model, run_id=run.id,
+                      tools_used=tools_used, mode=mode), encoding="utf-8")
     for result in results:
         run.event("text_claim_checked", claim_id=result["claim_id"], status=result["status"],
                   reason_code=result["reason_code"], track=result.get("track"),

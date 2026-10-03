@@ -1,0 +1,59 @@
+[
+  {
+    "round": 1,
+    "name": "list_catalog",
+    "arguments": {
+      "kind": "metrics"
+    },
+    "status": "ok"
+  },
+  {
+    "round": 2,
+    "name": "find_evidence",
+    "arguments": {
+      "company_name_or_code": "贵州茅台",
+      "metric": "revenue",
+      "period_year": 2024
+    },
+    "status": "ok"
+  },
+  {
+    "round": 3,
+    "name": "compute_yoy",
+    "arguments": {
+      "company_name_or_code": "贵州茅台",
+      "metric": "revenue",
+      "year": 2024
+    },
+    "status": "ok"
+  },
+  {
+    "round": 4,
+    "name": "compare_claim",
+    "arguments": {
+      "company_name_or_code": "贵州茅台",
+      "metric": "revenue",
+      "period_year": 2024,
+      "kind": "amount",
+      "claimed_value": "1500.00",
+      "claimed_unit": "亿元",
+      "operator": "eq"
+    },
+    "status": "确认错误"
+  },
+  {
+    "round": 5,
+    "name": "compare_claim",
+    "arguments": {
+      "company_name_or_code": "贵州茅台",
+      "metric": "revenue",
+      "period_year": 2024,
+      "kind": "amount",
+      "claimed_value": "1709",
+      "claimed_unit": "亿元",
+      "operator": "approx",
+      "tolerance_pct": 2.0
+    },
+    "status": "证据支持"
+  }
+]
