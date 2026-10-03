@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "note": "研报文体样例金标；文本见同目录 md。数字对齐 data/extracted/financials.csv。待团队人工复签。",
+  "samples": [
+    {
+      "id": "S1",
+      "file": "S1_茅台.md",
+      "text": "公司层面看，2024 年贵州茅台营业收入为 1,708.99 亿元，同比增长 15.71%，基本符合市场预期。归母净利润录得 862.28 亿元，扣非归母净利润约 862.41 亿元，盈利质量保持稳定。需要指出的是，公司营业总收入为 1,741.44 亿元，与营业收入口径不同，差额主要来自财务公司利息收入，横向比较时不应混用。经营方面，经营活动产生的现金流量净额为 924.64 亿元，基本每股收益 68.64 元/股。我们预计 2025 年公司营业收入有望维持双位数增长，归母净利润或接近 950 亿元，维持「增持」评级。若从投入产出效率看，公司 ROE 仍处于行业前列，品牌与渠道壁垒未见削弱。",
+      "claims": [
+        {
+          "gold_status": "证据支持",
+          "quote": "2024 年贵州茅台营业收入为 1,708.99 亿元",
+          "item": {
+            "claim_id": "S1-C1", "sentence_id": 1,
+            "quote": "2024 年贵州茅台营业收入为 1,708.99 亿元", "context_quote": null,
+            "claim_type": "amount", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "营业收入", "metric": "revenue",
+            "scope": "consolidated", "kind": "amount", "value": "1708.99", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "营收1708.99亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "同比增长 15.71%",
+          "item": {
+            "claim_id": "S1-C2", "sentence_id": 1,
+            "quote": "同比增长 15.71%", "context_quote": "2024 年贵州茅台营业收入为 1,708.99 亿元",
+            "claim_type": "yoy", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "营业收入", "metric": "revenue",
+            "scope": "consolidated", "kind": "yoy", "value": "15.71", "unit": "%",
+            "operator": "eq", "tolerance_pct": null, "direction": "up",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "营收同比+15.71%",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_yoy"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "归母净利润录得 862.28 亿元",
+          "item": {
+            "claim_id": "S1-C3", "sentence_id": 1,
+            "quote": "归母净利润录得 862.28 亿元", "context_quote": null,
+            "claim_type": "amount", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "归母净利润", "metric": "parent_net_profit",
+            "scope": "parent_shareholders", "kind": "amount", "value": "862.28", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "归母862.28亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "扣非归母净利润约 862.41 亿元",
+          "item": {
+            "claim_id": "S1-C4", "sentence_id": 1,
+            "quote": "扣非归母净利润约 862.41 亿元", "context_quote": null,
+            "claim_type": "amount", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "扣非归母净利润", "metric": "adjusted_parent_net_profit",
+            "scope": "parent_shareholders", "kind": "amount", "value": "862.41", "unit": "亿元",
+            "operator": "approx", "tolerance_pct": 2.0, "direction": "unknown",
+            "currency": "CNY", "qualifier": "approximate", "plain_claim": "扣非约862.41亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "公司营业总收入为 1,741.44 亿元",
+          "item": {
+            "claim_id": "S1-C5", "sentence_id": 1,
+            "quote": "公司营业总收入为 1,741.44 亿元", "context_quote": null,
+            "claim_type": "amount", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "营业总收入", "metric": "total_revenue",
+            "scope": "consolidated", "kind": "amount", "value": "1741.44", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "营业总收入1741.44亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "经营活动产生的现金流量净额为 924.64 亿元",
+          "item": {
+            "claim_id": "S1-C6", "sentence_id": 1,
+            "quote": "经营活动产生的现金流量净额为 924.64 亿元", "context_quote": null,
+            "claim_type": "amount", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "经营活动产生的现金流量净额", "metric": "operating_cash_flow",
+            "scope": "consolidated", "kind": "amount", "value": "924.64", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "经营现金流924.64亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "基本每股收益 68.64 元/股",
+          "item": {
+            "claim_id": "S1-C7", "sentence_id": 1,
+            "quote": "基本每股收益 68.64 元/股", "context_quote": null,
+            "claim_type": "amount", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "基本每股收益", "metric": "basic_eps",
+            "scope": "consolidated", "kind": "amount", "value": "68.64", "unit": "元/股",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "EPS68.64",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "模型判断",
+          "quote": "我们预计 2025 年公司营业收入有望维持双位数增长，归母净利润或接近 950 亿元",
+          "item": {
+            "claim_id": "S1-C8", "sentence_id": 1,
+            "quote": "我们预计 2025 年公司营业收入有望维持双位数增长，归母净利润或接近 950 亿元",
+            "context_quote": null,
+            "claim_type": "forecast", "company_name": "贵州茅台", "period_year": 2025,
+            "period_kind": "annual", "metric_text": "归母净利润", "metric": "parent_net_profit",
+            "scope": "parent_shareholders", "kind": "amount", "value": "950", "unit": "亿元",
+            "operator": "approx", "tolerance_pct": 2.0, "direction": "up",
+            "currency": "CNY", "qualifier": "approximate", "plain_claim": "预计25年归母约950亿",
+            "is_forecast": true, "ambiguity": "none", "verification_action": "mark_forecast"
+          }
+        },
+        {
+          "gold_status": "模型判断",
+          "quote": "公司 ROE 仍处于行业前列",
+          "item": {
+            "claim_id": "S1-C9", "sentence_id": 1,
+            "quote": "公司 ROE 仍处于行业前列", "context_quote": null,
+            "claim_type": "qualitative", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "ROE", "metric": "unknown",
+            "scope": "unknown", "kind": "unknown", "value": null, "unit": null,
+            "operator": "none", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "unknown", "plain_claim": "ROE行业前列",
+            "is_forecast": false, "ambiguity": "metric", "verification_action": "needs_review"
+          }
+        }
+      ]
+    },
+    {
+      "id": "S2",
+      "file": "S2_家电银行.md",
+      "text": "美的集团 2024 年实现营业收入约 4,071.50 亿元，同比增长 9.44%，其中归母净利润为 385.37 亿元。公司经营现金流净额 605.12 亿元，规模效应与出海逻辑延续。我们认为公司治理与数字化投入将持续摊薄费用率。招商银行方面，2023 年归母净利润为 1,466.02 亿元，营业收入 3,391.23 亿元。需要强调的是，银行板块净息差承压，但我们判断公司财富管理中收有望于 2025 年企稳，故上调至「买入」。风险提示：息差收窄、资产质量波动。从跨公司比较看，美的集团 2024 年营业收入高于招商银行 2023 年营业收入。",
+      "claims": [
+        {
+          "gold_status": "证据支持",
+          "quote": "2024 年实现营业收入约 4,071.50 亿元",
+          "item": {
+            "claim_id": "S2-C1", "sentence_id": 1,
+            "quote": "2024 年实现营业收入约 4,071.50 亿元", "context_quote": "美的集团",
+            "claim_type": "amount", "company_name": "美的集团", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "营业收入", "metric": "revenue",
+            "scope": "consolidated", "kind": "amount", "value": "4071.50", "unit": "亿元",
+            "operator": "approx", "tolerance_pct": 2.0, "direction": "unknown",
+            "currency": "CNY", "qualifier": "approximate", "plain_claim": "美的营收约4071.5亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "同比增长 9.44%",
+          "item": {
+            "claim_id": "S2-C2", "sentence_id": 1,
+            "quote": "同比增长 9.44%", "context_quote": "美的集团 2024 年实现营业收入约 4,071.50 亿元",
+            "claim_type": "yoy", "company_name": "美的集团", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "营业收入", "metric": "revenue",
+            "scope": "consolidated", "kind": "yoy", "value": "9.44", "unit": "%",
+            "operator": "eq", "tolerance_pct": null, "direction": "up",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "美的营收同比+9.44%",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_yoy"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "归母净利润为 385.37 亿元",
+          "item": {
+            "claim_id": "S2-C3", "sentence_id": 1,
+            "quote": "归母净利润为 385.37 亿元", "context_quote": "美的集团",
+            "claim_type": "amount", "company_name": "美的集团", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "归母净利润", "metric": "parent_net_profit",
+            "scope": "parent_shareholders", "kind": "amount", "value": "385.37", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "美的归母385.37亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "公司经营现金流净额 605.12 亿元",
+          "item": {
+            "claim_id": "S2-C4", "sentence_id": 1,
+            "quote": "公司经营现金流净额 605.12 亿元", "context_quote": "美的集团",
+            "claim_type": "amount", "company_name": "美的集团", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "经营现金流净额", "metric": "operating_cash_flow",
+            "scope": "consolidated", "kind": "amount", "value": "605.12", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "美的现金流605.12亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "模型判断",
+          "quote": "我们认为公司治理与数字化投入将持续摊薄费用率",
+          "item": {
+            "claim_id": "S2-C5", "sentence_id": 1,
+            "quote": "我们认为公司治理与数字化投入将持续摊薄费用率", "context_quote": "美的集团",
+            "claim_type": "qualitative", "company_name": "美的集团", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "费用率", "metric": "unknown",
+            "scope": "unknown", "kind": "unknown", "value": null, "unit": null,
+            "operator": "none", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "unknown", "plain_claim": "费用率将摊薄",
+            "is_forecast": false, "ambiguity": "metric", "verification_action": "needs_review"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "2023 年归母净利润为 1,466.02 亿元",
+          "item": {
+            "claim_id": "S2-C6", "sentence_id": 1,
+            "quote": "2023 年归母净利润为 1,466.02 亿元", "context_quote": "招商银行",
+            "claim_type": "amount", "company_name": "招商银行", "period_year": 2023,
+            "period_kind": "annual", "metric_text": "归母净利润", "metric": "parent_net_profit",
+            "scope": "parent_shareholders", "kind": "amount", "value": "1466.02", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "招行归母1466.02亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "证据支持",
+          "quote": "营业收入 3,391.23 亿元",
+          "item": {
+            "claim_id": "S2-C7", "sentence_id": 1,
+            "quote": "营业收入 3,391.23 亿元", "context_quote": "招商银行",
+            "claim_type": "amount", "company_name": "招商银行", "period_year": 2023,
+            "period_kind": "annual", "metric_text": "营业收入", "metric": "revenue",
+            "scope": "consolidated", "kind": "amount", "value": "3391.23", "unit": "亿元",
+            "operator": "eq", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "exact", "plain_claim": "招行营收3391.23亿",
+            "is_forecast": false, "ambiguity": "none", "verification_action": "compare_amount"
+          }
+        },
+        {
+          "gold_status": "模型判断",
+          "quote": "财富管理中收有望于 2025 年企稳",
+          "item": {
+            "claim_id": "S2-C8", "sentence_id": 1,
+            "quote": "财富管理中收有望于 2025 年企稳", "context_quote": "招商银行",
+            "claim_type": "forecast", "company_name": "招商银行", "period_year": 2025,
+            "period_kind": "annual", "metric_text": "财富管理中收", "metric": "unknown",
+            "scope": "unknown", "kind": "unknown", "value": null, "unit": null,
+            "operator": "none", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "unknown", "plain_claim": "25年中收企稳",
+            "is_forecast": true, "ambiguity": "metric", "verification_action": "mark_forecast"
+          }
+        },
+        {
+          "gold_status": "模型判断",
+          "quote": "美的集团 2024 年营业收入高于招商银行 2023 年营业收入",
+          "item": {
+            "claim_id": "S2-C9", "sentence_id": 1,
+            "quote": "美的集团 2024 年营业收入高于招商银行 2023 年营业收入", "context_quote": null,
+            "claim_type": "comparison", "company_name": "美的集团", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "营业收入", "metric": "revenue",
+            "scope": "consolidated", "kind": "unknown", "value": null, "unit": null,
+            "operator": "none", "tolerance_pct": null, "direction": "unknown",
+            "currency": "CNY", "qualifier": "unknown", "plain_claim": "跨公司比较",
+            "is_forecast": false, "ambiguity": "multiple", "verification_action": "mark_out_of_scope"
+          }
+        }
+      ]
+    }
+  ]
+}

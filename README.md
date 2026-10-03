@@ -22,7 +22,7 @@
 | 选题方向论证 | ✅ `docs/选题方向分析.md` |
 | 赛程与关键节点 | ✅ `docs/赛程与关键节点.md` |
 | 数据底板（下载 / 抽取 / 对账） | ✅ 70 份年报 · 14 个指标 · 抽取 710 行；9 个核心指标 70/70；对账 650 项一致 573（88.2%）—— `docs/数据底板说明.md` |
-| 纠错核查器（队友 `new/` 并入） | ✅ `agent/`：材料登记 → 证据抽取 → Decimal 确定性核查 → LLM 拆句核查；**77 项测试全过** |
+| 纠错核查器（队友 `new/` 并入） | ✅ `agent/`：材料登记 → 证据抽取 → Decimal 确定性核查 → LLM 拆句核查；**84 项测试全过** |
 | LLM 判语义 / 代码锁证据（P1+P2+P3） | ✅ 运算符裁决（容差 2%）· 预测只标记 · 8 指标 · 双轨报告 · **JSON 多步工具循环**（tools.py / agent_loop.py，`check-text` 默认启用，失败回退）—— `docs/设计-LLM判语义代码锁证据.md` |
 | 抽取器合流 | ✅ words 级主路径 + 表格线回退 + 利润表补营业总收入 + 表序推断；**70/70 全过、核心 4 指标 70/70**，指标 4 → 14 |
 | words 几何单一事实源 | ✅ `agent/words.py` 供 agent 与 `scripts/data/extract_metrics.py` 共用（200 行重复逻辑删除，输出字节级一致） |
@@ -33,6 +33,7 @@
 | 抽取 unit/scope 加固 | ✅ 去重补单位并重算归一值 + 报表标题归一（美的/招行版式）+ 旁证跨单位检索；**待复核字段 125 → 0** |
 | 现场一键 live | ✅ `python agent/main.py live --code --year` / `live --pdf 新材料.pdf --code --name --year` |
 | 运行说明 + 最终报告书 | ✅ `docs/运行说明.md` · `docs/最终报告书.md` |
+| 研报文体样例 + gold 复签包 | ✅ `data/eval/report_samples/` 端到端 18/18；`data/gold/复签包.md`（G1 24 条 / G2 抽样 / G3 语义） |
 
 ---
 
@@ -50,7 +51,7 @@
 │   ├─ finance.py     Decimal 计算：单位换算 / 同比 / 按陈述精度比对
 │   ├─ llm_check.py   模型只拆句，判定与计算全部本地 Python
 │   ├─ main.py        CLI：import-existing / fetch / extract / analyze / demo / check-text
-│   ├─ test.py        67 项测试（含 9 份真实年报集成测试）
+│   ├─ test.py        84 项测试（含 9 份真实年报集成测试）
 │   └─ README.md / 项目说明.md
 ├─ data/
 │   ├─ scope.csv      ★样本清单（14 家 × 2021–2025 = 70 份）
@@ -89,7 +90,7 @@ python scripts\quality\crosscheck.py     # 和东财对账  → data\extracted\c
 # —— 纠错核查器（agent/）——
 cd agent
 python main.py import-existing --source ..   # 把主仓 70 份年报按引用登记进 agent 台账
-python -B test.py                            # 67 项测试
+python -B test.py                            # 84 项测试
 python main.py demo                          # 贵州茅台 2024 单报告示例
 python main.py live --code 600519 --year 2024  # 现场一键：抽取/分析/报告
 python main.py live --pdf 新材料.pdf --code 600000 --name 某某 --year 2025

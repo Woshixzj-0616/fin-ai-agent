@@ -183,7 +183,17 @@ def compare_number(actual, claimed, decimals: int | None = None,
 def compare_amount(actual, actual_unit: str, claimed, claimed_unit: str,
                    decimals: int | None = None,
                    operator: str = "eq", tolerance_pct=None) -> dict:
-    """将证据换成陈述单位，再按运算符比较。"""
+    """将证据换成陈述单位，再按运算符比较。元/股、% 等非金额单位不做进制换算。"""
+    if actual_unit in NON_AMOUNT_UNITS or claimed_unit in NON_AMOUNT_UNITS:
+        if actual_unit != claimed_unit and not (
+                {actual_unit, claimed_unit} <= {"%", "％"}):
+            return result("needs_review", reason="非金额单位不一致，不作默认换算",
+                          actual_unit=actual_unit, claimed_unit=claimed_unit)
+        answer = compare_number(actual, claimed, decimals, operator=operator,
+                                tolerance_pct=tolerance_pct)
+        answer.update(claimed_unit=claimed_unit, actual_unit=actual_unit,
+                      actual_value=text(decimal(actual)), operator=operator)
+        return answer
     try:
         converted = convert(actual, actual_unit, claimed_unit)
     except ValueError as exc:
@@ -324,6 +334,13 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
     output["evidence_ids"] = [fact["evidence_id"]]
     output["source_file"], output["page"] = fact["source_file"], fact["page"]
     for field in ("scope", "currency", "period_kind"):
+        # 每股/收益率类指标没有合并或归母口径可言；缺 scope 不拦。
+        if field == "scope" and (fact.get("unit") in {"元/股", "%", "％"}
+                                 or claim["metric"] in {"basic_eps", "diluted_eps",
+                                                        "deducted_basic_eps", "weighted_roe",
+                                                        "deducted_weighted_roe",
+                                                        "book_value_per_share"}):
+            continue
         if not claim.get(field) or fact.get(field) in {None, "", "unknown"} or claim[field] != fact[field]:
             output.update(status="口径冲突／需人工复核", reason=f"{field} 不明确或不一致")
             return output
