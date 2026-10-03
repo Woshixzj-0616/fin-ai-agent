@@ -97,39 +97,103 @@ def percentage_points(current_percent, previous_percent) -> dict:
                   operands={"current_percent": text(a), "previous_percent": text(b)})
 
 
-def compare_number(actual, claimed, decimals: int | None = None) -> dict:
-    """同一单位下，按陈述精度比较两个十进制数。"""
+# 陈述运算符：eq=精确；approx=约；exceed=超过；at_least=不低于；at_most=不高于/不足；below=低于
+OPERATORS = ("eq", "approx", "exceed", "at_least", "at_most", "below")
+DEFAULT_TOLERANCE_PCT = Decimal("2")
+MAX_TOLERANCE_PCT = Decimal("5")
+
+
+def _tolerance(tolerance_pct) -> tuple[Decimal | None, str | None]:
+    """容差百分比；超上限压到 5% 并给 warning，负数/非法返回错误说明。"""
+    if tolerance_pct is None:
+        return DEFAULT_TOLERANCE_PCT, None
+    try:
+        t = Decimal(str(tolerance_pct))
+    except ArithmeticError:
+        return None, "容差不是合法数值"
+    if t < 0:
+        return None, "容差不能为负"
+    if t > MAX_TOLERANCE_PCT:
+        return MAX_TOLERANCE_PCT, f"容差 {t}% 超上限，已压到 {MAX_TOLERANCE_PCT}%"
+    return t, None
+
+
+def compare_number(actual, claimed, decimals: int | None = None,
+                   operator: str = "eq", tolerance_pct=None) -> dict:
+    """同一单位下比较两个数。
+
+    - eq：按陈述小数位 ROUND_HALF_UP
+    - approx：相对误差 ≤ tolerance_pct（默认 2%）
+    - exceed / at_least / at_most / below：证据值是否满足陈述的不等式
+    """
+    if operator not in OPERATORS:
+        return result("needs_review", reason=f"不支持的运算符：{operator}")
     try:
         a, b = decimal(actual), decimal(claimed)
     except ValueError as exc:
         return result("needs_review", reason=str(exc))
     if a is None or b is None:
         return result("missing", reason="证据值或陈述值缺失")
-    places = max(0, -b.as_tuple().exponent) if decimals is None else decimals
-    if not isinstance(places, int) or not 0 <= places <= 12:
-        raise ValueError("精度必须为0至12位小数")
-    step = Decimal(1).scaleb(-places)
-    with localcontext() as context:
-        context.prec = 40
-        rounded = a.quantize(step, rounding=ROUND_HALF_UP)
-    return result("match" if rounded == b else "mismatch",
-                  text(rounded), exact_value=text(a), claimed_value=text(b),
-                  decimals=places,
-                  rounding="ROUND_HALF_UP", difference=text(a - b),
-                  formula="round_half_up(actual, decimals)")
+
+    if operator == "eq":
+        places = max(0, -b.as_tuple().exponent) if decimals is None else decimals
+        if not isinstance(places, int) or not 0 <= places <= 12:
+            raise ValueError("精度必须为0至12位小数")
+        step = Decimal(1).scaleb(-places)
+        with localcontext() as context:
+            context.prec = 40
+            rounded = a.quantize(step, rounding=ROUND_HALF_UP)
+        return result("match" if rounded == b else "mismatch",
+                      text(rounded), exact_value=text(a), claimed_value=text(b),
+                      operator=operator, decimals=places,
+                      rounding="ROUND_HALF_UP", difference=text(a - b),
+                      formula="round_half_up(actual, decimals)")
+
+    if operator == "approx":
+        tol, warn = _tolerance(tolerance_pct)
+        if tol is None:
+            return result("needs_review", reason=warn)
+        with localcontext() as context:
+            context.prec = 40
+            base = abs(a) if a != 0 else (abs(b) if b != 0 else Decimal(1))
+            rel = abs(a - b) / base * 100
+        ok = rel <= tol
+        return result("match" if ok else "mismatch", text(a),
+                      exact_value=text(a), claimed_value=text(b),
+                      operator=operator, tolerance_pct=text(tol),
+                      relative_error_pct=text(rel),
+                      difference=text(a - b),
+                      warning=warn,
+                      formula=f"abs(actual-claimed)/abs(actual)*100 <= {tol}%")
+
+    # 不等式：陈述的是对真实值的约束
+    table = {
+        "exceed": (a > b, "actual > claimed"),
+        "at_least": (a >= b, "actual >= claimed"),
+        "at_most": (a <= b, "actual <= claimed"),
+        "below": (a < b, "actual < claimed"),
+    }
+    ok, formula = table[operator]
+    return result("match" if ok else "mismatch", text(a),
+                  exact_value=text(a), claimed_value=text(b),
+                  operator=operator, difference=text(a - b),
+                  formula=formula)
 
 
 def compare_amount(actual, actual_unit: str, claimed, claimed_unit: str,
-                   decimals: int | None = None) -> dict:
-    """将证据换成陈述单位，再按陈述的小数位数做 ROUND_HALF_UP。"""
+                   decimals: int | None = None,
+                   operator: str = "eq", tolerance_pct=None) -> dict:
+    """将证据换成陈述单位，再按运算符比较。"""
     try:
         converted = convert(actual, actual_unit, claimed_unit)
     except ValueError as exc:
         return result("needs_review", reason=str(exc))
-    answer = compare_number(converted, claimed, decimals)
+    answer = compare_number(converted, claimed, decimals, operator=operator,
+                            tolerance_pct=tolerance_pct)
     answer.update(claimed_unit=claimed_unit, actual_unit=actual_unit,
-                  actual_value=text(decimal(actual)),
-                  formula="round_half_up(actual * source_factor / target_factor, decimals)")
+                  actual_value=text(decimal(actual)), operator=operator,
+                  formula=(answer.get("formula") or "") +
+                          " | unit=actual * source_factor / target_factor")
     return answer
 
 
@@ -267,7 +331,9 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
         output["reason"] = "证据存在待复核字段：" + ",".join(fact["issues"])
         return output
     if claim["kind"] == "amount":
-        calculation = compare_amount(fact["value"], fact["unit"], claim["value"], claim["unit"])
+        operator = claim.get("operator") or "eq"
+        calculation = compare_amount(fact["value"], fact["unit"], claim["value"], claim["unit"],
+                                     operator=operator, tolerance_pct=claim.get("tolerance_pct"))
         expected = calculation.get("value")
     elif claim["kind"] == "yoy":
         if claim["unit"] != "%":
@@ -280,9 +346,12 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
                           reason="同比基期不可比或不能按常规公式计算")
             return output
         output["evidence_ids"] = computation["evidence_ids"]
-        comparison = compare_number(computation["value"], claim["value"])
+        operator = claim.get("operator") or "eq"
+        comparison = compare_number(computation["value"], claim["value"],
+                                    operator=operator, tolerance_pct=claim.get("tolerance_pct"))
         comparison["claimed_unit"] = "%"
-        comparison["formula"] = "round_half_up(yoy_percent, claimed_decimal_places)"
+        if operator == "eq":
+            comparison["formula"] = "round_half_up(yoy_percent, claimed_decimal_places)"
         calculation = {**comparison, "yoy_calculation": computation}
         expected = comparison.get("value")
     else:
@@ -290,9 +359,14 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
         return output
     output["calculation"] = calculation
     if calculation["status"] == "match":
-        output.update(status="证据支持", reason="单位、口径和陈述精度下与原文证据一致")
+        reason = ("单位、口径和陈述精度下与原文证据一致" if (claim.get("operator") or "eq") == "eq"
+                  else "在陈述运算符与容差下与原文证据一致")
+        output.update(status="证据支持", reason=reason)
     elif calculation["status"] == "mismatch":
-        output.update(status="确认错误", reason="可比口径下陈述值与证据或计算结果不同",
+        op = claim.get("operator") or "eq"
+        reason = ("可比口径下陈述值与证据或计算结果不同" if op == "eq"
+                  else f"陈述运算符「{op}」不成立，或超出约定容差")
+        output.update(status="确认错误", reason=reason,
                       suggestion=f"将该核查项改为 {expected}{claim['unit']}，并引用所列年报页码。")
     else:
         output.update(status="口径冲突／需人工复核", reason=calculation.get("reason"))

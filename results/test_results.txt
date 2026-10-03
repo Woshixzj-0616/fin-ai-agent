@@ -38,16 +38,20 @@ test_missing_current_value_preserved (__main__.GeometryTests.test_missing_curren
 test_statement_title_normalized (__main__.GeometryTests.test_statement_title_normalized) ... ok
 test_total_revenue_is_not_revenue (__main__.GeometryTests.test_total_revenue_is_not_revenue) ... ok
 test_year_and_adjustment_use_geometry (__main__.GeometryTests.test_year_and_adjustment_use_geometry) ... ok
+test_approx_operator_is_judged_not_rejected (__main__.LLMFlowTests.test_approx_operator_is_judged_not_rejected) ... ok
 test_company_absent_from_draft_still_stops (__main__.LLMFlowTests.test_company_absent_from_draft_still_stops) ... ok
 test_company_and_metric_failures_are_explicit (__main__.LLMFlowTests.test_company_and_metric_failures_are_explicit) ... ok
 test_company_from_draft_intro_is_resolved (__main__.LLMFlowTests.test_company_from_draft_intro_is_resolved) ... ok
+test_dual_track_report_sections (__main__.LLMFlowTests.test_dual_track_report_sections) ... ok
 test_explicit_scope_and_forecasts_are_not_overridden (__main__.LLMFlowTests.test_explicit_scope_and_forecasts_are_not_overridden) ... ok
 test_fabricated_numeric_value_is_not_used (__main__.LLMFlowTests.test_fabricated_numeric_value_is_not_used) ... ok
 test_fuzzy_and_unspecified_profit_require_review (__main__.LLMFlowTests.test_fuzzy_and_unspecified_profit_require_review) ... ok
+test_fuzzy_without_operator_still_requires_review (__main__.LLMFlowTests.test_fuzzy_without_operator_still_requires_review) ... ok
 test_http_error_never_echoes_authentication_body (__main__.LLMFlowTests.test_http_error_never_echoes_authentication_body) ... ok
 test_json_mode_does_not_parse_markdown_fences (__main__.LLMFlowTests.test_json_mode_does_not_parse_markdown_fences) ... ok
 test_missing_sentence_is_not_silently_accepted (__main__.LLMFlowTests.test_missing_sentence_is_not_silently_accepted) ... ok
 test_model_cannot_drop_unit_multipliers (__main__.LLMFlowTests.test_model_cannot_drop_unit_multipliers) ... ok
+test_model_track_never_claims_confirmed_error (__main__.LLMFlowTests.test_model_track_never_claims_confirmed_error) ... ok
 test_program_handles_decline_and_expected_value (__main__.LLMFlowTests.test_program_handles_decline_and_expected_value) ... ok
 test_schema_refuses_extra_fields_and_float_values (__main__.LLMFlowTests.test_schema_refuses_extra_fields_and_float_values) ... ok
 test_transport_to_report_without_storing_credentials (__main__.LLMFlowTests.test_transport_to_report_without_storing_credentials) ... ok
@@ -56,6 +60,12 @@ test_duplicate_version_and_tamper (__main__.MaterialTests.test_duplicate_version
 test_error_page_rejected (__main__.MaterialTests.test_error_page_rejected) ... ok
 test_identity_mismatch (__main__.MaterialTests.test_identity_mismatch) ... ok
 test_verified_metadata_not_downgraded_by_legacy_import (__main__.MaterialTests.test_verified_metadata_not_downgraded_by_legacy_import) ... ok
+test_amount_operator_respects_unit (__main__.OperatorCompareTests.test_amount_operator_respects_unit) ... ok
+test_approx_custom_tolerance_and_cap (__main__.OperatorCompareTests.test_approx_custom_tolerance_and_cap) ... ok
+test_approx_within_default_tolerance (__main__.OperatorCompareTests.test_approx_within_default_tolerance) ... ok
+test_bad_operator_and_negative_tolerance (__main__.OperatorCompareTests.test_bad_operator_and_negative_tolerance) ... ok
+test_eq_still_uses_disclosed_precision (__main__.OperatorCompareTests.test_eq_still_uses_disclosed_precision) ... ok
+test_inequalities (__main__.OperatorCompareTests.test_inequalities) ... ok
 test_all_disclosed_yoy_match_precision (__main__.RealReportIntegrationTests.test_all_disclosed_yoy_match_precision)
 凡年报披露了同比的行，按披露精度算完必须一致；核心 4 指标 × 9 份至少 36 行。 ... ok
 test_all_nine_reports_have_current_four_metrics (__main__.RealReportIntegrationTests.test_all_nine_reports_have_current_four_metrics) ... ok
@@ -68,6 +78,6 @@ test_disagreement_visible_in_markdown (__main__.ReportTests.test_disagreement_vi
 test_missing_and_uncomputable_are_not_passes (__main__.ReportTests.test_missing_and_uncomputable_are_not_passes) ... ok
 
 ----------------------------------------------------------------------
-Ran 67 tests in 17.178s
+Ran 77 tests in 18.435s
 
 OK

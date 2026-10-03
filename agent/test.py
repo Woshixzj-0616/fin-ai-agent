@@ -23,7 +23,8 @@ from finance import (analyze, check_claim, compare_amount, compare_number, conve
                      evidence_yoy, percentage_points, ratio, select_previous, yoy)
 from extract import header_for, metric_for, parse_table
 from main import evaluate_gold, extract_selected, report_markdown
-from llm_check import LLMClient, LLMError, check_one_claim, check_payload, check_text, schema, split_draft, validate_schema
+from llm_check import (LLMClient, LLMError, check_one_claim, check_payload, check_text,
+                       render_report, schema, split_draft, validate_schema)
 
 def evidence(year, value="100", **changes):
     return {
@@ -130,6 +131,45 @@ class DecimalRulesTests(unittest.TestCase):
 
     def test_missing_prior_not_replaced_with_other_year(self):
         self.assertEqual(evidence_yoy(evidence(2024), None)["status"], "missing")
+
+
+class OperatorCompareTests(unittest.TestCase):
+    """P1：约数/不等式运算符由代码裁决，容差默认 2%、上限 5%。"""
+
+    def test_eq_still_uses_disclosed_precision(self):
+        self.assertEqual(compare_number("100.00", "100")["status"], "match")
+        # 陈述写成 100.0（一位小数）时，100.4 不得过
+        self.assertEqual(compare_number("100.4", "100.0")["status"], "mismatch")
+
+    def test_approx_within_default_tolerance(self):
+        # 100 vs 101 = 1% 相对误差 → 默认 2% 内
+        self.assertEqual(compare_number("100", "101", operator="approx")["status"], "match")
+        self.assertEqual(compare_number("100", "103", operator="approx")["status"], "mismatch")
+
+    def test_approx_custom_tolerance_and_cap(self):
+        self.assertEqual(compare_number("100", "103", operator="approx", tolerance_pct=3)["status"], "match")
+        capped = compare_number("100", "104", operator="approx", tolerance_pct=20)
+        self.assertEqual(capped["status"], "match")  # 上限 5%：104 vs 100 = 4%
+        self.assertIn("上限", capped.get("warning") or "")
+        self.assertEqual(capped["tolerance_pct"], "5")
+
+    def test_inequalities(self):
+        self.assertEqual(compare_number("950", "900", operator="exceed")["status"], "match")
+        self.assertEqual(compare_number("850", "900", operator="exceed")["status"], "mismatch")
+        self.assertEqual(compare_number("900", "900", operator="at_least")["status"], "match")
+        self.assertEqual(compare_number("899", "900", operator="at_least")["status"], "mismatch")
+        self.assertEqual(compare_number("899", "900", operator="below")["status"], "match")
+        self.assertEqual(compare_number("901", "900", operator="at_most")["status"], "mismatch")
+
+    def test_amount_operator_respects_unit(self):
+        # 860 亿 vs 证据 862.28 亿：approx 默认 2% 应通过
+        answer = compare_amount("86228000000", "元", "860", "亿元", operator="approx")
+        self.assertEqual(answer["status"], "match")
+        self.assertEqual(compare_amount("86228000000", "元", "860", "亿元")["status"], "mismatch")
+
+    def test_bad_operator_and_negative_tolerance(self):
+        self.assertEqual(compare_number("1", "1", operator="fuzzy")["status"], "needs_review")
+        self.assertEqual(compare_number("1", "1", operator="approx", tolerance_pct=-1)["status"], "needs_review")
 
 
 def announcement(ident, title, day=3):
@@ -428,11 +468,16 @@ class LLMFlowTests(unittest.TestCase):
 
     def setUp(self):
         self.sentence = "2024年，贵州茅台营业收入为0.80亿元。"
-        self.item = {"sentence_id": 1, "quote": self.sentence, "context_quote": None,
-                     "company_name": "贵州茅台", "period_year": 2024,
-                     "metric_text": "营业收入", "metric": "revenue", "kind": "amount",
-                     "value": "0.80", "unit": "亿元", "currency": "CNY",
-                     "scope": "consolidated", "period_kind": "annual", "qualifier": "exact"}
+        self.item = {
+            "claim_id": "C1", "sentence_id": 1, "quote": self.sentence, "context_quote": None,
+            "claim_type": "amount", "company_name": "贵州茅台", "period_year": 2024,
+            "period_kind": "annual", "metric_text": "营业收入", "metric": "revenue",
+            "scope": "consolidated", "kind": "amount",
+            "value": "0.80", "unit": "亿元", "operator": "eq", "tolerance_pct": None,
+            "direction": "unknown", "currency": "CNY", "qualifier": "exact",
+            "plain_claim": "2024年营收0.80亿元", "is_forecast": False,
+            "ambiguity": "none", "verification_action": "compare_amount",
+        }
         self.fact = {**evidence(2024, "80000000"), "report_year": 2024, "metric_name": "营业收入",
                      "normalized_value": "80000000", "issues": [], "source_file": "data/test.pdf",
                      "source_sha256": "a" * 64, "page": 5, "value_bbox": [0, 0, 1, 1]}
@@ -499,8 +544,46 @@ class LLMFlowTests(unittest.TestCase):
     def test_explicit_scope_and_forecasts_are_not_overridden(self):
         parent = {**self.item, "quote": self.sentence.replace("营业收入", "母公司营业收入")}
         self.assertEqual(self.check(parent)["reason_code"], "model_parse_conflict")
-        forecast = {**self.item, "quote": self.sentence.replace("营业收入", "预计营业收入")}
-        self.assertEqual(self.check(forecast)["reason_code"], "non_historical_claim")
+        forecast = {**self.item, "quote": self.sentence.replace("为", "预计为"),
+                    "claim_type": "forecast", "is_forecast": True}
+        answer = self.check(forecast)
+        self.assertEqual(answer["reason_code"], "forecast_marked_only")
+        self.assertEqual((answer["status"], answer["track"]), ("模型判断", "model"))
+        self.assertNotEqual(answer["status"], "确认错误")
+
+    def test_approx_operator_is_judged_not_rejected(self):
+        # 「约为 0.82 亿元」+ operator=approx：0.80 vs 0.82 = 2.5% 相对误差，默认容差 2% 内
+        fuzzy = {**self.item, "quote": self.sentence.replace("为", "约为").replace("0.80", "0.81"),
+                 "value": "0.81", "operator": "approx", "tolerance_pct": 2.0,
+                 "qualifier": "approximate", "claim_type": "amount"}
+        answer = self.check(fuzzy)
+        self.assertEqual(answer["status"], "证据支持")
+        self.assertEqual(answer["track"], "deterministic")
+        too_far = {**fuzzy, "quote": fuzzy["quote"].replace("0.81", "0.90"), "value": "0.90"}
+        self.assertEqual(self.check(too_far)["status"], "确认错误")
+
+    def test_fuzzy_without_operator_still_requires_review(self):
+        fuzzy = {**self.item, "quote": self.sentence.replace("为", "约为"),
+                 "qualifier": "approximate", "operator": "eq"}
+        self.assertEqual(self.check(fuzzy)["reason_code"], "non_exact_claim")
+
+    def test_model_track_never_claims_confirmed_error(self):
+        forecast = {**self.item, "claim_type": "forecast", "is_forecast": True,
+                    "quote": "2024年，贵州茅台营业收入预计达到0.80亿元。"}
+        answer = self.check(forecast)
+        self.assertEqual(answer["track"], "model")
+        self.assertNotIn(answer["status"], {"确认错误", "证据支持"})
+
+    def test_dual_track_report_sections(self):
+        ok = self.check(self.item)
+        forecast = {**self.item, "claim_type": "forecast", "is_forecast": True,
+                    "quote": "2024年，贵州茅台营业收入预计达到0.80亿元。"}
+        marked = self.check(forecast)
+        report = render_report([ok, marked], model="unit-test", run_id="R1")
+        self.assertIn("## A. 确定结论", report)
+        self.assertIn("## B. 模型判断", report)
+        self.assertIn("## C. 需人工", report)
+        self.assertEqual(marked["reason_code"], "forecast_marked_only")
 
     def test_program_handles_decline_and_expected_value(self):
         previous = {**self.fact, "period_year": 2023, "value": "100000000", "evidence_id": "2023"}
