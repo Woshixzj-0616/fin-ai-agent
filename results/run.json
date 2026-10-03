@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "run_id": "20261003_212055_2f414aeb",
-  "started_at": "2026-10-03T21:20:55+08:00",
-  "command": "test",
+  "run_id": "20261003_213157_72093e3d",
+  "started_at": "2026-10-03T21:31:57+08:00",
+  "command": "run_semantic_eval",
   "parameters": {},
   "versions": {
     "python": "3.14.6",
@@ -10,11 +10,11 @@
   },
   "python_executable": "D:\\python\\python.exe",
   "code_sha256": {
-    "main.py": "49c45eeb8c36ef80787c2413fdef33a4f52633e9a7fedd5aab9e98a68b133a10",
+    "main.py": "c35f458ef359e5ece200ef2dc5644ad9db84877a1a7a28d1f5d3af4b4f92706f",
     "materials.py": "5f5244fc4cac39a99511de044e746f55716055a84b07fd64941ae6eb8a3462e7",
     "extract.py": "b350252e765fa2560e9b811d13c1a4b2030e4c08177e2eab0f6700e2c15a3da9",
     "finance.py": "5148a5dc8aa1f976deb6484c13d144cd11bcb8e728426c94f3ea35a56a8e9d63",
-    "llm_check.py": "390d3c55add1be2a8a0bab18cc5abb44e454142c67c15bc6d60a9d4059dd3863",
-    "test.py": "a702f7f9165d7c34c9c3ee1b9637d450af2bcf89ccc3459e58521de2e467bbe3"
+    "llm_check.py": "0dc97493500d75c5e6eaf3a1c3d7ff9b1276e9f34802117573f8a77f14390d5c",
+    "test.py": "10eb2ef87f4c703207117cc88ea666a4ece7f22b7b0b9f98375908e8dd2d7524"
   }
 }

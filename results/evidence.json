@@ -1,2768 +1,4593 @@
 [
   {
     "schema_version": 1,
-    "evidence_id": "404e9661285a282e9a652072",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
+    "evidence_id": "ed50d9bc647352e0f6169e3f",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
     "metric": "revenue",
     "metric_name": "营业收入",
-    "original_label": "营业收入",
+    "original_label": "营业收入（元）",
     "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "339123",
-    "raw_value": "339,123",
-    "unit": "百万元",
-    "normalized_value": "339123000000",
+    "value": "83272067317.19",
+    "raw_value": "83,272,067,317.19",
+    "unit": "元",
+    "normalized_value": "83272067317.19",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
     "scope": "consolidated",
     "scope_evidence": {
       "scope": "consolidated",
       "basis": "corroborated_current_value_in_statement",
-      "page": 136,
+      "page": 57,
       "value_bbox": [
-        428.024,
-        377.339,
-        462.062,
-        388.004
+        355.99,
+        702.289,
+        432.535,
+        711.289
       ],
-      "row_context": "其他净收入小计\n\n\n\n营业收入合计\n营业支出\n",
+      "row_context": "项目\n一、营业总收入\n其中：营业收入\n",
       "section_title": "合并利润表",
-      "section_page": 136,
+      "section_page": 57,
       "section_bbox": [
-        56.693,
-        70.784,
-        164.045,
-        91.784
+        56.664,
+        648.749,
+        130.46,
+        659.309
       ],
       "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "404e9661285a282e9a652072"
+      "confirmed_current_evidence_id": "ed50d9bc647352e0f6169e3f"
     },
     "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      303.298,
-      201.42,
-      337.336,
-      212.085
+      192.458,
+      174.833,
+      298.502,
+      191.21
     ],
     "label_bbox": [
-      55.701,
-      32.284,
-      300.503,
-      210.817
+      63.24,
+      174.833,
+      187.1,
+      191.21
     ],
     "year_header": {
+      "raw": "2023 年",
       "text": "2023年",
       "bbox": [
-        306.856,
-        170.417,
-        337.321,
-        181.082
+        192.458,
+        142.523,
+        298.502,
+        174.833
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "-1.64",
+      "value": "12.58",
       "unit": "%",
       "bbox": [
-        457.54,
-        201.69,
-        479.059,
-        212.139
+        483.093,
+        174.833,
+        582.407,
+        191.21
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "e6783d988b4ddc9c3f0989d5",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
+    "evidence_id": "382337ff328e62fcbdbe63d8",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
     "metric": "revenue",
     "metric_name": "营业收入",
-    "original_label": "营业收入",
+    "original_label": "营业收入（元）",
     "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "344783",
-    "raw_value": "344,783",
-    "unit": "百万元",
-    "normalized_value": "344783000000",
+    "value": "73968640704.54",
+    "raw_value": "73,968,640,704.54",
+    "unit": "元",
+    "normalized_value": "73968640704.54",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
     "scope": "consolidated",
     "scope_evidence": {
       "scope": "consolidated",
       "basis": "corroborated_current_value_in_statement",
-      "page": 136,
+      "page": 57,
       "value_bbox": [
-        428.024,
-        377.339,
-        462.062,
-        388.004
+        355.99,
+        702.289,
+        432.535,
+        711.289
       ],
-      "row_context": "其他净收入小计\n\n\n\n营业收入合计\n营业支出\n",
+      "row_context": "项目\n一、营业总收入\n其中：营业收入\n",
       "section_title": "合并利润表",
-      "section_page": 136,
+      "section_page": 57,
       "section_bbox": [
-        56.693,
-        70.784,
-        164.045,
-        91.784
+        56.664,
+        648.749,
+        130.46,
+        659.309
       ],
       "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "404e9661285a282e9a652072"
+      "confirmed_current_evidence_id": "ed50d9bc647352e0f6169e3f"
     },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      357.154,
-      201.69,
-      391.192,
-      212.139
+      298.502,
+      174.833,
+      390.77,
+      191.21
     ],
     "label_bbox": [
-      55.701,
-      32.284,
-      300.503,
-      210.817
+      63.24,
+      174.833,
+      187.1,
+      191.21
     ],
     "year_header": {
+      "raw": "2022 年",
       "text": "2022年",
       "bbox": [
-        360.712,
-        170.687,
-        391.177,
-        181.136
+        303.89,
+        142.523,
+        477.672,
+        158.713
       ]
     },
-    "adjustment_header": null,
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        158.713,
+        385.37,
+        174.833
+      ]
+    },
     "reported_yoy": {
-      "value": "-1.64",
+      "value": "12.58",
       "unit": "%",
       "bbox": [
-        457.54,
-        201.69,
-        479.059,
-        212.139
+        483.093,
+        174.833,
+        582.407,
+        191.21
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "2b21e565378602b442d2c915",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
+    "evidence_id": "65a724c9da7933ee53a00856",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
     "metric": "revenue",
     "metric_name": "营业收入",
-    "original_label": "营业收入",
+    "original_label": "营业收入（元）",
     "report_year": 2023,
-    "period_year": 2021,
-    "period_start": "2021-01-01",
-    "period_end": "2021-12-31",
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "331253",
-    "raw_value": "331,253",
-    "unit": "百万元",
-    "normalized_value": "331253000000",
+    "value": "73968640704.54",
+    "raw_value": "73,968,640,704.54",
+    "unit": "元",
+    "normalized_value": "73968640704.54",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
     "scope": "consolidated",
     "scope_evidence": {
       "scope": "consolidated",
       "basis": "corroborated_current_value_in_statement",
-      "page": 136,
+      "page": 57,
       "value_bbox": [
-        428.024,
-        377.339,
-        462.062,
-        388.004
+        355.99,
+        702.289,
+        432.535,
+        711.289
       ],
-      "row_context": "其他净收入小计\n\n\n\n营业收入合计\n营业支出\n",
+      "row_context": "项目\n一、营业总收入\n其中：营业收入\n",
       "section_title": "合并利润表",
-      "section_page": 136,
+      "section_page": 57,
       "section_bbox": [
-        56.693,
-        70.784,
-        164.045,
-        91.784
+        56.664,
+        648.749,
+        130.46,
+        659.309
       ],
       "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "404e9661285a282e9a652072"
+      "confirmed_current_evidence_id": "ed50d9bc647352e0f6169e3f"
     },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      498.886,
-      201.69,
-      532.924,
-      212.139
+      390.77,
+      174.833,
+      483.093,
+      191.21
     ],
     "label_bbox": [
-      55.701,
-      32.284,
-      300.503,
-      210.817
+      63.24,
+      174.833,
+      187.1,
+      191.21
     ],
     "year_header": {
-      "text": "2021年",
-      "bbox": [
-        502.453,
-        170.687,
-        532.918,
-        181.136
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "-1.64",
-      "unit": "%",
-      "bbox": [
-        457.54,
-        201.69,
-        479.059,
-        212.139
-      ],
-      "header": {
-        "text": "本年比上年",
-        "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "7209f1326971fad0f567f218",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "parent_net_profit",
-    "metric_name": "归母净利润",
-    "original_label": "归属于本行股东的净利润",
-    "report_year": 2023,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "146602",
-    "raw_value": "146,602",
-    "unit": "百万元",
-    "normalized_value": "146602000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "parent_shareholders",
-    "scope_evidence": {
-      "basis": "explicit_metric_label",
-      "quote": "归属于本行股东的净利润",
-      "page": 15
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      303.298,
-      257.436,
-      337.336,
-      268.101
-    ],
-    "label_bbox": [
-      85.039,
-      257.833,
-      186.559,
-      266.833
-    ],
-    "year_header": {
-      "text": "2023年",
-      "bbox": [
-        306.856,
-        170.417,
-        337.321,
-        181.082
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "6.22",
-      "unit": "%",
-      "bbox": [
-        460.789,
-        257.706,
-        479.059,
-        268.155
-      ],
-      "header": {
-        "text": "本年比上年",
-        "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "c679c7ec492900c53e241233",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "parent_net_profit",
-    "metric_name": "归母净利润",
-    "original_label": "归属于本行股东的净利润",
-    "report_year": 2023,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "138012",
-    "raw_value": "138,012",
-    "unit": "百万元",
-    "normalized_value": "138012000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "parent_shareholders",
-    "scope_evidence": {
-      "basis": "explicit_metric_label",
-      "quote": "归属于本行股东的净利润",
-      "page": 15
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      357.154,
-      257.706,
-      391.192,
-      268.155
-    ],
-    "label_bbox": [
-      85.039,
-      257.833,
-      186.559,
-      266.833
-    ],
-    "year_header": {
+      "raw": "2022 年",
       "text": "2022年",
       "bbox": [
-        360.712,
-        170.687,
-        391.177,
-        181.136
+        303.89,
+        142.523,
+        477.672,
+        158.713
       ]
     },
-    "adjustment_header": null,
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        158.713,
+        477.672,
+        174.833
+      ]
+    },
     "reported_yoy": {
-      "value": "6.22",
+      "value": "12.58",
       "unit": "%",
       "bbox": [
-        460.789,
-        257.706,
-        479.059,
-        268.155
+        483.093,
+        174.833,
+        582.407,
+        191.21
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "22396ada3949b2ef35422df4",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "parent_net_profit",
-    "metric_name": "归母净利润",
-    "original_label": "归属于本行股东的净利润",
+    "evidence_id": "b7b4c7d298097b0a45dfe96f",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "revenue",
+    "metric_name": "营业收入",
+    "original_label": "营业收入（元）",
     "report_year": 2023,
     "period_year": 2021,
     "period_start": "2021-01-01",
     "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "119922",
-    "raw_value": "119,922",
-    "unit": "百万元",
-    "normalized_value": "119922000000",
+    "value": "66209053612.11",
+    "raw_value": "66,209,053,612.11",
+    "unit": "元",
+    "normalized_value": "66209053612.11",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "parent_shareholders",
-    "scope_evidence": {
-      "basis": "explicit_metric_label",
-      "quote": "归属于本行股东的净利润",
-      "page": 15
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      498.886,
-      257.706,
-      532.924,
-      268.155
-    ],
-    "label_bbox": [
-      85.039,
-      257.833,
-      186.559,
-      266.833
-    ],
-    "year_header": {
-      "text": "2021年",
-      "bbox": [
-        502.453,
-        170.687,
-        532.918,
-        181.136
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "6.22",
-      "unit": "%",
-      "bbox": [
-        460.789,
-        257.706,
-        479.059,
-        268.155
-      ],
-      "header": {
-        "text": "本年比上年",
-        "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "81e2d0ffa498578168ad7dc0",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "adjusted_parent_net_profit",
-    "metric_name": "扣非归母净利润",
-    "original_label": "扣除非经常性损益后归属于本行股东的净利润",
-    "report_year": 2023,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "146047",
-    "raw_value": "146,047",
-    "unit": "百万元",
-    "normalized_value": "146047000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "parent_shareholders",
-    "scope_evidence": {
-      "basis": "explicit_metric_label",
-      "quote": "扣除非经常性损益后归属于本行股东的净利润",
-      "page": 15
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      303.298,
-      271.44,
-      337.336,
-      282.105
-    ],
-    "label_bbox": [
-      85.039,
-      271.837,
-      269.827,
-      280.837
-    ],
-    "year_header": {
-      "text": "2023年",
-      "bbox": [
-        306.856,
-        170.417,
-        337.321,
-        181.082
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "6.18",
-      "unit": "%",
-      "bbox": [
-        460.789,
-        271.71,
-        479.059,
-        282.159
-      ],
-      "header": {
-        "text": "本年比上年",
-        "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "1a6fa535c01daae69682f230",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "adjusted_parent_net_profit",
-    "metric_name": "扣非归母净利润",
-    "original_label": "扣除非经常性损益后归属于本行股东的净利润",
-    "report_year": 2023,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "137551",
-    "raw_value": "137,551",
-    "unit": "百万元",
-    "normalized_value": "137551000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "parent_shareholders",
-    "scope_evidence": {
-      "basis": "explicit_metric_label",
-      "quote": "扣除非经常性损益后归属于本行股东的净利润",
-      "page": 15
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      357.154,
-      271.71,
-      391.192,
-      282.159
-    ],
-    "label_bbox": [
-      85.039,
-      271.837,
-      269.827,
-      280.837
-    ],
-    "year_header": {
-      "text": "2022年",
-      "bbox": [
-        360.712,
-        170.687,
-        391.177,
-        181.136
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "6.18",
-      "unit": "%",
-      "bbox": [
-        460.789,
-        271.71,
-        479.059,
-        282.159
-      ],
-      "header": {
-        "text": "本年比上年",
-        "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "74accfb6c9f99966841afdd5",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "adjusted_parent_net_profit",
-    "metric_name": "扣非归母净利润",
-    "original_label": "扣除非经常性损益后归属于本行股东的净利润",
-    "report_year": 2023,
-    "period_year": 2021,
-    "period_start": "2021-01-01",
-    "period_end": "2021-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "119430",
-    "raw_value": "119,430",
-    "unit": "百万元",
-    "normalized_value": "119430000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "parent_shareholders",
-    "scope_evidence": {
-      "basis": "explicit_metric_label",
-      "quote": "扣除非经常性损益后归属于本行股东的净利润",
-      "page": 15
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      498.886,
-      271.71,
-      532.924,
-      282.159
-    ],
-    "label_bbox": [
-      85.039,
-      271.837,
-      269.827,
-      280.837
-    ],
-    "year_header": {
-      "text": "2021年",
-      "bbox": [
-        502.453,
-        170.687,
-        532.918,
-        181.136
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "6.18",
-      "unit": "%",
-      "bbox": [
-        460.789,
-        271.71,
-        479.059,
-        282.159
-      ],
-      "header": {
-        "text": "本年比上年",
-        "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "6572b2ec5bf3ec4b74190fad",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "operating_cash_flow",
-    "metric_name": "经营现金流净额",
-    "original_label": "经营活动产生的现金流量净额",
-    "report_year": 2023,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "357753",
-    "raw_value": "357,753",
-    "unit": "百万元",
-    "normalized_value": "357753000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
     "scope": "consolidated",
     "scope_evidence": {
       "scope": "consolidated",
       "basis": "corroborated_current_value_in_statement",
-      "page": 140,
+      "page": 57,
       "value_bbox": [
-        428.022,
-        441.341,
-        462.06,
-        452.006
+        355.99,
+        702.289,
+        432.535,
+        711.289
       ],
-      "row_context": "经营活动现金流出小计\n(\n\n\n\n经营活动产生的现金流量净额\n59(a)\n二、投资活动产生的现金流量\n",
-      "section_title": "合并现金流量表",
-      "section_page": 140,
+      "row_context": "项目\n一、营业总收入\n其中：营业收入\n",
+      "section_title": "合并利润表",
+      "section_page": 57,
       "section_bbox": [
-        56.693,
-        70.784,
-        207.221,
-        91.784
+        56.664,
+        648.749,
+        130.46,
+        659.309
       ],
       "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "6572b2ec5bf3ec4b74190fad"
+      "confirmed_current_evidence_id": "ed50d9bc647352e0f6169e3f"
     },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      303.298,
-      285.444,
-      337.336,
-      296.109
+      582.407,
+      174.833,
+      674.739,
+      191.21
     ],
     "label_bbox": [
-      85.039,
-      285.841,
-      205.063,
-      294.841
+      63.24,
+      174.833,
+      187.1,
+      191.21
     ],
     "year_header": {
-      "text": "2023年",
+      "raw": "2021 年",
+      "text": "2021年",
       "bbox": [
-        306.856,
-        170.417,
-        337.321,
-        181.082
+        587.83,
+        142.523,
+        764.495,
+        158.713
       ]
     },
-    "adjustment_header": null,
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        158.713,
+        669.334,
+        174.833
+      ]
+    },
     "reported_yoy": {
-      "value": "-37.25",
+      "value": "12.58",
       "unit": "%",
       "bbox": [
-        452.293,
-        285.714,
-        479.068,
-        296.163
+        483.093,
+        174.833,
+        582.407,
+        191.21
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "697db798aaa67065de9dc288",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "operating_cash_flow",
-    "metric_name": "经营现金流净额",
-    "original_label": "经营活动产生的现金流量净额",
-    "report_year": 2023,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "570143",
-    "raw_value": "570,143",
-    "unit": "百万元",
-    "normalized_value": "570143000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "consolidated",
-    "scope_evidence": {
-      "scope": "consolidated",
-      "basis": "corroborated_current_value_in_statement",
-      "page": 140,
-      "value_bbox": [
-        428.022,
-        441.341,
-        462.06,
-        452.006
-      ],
-      "row_context": "经营活动现金流出小计\n(\n\n\n\n经营活动产生的现金流量净额\n59(a)\n二、投资活动产生的现金流量\n",
-      "section_title": "合并现金流量表",
-      "section_page": 140,
-      "section_bbox": [
-        56.693,
-        70.784,
-        207.221,
-        91.784
-      ],
-      "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "6572b2ec5bf3ec4b74190fad"
-    },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      357.154,
-      285.714,
-      391.192,
-      296.163
-    ],
-    "label_bbox": [
-      85.039,
-      285.841,
-      205.063,
-      294.841
-    ],
-    "year_header": {
-      "text": "2022年",
-      "bbox": [
-        360.712,
-        170.687,
-        391.177,
-        181.136
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "-37.25",
-      "unit": "%",
-      "bbox": [
-        452.293,
-        285.714,
-        479.068,
-        296.163
-      ],
-      "header": {
-        "text": "本年比上年",
-        "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "9f7e8d8d2f02e4dcd7cdc1e8",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "operating_cash_flow",
-    "metric_name": "经营现金流净额",
-    "original_label": "经营活动产生的现金流量净额",
+    "evidence_id": "594de782f24da34c39922707",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "revenue",
+    "metric_name": "营业收入",
+    "original_label": "营业收入（元）",
     "report_year": 2023,
     "period_year": 2021,
     "period_start": "2021-01-01",
     "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "182048",
-    "raw_value": "182,048",
-    "unit": "百万元",
-    "normalized_value": "182048000000",
+    "value": "66209053612.11",
+    "raw_value": "66,209,053,612.11",
+    "unit": "元",
+    "normalized_value": "66209053612.11",
     "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
     "scope": "consolidated",
     "scope_evidence": {
       "scope": "consolidated",
       "basis": "corroborated_current_value_in_statement",
-      "page": 140,
+      "page": 57,
       "value_bbox": [
-        428.022,
-        441.341,
-        462.06,
-        452.006
+        355.99,
+        702.289,
+        432.535,
+        711.289
       ],
-      "row_context": "经营活动现金流出小计\n(\n\n\n\n经营活动产生的现金流量净额\n59(a)\n二、投资活动产生的现金流量\n",
-      "section_title": "合并现金流量表",
-      "section_page": 140,
+      "row_context": "项目\n一、营业总收入\n其中：营业收入\n",
+      "section_title": "合并利润表",
+      "section_page": 57,
       "section_bbox": [
-        56.693,
-        70.784,
-        207.221,
-        91.784
+        56.664,
+        648.749,
+        130.46,
+        659.309
       ],
       "application": "same_summary_metric_row",
-      "confirmed_current_evidence_id": "6572b2ec5bf3ec4b74190fad"
+      "confirmed_current_evidence_id": "ed50d9bc647352e0f6169e3f"
     },
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      498.886,
-      285.714,
-      532.924,
-      296.163
+      674.739,
+      174.833,
+      769.906,
+      191.21
     ],
     "label_bbox": [
-      85.039,
-      285.841,
-      205.063,
-      294.841
+      63.24,
+      174.833,
+      187.1,
+      191.21
     ],
     "year_header": {
+      "raw": "2021 年",
       "text": "2021年",
       "bbox": [
-        502.453,
-        170.687,
-        532.918,
-        181.136
+        587.83,
+        142.523,
+        764.495,
+        158.713
       ]
     },
-    "adjustment_header": null,
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        158.713,
+        764.495,
+        174.833
+      ]
+    },
     "reported_yoy": {
-      "value": "-37.25",
+      "value": "12.58",
       "unit": "%",
       "bbox": [
-        452.293,
-        285.714,
-        479.068,
-        296.163
+        483.093,
+        174.833,
+        582.407,
+        191.21
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "6b51535e4846eff7d3b01c99",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "basic_eps",
-    "metric_name": "基本每股收益",
-    "original_label": "基本每股收益(1)",
+    "evidence_id": "f634eed8106e9a42d28b3d0b",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_net_profit",
+    "metric_name": "归母净利润",
+    "original_label": "归属于上市公司股东的净利润（元）",
     "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "5.63",
-    "raw_value": "5.63",
-    "unit": "元/股",
-    "normalized_value": "5.63",
-    "normalized_unit": "元/股",
+    "value": "30210585269.30",
+    "raw_value": "30,210,585,269.30",
+    "unit": "元",
+    "normalized_value": "30210585269.30",
+    "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的净利润（元）",
+      "page": 7
+    },
     "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      319.058,
-      316.415,
-      337.328,
-      327.08
+      192.458,
+      191.21,
+      298.502,
+      219.41
     ],
     "label_bbox": [
-      85.039,
-      302.758,
-      248.691,
-      325.816
+      63.24,
+      191.21,
+      187.1,
+      219.41
     ],
     "year_header": {
+      "raw": "2023 年",
       "text": "2023年",
       "bbox": [
-        306.856,
-        170.417,
-        337.321,
-        181.082
+        192.458,
+        142.523,
+        298.502,
+        174.833
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "7.03",
+      "value": "13.19",
       "unit": "%",
       "bbox": [
-        460.79,
-        316.685,
-        479.06,
-        327.134
+        483.093,
+        191.21,
+        582.407,
+        219.41
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "05896d62d92a16547bee2b05",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "basic_eps",
-    "metric_name": "基本每股收益",
-    "original_label": "基本每股收益(1)",
+    "evidence_id": "d9de9d648ad7b9d0cbf97b53",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_net_profit",
+    "metric_name": "归母净利润",
+    "original_label": "归属于上市公司股东的净利润（元）",
     "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "5.26",
-    "raw_value": "5.26",
-    "unit": "元/股",
-    "normalized_value": "5.26",
-    "normalized_unit": "元/股",
+    "value": "26690661397.42",
+    "raw_value": "26,690,661,397.42",
+    "unit": "元",
+    "normalized_value": "26690661397.42",
+    "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      372.914,
-      316.685,
-      391.184,
-      327.134
+      298.502,
+      191.21,
+      390.77,
+      219.41
     ],
     "label_bbox": [
-      85.039,
-      302.758,
-      248.691,
-      325.816
+      63.24,
+      191.21,
+      187.1,
+      219.41
     ],
     "year_header": {
+      "raw": "2022 年",
       "text": "2022年",
       "bbox": [
-        360.712,
-        170.687,
-        391.177,
-        181.136
+        303.89,
+        142.523,
+        477.672,
+        158.713
       ]
     },
-    "adjustment_header": null,
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        158.713,
+        385.37,
+        174.833
+      ]
+    },
     "reported_yoy": {
-      "value": "7.03",
+      "value": "13.19",
       "unit": "%",
       "bbox": [
-        460.79,
-        316.685,
-        479.06,
-        327.134
+        483.093,
+        191.21,
+        582.407,
+        219.41
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "a710a1b7d46f9cfbba3ff487",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "basic_eps",
-    "metric_name": "基本每股收益",
-    "original_label": "基本每股收益(1)",
+    "evidence_id": "fdb13f3e4ce368b2c52fbb6e",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_net_profit",
+    "metric_name": "归母净利润",
+    "original_label": "归属于上市公司股东的净利润（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "26689983647.20",
+    "raw_value": "26,689,983,647.20",
+    "unit": "元",
+    "normalized_value": "26689983647.20",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      390.77,
+      191.21,
+      483.093,
+      219.41
+    ],
+    "label_bbox": [
+      63.24,
+      191.21,
+      187.1,
+      219.41
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        158.713,
+        477.672,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        191.21,
+        582.407,
+        219.41
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "8549cfffee2b0ff7baaff56b",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_net_profit",
+    "metric_name": "归母净利润",
+    "original_label": "归属于上市公司股东的净利润（元）",
     "report_year": 2023,
     "period_year": 2021,
     "period_start": "2021-01-01",
     "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "4.61",
-    "raw_value": "4.61",
-    "unit": "元/股",
-    "normalized_value": "4.61",
-    "normalized_unit": "元/股",
+    "value": "23377074353.40",
+    "raw_value": "23,377,074,353.40",
+    "unit": "元",
+    "normalized_value": "23377074353.40",
+    "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      514.646,
-      316.685,
-      532.916,
-      327.134
+      582.407,
+      191.21,
+      674.739,
+      219.41
     ],
     "label_bbox": [
-      85.039,
-      302.758,
-      248.691,
-      325.816
+      63.24,
+      191.21,
+      187.1,
+      219.41
     ],
     "year_header": {
+      "raw": "2021 年",
       "text": "2021年",
       "bbox": [
-        502.453,
-        170.687,
-        532.918,
-        181.136
+        587.83,
+        142.523,
+        764.495,
+        158.713
       ]
     },
-    "adjustment_header": null,
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        158.713,
+        669.334,
+        174.833
+      ]
+    },
     "reported_yoy": {
-      "value": "7.03",
+      "value": "13.19",
       "unit": "%",
       "bbox": [
-        460.79,
-        316.685,
-        479.06,
-        327.134
+        483.093,
+        191.21,
+        582.407,
+        219.41
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "b3b142dd4d1389d514e5004a",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "diluted_eps",
-    "metric_name": "稀释每股收益",
-    "original_label": "稀释每股收益扣除非经常性损益后归属于本行普通股股东的",
+    "evidence_id": "87f73171e9e8fda73da2dbef",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_net_profit",
+    "metric_name": "归母净利润",
+    "original_label": "归属于上市公司股东的净利润（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "23380590527.63",
+    "raw_value": "23,380,590,527.63",
+    "unit": "元",
+    "normalized_value": "23380590527.63",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      674.739,
+      191.21,
+      769.906,
+      219.41
+    ],
+    "label_bbox": [
+      63.24,
+      191.21,
+      187.1,
+      219.41
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        158.713,
+        764.495,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        191.21,
+        582.407,
+        219.41
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "eae5cd5e16681702d0fee256",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "adjusted_parent_net_profit",
+    "metric_name": "扣非归母净利润",
+    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
     "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "5.63",
-    "raw_value": "5.63",
-    "unit": "元/股",
-    "normalized_value": "5.63",
-    "normalized_unit": "元/股",
+    "value": "30116468910.79",
+    "raw_value": "30,116,468,910.79",
+    "unit": "元",
+    "normalized_value": "30116468910.79",
+    "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
+      "page": 7
+    },
     "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      319.058,
-      330.419,
-      337.328,
-      341.084
+      192.458,
+      219.41,
+      298.502,
+      247.73
     ],
     "label_bbox": [
-      85.04,
-      330.816,
-      269.828,
-      353.82
+      63.24,
+      219.41,
+      187.1,
+      247.73
     ],
     "year_header": {
+      "raw": "2023 年",
       "text": "2023年",
       "bbox": [
-        306.856,
-        170.417,
-        337.321,
-        181.082
+        192.458,
+        142.523,
+        298.502,
+        174.833
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "7.03",
+      "value": "12.96",
       "unit": "%",
       "bbox": [
-        460.79,
-        330.689,
-        479.06,
-        341.138
+        483.093,
+        219.41,
+        582.407,
+        247.73
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "979d6e67c2a88cba3f353920",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "diluted_eps",
-    "metric_name": "稀释每股收益",
-    "original_label": "稀释每股收益扣除非经常性损益后归属于本行普通股股东的",
+    "evidence_id": "38124b2a6023e54ec2cd9d7d",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "adjusted_parent_net_profit",
+    "metric_name": "扣非归母净利润",
+    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
     "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "5.26",
-    "raw_value": "5.26",
-    "unit": "元/股",
-    "normalized_value": "5.26",
-    "normalized_unit": "元/股",
+    "value": "26662736708.98",
+    "raw_value": "26,662,736,708.98",
+    "unit": "元",
+    "normalized_value": "26662736708.98",
+    "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      372.914,
-      330.689,
-      391.184,
-      341.138
+      298.502,
+      219.41,
+      390.77,
+      247.73
     ],
     "label_bbox": [
-      85.04,
-      330.816,
-      269.828,
-      353.82
+      63.24,
+      219.41,
+      187.1,
+      247.73
     ],
     "year_header": {
+      "raw": "2022 年",
       "text": "2022年",
       "bbox": [
-        360.712,
-        170.687,
-        391.177,
-        181.136
+        303.89,
+        142.523,
+        477.672,
+        158.713
       ]
     },
-    "adjustment_header": null,
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        158.713,
+        385.37,
+        174.833
+      ]
+    },
     "reported_yoy": {
-      "value": "7.03",
+      "value": "12.96",
       "unit": "%",
       "bbox": [
-        460.79,
-        330.689,
-        479.06,
-        341.138
+        483.093,
+        219.41,
+        582.407,
+        247.73
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "f42faf7d215e826fa54e1197",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "diluted_eps",
-    "metric_name": "稀释每股收益",
-    "original_label": "稀释每股收益扣除非经常性损益后归属于本行普通股股东的",
+    "evidence_id": "2b07703b685da8b161e61d8b",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "adjusted_parent_net_profit",
+    "metric_name": "扣非归母净利润",
+    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "26662058958.76",
+    "raw_value": "26,662,058,958.76",
+    "unit": "元",
+    "normalized_value": "26662058958.76",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      390.77,
+      219.41,
+      483.093,
+      247.73
+    ],
+    "label_bbox": [
+      63.24,
+      219.41,
+      187.1,
+      247.73
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        158.713,
+        477.672,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "12.96",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        219.41,
+        582.407,
+        247.73
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "2227a1ed613b53c075156730",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "adjusted_parent_net_profit",
+    "metric_name": "扣非归母净利润",
+    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
     "report_year": 2023,
     "period_year": 2021,
     "period_start": "2021-01-01",
     "period_end": "2021-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "4.61",
-    "raw_value": "4.61",
-    "unit": "元/股",
-    "normalized_value": "4.61",
-    "normalized_unit": "元/股",
+    "value": "23327729257.82",
+    "raw_value": "23,327,729,257.82",
+    "unit": "元",
+    "normalized_value": "23327729257.82",
+    "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_t0",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      57.888,
+      142.523,
+      769.906,
+      401.728
     ],
     "value_bbox": [
-      514.646,
-      330.689,
-      532.916,
-      341.138
+      582.407,
+      219.41,
+      674.739,
+      247.73
     ],
     "label_bbox": [
-      85.04,
-      330.816,
-      269.828,
-      353.82
+      63.24,
+      219.41,
+      187.1,
+      247.73
     ],
     "year_header": {
+      "raw": "2021 年",
       "text": "2021年",
       "bbox": [
-        502.453,
-        170.687,
-        532.918,
-        181.136
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        158.713,
+        669.334,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "12.96",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        219.41,
+        582.407,
+        247.73
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "469f2b2f98904237aabf427f",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "adjusted_parent_net_profit",
+    "metric_name": "扣非归母净利润",
+    "original_label": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "23331245432.05",
+    "raw_value": "23,331,245,432.05",
+    "unit": "元",
+    "normalized_value": "23331245432.05",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "parent_shareholders",
+    "scope_evidence": {
+      "basis": "explicit_metric_label",
+      "quote": "归属于上市公司股东的扣除非经常性损益的净利润（元）",
+      "page": 7
+    },
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      674.739,
+      219.41,
+      769.906,
+      247.73
+    ],
+    "label_bbox": [
+      63.24,
+      219.41,
+      187.1,
+      247.73
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        158.713,
+        764.495,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "12.96",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        219.41,
+        582.407,
+        247.73
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "2600a73acff6d0cfaa8c7d72",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "operating_cash_flow",
+    "metric_name": "经营现金流净额",
+    "original_label": "经营活动产生的现金流量净额（元）",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "41742479908.23",
+    "raw_value": "41,742,479,908.23",
+    "unit": "元",
+    "normalized_value": "41742479908.23",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "consolidated",
+    "scope_evidence": {
+      "scope": "consolidated",
+      "basis": "corroborated_current_value_in_statement",
+      "page": 61,
+      "value_bbox": [
+        348.91,
+        507.979,
+        425.455,
+        516.979
+      ],
+      "row_context": "经营活动现金流出小计\n经营活动产生的现金流量净额\n二、投资活动产生的现金流量：\n\n",
+      "section_title": "合并现金流量表",
+      "section_page": 60,
+      "section_bbox": [
+        56.664,
+        690.989,
+        151.58,
+        701.549
+      ],
+      "application": "same_summary_metric_row",
+      "confirmed_current_evidence_id": "2600a73acff6d0cfaa8c7d72"
+    },
+    "adjustment": "as_reported",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      192.458,
+      247.73,
+      298.502,
+      275.95
+    ],
+    "label_bbox": [
+      63.24,
+      247.73,
+      187.1,
+      275.95
+    ],
+    "year_header": {
+      "raw": "2023 年",
+      "text": "2023年",
+      "bbox": [
+        192.458,
+        142.523,
+        298.502,
+        174.833
       ]
     },
     "adjustment_header": null,
     "reported_yoy": {
-      "value": "7.03",
+      "value": "70.86",
       "unit": "%",
       "bbox": [
-        460.79,
-        330.689,
-        479.06,
-        341.138
+        483.093,
+        247.73,
+        582.407,
+        275.95
       ],
       "header": {
-        "text": "本年比上年",
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
         "bbox": [
-          433.054,
-          156.81,
-          479.062,
-          165.81
+          488.47,
+          142.523,
+          577.03,
+          158.713
         ]
       }
     },
-    "has_adjustment_columns": false,
+    "has_adjustment_columns": true,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "grid_cells_and_geometric_headers"
   },
   {
     "schema_version": 1,
-    "evidence_id": "bb822835f804590ff4cea55a",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
+    "evidence_id": "d51eee6e6d57191dd3d5a1cb",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "operating_cash_flow",
+    "metric_name": "经营现金流净额",
+    "original_label": "经营活动产生的现金流量净额（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "24431136261.48",
+    "raw_value": "24,431,136,261.48",
+    "unit": "元",
+    "normalized_value": "24431136261.48",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "consolidated",
+    "scope_evidence": {
+      "scope": "consolidated",
+      "basis": "corroborated_current_value_in_statement",
+      "page": 61,
+      "value_bbox": [
+        348.91,
+        507.979,
+        425.455,
+        516.979
+      ],
+      "row_context": "经营活动现金流出小计\n经营活动产生的现金流量净额\n二、投资活动产生的现金流量：\n\n",
+      "section_title": "合并现金流量表",
+      "section_page": 60,
+      "section_bbox": [
+        56.664,
+        690.989,
+        151.58,
+        701.549
+      ],
+      "application": "same_summary_metric_row",
+      "confirmed_current_evidence_id": "2600a73acff6d0cfaa8c7d72"
+    },
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      298.502,
+      247.73,
+      390.77,
+      275.95
+    ],
+    "label_bbox": [
+      63.24,
+      247.73,
+      187.1,
+      275.95
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        158.713,
+        385.37,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "70.86",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        247.73,
+        582.407,
+        275.95
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "9ea5dcbaf1ecd773caa76486",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "operating_cash_flow",
+    "metric_name": "经营现金流净额",
+    "original_label": "经营活动产生的现金流量净额（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "24431136261.48",
+    "raw_value": "24,431,136,261.48",
+    "unit": "元",
+    "normalized_value": "24431136261.48",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "consolidated",
+    "scope_evidence": {
+      "scope": "consolidated",
+      "basis": "corroborated_current_value_in_statement",
+      "page": 61,
+      "value_bbox": [
+        348.91,
+        507.979,
+        425.455,
+        516.979
+      ],
+      "row_context": "经营活动现金流出小计\n经营活动产生的现金流量净额\n二、投资活动产生的现金流量：\n\n",
+      "section_title": "合并现金流量表",
+      "section_page": 60,
+      "section_bbox": [
+        56.664,
+        690.989,
+        151.58,
+        701.549
+      ],
+      "application": "same_summary_metric_row",
+      "confirmed_current_evidence_id": "2600a73acff6d0cfaa8c7d72"
+    },
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      390.77,
+      247.73,
+      483.093,
+      275.95
+    ],
+    "label_bbox": [
+      63.24,
+      247.73,
+      187.1,
+      275.95
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        158.713,
+        477.672,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "70.86",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        247.73,
+        582.407,
+        275.95
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "f9f28fee9dc7495d783f6ec0",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "operating_cash_flow",
+    "metric_name": "经营现金流净额",
+    "original_label": "经营活动产生的现金流量净额（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "26774941873.05",
+    "raw_value": "26,774,941,873.05",
+    "unit": "元",
+    "normalized_value": "26774941873.05",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "consolidated",
+    "scope_evidence": {
+      "scope": "consolidated",
+      "basis": "corroborated_current_value_in_statement",
+      "page": 61,
+      "value_bbox": [
+        348.91,
+        507.979,
+        425.455,
+        516.979
+      ],
+      "row_context": "经营活动现金流出小计\n经营活动产生的现金流量净额\n二、投资活动产生的现金流量：\n\n",
+      "section_title": "合并现金流量表",
+      "section_page": 60,
+      "section_bbox": [
+        56.664,
+        690.989,
+        151.58,
+        701.549
+      ],
+      "application": "same_summary_metric_row",
+      "confirmed_current_evidence_id": "2600a73acff6d0cfaa8c7d72"
+    },
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      582.407,
+      247.73,
+      674.739,
+      275.95
+    ],
+    "label_bbox": [
+      63.24,
+      247.73,
+      187.1,
+      275.95
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        158.713,
+        669.334,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "70.86",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        247.73,
+        582.407,
+        275.95
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "2fb19300842df5444a4d66e2",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "operating_cash_flow",
+    "metric_name": "经营现金流净额",
+    "original_label": "经营活动产生的现金流量净额（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "26774941873.05",
+    "raw_value": "26,774,941,873.05",
+    "unit": "元",
+    "normalized_value": "26774941873.05",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "consolidated",
+    "scope_evidence": {
+      "scope": "consolidated",
+      "basis": "corroborated_current_value_in_statement",
+      "page": 61,
+      "value_bbox": [
+        348.91,
+        507.979,
+        425.455,
+        516.979
+      ],
+      "row_context": "经营活动现金流出小计\n经营活动产生的现金流量净额\n二、投资活动产生的现金流量：\n\n",
+      "section_title": "合并现金流量表",
+      "section_page": 60,
+      "section_bbox": [
+        56.664,
+        690.989,
+        151.58,
+        701.549
+      ],
+      "application": "same_summary_metric_row",
+      "confirmed_current_evidence_id": "2600a73acff6d0cfaa8c7d72"
+    },
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      674.739,
+      247.73,
+      769.906,
+      275.95
+    ],
+    "label_bbox": [
+      63.24,
+      247.73,
+      187.1,
+      275.95
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        158.713,
+        764.495,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "70.86",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        247.73,
+        582.407,
+        275.95
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "70091ff5e9aadc79a02d5236",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "7.783",
+    "raw_value": "7.783",
+    "unit": "元/股",
+    "normalized_value": "7.783",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      192.458,
+      275.95,
+      298.502,
+      292.172
+    ],
+    "label_bbox": [
+      63.24,
+      275.95,
+      187.1,
+      292.172
+    ],
+    "year_header": {
+      "raw": "2023 年",
+      "text": "2023年",
+      "bbox": [
+        192.458,
+        142.523,
+        298.502,
+        174.833
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        275.95,
+        582.407,
+        292.172
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "4ce08a6dda7404d3f428e00b",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.876",
+    "raw_value": "6.876",
+    "unit": "元/股",
+    "normalized_value": "6.876",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      298.502,
+      275.95,
+      390.77,
+      292.172
+    ],
+    "label_bbox": [
+      63.24,
+      275.95,
+      187.1,
+      292.172
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        158.713,
+        385.37,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        275.95,
+        582.407,
+        292.172
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "a29aeb423aaca2994bcd2ae6",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.876",
+    "raw_value": "6.876",
+    "unit": "元/股",
+    "normalized_value": "6.876",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      390.77,
+      275.95,
+      483.093,
+      292.172
+    ],
+    "label_bbox": [
+      63.24,
+      275.95,
+      187.1,
+      292.172
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        158.713,
+        477.672,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        275.95,
+        582.407,
+        292.172
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "05618c15c89bc5d96f509347",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.023",
+    "raw_value": "6.023",
+    "unit": "元/股",
+    "normalized_value": "6.023",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      582.407,
+      275.95,
+      674.739,
+      292.172
+    ],
+    "label_bbox": [
+      63.24,
+      275.95,
+      187.1,
+      292.172
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        158.713,
+        669.334,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        275.95,
+        582.407,
+        292.172
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "71930ac4aff25fab0c898e97",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "basic_eps",
+    "metric_name": "基本每股收益",
+    "original_label": "基本每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.023",
+    "raw_value": "6.023",
+    "unit": "元/股",
+    "normalized_value": "6.023",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      674.739,
+      275.95,
+      769.906,
+      292.172
+    ],
+    "label_bbox": [
+      63.24,
+      275.95,
+      187.1,
+      292.172
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        158.713,
+        764.495,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        275.95,
+        582.407,
+        292.172
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "125747a505b58a49e33c3266",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "7.783",
+    "raw_value": "7.783",
+    "unit": "元/股",
+    "normalized_value": "7.783",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      192.458,
+      292.172,
+      298.502,
+      308.47
+    ],
+    "label_bbox": [
+      63.24,
+      292.172,
+      187.1,
+      308.47
+    ],
+    "year_header": {
+      "raw": "2023 年",
+      "text": "2023年",
+      "bbox": [
+        192.458,
+        142.523,
+        298.502,
+        174.833
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        292.172,
+        582.407,
+        308.47
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "500a91d495125f4dfd857908",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.876",
+    "raw_value": "6.876",
+    "unit": "元/股",
+    "normalized_value": "6.876",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      298.502,
+      292.172,
+      390.77,
+      308.47
+    ],
+    "label_bbox": [
+      63.24,
+      292.172,
+      187.1,
+      308.47
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        158.713,
+        385.37,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        292.172,
+        582.407,
+        308.47
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "10236d9dc5099733976d655e",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.876",
+    "raw_value": "6.876",
+    "unit": "元/股",
+    "normalized_value": "6.876",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      390.77,
+      292.172,
+      483.093,
+      308.47
+    ],
+    "label_bbox": [
+      63.24,
+      292.172,
+      187.1,
+      308.47
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        158.713,
+        477.672,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        292.172,
+        582.407,
+        308.47
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "a6ccffab2f594308654b34b3",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.023",
+    "raw_value": "6.023",
+    "unit": "元/股",
+    "normalized_value": "6.023",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      582.407,
+      292.172,
+      674.739,
+      308.47
+    ],
+    "label_bbox": [
+      63.24,
+      292.172,
+      187.1,
+      308.47
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        158.713,
+        669.334,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        292.172,
+        582.407,
+        308.47
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "0f717cf4872e4540fb087621",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "diluted_eps",
+    "metric_name": "稀释每股收益",
+    "original_label": "稀释每股收益（元/股）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "6.023",
+    "raw_value": "6.023",
+    "unit": "元/股",
+    "normalized_value": "6.023",
+    "normalized_unit": "元/股",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      674.739,
+      292.172,
+      769.906,
+      308.47
+    ],
+    "label_bbox": [
+      63.24,
+      292.172,
+      187.1,
+      308.47
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        158.713,
+        764.495,
+        174.833
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.19",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        292.172,
+        582.407,
+        308.47
+      ],
+      "header": {
+        "raw": "本年比上年增减",
+        "text": "本年比上年增减",
+        "bbox": [
+          488.47,
+          142.523,
+          577.03,
+          158.713
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "2b39a1f9d9fc172a8e0a8003",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产（元）",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "165432981684.75",
+    "raw_value": "165,432,981,684.75",
+    "unit": "元",
+    "normalized_value": "165432981684.75",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      192.458,
+      357.133,
+      298.502,
+      373.54
+    ],
+    "label_bbox": [
+      63.24,
+      357.133,
+      187.1,
+      373.54
+    ],
+    "year_header": {
+      "raw": "2023 年",
+      "text": "2023年",
+      "bbox": [
+        192.458,
+        142.523,
+        298.502,
+        174.833
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "8.26",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        357.133,
+        582.407,
+        373.54
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "20c32d3108446b10ff814b91",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "152714727880.22",
+    "raw_value": "152,714,727,880.22",
+    "unit": "元",
+    "normalized_value": "152714727880.22",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      298.502,
+      357.133,
+      390.77,
+      373.54
+    ],
+    "label_bbox": [
+      63.24,
+      357.133,
+      187.1,
+      373.54
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        341.013,
+        385.37,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "8.26",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        357.133,
+        582.407,
+        373.54
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "940c91deba1799db2ca751de",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "152811927251.18",
+    "raw_value": "152,811,927,251.18",
+    "unit": "元",
+    "normalized_value": "152811927251.18",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      390.77,
+      357.133,
+      483.093,
+      373.54
+    ],
+    "label_bbox": [
+      63.24,
+      357.133,
+      187.1,
+      373.54
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        341.013,
+        477.672,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "8.26",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        357.133,
+        582.407,
+        373.54
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "6c5bc8da425dacc0a9250e85",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "135620812221.13",
+    "raw_value": "135,620,812,221.13",
+    "unit": "元",
+    "normalized_value": "135620812221.13",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      582.407,
+      357.133,
+      674.739,
+      373.54
+    ],
+    "label_bbox": [
+      63.24,
+      357.133,
+      187.1,
+      373.54
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        341.013,
+        669.334,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "8.26",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        357.133,
+        582.407,
+        373.54
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "505a55f1921578ff089671d7",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "total_assets",
+    "metric_name": "总资产",
+    "original_label": "总资产（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "135754813767.36",
+    "raw_value": "135,754,813,767.36",
+    "unit": "元",
+    "normalized_value": "135754813767.36",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      674.739,
+      357.133,
+      769.906,
+      373.54
+    ],
+    "label_bbox": [
+      63.24,
+      357.133,
+      187.1,
+      373.54
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        341.013,
+        764.495,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "8.26",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        357.133,
+        582.407,
+        373.54
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "37836fa0c1717eeb1d860aad",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于上市公司股东的净资产（元）",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "129558241040.51",
+    "raw_value": "129,558,241,040.51",
+    "unit": "元",
+    "normalized_value": "129558241040.51",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "as_reported",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      192.458,
+      373.54,
+      298.502,
+      401.728
+    ],
+    "label_bbox": [
+      63.24,
+      373.54,
+      187.1,
+      401.728
+    ],
+    "year_header": {
+      "raw": "2023 年",
+      "text": "2023年",
+      "bbox": [
+        192.458,
+        142.523,
+        298.502,
+        174.833
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": {
+      "value": "13.62",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        373.54,
+        582.407,
+        401.728
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "2ab9f0e4dfa63fc9e91264f7",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于上市公司股东的净资产（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "114025058788.17",
+    "raw_value": "114,025,058,788.17",
+    "unit": "元",
+    "normalized_value": "114025058788.17",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      298.502,
+      373.54,
+      390.77,
+      401.728
+    ],
+    "label_bbox": [
+      63.24,
+      373.54,
+      187.1,
+      401.728
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        303.89,
+        341.013,
+        385.37,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.62",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        373.54,
+        582.407,
+        401.728
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "720a049cb8d4f4f0fd40261f",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于上市公司股东的净资产（元）",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "114027897212.18",
+    "raw_value": "114,027,897,212.18",
+    "unit": "元",
+    "normalized_value": "114027897212.18",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      390.77,
+      373.54,
+      483.093,
+      401.728
+    ],
+    "label_bbox": [
+      63.24,
+      373.54,
+      187.1,
+      401.728
+    ],
+    "year_header": {
+      "raw": "2022 年",
+      "text": "2022年",
+      "bbox": [
+        303.89,
+        142.523,
+        477.672,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        396.17,
+        341.013,
+        477.672,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.62",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        373.54,
+        582.407,
+        401.728
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "658c3ebf9ee27d9eb027ea2b",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于上市公司股东的净资产（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "99068498346.24",
+    "raw_value": "99,068,498,346.24",
+    "unit": "元",
+    "normalized_value": "99068498346.24",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      582.407,
+      373.54,
+      674.739,
+      401.728
+    ],
+    "label_bbox": [
+      63.24,
+      373.54,
+      187.1,
+      401.728
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整前",
+      "text": "调整前",
+      "bbox": [
+        587.83,
+        341.013,
+        669.334,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.62",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        373.54,
+        582.407,
+        401.728
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "de75eb7d4dafa4527328f9ef",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "parent_equity",
+    "metric_name": "归母净资产",
+    "original_label": "归属于上市公司股东的净资产（元）",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "99072014520.47",
+    "raw_value": "99,072,014,520.47",
+    "unit": "元",
+    "normalized_value": "99072014520.47",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "after",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_t0",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_t0",
+    "table_bbox": [
+      57.888,
+      142.523,
+      769.906,
+      401.728
+    ],
+    "value_bbox": [
+      674.739,
+      373.54,
+      769.906,
+      401.728
+    ],
+    "label_bbox": [
+      63.24,
+      373.54,
+      187.1,
+      401.728
+    ],
+    "year_header": {
+      "raw": "2021 年",
+      "text": "2021年",
+      "bbox": [
+        587.83,
+        142.523,
+        764.495,
+        158.713
+      ]
+    },
+    "adjustment_header": {
+      "raw": "调整后",
+      "text": "调整后",
+      "bbox": [
+        680.14,
+        341.013,
+        764.495,
+        357.133
+      ]
+    },
+    "reported_yoy": {
+      "value": "13.62",
+      "unit": "%",
+      "bbox": [
+        483.093,
+        373.54,
+        582.407,
+        401.728
+      ],
+      "header": {
+        "raw": "本年末比上年末增减",
+        "text": "本年末比上年末增减",
+        "bbox": [
+          488.47,
+          324.712,
+          577.03,
+          341.013
+        ]
+      }
+    },
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "grid_cells_and_geometric_headers"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "eea4379507e6a206f7a7cdbd",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
     "metric": "weighted_roe",
     "metric_name": "加权平均净资产收益率",
-    "original_label": "加权平均净资产收益率扣除非经常性损益后归属于本行普通股股东的",
+    "original_label": "加权平均净资产收益率",
     "report_year": 2023,
     "period_year": 2023,
     "period_start": "2023-01-01",
     "period_end": "2023-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "16.22",
-    "raw_value": "16.22",
+    "value": "25.06",
+    "raw_value": "25.06%",
     "unit": "%",
-    "normalized_value": "16.22",
+    "normalized_value": "25.06",
     "normalized_unit": "%",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
     "scope": "unknown",
     "scope_evidence": null,
     "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_w",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p7_w",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      63.24,
+      43.769,
+      770.141,
+      544.389
     ],
     "value_bbox": [
-      313.795,
-      431.418,
-      337.321,
-      442.083
+      266.09,
+      312.499,
+      293.126,
+      321.499
     ],
     "label_bbox": [
-      85.024,
-      431.815,
-      279.073,
-      454.819
+      63.24,
+      312.379,
+      153.24,
+      321.379
     ],
     "year_header": {
       "text": "2023年",
       "bbox": [
-        306.856,
-        170.417,
-        337.321,
-        181.082
+        230.78,
+        154.439,
+        260.18,
+        163.439
+      ]
+    },
+    "adjustment_header": null,
+    "reported_yoy": null,
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "b76b7f0ef55114c2a55a44a6",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "weighted_roe",
+    "metric_name": "加权平均净资产收益率",
+    "original_label": "加权平均净资产收益率",
+    "report_year": 2023,
+    "period_year": 2022,
+    "period_start": "2022-01-01",
+    "period_end": "2022-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "25.28",
+    "raw_value": "25.28%",
+    "unit": "%",
+    "normalized_value": "25.28",
+    "normalized_unit": "%",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_w",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_w",
+    "table_bbox": [
+      63.24,
+      43.769,
+      770.141,
+      544.389
+    ],
+    "value_bbox": [
+      358.37,
+      312.499,
+      385.406,
+      321.499
+    ],
+    "label_bbox": [
+      63.24,
+      312.379,
+      153.24,
+      321.379
+    ],
+    "year_header": {
+      "text": "2022年",
+      "bbox": [
+        376.13,
+        146.369,
+        405.53,
+        155.369
+      ]
+    },
+    "adjustment_header": {
+      "text": "调整前",
+      "bbox": [
+        331.13,
+        162.599,
+        358.13,
+        171.599
+      ]
+    },
+    "reported_yoy": null,
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "50a7f0ca414f16286e6622fa",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "weighted_roe",
+    "metric_name": "加权平均净资产收益率",
+    "original_label": "加权平均净资产收益率",
+    "report_year": 2023,
+    "period_year": 2021,
+    "period_start": "2021-01-01",
+    "period_end": "2021-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "25.30",
+    "raw_value": "25.30%",
+    "unit": "%",
+    "normalized_value": "25.30",
+    "normalized_unit": "%",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "unknown",
+    "scope_evidence": null,
+    "adjustment": "before",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p7_w",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 7,
+    "page_label": "",
+    "table_id": "p7_w",
+    "table_bbox": [
+      63.24,
+      43.769,
+      770.141,
+      544.389
+    ],
+    "value_bbox": [
+      642.34,
+      312.499,
+      669.376,
+      321.499
+    ],
+    "label_bbox": [
+      63.24,
+      312.379,
+      153.24,
+      321.379
+    ],
+    "year_header": {
+      "text": "2021年",
+      "bbox": [
+        661.54,
+        146.369,
+        690.94,
+        155.369
+      ]
+    },
+    "adjustment_header": {
+      "text": "调整前",
+      "bbox": [
+        615.07,
+        162.599,
+        642.07,
+        171.599
+      ]
+    },
+    "reported_yoy": null,
+    "has_adjustment_columns": true,
+    "issues": [],
+    "extraction_method": "words_geometry"
+  },
+  {
+    "schema_version": 1,
+    "evidence_id": "4b5f5ebd51dd1ee8d50deb4c",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "total_revenue",
+    "metric_name": "营业总收入",
+    "original_label": "一、营业总收入",
+    "report_year": 2023,
+    "period_year": 2023,
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_kind": "annual",
+    "duration_months": 12,
+    "value": "83272067317.19",
+    "raw_value": "83,272,067,317.19",
+    "unit": "元",
+    "normalized_value": "83272067317.19",
+    "normalized_unit": "元",
+    "currency": "CNY",
+    "currency_evidence": {
+      "currency": "CNY",
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
+    },
+    "scope": "consolidated",
+    "scope_evidence": {
+      "scope": "consolidated",
+      "basis": "corroborated_current_value_in_statement",
+      "page": 57,
+      "value_bbox": [
+        355.99,
+        702.289,
+        432.535,
+        711.289
+      ],
+      "row_context": "项目\n一、营业总收入\n其中：营业收入\n",
+      "section_title": "合并利润表",
+      "section_page": 57,
+      "section_bbox": [
+        56.664,
+        648.749,
+        130.46,
+        659.309
+      ],
+      "application": "same_summary_metric_row",
+      "confirmed_current_evidence_id": "4b5f5ebd51dd1ee8d50deb4c"
+    },
+    "adjustment": "as_reported",
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p57_w",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 57,
+    "page_label": "",
+    "table_id": "p57_w",
+    "table_bbox": [
+      56.664,
+      43.749,
+      538.938,
+      791.085
+    ],
+    "value_bbox": [
+      355.99,
+      702.289,
+      432.535,
+      711.289
+    ],
+    "label_bbox": [
+      67.704,
+      702.169,
+      130.704,
+      711.169
+    ],
+    "year_header": {
+      "text": "2023年度",
+      "bbox": [
+        358.51,
+        684.409,
+        396.94,
+        693.409
       ]
     },
     "adjustment_header": null,
     "reported_yoy": null,
     "has_adjustment_columns": false,
     "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "income_statement_total_revenue"
   },
   {
     "schema_version": 1,
-    "evidence_id": "1682250da4b6338c78ee2545",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "weighted_roe",
-    "metric_name": "加权平均净资产收益率",
-    "original_label": "加权平均净资产收益率扣除非经常性损益后归属于本行普通股股东的",
+    "evidence_id": "d9b5f26833028ea9a9189c23",
+    "document_id": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "company_code": "000858",
+    "company_name": "五粮液",
+    "metric": "total_revenue",
+    "metric_name": "营业总收入",
+    "original_label": "一、营业总收入",
     "report_year": 2023,
     "period_year": 2022,
     "period_start": "2022-01-01",
     "period_end": "2022-12-31",
     "period_kind": "annual",
     "duration_months": 12,
-    "value": "17.06",
-    "raw_value": "17.06",
-    "unit": "%",
-    "normalized_value": "17.06",
-    "normalized_unit": "%",
+    "value": "73968640704.54",
+    "raw_value": "73,968,640,704.54",
+    "unit": "元",
+    "normalized_value": "73968640704.54",
+    "normalized_unit": "元",
     "currency": "CNY",
     "currency_evidence": {
       "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
+      "page": 73,
+      "quote": "以人民币作为记账本位币和报告货币",
+      "basis": "document_currency_statement"
     },
-    "scope": "unknown",
-    "scope_evidence": null,
+    "scope": "consolidated",
+    "scope_evidence": {
+      "scope": "consolidated",
+      "basis": "corroborated_current_value_in_statement",
+      "page": 57,
+      "value_bbox": [
+        355.99,
+        702.289,
+        432.535,
+        711.289
+      ],
+      "row_context": "项目\n一、营业总收入\n其中：营业收入\n",
+      "section_title": "合并利润表",
+      "section_page": 57,
+      "section_bbox": [
+        56.664,
+        648.749,
+        130.46,
+        659.309
+      ],
+      "application": "same_summary_metric_row",
+      "confirmed_current_evidence_id": "4b5f5ebd51dd1ee8d50deb4c"
+    },
     "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
+    "comparison_group": "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566|p57_w",
+    "source_file": "data/raw/000858_五粮液_2023年年度报告.pdf",
+    "source_sha256": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566",
+    "announcement_id": "1219873658",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2024-04-29/1219873658.PDF",
+    "page": 57,
     "page_label": "",
-    "table_id": "p15_w",
+    "table_id": "p57_w",
     "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
+      56.664,
+      43.749,
+      538.938,
+      791.085
     ],
     "value_bbox": [
-      367.651,
-      431.688,
-      391.177,
-      442.137
+      462.34,
+      702.289,
+      538.885,
+      711.289
     ],
     "label_bbox": [
-      85.024,
-      431.815,
-      279.073,
-      454.819
+      67.704,
+      702.169,
+      130.704,
+      711.169
     ],
     "year_header": {
-      "text": "2022年",
+      "text": "2022年度",
       "bbox": [
-        360.712,
-        170.687,
-        391.177,
-        181.136
+        471.94,
+        684.409,
+        510.36,
+        693.409
       ]
     },
     "adjustment_header": null,
     "reported_yoy": null,
     "has_adjustment_columns": false,
     "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "830db34de487dc8deba97b76",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "weighted_roe",
-    "metric_name": "加权平均净资产收益率",
-    "original_label": "加权平均净资产收益率扣除非经常性损益后归属于本行普通股股东的",
-    "report_year": 2023,
-    "period_year": 2021,
-    "period_start": "2021-01-01",
-    "period_end": "2021-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "16.96",
-    "raw_value": "16.96",
-    "unit": "%",
-    "normalized_value": "16.96",
-    "normalized_unit": "%",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 15,
-      "quote": "14招商银行股份有限公司第二章会计数据和财务指标摘要2023年度报告（A股）会计数据和财务指标摘要2.1本集团主要会计数据和财务指标本年比上年（人民币百万元，特别注明除外）2023年2022年增减(%)2021年经营业绩营业收入339,123344,783-1.64331,253",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p15_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 15,
-    "page_label": "",
-    "table_id": "p15_w",
-    "table_bbox": [
-      19.843,
-      30.434,
-      532.924,
-      470.145
-    ],
-    "value_bbox": [
-      509.383,
-      431.688,
-      532.909,
-      442.137
-    ],
-    "label_bbox": [
-      85.024,
-      431.815,
-      279.073,
-      454.819
-    ],
-    "year_header": {
-      "text": "2021年",
-      "bbox": [
-        502.453,
-        170.687,
-        532.918,
-        181.136
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": null,
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "4526b30f4e1c5b13b171d15f",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "total_assets",
-    "metric_name": "总资产",
-    "original_label": "总资产",
-    "report_year": 2023,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "11028483",
-    "raw_value": "11,028,483",
-    "unit": "百万元",
-    "normalized_value": "11028483000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      298.537,
-      128.385,
-      345.841,
-      139.05
-    ],
-    "label_bbox": [
-      56.693,
-      32.284,
-      287.655,
-      137.782
-    ],
-    "year_header": {
-      "text": "2023年",
-      "bbox": [
-        315.36,
-        86.39,
-        345.825,
-        97.055
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "8.77",
-      "unit": "%",
-      "bbox": [
-        452.284,
-        128.655,
-        470.554,
-        139.104
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "f893c17f73452a38d54fb8e2",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "total_assets",
-    "metric_name": "总资产",
-    "original_label": "总资产",
-    "report_year": 2023,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "10138912",
-    "raw_value": "10,138,912",
-    "unit": "百万元",
-    "normalized_value": "10138912000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      360.898,
-      128.655,
-      408.202,
-      139.104
-    ],
-    "label_bbox": [
-      56.693,
-      32.284,
-      287.655,
-      137.782
-    ],
-    "year_header": {
-      "text": "2022年",
-      "bbox": [
-        377.73,
-        86.66,
-        408.195,
-        97.109
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "8.77",
-      "unit": "%",
-      "bbox": [
-        452.284,
-        128.655,
-        470.554,
-        139.104
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "ebbafb076744f0339ec006b1",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "total_assets",
-    "metric_name": "总资产",
-    "original_label": "总资产",
-    "report_year": 2023,
-    "period_year": 2021,
-    "period_start": "2021-01-01",
-    "period_end": "2021-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "9249021",
-    "raw_value": "9,249,021",
-    "unit": "百万元",
-    "normalized_value": "9249021000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      490.876,
-      128.655,
-      532.924,
-      139.104
-    ],
-    "label_bbox": [
-      56.693,
-      32.284,
-      287.655,
-      137.782
-    ],
-    "year_header": {
-      "text": "2021年",
-      "bbox": [
-        502.47,
-        86.651,
-        532.935,
-        97.1
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "8.77",
-      "unit": "%",
-      "bbox": [
-        452.284,
-        128.655,
-        470.554,
-        139.104
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "46fae381c16fcb4463960993",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "parent_equity",
-    "metric_name": "归母净资产",
-    "original_label": "归属于本行股东权益",
-    "report_year": 2023,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "1076370",
-    "raw_value": "1,076,370",
-    "unit": "百万元",
-    "normalized_value": "1076370000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      303.757,
-      271.369,
-      345.805,
-      282.034
-    ],
-    "label_bbox": [
-      85.003,
-      271.766,
-      168.019,
-      280.766
-    ],
-    "year_header": {
-      "text": "2023年",
-      "bbox": [
-        315.36,
-        86.39,
-        345.825,
-        97.055
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "13.84",
-      "unit": "%",
-      "bbox": [
-        447.001,
-        271.639,
-        470.527,
-        282.088
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "f45a4f23b2db6b88596d7089",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "parent_equity",
-    "metric_name": "归母净资产",
-    "original_label": "归属于本行股东权益",
-    "report_year": 2023,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "945503",
-    "raw_value": "945,503",
-    "unit": "百万元",
-    "normalized_value": "945503000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      374.128,
-      271.639,
-      408.166,
-      282.088
-    ],
-    "label_bbox": [
-      85.003,
-      271.766,
-      168.019,
-      280.766
-    ],
-    "year_header": {
-      "text": "2022年",
-      "bbox": [
-        377.73,
-        86.66,
-        408.195,
-        97.109
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "13.84",
-      "unit": "%",
-      "bbox": [
-        447.001,
-        271.639,
-        470.527,
-        282.088
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "0f99ab7f4c97305f92f1fb6c",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "parent_equity",
-    "metric_name": "归母净资产",
-    "original_label": "归属于本行股东权益",
-    "report_year": 2023,
-    "period_year": 2021,
-    "period_start": "2021-01-01",
-    "period_end": "2021-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "858745",
-    "raw_value": "858,745",
-    "unit": "百万元",
-    "normalized_value": "858745000000",
-    "normalized_unit": "元",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      498.859,
-      271.639,
-      532.897,
-      282.088
-    ],
-    "label_bbox": [
-      85.003,
-      271.766,
-      168.019,
-      280.766
-    ],
-    "year_header": {
-      "text": "2021年",
-      "bbox": [
-        502.47,
-        86.651,
-        532.935,
-        97.1
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "13.84",
-      "unit": "%",
-      "bbox": [
-        447.001,
-        271.639,
-        470.527,
-        282.088
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "28556bcd9ac4c343bfb22c24",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "book_value_per_share",
-    "metric_name": "每股净资产",
-    "original_label": "归属于本行普通股股东的每股净资产（人民币元）(1)",
-    "report_year": 2023,
-    "period_year": 2023,
-    "period_start": "2023-01-01",
-    "period_end": "2023-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "36.71",
-    "raw_value": "36.71",
-    "unit": "元/股",
-    "normalized_value": "36.71",
-    "normalized_unit": "元/股",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      322.308,
-      284.389,
-      345.834,
-      295.054
-    ],
-    "label_bbox": [
-      85.012,
-      284.762,
-      285.837,
-      293.762
-    ],
-    "year_header": {
-      "text": "2023年",
-      "bbox": [
-        315.36,
-        86.39,
-        345.825,
-        97.055
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "12.23",
-      "unit": "%",
-      "bbox": [
-        447.03,
-        284.659,
-        470.556,
-        295.108
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "ad90df4b6d9d12992d3ab716",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "book_value_per_share",
-    "metric_name": "每股净资产",
-    "original_label": "归属于本行普通股股东的每股净资产（人民币元）(1)",
-    "report_year": 2023,
-    "period_year": 2022,
-    "period_start": "2022-01-01",
-    "period_end": "2022-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "32.71",
-    "raw_value": "32.71",
-    "unit": "元/股",
-    "normalized_value": "32.71",
-    "normalized_unit": "元/股",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      384.669,
-      284.659,
-      408.195,
-      295.108
-    ],
-    "label_bbox": [
-      85.012,
-      284.762,
-      285.837,
-      293.762
-    ],
-    "year_header": {
-      "text": "2022年",
-      "bbox": [
-        377.73,
-        86.66,
-        408.195,
-        97.109
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "12.23",
-      "unit": "%",
-      "bbox": [
-        447.03,
-        284.659,
-        470.556,
-        295.108
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
-  },
-  {
-    "schema_version": 1,
-    "evidence_id": "cf02380fe7631837bc3d3197",
-    "document_id": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "company_code": "600036",
-    "company_name": "招商银行",
-    "metric": "book_value_per_share",
-    "metric_name": "每股净资产",
-    "original_label": "归属于本行普通股股东的每股净资产（人民币元）(1)",
-    "report_year": 2023,
-    "period_year": 2021,
-    "period_start": "2021-01-01",
-    "period_end": "2021-12-31",
-    "period_kind": "annual",
-    "duration_months": 12,
-    "value": "29.01",
-    "raw_value": "29.01",
-    "unit": "元/股",
-    "normalized_value": "29.01",
-    "normalized_unit": "元/股",
-    "currency": "CNY",
-    "currency_evidence": {
-      "currency": "CNY",
-      "page": 16,
-      "quote": "招商银行股份有限公司第二章会计数据和财务指标摘要152023年度报告（A股）本年末比2023年2022年上年末2021年（人民币百万元，特别注明除外）12月31日12月31日增减(%)12月31日规模指标总资产11,028,48310,138,9128.779,249,021贷款和垫款总额(2)6,508,8656,051,4597.565,570,034",
-      "basis": "table_unit_heading"
-    },
-    "scope": "unknown",
-    "scope_evidence": null,
-    "adjustment": "as_reported",
-    "comparison_group": "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a|p16_w",
-    "source_file": "data/raw/600036_招商银行_2023年年度报告.pdf",
-    "source_sha256": "948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a",
-    "announcement_id": "1219403503",
-    "source_url": "https://static.cninfo.com.cn/finalpage/2024-03-26/1219403503.PDF",
-    "page": 16,
-    "page_label": "",
-    "table_id": "p16_w",
-    "table_bbox": [
-      56.693,
-      30.434,
-      575.433,
-      745.986
-    ],
-    "value_bbox": [
-      509.391,
-      284.659,
-      532.917,
-      295.108
-    ],
-    "label_bbox": [
-      85.012,
-      284.762,
-      285.837,
-      293.762
-    ],
-    "year_header": {
-      "text": "2021年",
-      "bbox": [
-        502.47,
-        86.651,
-        532.935,
-        97.1
-      ]
-    },
-    "adjustment_header": null,
-    "reported_yoy": {
-      "value": "12.23",
-      "unit": "%",
-      "bbox": [
-        447.03,
-        284.659,
-        470.556,
-        295.108
-      ],
-      "header": {
-        "text": "本年末比",
-        "bbox": [
-          433.818,
-          73.782,
-          470.574,
-          82.782
-        ]
-      }
-    },
-    "has_adjustment_columns": false,
-    "issues": [],
-    "extraction_method": "words_geometry"
+    "extraction_method": "income_statement_total_revenue"
   }
 ]

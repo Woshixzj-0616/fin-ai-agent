@@ -1,0 +1,596 @@
+{
+  "E3": {
+    "name": "E3 指标语义对齐",
+    "total": 22,
+    "hit": 22,
+    "accuracy": 1.0,
+    "rows": [
+      {
+        "text": "营业收入",
+        "expected": "revenue",
+        "predicted": "revenue",
+        "ok": true
+      },
+      {
+        "text": "营收",
+        "expected": "revenue",
+        "predicted": "revenue",
+        "ok": true
+      },
+      {
+        "text": "营业总收入",
+        "expected": "total_revenue",
+        "predicted": "total_revenue",
+        "ok": true
+      },
+      {
+        "text": "归母净利润",
+        "expected": "parent_net_profit",
+        "predicted": "parent_net_profit",
+        "ok": true
+      },
+      {
+        "text": "归属于上市公司股东的净利润",
+        "expected": "parent_net_profit",
+        "predicted": "parent_net_profit",
+        "ok": true
+      },
+      {
+        "text": "归母净利",
+        "expected": "parent_net_profit",
+        "predicted": "parent_net_profit",
+        "ok": true
+      },
+      {
+        "text": "扣非归母净利润",
+        "expected": "adjusted_parent_net_profit",
+        "predicted": "adjusted_parent_net_profit",
+        "ok": true
+      },
+      {
+        "text": "扣非利润",
+        "expected": "unknown",
+        "predicted": "unknown",
+        "ok": true
+      },
+      {
+        "text": "扣非净利",
+        "expected": "adjusted_parent_net_profit",
+        "predicted": "adjusted_parent_net_profit",
+        "ok": true
+      },
+      {
+        "text": "归属于上市公司股东的扣除非经常性损益的净利润",
+        "expected": "adjusted_parent_net_profit",
+        "predicted": "adjusted_parent_net_profit",
+        "ok": true
+      },
+      {
+        "text": "经营现金流净额",
+        "expected": "operating_cash_flow",
+        "predicted": "operating_cash_flow",
+        "ok": true
+      },
+      {
+        "text": "经营活动产生的现金流量净额",
+        "expected": "operating_cash_flow",
+        "predicted": "operating_cash_flow",
+        "ok": true
+      },
+      {
+        "text": "基本每股收益",
+        "expected": "basic_eps",
+        "predicted": "basic_eps",
+        "ok": true
+      },
+      {
+        "text": "每股收益",
+        "expected": "basic_eps",
+        "predicted": "basic_eps",
+        "ok": true
+      },
+      {
+        "text": "加权平均净资产收益率",
+        "expected": "weighted_roe",
+        "predicted": "weighted_roe",
+        "ok": true
+      },
+      {
+        "text": "净资产收益率",
+        "expected": "weighted_roe",
+        "predicted": "weighted_roe",
+        "ok": true
+      },
+      {
+        "text": "总资产",
+        "expected": "total_assets",
+        "predicted": "total_assets",
+        "ok": true
+      },
+      {
+        "text": "资产总额",
+        "expected": "total_assets",
+        "predicted": "total_assets",
+        "ok": true
+      },
+      {
+        "text": "净利润",
+        "expected": "ambiguous_profit",
+        "predicted": "ambiguous_profit",
+        "ok": true
+      },
+      {
+        "text": "净利",
+        "expected": "ambiguous_profit",
+        "predicted": "ambiguous_profit",
+        "ok": true
+      },
+      {
+        "text": "毛利率",
+        "expected": "unsupported",
+        "predicted": "unknown",
+        "ok": true
+      },
+      {
+        "text": "扣非利润",
+        "expected": "unknown",
+        "predicted": "unknown",
+        "ok": true
+      }
+    ]
+  },
+  "E4": {
+    "name": "E4 研报风格句金标",
+    "total": 12,
+    "hit": 12,
+    "accuracy": 1.0,
+    "rows": [
+      {
+        "id": "R01",
+        "text": "2024年，贵州茅台营业收入为1500.00亿元。",
+        "gold": "should_judge",
+        "gold_error": true,
+        "status": "确认错误",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "138f1426f6b43b79d3f2384a"
+        ],
+        "ok": true
+      },
+      {
+        "id": "R02",
+        "text": "我们预计公司2025年营业收入有望达到约1900亿元。",
+        "gold": "forecast_mark_only",
+        "gold_error": null,
+        "status": "模型判断",
+        "track": "model",
+        "reason_code": "forecast_marked_only",
+        "evidence_ids": [],
+        "ok": true
+      },
+      {
+        "id": "R03",
+        "text": "2024年，贵州茅台营业收入约为1709亿元。",
+        "gold": "should_judge",
+        "gold_error": false,
+        "status": "证据支持",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "138f1426f6b43b79d3f2384a"
+        ],
+        "ok": true
+      },
+      {
+        "id": "R04",
+        "text": "2024年，贵州茅台营业收入超过1800亿元。",
+        "gold": "should_judge",
+        "gold_error": true,
+        "status": "确认错误",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "138f1426f6b43b79d3f2384a"
+        ],
+        "ok": true
+      },
+      {
+        "id": "R05",
+        "text": "2024年，贵州茅台归母净利润不低于800亿元。",
+        "gold": "should_judge",
+        "gold_error": false,
+        "status": "证据支持",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "eb72c72a30ca3604e5ed522a"
+        ],
+        "ok": true
+      },
+      {
+        "id": "R06",
+        "text": "剔除投资收益后，公司经营质量明显改善。",
+        "gold": "qualitative",
+        "gold_error": null,
+        "status": "模型判断",
+        "track": "model",
+        "reason_code": "qualitative_statement",
+        "evidence_ids": [],
+        "ok": true
+      },
+      {
+        "id": "R07",
+        "text": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+        "gold": "should_judge",
+        "gold_error": false,
+        "status": "证据支持",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "3d7ed42fa89add6f714a2e67"
+        ],
+        "ok": true
+      },
+      {
+        "id": "R08",
+        "text": "公司净利润创新高。",
+        "gold": "ambiguous_metric",
+        "gold_error": null,
+        "status": "模型判断",
+        "track": "model",
+        "reason_code": "qualitative_statement",
+        "evidence_ids": [],
+        "ok": true
+      },
+      {
+        "id": "R09",
+        "text": "2024年，贵州茅台营业收入同比增长15.71%。",
+        "gold": "should_judge",
+        "gold_error": false,
+        "status": "证据支持",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "138f1426f6b43b79d3f2384a",
+          "3ac0c3bc647151a7c51cccf1"
+        ],
+        "ok": true
+      },
+      {
+        "id": "R10",
+        "text": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+        "gold": "should_judge",
+        "gold_error": false,
+        "status": "证据支持",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "76005cbee571f03305659334"
+        ],
+        "ok": true
+      },
+      {
+        "id": "R11",
+        "text": "我们认为公司估值处于历史低位。",
+        "gold": "qualitative",
+        "gold_error": null,
+        "status": "模型判断",
+        "track": "model",
+        "reason_code": "qualitative_statement",
+        "evidence_ids": [],
+        "ok": true
+      },
+      {
+        "id": "R12",
+        "text": "2023年，五粮液归母净利润为999.99亿元。",
+        "gold": "should_judge",
+        "gold_error": true,
+        "status": "确认错误",
+        "track": "deterministic",
+        "reason_code": "deterministic_check",
+        "evidence_ids": [
+          "f634eed8106e9a42d28b3d0b"
+        ],
+        "ok": true
+      }
+    ]
+  },
+  "E5": {
+    "name": "E5 口径消融（旧 vs 新）",
+    "total": 12,
+    "old_can_judge": 4,
+    "new_can_judge": 8,
+    "old_reject": 8,
+    "new_covered": 12,
+    "coverage_lift": 0.6667,
+    "rows": [
+      {
+        "id": "R01",
+        "text": "2024年，贵州茅台营业收入为1500.00亿元。",
+        "old": "可进数值裁决",
+        "new": "可进数值裁决",
+        "improved": true
+      },
+      {
+        "id": "R02",
+        "text": "我们预计公司2025年营业收入有望达到约1900亿元。",
+        "old": "拒判 non_historical_claim",
+        "new": "标记 forecast_marked_only",
+        "improved": true
+      },
+      {
+        "id": "R03",
+        "text": "2024年，贵州茅台营业收入约为1709亿元。",
+        "old": "拒判 non_exact_claim",
+        "new": "可进数值裁决",
+        "improved": true
+      },
+      {
+        "id": "R04",
+        "text": "2024年，贵州茅台营业收入超过1800亿元。",
+        "old": "拒判 non_exact_claim",
+        "new": "可进数值裁决",
+        "improved": true
+      },
+      {
+        "id": "R05",
+        "text": "2024年，贵州茅台归母净利润不低于800亿元。",
+        "old": "拒判 non_exact_claim",
+        "new": "可进数值裁决",
+        "improved": true
+      },
+      {
+        "id": "R06",
+        "text": "剔除投资收益后，公司经营质量明显改善。",
+        "old": "拒判 unsupported_operation",
+        "new": "模型判断 qualitative",
+        "improved": true
+      },
+      {
+        "id": "R07",
+        "text": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+        "old": "可进数值裁决",
+        "new": "可进数值裁决",
+        "improved": true
+      },
+      {
+        "id": "R08",
+        "text": "公司净利润创新高。",
+        "old": "拒判 unsupported_operation",
+        "new": "模型判断 qualitative",
+        "improved": true
+      },
+      {
+        "id": "R09",
+        "text": "2024年，贵州茅台营业收入同比增长15.71%。",
+        "old": "可进数值裁决",
+        "new": "可进数值裁决",
+        "improved": true
+      },
+      {
+        "id": "R10",
+        "text": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+        "old": "拒判 unsupported_metric",
+        "new": "可进数值裁决",
+        "improved": true
+      },
+      {
+        "id": "R11",
+        "text": "我们认为公司估值处于历史低位。",
+        "old": "拒判 unsupported_operation",
+        "new": "模型判断 qualitative",
+        "improved": true
+      },
+      {
+        "id": "R12",
+        "text": "2023年，五粮液归母净利润为999.99亿元。",
+        "old": "可进数值裁决",
+        "new": "可进数值裁决",
+        "improved": true
+      }
+    ]
+  },
+  "E5b": {
+    "name": "E5b 基线对比（自由回答 vs 证据链）",
+    "total": 12,
+    "baseline_with_evidence": 0,
+    "system_with_evidence": 8,
+    "system_recomputable": 8,
+    "note": "基线口径=通用大模型直接作答（无页码/哈希/可复算）；系统口径=代码裁决必须带 evidence_id",
+    "rows": [
+      {
+        "id": "R01",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "确认错误",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      },
+      {
+        "id": "R02",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "模型判断",
+          "track": "model",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        }
+      },
+      {
+        "id": "R03",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      },
+      {
+        "id": "R04",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "确认错误",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      },
+      {
+        "id": "R05",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      },
+      {
+        "id": "R06",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "模型判断",
+          "track": "model",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        }
+      },
+      {
+        "id": "R07",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      },
+      {
+        "id": "R08",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "模型判断",
+          "track": "model",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        }
+      },
+      {
+        "id": "R09",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      },
+      {
+        "id": "R10",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      },
+      {
+        "id": "R11",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "模型判断",
+          "track": "model",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        }
+      },
+      {
+        "id": "R12",
+        "baseline": {
+          "answer_style": "自由陈述对错/复述",
+          "has_evidence_id": false,
+          "has_page": false,
+          "recomputable": false
+        },
+        "system": {
+          "status": "确认错误",
+          "track": "deterministic",
+          "has_evidence_id": true,
+          "has_page": true,
+          "recomputable": true
+        }
+      }
+    ]
+  }
+}

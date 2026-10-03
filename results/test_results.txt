@@ -76,8 +76,15 @@ test_report_exposes_all_disclosure_checks (__main__.RealReportIntegrationTests.t
 test_comparison_uses_disclosed_precision (__main__.ReportTests.test_comparison_uses_disclosed_precision) ... ok
 test_disagreement_visible_in_markdown (__main__.ReportTests.test_disagreement_visible_in_markdown) ... ok
 test_missing_and_uncomputable_are_not_passes (__main__.ReportTests.test_missing_and_uncomputable_are_not_passes) ... ok
+test_compare_claim_is_only_verdict_source (__main__.ToolLoopTests.test_compare_claim_is_only_verdict_source) ... ok
+test_find_evidence_empty_is_not_guessable (__main__.ToolLoopTests.test_find_evidence_empty_is_not_guessable) ... ok
+test_find_evidence_returns_identity (__main__.ToolLoopTests.test_find_evidence_returns_identity) ... ok
+test_loop_executes_tools_then_submits (__main__.ToolLoopTests.test_loop_executes_tools_then_submits) ... ok
+test_loop_parse_rejects_garbage (__main__.ToolLoopTests.test_loop_parse_rejects_garbage) ... ok
+test_loop_tool_budget_is_enforced (__main__.ToolLoopTests.test_loop_tool_budget_is_enforced) ... ok
+test_unknown_tool_is_error_not_crash (__main__.ToolLoopTests.test_unknown_tool_is_error_not_crash) ... ok
 
 ----------------------------------------------------------------------
-Ran 77 tests in 18.435s
+Ran 84 tests in 17.785s
 
 OK
