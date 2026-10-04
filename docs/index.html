@@ -8,31 +8,67 @@
 </head>
 <body>
 <header>
-  <h1>金融投研智能体</h1>
-  <p class="sub">研究报告纠错核查 · 表格 + 点击溯源 + 审计日志 —— 每个结论都能指回原文第几页</p>
+  <div class="head-inner">
+    <div>
+      <h1>金融投研智能体</h1>
+      <p class="sub">研究报告纠错核查 · 表格 + 点击溯源 + 审计日志 —— 每个结论都能指回原文第几页</p>
+    </div>
+    <div class="head-badge">预跑快照 · 可复现</div>
+  </div>
 </header>
 
+<section id="overview" class="overview">
+  <div class="stat-card"><div class="n" id="st-companies">—</div><div class="k">样本公司</div></div>
+  <div class="stat-card"><div class="n" id="st-materials">—</div><div class="k">年报材料</div></div>
+  <div class="stat-card"><div class="n" id="st-evidence">—</div><div class="k">证据条数</div></div>
+  <div class="stat-card ok"><div class="n" id="st-match">—</div><div class="k">同比一致</div></div>
+  <div class="stat-card bad"><div class="n" id="st-mismatch">—</div><div class="k">同比不一致</div></div>
+  <div class="stat-card warn"><div class="n" id="st-review">—</div><div class="k">需人工复核</div></div>
+</section>
+
 <nav id="tabs">
-  <button data-tab="materials" class="active">材料台账</button>
+  <button data-tab="yoy" class="active">指标与同比</button>
+  <button data-tab="materials">材料台账</button>
   <button data-tab="evidence">证据与溯源</button>
   <button data-tab="checks">陈述核查</button>
   <button data-tab="events">审计日志</button>
 </nav>
 
 <main>
+  <!-- 指标与同比 -->
+  <section id="tab-yoy" class="tab active">
+    <div class="bar">
+      <span id="yoy-count"></span>
+      <select id="yoy-company"></select>
+      <span class="hint">复算同比按披露小数位 ROUND_HALF_UP；一致只表示报告内部算术一致</span>
+    </div>
+    <div class="table-wrap">
+      <table class="grid" id="yoy-table">
+        <thead><tr>
+          <th>公司</th><th>年度</th><th>指标</th><th>本年</th><th>上年</th>
+          <th>复算同比</th><th>披露同比</th><th>核对</th><th>页</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="yoy-basis" class="foot-note"></div>
+  </section>
+
   <!-- 材料台账 -->
-  <section id="tab-materials" class="tab active">
+  <section id="tab-materials" class="tab">
     <div class="bar">
       <span id="mat-count"></span>
       <input id="mat-filter" placeholder="搜索代码 / 公司 / 年份…" />
     </div>
-    <table class="grid" id="mat-table">
-      <thead><tr>
-        <th>代码</th><th>公司</th><th>年度</th><th>标题</th>
-        <th>公告 ID</th><th>页数</th><th>指纹 sha256</th>
-      </tr></thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-wrap">
+      <table class="grid" id="mat-table">
+        <thead><tr>
+          <th>代码</th><th>公司</th><th>年度</th><th>标题</th>
+          <th>公告 ID</th><th>页数</th><th>指纹 sha256</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </section>
 
   <!-- 证据与溯源 -->
@@ -44,15 +80,23 @@
           <select id="ev-company"></select>
           <select id="ev-metric"></select>
         </div>
-        <table class="grid" id="ev-table">
-          <thead><tr>
-            <th>公司</th><th>指标</th><th>年度</th><th>数值</th><th>单位</th><th>页</th><th>口径</th>
-          </tr></thead>
-          <tbody></tbody>
-        </table>
+        <div class="table-wrap">
+          <table class="grid" id="ev-table">
+            <thead><tr>
+              <th>公司</th><th>指标</th><th>年度</th><th>数值</th><th>单位</th><th>页</th><th>口径</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
       <div class="right">
-        <div class="bar"><span id="src-title">点击左侧任意一行 → 定位原文</span></div>
+        <div class="bar">
+          <span id="src-title">点击左侧任意一行 → 定位原文</span>
+          <span class="legend">
+            <i class="swatch val"></i>数值
+            <i class="swatch lab"></i>标签
+          </span>
+        </div>
         <div id="src-view">
           <div class="placeholder">左表选中一行后，这里显示证据所在页并高亮数值单元格</div>
         </div>
@@ -62,24 +106,40 @@
 
   <!-- 陈述核查 -->
   <section id="tab-checks" class="tab">
-    <div class="bar"><span id="ck-count"></span></div>
-    <table class="grid" id="ck-table">
-      <thead><tr>
-        <th>编号</th><th>原句</th><th>核查项</th><th>结果</th><th>原因 / 程序建议</th><th>证据与页码</th>
-      </tr></thead>
-      <tbody></tbody>
-    </table>
+    <div class="bar">
+      <span id="ck-count"></span>
+      <select id="ck-filter">
+        <option value="">全部结论</option>
+        <option value="证据支持">证据支持</option>
+        <option value="确认错误">确认错误</option>
+        <option value="证据不足">证据不足</option>
+        <option value="口径冲突／需人工复核">需人工复核</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table class="grid" id="ck-table">
+        <thead><tr>
+          <th>编号</th><th>原句</th><th>核查项</th><th>结果</th><th>原因 / 程序建议</th><th>证据与页码</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </section>
 
   <!-- 审计日志 -->
   <section id="tab-events" class="tab">
-    <div class="bar"><span id="ev2-count"></span></div>
-    <table class="grid" id="ev2-table">
-      <thead><tr>
-        <th>时间</th><th>事件</th><th>详情</th>
-      </tr></thead>
-      <tbody></tbody>
-    </table>
+    <div class="bar">
+      <span id="ev2-count"></span>
+      <input id="ev2-filter" placeholder="筛选事件类型…" />
+    </div>
+    <div class="table-wrap">
+      <table class="grid" id="ev2-table">
+        <thead><tr>
+          <th>时间</th><th>事件</th><th>详情</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </section>
 </main>
 
