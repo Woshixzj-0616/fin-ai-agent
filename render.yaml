@@ -1,0 +1,16 @@
+# Render Blueprint · 金融投研智能体 · 现场分析工具
+# Render 控制台 "New +" → "Blueprint" → 选本仓库即可一键部署。
+services:
+  - type: web
+    name: fin-ai-agent
+    runtime: python
+    plan: free
+    rootDir: .
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd agent && python webui.py
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
+      - key: HOST
+        value: "0.0.0.0"
