@@ -12,13 +12,12 @@ import traceback
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs
 
 from finance import analyze
 from extract import extract_material
 from main import report_markdown
 from materials import ROOT, Run, register, sha256, write_json
-from qa import answer as qa_answer  # noqa: I001
+from qa import answer as qa_answer
 
 MAX_UPLOAD = 40 * 1024 * 1024
 # 临时分析的工作区：不进正式 70 份年报台账，避免污染 data/agent 与测试夹具
@@ -276,7 +275,7 @@ pre.report {
 .status-line { font-size: 13px; color: var(--muted); min-height: 20px; }
 .status-line.busy { color: var(--accent); }
 .status-line.err { color: var(--bad); }
-#results[hidden], #checks[hidden], #evidence-card[hidden], #report-card[hidden], #qa-card[hidden] { display: none; }
+#results[hidden], #checks[hidden], #analysis-card[hidden], #report-card[hidden], #qa-card[hidden], #manual-fallback[hidden], #auto-info[hidden] { display: none; }
 .qa-item {
   border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
   margin-top: 10px; background: #fff;
@@ -293,6 +292,26 @@ pre.report {
 a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; }
 .empty {
   padding: 28px; text-align: center; color: var(--muted); font-size: 14px;
+}
+.upload-area {
+  border: 2px dashed var(--line); border-radius: 12px; padding: 24px;
+  text-align: center; transition: border-color .15s;
+}
+.upload-area:hover { border-color: var(--accent); }
+.auto-info {
+  margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+  background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 13.5px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.auto-info .tag {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  background: #dcfae6; color: var(--ok); font-weight: 600; font-size: 12.5px;
+}
+.auto-info .tag.warn { background: #fef0c7; color: var(--warn); }
+.dir-tag {
+  font-size: 11px; font-weight: 500; color: var(--accent);
+  background: #e0eaff; padding: 2px 10px; border-radius: 999px;
+  margin-left: 8px; vertical-align: middle;
 }
 #lightbox {
   position: fixed; inset: 0; background: rgba(16, 24, 40, .62); z-index: 50;
@@ -314,7 +333,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
 }
 @media print {
   header .sub, main > .card:first-child, .status-line,
-  #report-card h2 .actions, #evidence-card h2 .actions { display: none !important; }
+  #report-card h2 .actions, #results h2 .dir-tag, #analysis-card h2 .dir-tag, #checks h2 .dir-tag { display: none !important; }
   body { background: #fff; }
   .card {
     border: 0; padding: 0 0 12px; margin: 0 0 8px; page-break-inside: avoid;
@@ -333,41 +352,57 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
 </header>
 <main>
   <section class="card">
-    <h2>1. 材料</h2>
-    <div class="grid">
-      <div>
-        <label>年报 PDF</label>
-        <input type="file" id="pdf" accept="application/pdf">
-        <div class="file-meta" id="file-meta"></div>
+    <h2>上传财报</h2>
+    <div class="upload-area" id="upload-area">
+      <input type="file" id="pdf" accept="application/pdf">
+      <div class="file-meta" id="file-meta"></div>
+    </div>
+    <div id="auto-info" class="auto-info" hidden></div>
+    <div id="manual-fallback" hidden>
+      <div class="grid" style="margin-top:10px">
+        <div>
+          <label>证券代码</label>
+          <input type="text" id="code" placeholder="6 位数字" maxlength="6" inputmode="numeric">
+        </div>
+        <div>
+          <label>公司简称</label>
+          <input type="text" id="name" placeholder="如 贵州茅台">
+        </div>
+        <div>
+          <label>报告年度</label>
+          <input type="number" id="year" placeholder="如 2024" min="2000" max="2100">
+        </div>
       </div>
-      <div>
-        <label>证券代码（6 位）</label>
-        <input type="text" id="code" placeholder="如 600519" maxlength="6" inputmode="numeric">
-      </div>
-      <div>
-        <label>公司简称</label>
-        <input type="text" id="name" placeholder="如 贵州茅台">
-      </div>
-      <div>
-        <label>报告年度</label>
-        <input type="number" id="year" placeholder="如 2024" min="2000" max="2100">
-      </div>
-      <div>
-        <label>研报草稿（可选，有则做纠错核查）</label>
-        <textarea id="draft" placeholder="粘贴一段投研草稿；不填则只出指标与年报内部分析"></textarea>
-      </div>
+    </div>
+    <div style="margin-top:12px">
+      <label>研报草稿（可选 — 粘贴后自动做纠错核查）</label>
+      <textarea id="draft" placeholder="粘贴一段投研草稿；不填则只做提取与分析"></textarea>
     </div>
     <div class="row">
       <button id="run">开始分析</button>
-      <button class="secondary" id="prefill" type="button">从 PDF 猜字段</button>
-      <span class="hint">任意公司年报均可；临时分析进 results/webui_work/，不污染正式台账。</span>
+      <span class="hint">只需一份 PDF，公司 / 代码 / 年度自动识别。</span>
     </div>
     <div class="status-line" id="status"></div>
   </section>
 
   <section class="card" id="results" hidden>
-    <h2>2. 指标与同比核对</h2>
+    <h2>① 结构化提取 <span class="dir-tag">方向一 · 非标准公告抠数据</span></h2>
     <div class="stats" id="stats"></div>
+    <div class="table-wrap">
+      <table class="grid" id="evidence">
+        <thead>
+          <tr>
+            <th>证据 ID</th><th>指标</th><th>年度</th><th>数值</th><th>单位</th>
+            <th>口径</th><th>调整</th><th>PDF 页</th><th>问题</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="analysis-card" hidden>
+    <h2>② 财报分析 <span class="dir-tag">方向二 · 财报指标与同比</span></h2>
     <div class="table-wrap">
       <table class="grid" id="metrics">
         <thead>
@@ -383,30 +418,15 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   </section>
 
   <section class="card" id="checks" hidden>
-    <h2>3. 草稿核查</h2>
+    <h2>③ 纠错核查 <span class="dir-tag">方向五 · 研报纠错</span></h2>
     <div id="checks-body"></div>
   </section>
 
-  <section class="card" id="evidence-card" hidden>
-    <h2>4. 证据明细</h2>
-    <div class="table-wrap">
-      <table class="grid" id="evidence">
-        <thead>
-          <tr>
-            <th>证据 ID</th><th>指标</th><th>年度</th><th>数值</th><th>单位</th>
-            <th>口径</th><th>调整</th><th>PDF 页</th><th>问题</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
-
   <section class="card" id="qa-card" hidden>
-    <h2>5. 受限问答</h2>
-    <p class="hint" style="margin:0 0 10px">只基于本次已抽取的证据回答；每个数字挂 evidence_id，点页码可溯源。不答年报以外的事。</p>
+    <h2>④ 受限问答</h2>
+    <p class="hint" style="margin:0 0 10px">只基于本次已抽取的证据回答；每个数字挂 evidence_id，点页码可溯源。</p>
     <div class="row" style="margin-top:0">
-      <input type="text" id="qa-input" placeholder="如：2024年营业收入是多少 / 营收同比 / 有什么问题 / 有哪些指标"
+      <input type="text" id="qa-input" placeholder="如：2024年营业收入是多少 / 营收同比 / 有什么问题"
              style="flex:1;min-width:220px" maxlength="500">
       <button id="qa-ask" type="button">提问</button>
     </div>
@@ -416,7 +436,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
 
   <section class="card" id="report-card" hidden>
     <h2>
-      6. 核查报告
+      ⑤ 完整报告
       <span class="actions">
         <button class="secondary" id="export-md" type="button">导出 Markdown</button>
         <button class="secondary" id="export-pdf" type="button">导出 PDF</button>
@@ -489,21 +509,42 @@ function closeLightbox() {
   $('#lb-img').removeAttribute('src');
 }
 
+let autoInfo = {};  // 从 PDF 自动识别到的字段
+
 async function prefill() {
   const file = $('#pdf').files[0];
-  if (!file) { setStatus('先选一份 PDF', 'err'); return; }
+  if (!file) return;
   const form = new FormData();
   form.append('pdf', file);
-  setStatus('正在读 PDF 猜字段…', 'busy');
+  setStatus('正在从 PDF 识别公司信息…', 'busy');
   try {
     const res = await fetch('/api/prefill', { method: 'POST', body: form });
     const data = await res.json();
-    if (data.code && !$('#code').value) $('#code').value = data.code;
-    if (data.name && !$('#name').value) $('#name').value = data.name;
-    if (data.year && !$('#year').value) $('#year').value = data.year;
-    setStatus(data.code || data.name || data.year ? '已填入猜到的字段，请核对' : '没猜到，请手填代码/简称/年度', '');
+    autoInfo = data;
+    const tags = [];
+    if (data.name) tags.push(`<span class="tag">${esc(data.name)}</span>`);
+    if (data.code) tags.push(`<span class="tag">${esc(data.code)}</span>`);
+    if (data.year) tags.push(`<span class="tag">${esc(data.year)} 年报</span>`);
+    const missing = [];
+    if (!data.code) missing.push('代码');
+    if (!data.name) missing.push('公司');
+    if (!data.year) missing.push('年度');
+    if (missing.length) {
+      tags.push(`<span class="tag warn">未识别：${esc(missing.join(' / '))}</span>`);
+      // 识别不全 → 露出手填那几格
+      $('#manual-fallback').hidden = false;
+      if (data.code) $('#code').value = data.code;
+      if (data.name) $('#name').value = data.name;
+      if (data.year) $('#year').value = data.year;
+    } else {
+      $('#manual-fallback').hidden = true;
+    }
+    $('#auto-info').innerHTML = '已识别：' + tags.join(' ');
+    $('#auto-info').hidden = false;
+    setStatus(missing.length ? '部分字段未识别，请手动补充' : '已自动识别，点「开始分析」即可', '');
   } catch (e) {
-    setStatus('猜字段失败：' + e, 'err');
+    $('#manual-fallback').hidden = false;
+    setStatus('自动识别失败，请手动填写', 'err');
   }
 }
 
@@ -511,6 +552,8 @@ function onFilePicked() {
   const file = $('#pdf').files[0];
   if (!file) {
     $('#file-meta').textContent = '';
+    $('#auto-info').hidden = true;
+    $('#manual-fallback').hidden = true;
     return;
   }
   const kb = file.size / 1024;
@@ -521,29 +564,26 @@ function onFilePicked() {
 
 async function run() {
   const file = $('#pdf').files[0];
-  const code = $('#code').value.trim();
-  const name = $('#name').value.trim();
-  const year = $('#year').value.trim();
   const draft = $('#draft').value;
   if (!file) { setStatus('请选择年报 PDF', 'err'); return; }
-  if (!/^\d{6}$/.test(code)) { setStatus('证券代码需为 6 位数字', 'err'); return; }
-  if (!name) { setStatus('请填公司简称', 'err'); return; }
-  if (!/^\d{4}$/.test(year)) { setStatus('请填报告年度', 'err'); return; }
+
+  // 自动识别到的（或手填的）字段
+  const code = ($('#manual-fallback').hidden ? (autoInfo.code || '') : ($('#code').value.trim() || autoInfo.code || '')).trim();
+  const name = ($('#manual-fallback').hidden ? (autoInfo.name || '') : ($('#name').value.trim() || autoInfo.name || '')).trim();
+  const year = ($('#manual-fallback').hidden ? (autoInfo.year || '') : ($('#year').value.trim() || autoInfo.year || '')).toString().trim();
 
   const form = new FormData();
   form.append('pdf', file);
-  form.append('code', code);
-  form.append('name', name);
-  form.append('year', year);
+  if (code) form.append('code', code);
+  if (name) form.append('name', name);
+  if (year) form.append('year', year);
   form.append('draft', draft || '');
 
   $('#run').disabled = true;
   setStatus('正在抽取指标并核算（含渲染页图），请稍候…', 'busy');
-  $('#results').hidden = true;
-  $('#checks').hidden = true;
-  $('#evidence-card').hidden = true;
-  $('#report-card').hidden = true;
-  $('#qa-card').hidden = true;
+  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card']) {
+    $('#' + id).hidden = true;
+  }
   $('#qa-history').innerHTML = '';
   try {
     const res = await fetch('/api/analyze', { method: 'POST', body: form });
@@ -554,7 +594,7 @@ async function run() {
     }
     render(data);
     const c = data.counts || {};
-    setStatus(`完成：证据 ${data.evidence.length} 条 · 同比一致 ${c.match || 0} · 不一致 ${c.mismatch || 0} · 待复核 ${data.issues.length} 条`, '');
+    setStatus(`完成：提取证据 ${data.evidence.length} 条 · 同比一致 ${c.match || 0} · 不一致 ${c.mismatch || 0} · 待复核 ${data.issues.length} 条`, '');
   } catch (e) {
     setStatus('请求失败：' + e, 'err');
   } finally {
@@ -565,14 +605,32 @@ async function run() {
 function render(data) {
   window.__last = data;
   const c = data.counts || {};
+
+  // ── ① 结构化提取：证据表 + 统计 ──
   $('#stats').innerHTML = [
-    ['证据条数', (data.evidence || []).length, 'info'],
+    ['提取证据', (data.evidence || []).length, 'info'],
     ['同比一致', c.match || 0, 'ok'],
     ['同比不一致', c.mismatch || 0, 'bad'],
     ['缺披露值', c.unverified || 0, ''],
     ['待复核', (data.issues || []).length, (data.issues || []).length ? 'bad' : 'ok'],
   ].map(([k, n, cls]) => `<div class="stat ${cls}"><div class="n">${n}</div><div class="k">${k}</div></div>`).join('');
 
+  const evBody = (data.evidence || []).map((e) => `<tr>
+    <td>${esc(e.evidence_id)}</td>
+    <td>${esc(e.metric_name || e.metric)}</td>
+    <td>${esc(e.period_year)}</td>
+    <td class="num">${fmt(e.value)}</td>
+    <td>${esc(e.unit || '—')}</td>
+    <td>${esc(e.scope || '—')}</td>
+    <td>${esc(e.adjustment || '—')}</td>
+    <td class="num">${pageCell(e)}</td>
+    <td>${(e.issues && e.issues.length) ? badge(String(e.issues.join('；'))) : '<span class="badge ok">干净</span>'}</td>
+  </tr>`).join('');
+  $('#evidence tbody').innerHTML = evBody ||
+    `<tr><td colspan="9" class="empty">没有提取到证据</td></tr>`;
+  $('#results').hidden = false;
+
+  // ── ② 财报分析：指标与同比 ──
   const tbody = $('#metrics tbody');
   tbody.innerHTML = (data.rows || []).map((r) => {
     const yoy = r.yoy && r.yoy.status === 'ok' ? fmt(r.yoy.value) + '%' : (r.yoy ? r.yoy.status : '—');
@@ -590,13 +648,14 @@ function render(data) {
       <td class="num">${pageCell(r)}</td>
     </tr>`;
   }).join('') || `<tr><td colspan="7" class="empty">没有抽出指标</td></tr>`;
-  $('#results').hidden = false;
 
   const sigs = data.signals || [];
   $('#signals').innerHTML = sigs.length
     ? '<div class="hint">辅助观察：' + sigs.map((s) => esc(s.description)).join('；') + '</div>'
     : '';
+  $('#analysis-card').hidden = false;
 
+  // ── ③ 纠错核查 ──
   if (data.checks && data.checks.status) {
     const box = $('#checks-body');
     if (data.checks.status === 'completed') {
@@ -618,26 +677,14 @@ function render(data) {
       box.innerHTML = `<div class="empty">${esc(data.checks.reason || data.checks.status)}</div>`;
     }
     $('#checks').hidden = false;
+  } else {
+    $('#checks-body').innerHTML = '<div class="empty">未提供研报草稿 — 粘贴草稿后可做纠错核查</div>';
+    $('#checks').hidden = false;
   }
 
-  const evBody = (data.evidence || []).map((e) => `<tr>
-    <td>${esc(e.evidence_id)}</td>
-    <td>${esc(e.metric_name || e.metric)}</td>
-    <td>${esc(e.period_year)}</td>
-    <td class="num">${fmt(e.value)}</td>
-    <td>${esc(e.unit || '—')}</td>
-    <td>${esc(e.scope || '—')}</td>
-    <td>${esc(e.adjustment || '—')}</td>
-    <td class="num">${pageCell(e)}</td>
-    <td>${(e.issues && e.issues.length) ? badge(String(e.issues.join('；'))) : '<span class="badge ok">干净</span>'}</td>
-  </tr>`).join('');
-  $('#evidence tbody').innerHTML = evBody ||
-    `<tr><td colspan="9" class="empty">没有证据</td></tr>`;
-  $('#evidence-card').hidden = false;
-
+  // ── ④⑤ 报告与问答 ──
   $('#report').textContent = data.report_md || '';
   $('#report-card').hidden = false;
-
   $('#qa-history').innerHTML = '';
   $('#qa-input').value = '';
   $('#qa-card').hidden = false;
@@ -772,7 +819,6 @@ function exportPdf() {
 }
 
 $('#run').addEventListener('click', run);
-$('#prefill').addEventListener('click', prefill);
 $('#pdf').addEventListener('change', onFilePicked);
 $('#export-md').addEventListener('click', exportMarkdown);
 $('#export-pdf').addEventListener('click', exportPdf);
@@ -933,21 +979,30 @@ class Handler(BaseHTTPRequestHandler):
             if not pdf:
                 _json(self, 400, {"error": "缺少 PDF"})
                 return
+            # 字段全可选：没带就从 PDF 自动提取（用户只需丢文件）
             code = (fields.get("code") or "").strip()
             name = (fields.get("name") or "").strip()
             year_raw = (fields.get("year") or "").strip()
             draft = fields.get("draft") or ""
+            auto = guess_identity(pdf)
+            if not code:
+                code = auto.get("code") or ""
+            if not name:
+                name = auto.get("name") or ""
+            if not year_raw:
+                year_raw = str(auto.get("year") or "")
             if not re.fullmatch(r"\d{6}", code):
-                _json(self, 400, {"error": "证券代码需为 6 位数字"})
+                _json(self, 400, {"error": "未能从 PDF 识别证券代码，请检查文件是否为标准年报"})
                 return
             if not name:
-                _json(self, 400, {"error": "请填公司简称"})
+                _json(self, 400, {"error": "未能从 PDF 识别公司名称，请检查文件是否为标准年报"})
                 return
             if not re.fullmatch(r"\d{4}", year_raw):
-                _json(self, 400, {"error": "请填 4 位报告年度"})
+                _json(self, 400, {"error": "未能从 PDF 识别报告年度，请检查文件是否为标准年报"})
                 return
             payload = run_pipeline(pdf, code, name, int(year_raw),
                                    draft=draft or None)
+            payload["auto_detected"] = auto
             _json(self, 200, payload)
         except Exception as exc:
             traceback.print_exc()

@@ -832,12 +832,38 @@ class WebUITests(unittest.TestCase):
     """薄页面：正则/转义/页图白名单/猜字段/表单解析。"""
 
     def test_page_regex_matches_digits_not_backslash(self):
-        # 回归：Python 原始字符串里写 \\d 会让 JS 永远匹配不到数字，表单提交不了
+        # 回归：Python 原始字符串里写 \\d 会让 JS 永远匹配不到数字
+        # 10-05 改为自动提取后前端不再校验格式，校验在后端 —— 仍防退回到手写正则
         from webui import PAGE
-        self.assertIn(r"/^\d{6}$/.test(code)", PAGE)
-        self.assertIn(r"/^\d{4}$/.test(year)", PAGE)
         self.assertNotIn(r"/^\\d{6}$/", PAGE)
         self.assertNotIn(r"/^\\d{4}$/", PAGE)
+        # 后端校验仍在
+        import inspect
+
+        import webui
+        src = inspect.getsource(webui.Handler.do_POST)
+        self.assertIn(r're.fullmatch(r"\d{6}"', src)
+        self.assertIn(r're.fullmatch(r"\d{4}"', src)
+
+    def test_page_auto_detect_no_manual_fields_in_primary_flow(self):
+        """主流程只需 PDF：代码/公司/年度自动提取，手填区仅在识别失败时露出。"""
+        from webui import PAGE
+        self.assertIn('id="auto-info"', PAGE)
+        self.assertIn('id="manual-fallback"', PAGE)
+        self.assertIn('manual-fallback[hidden]', PAGE)   # 默认藏
+        self.assertNotIn('从 PDF 猜字段', PAGE)             # 不再要人点按钮
+        self.assertIn('只需一份 PDF', PAGE)
+
+    def test_page_shows_three_direction_blocks(self):
+        """结果区按三个方向分块：结构化提取 / 财报分析 / 纠错核查。"""
+        from webui import PAGE
+        self.assertIn("结构化提取", PAGE)
+        self.assertIn("财报分析", PAGE)
+        self.assertIn("纠错核查", PAGE)
+        self.assertIn("dir-tag", PAGE)
+        self.assertIn("方向一", PAGE)
+        self.assertIn("方向二", PAGE)
+        self.assertIn("方向五", PAGE)
 
     def test_page_escapes_dynamic_html(self):
         from webui import PAGE
