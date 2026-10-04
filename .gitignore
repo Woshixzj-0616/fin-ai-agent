@@ -14,3 +14,6 @@ venv/
 .idea/
 Thumbs.db
 desktop.ini
+
+# --- 薄页面临时分析（不进正式台账）---
+results/webui_work/

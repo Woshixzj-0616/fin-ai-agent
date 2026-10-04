@@ -14,7 +14,8 @@ from pathlib import Path
 from finance import check_claim, decimal, text
 from materials import ROOT, sha256, write_json
 
-# 别名补充；主名来自 data/scope.csv（单一事实源），load_companies() 合并两者。
+# 已知别名仅作软匹配辅助（方便「茅台」→贵州茅台），不是准入白名单；
+# 公司能否解析取决于本次已加载材料/证据里有没有它。
 COMPANY_ALIASES = {
     "600519": ["茅台", "贵州茅台酒股份有限公司"],
     "000858": ["宜宾五粮液股份有限公司"],
@@ -50,6 +51,22 @@ def load_companies(scope_csv: Path | None = None) -> dict[str, list[str]]:
 
 
 COMPANIES = load_companies()
+
+
+def companies_from_facts(facts: list[dict] | None) -> dict[str, list[str]]:
+    """从本次证据里汇总 公司代码 → [名称…]。任何已登记材料的公司都在册，不靠固定名单。"""
+    if not facts:
+        return {}
+    names: dict[str, list[str]] = {}
+    for fact in facts:
+        code = fact.get("company_code")
+        if not code:
+            continue
+        bucket = names.setdefault(code, [])
+        for candidate in (fact.get("company_name"), code):
+            if candidate and candidate not in bucket:
+                bucket.append(candidate)
+    return names
 METRICS = {
     "revenue": ["营业收入", "营收"],
     "total_revenue": ["营业总收入"],
@@ -217,11 +234,12 @@ class LLMClient:
                    model or os.environ.get("LLM_MODEL", ""), key,
                    mode or os.environ.get("LLM_FORMAT", "json_schema"))
 
-    def extract(self, sentences: list[dict], run) -> dict:
+    def extract(self, sentences: list[dict], run, facts: list[dict] | None = None) -> dict:
         contract = schema()
         response_format = {"type": "json_object"} if self.mode == "json_object" else {
             "type": "json_schema", "json_schema": {"name": "financial_claims", "strict": True, "schema": contract}}
-        system = SYSTEM_PROMPT + "\n公司白名单：" + json.dumps(COMPANIES, ensure_ascii=False)
+        loaded = companies_from_facts(facts) or COMPANIES
+        system = SYSTEM_PROMPT + "\n本次已加载公司（不限于此，新材料的公司同样适用）：" + json.dumps(loaded, ensure_ascii=False)
         system += "\n指标词典：" + json.dumps(METRICS, ensure_ascii=False)
         system += "\nJSON Schema：" + json.dumps(contract, ensure_ascii=False)
         payload = {"model": self.model, "stream": False, "temperature": 0, "response_format": response_format,
@@ -299,20 +317,44 @@ def split_draft(draft: str) -> list[dict]:
     return [{"sentence_id": i, "text": line} for i, line in enumerate(lines, 1)]
 
 
-def resolve_company(name, source: str, draft: str) -> str | None:
-    """公司名 → 证券代码。必须同时：①命中白名单 ②在本句引文或整份草稿里能指到。
+def resolve_company(name, source: str, draft: str, facts: list[dict] | None = None) -> str | None:
+    """公司名 → 证券代码。必须同时：①在本句引文或整份草稿里能指到 ②能对应到本次已加载材料。
 
     只认原文写法（错别字不纠正）；公司可以写在草稿开头（如「贵州茅台2024年报…」），
     后续句子用模型补全的 company_name 时，允许在整份草稿范围内溯源，不限句级引文。
+    不设固定白名单：任何已登记材料的公司都能解析；已知别名表只作软匹配辅助。
     """
     if not name or not isinstance(name, str):
         return None
-    code = next((c for c, names in COMPANIES.items() if name in [c, *names]), None)
-    if not code:
-        return None
     if name not in source and name not in draft:
         return None
-    return code
+
+    def match_facts() -> str | None:
+        if not facts:
+            return None
+        hits: set[str] = set()
+        for fact in facts:
+            code = fact.get("company_code") or ""
+            cname = fact.get("company_name") or ""
+            if not code:
+                continue
+            if name == code or (cname and (name == cname or name in cname or cname in name)):
+                hits.add(code)
+        return hits.pop() if len(hits) == 1 else None
+
+    hit = match_facts()
+    if hit:
+        return hit
+
+    if re.fullmatch(r"\d{6}", name):
+        # 纯证券代码：未加载证据时也认（登记/抽取阶段用），有证据时必须在册
+        return name if facts is None or any(f.get("company_code") == name for f in facts) else None
+
+    # 别名软匹配（如「茅台」→600519）；有证据时仍要求该公司在本次材料里
+    code = next((c for c, names in COMPANIES.items() if name in [c, *names]), None)
+    if code and (facts is None or any(f.get("company_code") == code for f in facts)):
+        return code
+    return None
 
 
 def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, claim_id: str) -> dict:
@@ -351,9 +393,9 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
         return model_note("qualitative_statement",
                           "定性陈述：本阶段不做数值裁决，解释见 plain_claim")
 
-    code = resolve_company(item["company_name"], source, draft)
+    code = resolve_company(item["company_name"], source, draft, facts)
     if not code:
-        return stop("unresolved_company", "原文公司名称/代码未能与白名单唯一对应，或无法在草稿中定位，不猜测公司", "证据不足")
+        return stop("unresolved_company", "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司", "证据不足")
     year = item["period_year"]
     if year is None or not re.search(rf"(?<!\d){year}(?!\d)", source):
         return stop("unresolved_period", "年度未明确或无法从原文定位，不猜测相对日期", "证据不足")
@@ -544,9 +586,9 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
                       rounds=loop_out.get("rounds"), budget_left=loop_out.get("budget_left"))
         except LLMError as exc:
             run.event("loop_fallback", reason=str(exc))
-            payload = client.extract(sentences, run)
+            payload = client.extract(sentences, run, facts)
     else:
-        payload = client.extract(sentences, run)
+        payload = client.extract(sentences, run, facts)
     results = check_payload(payload, sentences, draft, facts)
     bundle = {"schema_version": 2, "run_id": run.id, "status": "completed",
               "mode": mode, "model": client.model, "provider_host": client.host,

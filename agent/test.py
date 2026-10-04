@@ -531,6 +531,21 @@ class LLMFlowTests(unittest.TestCase):
         for code, name in (("600519", "贵州茅台"), ("000333", "美的集团"), ("002415", "海康威视")):
             self.assertIn(name, companies[code])
 
+    def test_arbitrary_company_resolves_from_facts(self):
+        # 不在别名表里的新公司：只要证据在册、草稿里能指到，就能解析
+        fact = {**self.fact, "company_code": "300999", "company_name": "示例科技股份有限公司"}
+        item = {**self.item, "company_name": "示例科技",
+                "quote": self.sentence.replace("贵州茅台", "示例科技")}
+        result = check_one_claim(item, [fact], item["quote"], item["quote"], "C1")
+        self.assertNotEqual(result["reason_code"], "unresolved_company")
+        self.assertEqual(result["normalized_claim"]["company_code"], "300999")
+
+    def test_company_not_in_facts_still_stops(self):
+        # 别名表命中但该公司不在本次证据里 —— 不能串到别的公司头上
+        fact = {**self.fact, "company_code": "300999", "company_name": "示例科技股份有限公司"}
+        result = check_one_claim(self.item, [fact], self.item["quote"], self.item["quote"], "C1")
+        self.assertEqual(result["reason_code"], "unresolved_company")
+
     def test_fuzzy_and_unspecified_profit_require_review(self):
         fuzzy = {**self.item, "quote": self.sentence.replace("为", "约为")}
         self.assertEqual(self.check(fuzzy)["reason_code"], "non_exact_claim")
@@ -811,6 +826,103 @@ class FlatOutputTests(unittest.TestCase):
             for name in ("../escape.txt", "pages/image.png", "pages\\image.png", "C:escape", ".."):
                 with self.subTest(name=name), self.assertRaises(ValueError):
                     run.output(name)
+
+
+class WebUITests(unittest.TestCase):
+    """薄页面：正则/转义/页图白名单/猜字段/表单解析。"""
+
+    def test_page_regex_matches_digits_not_backslash(self):
+        # 回归：Python 原始字符串里写 \\d 会让 JS 永远匹配不到数字，表单提交不了
+        from webui import PAGE
+        self.assertIn(r"/^\d{6}$/.test(code)", PAGE)
+        self.assertIn(r"/^\d{4}$/.test(year)", PAGE)
+        self.assertNotIn(r"/^\\d{6}$/", PAGE)
+        self.assertNotIn(r"/^\\d{4}$/", PAGE)
+
+    def test_page_escapes_dynamic_html(self):
+        from webui import PAGE
+        self.assertIn("const esc =", PAGE)
+        self.assertIn("${esc(", PAGE)
+        self.assertIn("openLightbox", PAGE)
+
+    def test_page_image_name_whitelist(self):
+        from webui import PAGE_PNG
+        self.assertTrue(PAGE_PNG.fullmatch("600519_2024_b17a9b9b_p158.png"))
+        self.assertFalse(PAGE_PNG.fullmatch("../secret.png"))
+        self.assertFalse(PAGE_PNG.fullmatch("a/b_p1.png"))
+        self.assertFalse(PAGE_PNG.fullmatch("600519_2024_zzzzzzzz_p1.png"))
+
+    def _tiny_pdf(self, text: str) -> bytes:
+        import pymupdf
+        doc = pymupdf.open()
+        page = doc.new_page()
+        # 默认 Helvetica 不带中文，必须挂系统中文字体，否则 get_text() 取不到字
+        font = pymupdf.Font(fontfile=r"C:\Windows\Fonts\msyh.ttc")
+        page.insert_font(fontname="zh", fontbuffer=font.buffer)
+        page.insert_text((72, 72), text, fontname="zh", fontsize=12)
+        blob = doc.tobytes()
+        doc.close()
+        return blob
+
+    def test_guess_identity_fills_code_name_year(self):
+        from webui import guess_identity
+        blob = self._tiny_pdf("贵州茅台酒股份有限公司 600519 2024年年度报告")
+        guess = guess_identity(blob)
+        self.assertEqual(guess.get("year"), 2024)
+        self.assertEqual(guess.get("code"), "600519")
+        self.assertIn("茅台", guess.get("name", ""))
+
+    def test_guess_identity_code_not_glued_to_year(self):
+        # 压掉空白后「600519 2024」会粘死，代码必须在保留空白的文本上找
+        from webui import guess_identity
+        blob = self._tiny_pdf("贵州茅台酒股份有限公司\n600519\n2024年年度报告")
+        guess = guess_identity(blob)
+        self.assertEqual(guess.get("code"), "600519")
+        self.assertEqual(guess.get("year"), 2024)
+
+    def test_guess_identity_empty_pdf_is_safe(self):
+        from webui import guess_identity
+        self.assertEqual(guess_identity(b"not-a-pdf"), {})
+
+    def test_parse_multipart_fields_and_pdf(self):
+        from webui import _parse_multipart
+        boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+        body = (
+            f"--{boundary}\r\n"
+            'Content-Disposition: form-data; name="code"\r\n\r\n'
+            "600519\r\n"
+            f"--{boundary}\r\n"
+            'Content-Disposition: form-data; name="pdf"; filename="a.pdf"\r\n'
+            "Content-Type: application/pdf\r\n\r\n"
+            "%PDF-1.4 fake\r\n"
+            f"--{boundary}--\r\n"
+        ).encode("utf-8")
+
+        class FakeHandler:
+            headers = {"Content-Type": f"multipart/form-data; boundary={boundary}",
+                      "Content-Length": str(len(body))}
+            rfile = io.BytesIO(body)
+
+        fields, pdf = _parse_multipart(FakeHandler())
+        self.assertEqual(fields["code"], "600519")
+        self.assertTrue(pdf.startswith(b"%PDF"))
+
+    def test_run_pipeline_smoke_and_page_images(self):
+        from webui import run_pipeline
+        blob = self._tiny_pdf("示例科技股份有限公司 300999 2024年年度报告")
+        with tempfile.TemporaryDirectory(prefix="webui_pipe_") as directory:
+            base = Path(directory)
+            payload = run_pipeline(blob, "300999", "示例科技", 2024,
+                                   workspace=base / "work", root=base)
+            self.assertTrue(payload["ok"] or payload["failures"])
+            self.assertEqual(payload["materials"][0]["company_code"], "300999")
+            self.assertIn("counts", payload)
+            self.assertIn("report_md", payload)
+            # 不覆盖正式 evidence.json
+            self.assertFalse((base / "results" / "evidence.json").exists())
+            self.assertTrue((base / "results" / "webui_evidence.json").exists())
+            for row in payload["rows"]:
+                self.assertIn("page_image", row)
 
 
 if __name__ == "__main__":

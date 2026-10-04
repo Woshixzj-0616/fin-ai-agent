@@ -32,6 +32,7 @@
 | 初赛材料 | ✅ 计划书（`docs/初赛/计划书.md` + PDF）+ 5 分钟视频脚本（`docs/初赛/视频脚本.md`）|
 | 抽取 unit/scope 加固 | ✅ 去重补单位并重算归一值 + 报表标题归一（美的/招行版式）+ 旁证跨单位检索；**待复核字段 125 → 0** |
 | 现场一键 live | ✅ `python agent/main.py live --code --year` / `live --pdf 新材料.pdf --code --name --year` |
+| 本地薄页面（丢财报→出答案） | ✅ `python agent/webui.py`：上传任意公司年报 → 指标表 + 同比核对 + 核查报告；草稿可选纠错；不进白名单 |
 | 运行说明 + 最终报告书 | ✅ `docs/运行说明.md` · `docs/最终报告书.md` |
 | 研报文体样例 + gold 复签包 | ✅ `data/eval/report_samples/` 端到端 18/18；`data/gold/复签包.md`（G1 24 条 / G2 抽样 / G3 语义） |
 
@@ -95,6 +96,10 @@ python main.py demo                          # 贵州茅台 2024 单报告示例
 python main.py live --code 600519 --year 2024  # 现场一键：抽取/分析/报告
 python main.py live --pdf 新材料.pdf --code 600000 --name 某某 --year 2025
 python main.py check-text --file <草稿.txt>   # 模型拆句 + 本地确定性核查
+
+# —— 本地薄页面（丢财报 → 出指标与核查报告）——
+python webui.py                              # 打开 http://127.0.0.1:8765/
+# 任意公司年报都能丢；临时分析进 results/webui_work/，不污染 70 份正式台账
 
 # —— 错误注入评测（根目录）——
 python scripts/eval/build_eval_set.py         # 生成注错草稿（data/eval/）

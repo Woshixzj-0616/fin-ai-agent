@@ -9,7 +9,7 @@
 from __future__ import annotations
 
 from finance import check_claim, compare_amount, decimal, evidence_yoy, select_previous, text
-from llm_check import COMPANIES, METRIC_NOTE, METRICS, UNITS, resolve_company
+from llm_check import COMPANIES, METRIC_NOTE, METRICS, UNITS, companies_from_facts, resolve_company
 
 TOOL_NAMES = (
     "list_catalog",
@@ -25,7 +25,7 @@ def tool_specs() -> list[dict]:
     return [
         {
             "name": "list_catalog",
-            "description": "列出公司白名单、指标键名与别名、单位与运算符枚举。只读。",
+            "description": "列出本次已加载公司、指标键名与别名、单位与运算符枚举。只读。",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -110,10 +110,11 @@ def _err(message: str, **extra) -> dict:
     return {"status": "error", "error": message, **extra}
 
 
-def list_catalog(kind: str) -> dict:
+def list_catalog(kind: str, facts: list[dict] | None = None) -> dict:
     if kind == "companies":
-        return {"status": "ok", "kind": kind,
-                "companies": {code: names for code, names in COMPANIES.items()}}
+        loaded = companies_from_facts(facts) or COMPANIES
+        return {"status": "ok", "kind": kind, "companies": loaded,
+                "note": "来自本次已加载材料；新公司随材料自动入册，不靠固定白名单"}
     if kind == "metrics":
         return {"status": "ok", "kind": kind,
                 "metrics": {k: {"aliases": v, "note": METRIC_NOTE.get(k)}
@@ -135,10 +136,9 @@ def list_catalog(kind: str) -> dict:
 def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
                   period_year: int, source_report_year: int | None = None,
                   draft: str = "") -> dict:
-    code = resolve_company(company_name_or_code, company_name_or_code, draft) \
-        or (company_name_or_code if company_name_or_code in COMPANIES else None)
+    code = resolve_company(company_name_or_code, company_name_or_code, draft or company_name_or_code, facts)
     if not code:
-        return _err("公司无法映射到白名单", company=company_name_or_code)
+        return _err("公司无法对应到本次已加载材料", company=company_name_or_code)
     if metric not in METRICS:
         return _err("指标不在目录", metric=metric)
     report_year = int(source_report_year or period_year)
@@ -195,8 +195,7 @@ def compare_claim(facts: list[dict], *, company_name_or_code: str, metric: str,
     if located.get("status") != "ok":
         return {"verdict": "needs_review", "reason_code": "missing_evidence",
                 "evidence_ids": [], "detail": located}
-    code = resolve_company(company_name_or_code, company_name_or_code, draft) \
-        or company_name_or_code
+    code = located["items"][0]["company_code"]
     value = claimed_value
     if kind == "yoy" and direction == "down" and decimal(claimed_value) and decimal(claimed_value) > 0:
         value = "-" + str(decimal(claimed_value))
@@ -233,10 +232,9 @@ def search_text(facts: list[dict], document_texts: dict | None = None, *,
         return _err("query 需为 1–40 字")
     if not document_texts:
         return {"status": "empty", "hits": [], "hint": "未注入文档正文，无法全文检索"}
-    code = company_name_or_code if company_name_or_code in COMPANIES else (
-        resolve_company(company_name_or_code, query, query) or None)
+    code = resolve_company(company_name_or_code, company_name_or_code, company_name_or_code, facts)
     if not code:
-        return _err("公司无法映射", company=company_name_or_code)
+        return _err("公司无法对应到本次已加载材料", company=company_name_or_code)
     key = f"{code}_{int(source_report_year)}"
     pages = document_texts.get(key) or []
     hits = [{"page": i + 1, "snippet": t[max(0, t.find(query) - 30): t.find(query) + len(query) + 30]}
@@ -250,7 +248,7 @@ def dispatch(name: str, facts: list[dict], arguments: dict,
     """JSON 多步协议的执行器。未知工具 / 参数错误一律 error，不抛栈。"""
     try:
         if name == "list_catalog":
-            return list_catalog(arguments.get("kind", "metrics"))
+            return list_catalog(arguments.get("kind", "metrics"), facts)
         if name == "find_evidence":
             return find_evidence(facts, draft=draft, **arguments)
         if name == "compute_yoy":

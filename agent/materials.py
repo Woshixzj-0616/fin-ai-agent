@@ -236,6 +236,8 @@ def register(root: Path, blob: bytes, metadata: dict, run: Run, by_reference: bo
         "local_file": relative.as_posix(), "sha256": fingerprint, "size_bytes": len(blob),
         "first_ingested_at": old["first_ingested_at"] if old else now(),
         "checked_at": now(), "observation_run_id": run.id,
+        # 上传/现场材料没有“线上更新版本”可追，默认不需要版本复核
+        "needs_version_review": metadata.get("needs_version_review", False),
     }
     ledger = root / DATA / "materials.jsonl"
     with ledger.open("a", encoding="utf-8") as stream:

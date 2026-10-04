@@ -14,7 +14,7 @@ if sys.version_info < (3, 11):
 import pymupdf
 
 from materials import (ROOT, TZ, Run, fetch, import_legacy, load_materials, register,
-                       verify_registry, write_csv, write_json)
+                       sha256, verify_registry, write_csv, write_json)
 from extract import extract_material
 from finance import analyze, check_claim, decimal
 from llm_check import LLMClient, LLMError, check_text
@@ -105,7 +105,7 @@ def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | 
                   f"SHA-256 {material['sha256']}。",
                   f"  披露日期状态：{material['disclosure_date_status']}；"
                   f"版本策略：{material['version_policy']}；需复核最新有效版本："
-                  f"{'是' if material['needs_version_review'] else '否（仅指本次候选未发现冲突）'}。"]
+                  f"{'是' if material.get('needs_version_review') else '否（仅指本次候选未发现冲突）'}。"]
     lines += ["", "精确单元格、年份表头、单位币种依据、作用域依据及计算操作数见同目录JSON和events.jsonl。", ""]
     return "\n".join(lines)
 
@@ -218,10 +218,11 @@ def main() -> int:
             if not (args.code and args.name and args.year):
                 raise ValueError("现场新材料必须同时给 --pdf --code --name --year")
             blob = args.pdf.read_bytes()
-            stamp = datetime.now(TZ).strftime("%Y%m%d%H%M%S")
+            # 上传材料没有公告号：用指纹派生稳定 ID，同一文件重复登记不产生新身份
+            fingerprint = sha256(blob)
             record = register(ROOT, blob, {
                 "company_code": args.code, "company_name": args.name,
-                "report_year": int(args.year), "announcement_id": stamp,
+                "report_year": int(args.year), "announcement_id": str(int(fingerprint[:8], 16)),
                 "title": f"{args.name}{args.year}年年度报告（现场登记）",
                 "disclosed_at": datetime.now(TZ).date().isoformat(),
                 "disclosure_date_status": "onsite_unverified",

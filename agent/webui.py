@@ -1,0 +1,835 @@
+"""本地薄页面：丢入一份财报 → 复用 CLI 流水线 → 出指标与核查报告。
+
+不重写分析引擎：登记/抽取/分析/核查全部走 agent 里与 CLI 相同的函数。
+用法：python webui.py [--port 8765]，浏览器打开提示的地址。
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import traceback
+from datetime import datetime
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+from urllib.parse import parse_qs
+
+from finance import analyze
+from extract import extract_material
+from main import report_markdown
+from materials import ROOT, Run, register, sha256, write_json
+
+MAX_UPLOAD = 40 * 1024 * 1024
+# 临时分析的工作区：不进正式 70 份年报台账，避免污染 data/agent 与测试夹具
+WORKSPACE = ROOT / "results" / "webui_work"
+# 页图文件名：{code}_{year}_{sha8}_p{page}.png，落在 results/ 根下（Run.output 不允许子目录）
+PAGE_PNG = re.compile(r"^\d{6}_\d{4}_[0-9a-f]{8}_p\d+\.png$")
+
+
+# ---------- 流水线（与 CLI live 同一条路） ----------
+
+def guess_identity(blob: bytes) -> dict:
+    """从 PDF 前几页猜 代码/简称/年度，降低临时丢材料的填写成本。猜不中就留空让人填。"""
+    try:
+        import pymupdf
+    except ImportError:
+        return {}
+    try:
+        with pymupdf.open(stream=blob, filetype="pdf") as doc:
+            sample = "".join(page.get_text() for page in list(doc)[:6])
+    except Exception:
+        return {}
+    flat = re.sub(r"\s+", "", sample)
+    guess: dict = {}
+    # 兼容「2024年年度报告」「2024年度报告」「2024年报」等常见写法
+    year = re.search(r"(20\d{2})年?(?:年度报告|度报告|度報告|年报)", flat)
+    if year:
+        guess["year"] = int(year.group(1))
+    # 代码要在仍保留空白的文本上找：全空白压掉后「600519 2024」会粘成「6005192024」
+    code = re.search(r"(?<!\d)([036]\d{5})(?!\d)", re.sub(r"[\r\n]+", " ", sample))
+    if code:
+        guess["code"] = code.group(1)
+    name = re.search(r"([\u4e00-\u9fa5A-Za-z()（）·]{2,24}股份有限公司)", flat)
+    if name:
+        full = name.group(1)
+        guess["name"] = re.sub(r"(股份有限公司|集团|控股)$", "", full) or full
+    return guess
+
+
+def run_pipeline(blob: bytes, code: str, name: str, year: int,
+                 draft: str | None = None, *, workspace: Path | None = None,
+                 root: Path | None = None) -> dict:
+    """丢一份财报走完整流水线。页图默认渲染，供页面「点击溯源」。"""
+    work = (workspace or WORKSPACE).resolve()
+    base = (root or ROOT).resolve()
+    work.mkdir(parents=True, exist_ok=True)
+    fingerprint = sha256(blob)
+    # 上传材料没有公告号：用指纹派生稳定 ID，同一文件重复上传不产生新身份
+    announcement_id = str(int(fingerprint[:8], 16))
+    run = Run(base, "webui-live", {"command": "webui-live", "company_code": code,
+                                   "company_name": name, "report_year": year,
+                                   "draft": bool(draft), "render": True,
+                                   "sha256": fingerprint, "workspace": str(work)})
+    record = register(work, blob, {
+        "company_code": code, "company_name": name, "report_year": int(year),
+        "announcement_id": announcement_id,
+        "title": f"{name}{year}年年度报告（网页登记）",
+        "disclosed_at": datetime.now().date().isoformat(),
+        "disclosure_date_status": "onsite_unverified",
+        "source_url": f"webui://{fingerprint[:12]}",
+        "version_policy": "first", "license_status": "public_disclosure",
+    }, run)
+    # 只抽本次上传的那一份：同公司同年的旧材料不掺进来
+    materials = [record]
+    try:
+        facts = extract_material(work, record, run)
+        failures = []
+    except Exception as exc:
+        facts = []
+        failures = [{"document_id": record["document_id"],
+                     "error_type": type(exc).__name__, "message": str(exc)}]
+        run.event("extraction_failed", **failures[0])
+    page_images: dict[int, str] = {}
+    if facts:
+        import pymupdf
+        with pymupdf.open(work / record["local_file"]) as doc:
+            for page in sorted({f["page"] for f in facts if f.get("page")}):
+                if not (1 <= page <= doc.page_count):
+                    continue
+                name_png = f"{record['company_code']}_{record['report_year']}_{record['sha256'][:8]}_p{page}.png"
+                doc[page - 1].get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6)).save(run.output(name_png))
+                page_images[page] = name_png
+    for fact in facts:
+        fact["page_image"] = page_images.get(fact.get("page"))
+    # 不用 evidence.json：那是审计台/CLI 的正式产物名，网页临时分析不覆盖
+    write_json(run.output("webui_evidence.json"), facts)
+    write_json(run.output("webui_failures.json"), failures)
+    analysis = analyze(facts, run)
+    report = report_markdown(analysis, materials, None)
+    issues = [f for f in facts if f.get("issues")]
+    checks = _check_draft(draft, facts, run) if draft and draft.strip() else None
+    counts = {"match": 0, "mismatch": 0, "unverified": 0, "issue": len(issues)}
+    for row in analysis["rows"]:
+        check = row.get("reported_yoy_check")
+        if check and check.get("status") == "match":
+            counts["match"] += 1
+        elif check and check.get("status") == "mismatch":
+            counts["mismatch"] += 1
+        else:
+            counts["unverified"] += 1
+    payload: dict = {
+        "ok": not failures,
+        "run_id": run.id,
+        "document_id": record["document_id"],
+        "materials": [{
+            "company_code": m["company_code"], "company_name": m["company_name"],
+            "report_year": m["report_year"], "title": m.get("title", ""),
+            "page_count": m.get("page_count"), "sha256": m.get("sha256", "")[:12],
+        } for m in materials],
+        "rows": [{
+            **row,
+            "page_image": page_images.get(row.get("page")),
+        } for row in analysis["rows"]],
+        "signals": analysis["signals"],
+        "basis": analysis["basis"],
+        "limits": analysis["limits"],
+        "counts": counts,
+        "evidence": [{
+            "evidence_id": f["evidence_id"], "metric": f.get("metric"),
+            "metric_name": f.get("metric_name"), "period_year": f.get("period_year"),
+            "value": f.get("value"), "unit": f.get("unit"),
+            "normalized_value": f.get("normalized_value"),
+            "page": f.get("page"), "page_image": f.get("page_image"),
+            "scope": f.get("scope"), "adjustment": f.get("adjustment"),
+            "issues": f.get("issues") or [],
+        } for f in facts],
+        "issues": [{
+            "evidence_id": f["evidence_id"], "metric_name": f.get("metric_name"),
+            "issues": f.get("issues"),
+        } for f in issues],
+        "report_md": report,
+        "failures": failures,
+    }
+    if checks is not None:
+        payload["checks"] = checks
+    run.finish(status="ok" if not failures else "partial_failure",
+               materials=len(materials), evidence_count=len(facts),
+               failures=len(failures), draft_checked=bool(checks))
+    return payload
+
+
+def _check_draft(draft: str, facts: list[dict], run) -> dict:
+    """有草稿就走核查；没配模型时明确说清，不假装判过。"""
+    try:
+        from llm_check import LLMClient, LLMError, check_text
+        client = LLMClient.from_environment()
+    except Exception as exc:
+        return {"status": "skipped", "reason": f"未配置模型，跳过草稿核查：{exc}", "checks": []}
+    try:
+        tmp = run.output("webui_draft.txt")
+        tmp.write_text(draft, encoding="utf-8")
+        bundle = check_text(tmp, facts, run, client, use_loop=True)
+        return {"status": "completed", "mode": bundle.get("mode"),
+                "counts": bundle.get("counts"), "checks": bundle.get("checks") or []}
+    except Exception as exc:
+        return {"status": "failed", "reason": str(exc), "checks": []}
+
+
+# ---------- 页面 ----------
+
+PAGE = r"""<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>金融投研智能体 · 现场分析</title>
+<style>
+:root {
+  --bg: #f6f7f9; --card: #fff; --ink: #1c2430; --muted: #667085;
+  --line: #e4e7ec; --accent: #1f5eff; --ok: #067647; --bad: #b42318;
+  --warn: #b54708; --info: #175cd3;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--ink); line-height: 1.55;
+}
+header {
+  background: var(--card); border-bottom: 1px solid var(--line);
+  padding: 18px 28px 14px;
+}
+header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 650; }
+header .sub { margin: 0; color: var(--muted); font-size: 13px; }
+main { max-width: 1100px; margin: 0 auto; padding: 22px 20px 60px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px; margin-bottom: 16px;
+}
+.card h2 {
+  margin: 0 0 12px; font-size: 15px; font-weight: 650;
+  display: flex; align-items: center; gap: 8px;
+}
+.card h2 .actions { margin-left: auto; display: flex; gap: 8px; }
+.card h2 button { padding: 5px 12px; font-size: 12.5px; font-weight: 600; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+input[type=text], input[type=number], textarea {
+  width: 100%; border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px 10px; font-size: 14px; background: #fff; color: var(--ink);
+}
+input[type=file] { width: 100%; font-size: 13px; padding: 6px 0; }
+textarea { min-height: 110px; resize: vertical; font-family: inherit; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+button {
+  border: 0; border-radius: 8px; padding: 10px 18px; font-size: 14px;
+  cursor: pointer; background: var(--accent); color: #fff; font-weight: 600;
+}
+button.secondary { background: #eef2ff; color: var(--accent); }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.hint { font-size: 12px; color: var(--muted); }
+.file-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; white-space: nowrap;
+}
+.badge.ok { background: #dcfae6; color: var(--ok); }
+.badge.bad { background: #fee4e2; color: var(--bad); }
+.badge.warn { background: #fef0c7; color: var(--warn); }
+.badge.info { background: #e0eaff; color: var(--info); }
+.badge.muted { background: #f2f4f7; color: var(--muted); }
+.stats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.stat {
+  border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+  background: #fff; min-width: 96px;
+}
+.stat .n { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat .k { font-size: 12px; color: var(--muted); }
+.stat.ok .n { color: var(--ok); }
+.stat.bad .n { color: var(--bad); }
+.stat.info .n { color: var(--info); }
+table.grid {
+  width: 100%; border-collapse: collapse; font-size: 13px; background: #fff;
+}
+table.grid th, table.grid td {
+  border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left;
+}
+table.grid th {
+  background: #f9fafb; font-weight: 600; color: var(--muted); font-size: 12px;
+  position: sticky; top: 0; z-index: 1;
+}
+table.grid td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table-wrap { overflow: auto; max-height: 420px; border: 1px solid var(--line); border-radius: 8px; }
+a.page-link {
+  color: var(--accent); cursor: pointer; text-decoration: underline;
+  text-underline-offset: 2px; font-variant-numeric: tabular-nums;
+}
+pre.report {
+  white-space: pre-wrap; word-break: break-word; font-size: 12.5px;
+  background: #f9fafb; border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px; max-height: 480px; overflow: auto; margin: 0;
+}
+.status-line { font-size: 13px; color: var(--muted); min-height: 20px; }
+.status-line.busy { color: var(--accent); }
+.status-line.err { color: var(--bad); }
+#results[hidden], #checks[hidden], #evidence-card[hidden], #report-card[hidden] { display: none; }
+.empty {
+  padding: 28px; text-align: center; color: var(--muted); font-size: 14px;
+}
+#lightbox {
+  position: fixed; inset: 0; background: rgba(16, 24, 40, .62); z-index: 50;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+#lightbox[hidden] { display: none; }
+#lightbox .box {
+  background: #fff; border-radius: 12px; max-width: min(920px, 96vw);
+  max-height: 92vh; display: flex; flex-direction: column; overflow: hidden;
+}
+#lightbox .bar {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  border-bottom: 1px solid var(--line); font-size: 13px;
+}
+#lightbox .bar button { padding: 6px 12px; font-size: 12.5px; }
+#lightbox img {
+  max-width: 100%; max-height: calc(92vh - 52px); object-fit: contain;
+  background: #f2f4f7; display: block; margin: 0 auto;
+}
+@media print {
+  header .sub, main > .card:first-child, .status-line,
+  #report-card h2 .actions, #evidence-card h2 .actions { display: none !important; }
+  body { background: #fff; }
+  .card {
+    border: 0; padding: 0 0 12px; margin: 0 0 8px; page-break-inside: avoid;
+    box-shadow: none;
+  }
+  .table-wrap, pre.report { max-height: none; overflow: visible; border: 0; padding: 0; }
+  table.grid th { position: static; }
+  #lightbox { display: none !important; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>金融投研智能体</h1>
+  <p class="sub">丢入一份财报 → 抽指标 → 出核查报告。每个数字带页码，点页码可回看原文页图。</p>
+</header>
+<main>
+  <section class="card">
+    <h2>1. 材料</h2>
+    <div class="grid">
+      <div>
+        <label>年报 PDF</label>
+        <input type="file" id="pdf" accept="application/pdf">
+        <div class="file-meta" id="file-meta"></div>
+      </div>
+      <div>
+        <label>证券代码（6 位）</label>
+        <input type="text" id="code" placeholder="如 600519" maxlength="6" inputmode="numeric">
+      </div>
+      <div>
+        <label>公司简称</label>
+        <input type="text" id="name" placeholder="如 贵州茅台">
+      </div>
+      <div>
+        <label>报告年度</label>
+        <input type="number" id="year" placeholder="如 2024" min="2000" max="2100">
+      </div>
+      <div>
+        <label>研报草稿（可选，有则做纠错核查）</label>
+        <textarea id="draft" placeholder="粘贴一段投研草稿；不填则只出指标与年报内部分析"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <button id="run">开始分析</button>
+      <button class="secondary" id="prefill" type="button">从 PDF 猜字段</button>
+      <span class="hint">任意公司年报均可；临时分析进 results/webui_work/，不污染正式台账。</span>
+    </div>
+    <div class="status-line" id="status"></div>
+  </section>
+
+  <section class="card" id="results" hidden>
+    <h2>2. 指标与同比核对</h2>
+    <div class="stats" id="stats"></div>
+    <div class="table-wrap">
+      <table class="grid" id="metrics">
+        <thead>
+          <tr>
+            <th>指标</th><th>本年</th><th>上年</th><th>复算同比</th>
+            <th>披露同比</th><th>核对</th><th>PDF 页</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="signals" style="margin-top:12px"></div>
+  </section>
+
+  <section class="card" id="checks" hidden>
+    <h2>3. 草稿核查</h2>
+    <div id="checks-body"></div>
+  </section>
+
+  <section class="card" id="evidence-card" hidden>
+    <h2>4. 证据明细</h2>
+    <div class="table-wrap">
+      <table class="grid" id="evidence">
+        <thead>
+          <tr>
+            <th>证据 ID</th><th>指标</th><th>年度</th><th>数值</th><th>单位</th>
+            <th>口径</th><th>调整</th><th>PDF 页</th><th>问题</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="report-card" hidden>
+    <h2>
+      5. 核查报告
+      <span class="actions">
+        <button class="secondary" id="export-md" type="button">导出 Markdown</button>
+        <button class="secondary" id="export-pdf" type="button">导出 PDF</button>
+      </span>
+    </h2>
+    <pre class="report" id="report"></pre>
+  </section>
+</main>
+
+<div id="lightbox" hidden>
+  <div class="box">
+    <div class="bar">
+      <strong id="lb-title">原文页图</strong>
+      <span class="hint" id="lb-hint"></span>
+      <button class="secondary" id="lb-close" type="button" style="margin-left:auto">关闭</button>
+    </div>
+    <img id="lb-img" alt="年报原文页图">
+  </div>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[c]));
+const fmt = (v) => {
+  if (v === null || v === undefined || v === '') return '—';
+  const n = Number(v);
+  if (!isFinite(n)) return String(v);
+  return n.toLocaleString('zh-CN', { maximumFractionDigits: 4 });
+};
+const badge = (s) => {
+  const map = {
+    'match': 'ok', '一致': 'ok', '证据支持': 'ok', 'evidence_supported': 'ok',
+    'mismatch': 'bad', '不一致，需复核': 'bad', '确认错误': 'bad', 'confirmed_error': 'bad',
+    '证据不足': 'info', '模型判断': 'info',
+    '口径冲突／需人工复核': 'warn', 'needs_review': 'warn',
+  };
+  const cls = map[s] || 'info';
+  return `<span class="badge ${cls}">${esc(s || '—')}</span>`;
+};
+const trackBadge = (track) => {
+  const map = {
+    deterministic: ['A 确定', 'ok'],
+    model: ['B 模型', 'info'],
+    review: ['C 人工', 'warn'],
+  };
+  const [text, cls] = map[track] || ['C 人工', 'muted'];
+  return `<span class="badge ${cls}">${text}</span>`;
+};
+const pageCell = (row) => {
+  const page = row.page ?? '—';
+  const img = row.page_image;
+  if (!img) return esc(String(page));
+  return `<a class="page-link" href="/img/${esc(img)}" data-img="${esc(img)}" data-page="${esc(String(page))}">${esc(String(page))}</a>`;
+};
+function setStatus(text, cls) {
+  const el = $('#status');
+  el.textContent = text || '';
+  el.className = 'status-line' + (cls ? ' ' + cls : '');
+}
+function openLightbox(img, page) {
+  $('#lb-img').src = '/img/' + img;
+  $('#lb-title').textContent = '原文页图 · 第 ' + page + ' 页';
+  $('#lb-hint').textContent = '点页码可回看年报原页（未画框，仅溯源）';
+  $('#lightbox').hidden = false;
+}
+function closeLightbox() {
+  $('#lightbox').hidden = true;
+  $('#lb-img').removeAttribute('src');
+}
+
+async function prefill() {
+  const file = $('#pdf').files[0];
+  if (!file) { setStatus('先选一份 PDF', 'err'); return; }
+  const form = new FormData();
+  form.append('pdf', file);
+  setStatus('正在读 PDF 猜字段…', 'busy');
+  try {
+    const res = await fetch('/api/prefill', { method: 'POST', body: form });
+    const data = await res.json();
+    if (data.code && !$('#code').value) $('#code').value = data.code;
+    if (data.name && !$('#name').value) $('#name').value = data.name;
+    if (data.year && !$('#year').value) $('#year').value = data.year;
+    setStatus(data.code || data.name || data.year ? '已填入猜到的字段，请核对' : '没猜到，请手填代码/简称/年度', '');
+  } catch (e) {
+    setStatus('猜字段失败：' + e, 'err');
+  }
+}
+
+function onFilePicked() {
+  const file = $('#pdf').files[0];
+  if (!file) {
+    $('#file-meta').textContent = '';
+    return;
+  }
+  const kb = file.size / 1024;
+  const size = kb > 1024 ? (kb / 1024).toFixed(1) + ' MB' : Math.max(1, Math.round(kb)) + ' KB';
+  $('#file-meta').textContent = file.name + ' · ' + size;
+  prefill();
+}
+
+async function run() {
+  const file = $('#pdf').files[0];
+  const code = $('#code').value.trim();
+  const name = $('#name').value.trim();
+  const year = $('#year').value.trim();
+  const draft = $('#draft').value;
+  if (!file) { setStatus('请选择年报 PDF', 'err'); return; }
+  if (!/^\d{6}$/.test(code)) { setStatus('证券代码需为 6 位数字', 'err'); return; }
+  if (!name) { setStatus('请填公司简称', 'err'); return; }
+  if (!/^\d{4}$/.test(year)) { setStatus('请填报告年度', 'err'); return; }
+
+  const form = new FormData();
+  form.append('pdf', file);
+  form.append('code', code);
+  form.append('name', name);
+  form.append('year', year);
+  form.append('draft', draft || '');
+
+  $('#run').disabled = true;
+  setStatus('正在抽取指标并核算（含渲染页图），请稍候…', 'busy');
+  $('#results').hidden = true;
+  $('#checks').hidden = true;
+  $('#evidence-card').hidden = true;
+  $('#report-card').hidden = true;
+  try {
+    const res = await fetch('/api/analyze', { method: 'POST', body: form });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      setStatus(data.error || ('分析失败 HTTP ' + res.status), 'err');
+      return;
+    }
+    render(data);
+    const c = data.counts || {};
+    setStatus(`完成：证据 ${data.evidence.length} 条 · 同比一致 ${c.match || 0} · 不一致 ${c.mismatch || 0} · 待复核 ${data.issues.length} 条`, '');
+  } catch (e) {
+    setStatus('请求失败：' + e, 'err');
+  } finally {
+    $('#run').disabled = false;
+  }
+}
+
+function render(data) {
+  window.__last = data;
+  const c = data.counts || {};
+  $('#stats').innerHTML = [
+    ['证据条数', (data.evidence || []).length, 'info'],
+    ['同比一致', c.match || 0, 'ok'],
+    ['同比不一致', c.mismatch || 0, 'bad'],
+    ['缺披露值', c.unverified || 0, ''],
+    ['待复核', (data.issues || []).length, (data.issues || []).length ? 'bad' : 'ok'],
+  ].map(([k, n, cls]) => `<div class="stat ${cls}"><div class="n">${n}</div><div class="k">${k}</div></div>`).join('');
+
+  const tbody = $('#metrics tbody');
+  tbody.innerHTML = (data.rows || []).map((r) => {
+    const yoy = r.yoy && r.yoy.status === 'ok' ? fmt(r.yoy.value) + '%' : (r.yoy ? r.yoy.status : '—');
+    const check = r.reported_yoy_check;
+    const outcome = check
+      ? (check.status === 'match' ? '一致' : '不一致，需复核')
+      : '未核对（缺披露值）';
+    return `<tr>
+      <td>${esc(r.metric_name || r.metric)}</td>
+      <td class="num">${fmt(r.current)}</td>
+      <td class="num">${fmt(r.previous)}</td>
+      <td class="num">${esc(yoy)}</td>
+      <td class="num">${check ? fmt(check.reported) + '%' : '—'}</td>
+      <td>${badge(outcome)}</td>
+      <td class="num">${pageCell(r)}</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="7" class="empty">没有抽出指标</td></tr>`;
+  $('#results').hidden = false;
+
+  const sigs = data.signals || [];
+  $('#signals').innerHTML = sigs.length
+    ? '<div class="hint">辅助观察：' + sigs.map((s) => esc(s.description)).join('；') + '</div>'
+    : '';
+
+  if (data.checks && data.checks.status) {
+    const box = $('#checks-body');
+    if (data.checks.status === 'completed') {
+      const counts = data.checks.counts || {};
+      const head = Object.entries(counts).map(([k, v]) => `${esc(k)} ${v}`).join(' · ');
+      const rows = (data.checks.checks || []).map((c) => `<tr>
+        <td>${esc(c.claim_id)}</td>
+        <td>${trackBadge(c.track)}</td>
+        <td>${esc((c.original_sentence || '').slice(0, 80))}</td>
+        <td>${badge(c.status)}</td>
+        <td>${esc(c.reason || c.reason_code || '—')}</td>
+      </tr>`).join('');
+      box.innerHTML = `<div class="hint" style="margin-bottom:8px">双轨：A 确定（本地裁决）· B 模型（只解释）· C 人工（需复核）。${head || '已出结果'}</div>
+        <div class="table-wrap"><table class="grid">
+          <thead><tr><th>编号</th><th>轨道</th><th>原句</th><th>结论</th><th>说明</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table></div>`;
+    } else {
+      box.innerHTML = `<div class="empty">${esc(data.checks.reason || data.checks.status)}</div>`;
+    }
+    $('#checks').hidden = false;
+  }
+
+  const evBody = (data.evidence || []).map((e) => `<tr>
+    <td>${esc(e.evidence_id)}</td>
+    <td>${esc(e.metric_name || e.metric)}</td>
+    <td>${esc(e.period_year)}</td>
+    <td class="num">${fmt(e.value)}</td>
+    <td>${esc(e.unit || '—')}</td>
+    <td>${esc(e.scope || '—')}</td>
+    <td>${esc(e.adjustment || '—')}</td>
+    <td class="num">${pageCell(e)}</td>
+    <td>${(e.issues && e.issues.length) ? badge(String(e.issues.join('；'))) : '<span class="badge ok">干净</span>'}</td>
+  </tr>`).join('');
+  $('#evidence tbody').innerHTML = evBody ||
+    `<tr><td colspan="9" class="empty">没有证据</td></tr>`;
+  $('#evidence-card').hidden = false;
+
+  $('#report').textContent = data.report_md || '';
+  $('#report-card').hidden = false;
+}
+
+function exportMarkdown() {
+  const data = window.__last;
+  if (!data) { setStatus('还没有分析结果可导出', 'err'); return; }
+  const lines = [];
+  const mat = (data.materials || [])[0] || {};
+  lines.push('# 金融投研智能体 · 分析报告');
+  lines.push('');
+  lines.push(`- 公司：${mat.company_name || ''}（${mat.company_code || ''}）`);
+  lines.push(`- 报告年度：${mat.report_year || ''}`);
+  lines.push(`- 运行号：${data.run_id || ''}`);
+  lines.push(`- 生成时间：${new Date().toLocaleString('zh-CN')}`);
+  lines.push('');
+  lines.push('## 指标与同比核对');
+  lines.push('');
+  lines.push('| 指标 | 本年 | 上年 | 复算同比 | 披露同比 | 核对 | PDF页 |');
+  lines.push('| --- | ---: | ---: | ---: | ---: | --- | ---: |');
+  (data.rows || []).forEach((r) => {
+    const yoy = r.yoy && r.yoy.status === 'ok' ? fmt(r.yoy.value) + '%' : (r.yoy ? r.yoy.status : '—');
+    const check = r.reported_yoy_check;
+    const outcome = check
+      ? (check.status === 'match' ? '一致' : '不一致，需复核')
+      : '未核对（缺披露值）';
+    lines.push(`| ${r.metric_name || r.metric} | ${fmt(r.current)} | ${fmt(r.previous)} | ${yoy} | ${check ? fmt(check.reported) + '%' : '—'} | ${outcome} | ${r.page ?? '—'} |`);
+  });
+  const sigs = data.signals || [];
+  if (sigs.length) {
+    lines.push('', '## 辅助观察', '');
+    sigs.forEach((s) => lines.push(`- ${s.description}${s.value ? '：' + s.value + (s.unit || '') : ''}`));
+  }
+  if (data.checks && data.checks.status === 'completed') {
+    lines.push('', '## 草稿核查', '');
+    const counts = data.checks.counts || {};
+    if (Object.keys(counts).length) {
+      lines.push('结论分布：' + Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(' · '), '');
+    }
+    lines.push('| 编号 | 轨道 | 原句 | 结论 | 说明 |');
+    lines.push('| --- | --- | --- | --- | --- |');
+    (data.checks.checks || []).forEach((c) => {
+      const sentence = String(c.original_sentence || '').replace(/\|/g, '\\|').slice(0, 120);
+      const reason = String(c.reason || c.reason_code || '—').replace(/\|/g, '\\|');
+      const track = { deterministic: 'A 确定', model: 'B 模型', review: 'C 人工' }[c.track] || 'C 人工';
+      lines.push(`| ${c.claim_id} | ${track} | ${sentence} | ${c.status} | ${reason} |`);
+    });
+  }
+  if ((data.evidence || []).length) {
+    lines.push('', '## 证据明细', '');
+    lines.push('| 证据ID | 指标 | 年度 | 数值 | 单位 | 口径 | 页 |');
+    lines.push('| --- | --- | ---: | ---: | --- | --- | ---: |');
+    data.evidence.forEach((e) => {
+      lines.push(`| ${e.evidence_id} | ${e.metric_name || e.metric} | ${e.period_year ?? '—'} | ${e.value ?? '—'} | ${e.unit || '—'} | ${e.scope || '—'} | ${e.page ?? '—'} |`);
+    });
+  }
+  lines.push('', '## 核查报告', '');
+  lines.push(data.report_md || '');
+  const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `分析报告_${mat.company_code || 'report'}_${mat.report_year || ''}.md`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setStatus('Markdown 已下载', '');
+}
+
+function exportPdf() {
+  if (!window.__last) { setStatus('还没有分析结果可导出', 'err'); return; }
+  setStatus('已打开打印窗口，请在目标里选「另存为 PDF」', '');
+  window.print();
+}
+
+$('#run').addEventListener('click', run);
+$('#prefill').addEventListener('click', prefill);
+$('#pdf').addEventListener('change', onFilePicked);
+$('#export-md').addEventListener('click', exportMarkdown);
+$('#export-pdf').addEventListener('click', exportPdf);
+$('#lb-close').addEventListener('click', closeLightbox);
+$('#lightbox').addEventListener('click', (e) => {
+  if (e.target.id === 'lightbox') closeLightbox();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLightbox();
+});
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a.page-link');
+  if (!a) return;
+  e.preventDefault();
+  openLightbox(a.dataset.img, a.dataset.page || '');
+});
+</script>
+</body>
+</html>
+"""
+
+
+# ---------- HTTP ----------
+
+def _json(handler: BaseHTTPRequestHandler, code: int, payload: dict) -> None:
+    blob = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    handler.send_response(code)
+    handler.send_header("Content-Type", "application/json; charset=utf-8")
+    handler.send_header("Content-Length", str(len(blob)))
+    handler.end_headers()
+    handler.wfile.write(blob)
+
+
+def _parse_multipart(handler: BaseHTTPRequestHandler) -> tuple[dict, bytes]:
+    """只支持浏览器标准 multipart/form-data，够薄页面用。"""
+    ctype = handler.headers.get("Content-Type", "")
+    match = re.search(r'boundary="?([^";]+)"?', ctype)
+    if not match:
+        raise ValueError("缺少 multipart boundary")
+    boundary = b"--" + match.group(1).encode()
+    length = int(handler.headers.get("Content-Length") or 0)
+    if length <= 0 or length > MAX_UPLOAD:
+        raise ValueError("请求体为空或超过 40MiB")
+    body = handler.rfile.read(length)
+    fields: dict[str, str] = {}
+    pdf = b""
+    for part in body.split(boundary):
+        part = part.strip(b"\r\n")
+        if not part or part == b"--":
+            continue
+        if b"\r\n\r\n" not in part:
+            continue
+        head, content = part.split(b"\r\n\r\n", 1)
+        head_text = head.decode("utf-8", errors="replace")
+        name_m = re.search(r'name="([^"]+)"', head_text)
+        if not name_m:
+            continue
+        name = name_m.group(1)
+        if name == "pdf" or 'filename="' in head_text:
+            if name == "pdf":
+                pdf = content
+        else:
+            fields[name] = content.decode("utf-8", errors="replace")
+    return fields, pdf
+
+
+class Handler(BaseHTTPRequestHandler):
+    server_version = "FinAgentWebUI/1.0"
+
+    def log_message(self, fmt, *args):
+        print(f"[webui] {self.address_string()} {fmt % args}")
+
+    def do_GET(self):
+        if self.path in ("/", "/index.html"):
+            blob = PAGE.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(blob)))
+            self.end_headers()
+            self.wfile.write(blob)
+            return
+        if self.path.startswith("/img/"):
+            self._serve_image(self.path[len("/img/"):])
+            return
+        _json(self, 404, {"error": "not found"})
+
+    def _serve_image(self, name: str) -> None:
+        # 只回 results/ 根下的页图 PNG，文件名白名单，杜绝路径穿越
+        if not PAGE_PNG.fullmatch(name):
+            _json(self, 404, {"error": "not found"})
+            return
+        path = ROOT / "results" / name
+        if not path.is_file():
+            _json(self, 404, {"error": "页图不存在"})
+            return
+        blob = path.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", "image/png")
+        self.send_header("Content-Length", str(len(blob)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(blob)
+
+    def do_POST(self):
+        try:
+            fields, pdf = _parse_multipart(self)
+            if self.path == "/api/prefill":
+                if not pdf:
+                    _json(self, 400, {"error": "缺少 PDF"})
+                    return
+                _json(self, 200, guess_identity(pdf))
+                return
+            if self.path != "/api/analyze":
+                _json(self, 404, {"error": "not found"})
+                return
+            if not pdf:
+                _json(self, 400, {"error": "缺少 PDF"})
+                return
+            code = (fields.get("code") or "").strip()
+            name = (fields.get("name") or "").strip()
+            year_raw = (fields.get("year") or "").strip()
+            draft = fields.get("draft") or ""
+            if not re.fullmatch(r"\d{6}", code):
+                _json(self, 400, {"error": "证券代码需为 6 位数字"})
+                return
+            if not name:
+                _json(self, 400, {"error": "请填公司简称"})
+                return
+            if not re.fullmatch(r"\d{4}", year_raw):
+                _json(self, 400, {"error": "请填 4 位报告年度"})
+                return
+            payload = run_pipeline(pdf, code, name, int(year_raw),
+                                   draft=draft or None)
+            _json(self, 200, payload)
+        except Exception as exc:
+            traceback.print_exc()
+            _json(self, 400, {"error": f"{type(exc).__name__}: {exc}"})
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="金融投研智能体 · 本地薄页面")
+    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--host", default="127.0.0.1")
+    args = parser.parse_args()
+    server = ThreadingHTTPServer((args.host, args.port), Handler)
+    print(f"薄页面已启动：http://{args.host}:{args.port}/")
+    print("Ctrl+C 停止。分析流水线与 CLI live 相同，结果落 results/。")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\n已停止")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
