@@ -141,6 +141,43 @@ table.grid tbody tr.selected { background: #dbe7ff; }
 }
 .src-meta b { color: var(--accent); }
 
+/* ---------- 受限问答 ---------- */
+.qa-input-row { display: flex; gap: 10px; margin: 12px 0 8px; }
+.qa-input-row input {
+  flex: 1; border: 1px solid var(--line); border-radius: 8px;
+  padding: 10px 12px; font-size: 14px; background: var(--card); color: var(--text);
+}
+.btn {
+  border: 0; border-radius: 8px; padding: 10px 18px; font-size: 14px;
+  cursor: pointer; background: var(--accent); color: #fff; font-weight: 600;
+}
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.qa-hint { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.qa-empty {
+  padding: 28px; text-align: center; color: var(--muted); font-size: 13px;
+  border: 1px dashed var(--line); border-radius: 10px;
+}
+.qa-empty a { color: var(--accent); cursor: pointer; }
+.qa-item {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px; margin-top: 10px;
+}
+.qa-item .q { font-weight: 600; font-size: 13.5px; margin-bottom: 6px; }
+.qa-item .a { font-size: 13.5px; white-space: pre-wrap; word-break: break-word; line-height: 1.6; }
+.qa-item .meta {
+  margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+}
+.evidence-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px;
+  font-size: 12px; background: #f9fafb; color: var(--muted);
+}
+a.evidence-chip {
+  cursor: pointer; color: var(--accent); border-color: #c7d7fe;
+  text-decoration: none;
+}
+a.evidence-chip:hover { background: #eef4ff; }
+
 footer {
   text-align: center; color: var(--muted); font-size: 12px;
   padding: 18px; border-top: 1px solid var(--line); background: #fff;

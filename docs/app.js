@@ -257,10 +257,264 @@ function renderEvents() {
   }).join('') || `<tr><td colspan="3" class="empty">没有事件</td></tr>`;
 }
 
+/* ---------- 受限问答（静态确定性，不调模型） ---------- */
+const METRICS = {
+  revenue: ['营业收入', '营收'],
+  total_revenue: ['营业总收入'],
+  parent_net_profit: ['归母净利润', '归母净利', '归属于上市公司股东的净利润'],
+  adjusted_parent_net_profit: ['扣非归母净利润', '扣非归母净利', '扣非净利润', '扣非净利',
+                               '归属于上市公司股东的扣除非经常性损益的净利润'],
+  operating_cash_flow: ['经营活动产生的现金流量净额', '经营现金流净额', '经营活动现金流量净额'],
+  basic_eps: ['基本每股收益', '每股收益'],
+  weighted_roe: ['加权平均净资产收益率', '加权ROE', '净资产收益率'],
+  total_assets: ['总资产', '资产总额', '资产总计'],
+};
+const YOY_CUE = /同比|增长|增幅|降幅|变化|yoy|回落|上升|下降/i;
+const ISSUE_CUE = /问题|异常|issue|错误|风险|瑕疵|待复核|不一致/i;
+const OVERVIEW_CUE = /哪些|有什么|列表|概览|总览|一览|整体|全部指标|分析结果/;
+
+function qaMatchMetric(q) {
+  let best = null, bestLen = 0;
+  for (const [key, aliases] of Object.entries(METRICS)) {
+    for (const alias of [key, ...aliases]) {
+      if (alias && q.includes(alias) && alias.length > bestLen) {
+        best = key; bestLen = alias.length;
+      }
+    }
+  }
+  return best;
+}
+function qaMatchCompany(q) {
+  const ev = DATA.evidence || [];
+  const seen = new Map();
+  ev.forEach((e) => {
+    if (e.company_code) seen.set(e.company_code, e.company_name || e.company_code);
+  });
+  for (const [code, name] of seen) {
+    if (q.includes(code) || (name && q.includes(name))) return code;
+  }
+  // 公司简称（去掉「股份有限公司」等后缀后的短名）
+  for (const [code, name] of seen) {
+    const short = String(name || '').replace(/(股份有限公司|集团|控股)$/, '');
+    if (short && short.length >= 2 && q.includes(short)) return code;
+  }
+  return null;
+}
+function qaMatchYear(q, facts) {
+  const m = q.match(/(20\d{2})/);
+  if (m) return +m[1];
+  const years = (facts || []).map((f) => f.period_year).filter(Boolean);
+  return years.length ? Math.max(...years) : null;
+}
+function qaMatchKind(q) {
+  if (YOY_CUE.test(q)) return 'yoy';
+  if (ISSUE_CUE.test(q)) return 'issues';
+  if (OVERVIEW_CUE.test(q) && !/多少|是啥|是多少|几多/.test(q)) return 'overview';
+  return 'value';
+}
+function qaCite(e) {
+  return {
+    evidence_id: e.evidence_id,
+    metric_name: e.metric_name || e.metric,
+    period_year: e.period_year,
+    value: e.value,
+    unit: e.unit,
+    page: e.page,
+    company_name: e.company_name || e.company_code,
+    idx: (DATA.evidence || []).indexOf(e),
+  };
+}
+function qaFmtPct(v) {
+  const n = Number(v);
+  if (!isFinite(n)) return String(v);
+  return n.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+}
+function qaScore(status) {
+  const map = {
+    ok: ['ok', '已答'],
+    insufficient_evidence: ['info', '证据不足'],
+    out_of_scope: ['warn', '超范围'],
+  };
+  const [cls, text] = map[status] || ['info', status || '—'];
+  return `<span class="badge ${cls}">${esc(text)}</span>`;
+}
+
+function qaAnswer(question) {
+  const q = (question || '').trim();
+  if (!q) return { status: 'out_of_scope', answer: '问题为空。', evidence_ids: [], citations: [] };
+  const all = (DATA.evidence || []).filter((e) => e.adjustment !== 'before');
+  if (!all.length) return { status: 'insufficient_evidence', answer: '本页未加载证据。', evidence_ids: [], citations: [] };
+
+  const metric = qaMatchMetric(q);
+  const company = qaMatchCompany(q);
+  const kind = qaMatchKind(q);
+  const scoped = company ? all.filter((e) => e.company_code === company) : all;
+  const year = qaMatchYear(q, scoped);
+
+  if (kind === 'overview') {
+    const picked = new Map();
+    scoped.forEach((e) => {
+      const key = (e.company_code || '') + '|' + (e.metric || '');
+      const cur = picked.get(key);
+      if (!cur || (e.period_year || 0) > (cur.period_year || 0)) picked.set(key, e);
+    });
+    const cites = [...picked.values()].map(qaCite);
+    if (!cites.length) return { status: 'insufficient_evidence', answer: '无可汇总证据。', evidence_ids: [], citations: [] };
+    const lines = cites.map((c) =>
+      `· ${esc(c.company_name)} ${esc(c.metric_name)}（${esc(c.period_year)}）：${fmtNum(c.value)} ${esc(c.unit || '')}`);
+    return {
+      status: 'ok',
+      answer: `指标概览（共 ${all.length} 条证据）：\n` + lines.join('\n'),
+      evidence_ids: cites.map((c) => c.evidence_id),
+      citations: cites,
+    };
+  }
+
+  if (kind === 'issues') {
+    const flagged = scoped.filter((e) => e.issues && e.issues.length);
+    if (!flagged.length) {
+      return {
+        status: 'ok',
+        answer: '本页证据未带问题标记（issues 为空），不代表业务无风险，仅表示抽取层干净。',
+        evidence_ids: [], citations: [],
+      };
+    }
+    const cites = flagged.slice(0, 20).map(qaCite);
+    const lines = flagged.slice(0, 20).map((e) =>
+      `· ${esc(e.company_name || e.company_code)} ${esc(e.metric_name)}（${esc(e.period_year)}）：${esc((e.issues || []).join('；'))}`);
+    return {
+      status: 'ok',
+      answer: `抽取层标记 ${flagged.length} 条待复核：\n` + lines.join('\n'),
+      evidence_ids: cites.map((c) => c.evidence_id),
+      citations: cites,
+    };
+  }
+
+  if (!metric) {
+    return {
+      status: 'out_of_scope',
+      answer: '未识别出指标，本问答只答已抽取的财务指标（营收/净利/现金流等）。',
+      evidence_ids: [], citations: [],
+    };
+  }
+  const metricName = METRICS[metric][0];
+  const matches = scoped.filter((e) => e.metric === metric && e.period_year === year);
+  if (!matches.length) {
+    return {
+      status: 'insufficient_evidence',
+      answer: `证据不足：未找到 ${company ? (company + ' ') : ''}${year} 年「${metricName}」的年报证据，不猜数值。`,
+      evidence_ids: [], citations: [],
+    };
+  }
+  if (matches.length > 1) {
+    const cites = matches.map(qaCite);
+    return {
+      status: 'insufficient_evidence',
+      answer: `证据不足：${year} 年「${metricName}」命中 ${matches.length} 条，需收窄公司或口径。`,
+      evidence_ids: cites.map((c) => c.evidence_id), citations: cites,
+    };
+  }
+
+  const fact = matches[0];
+  const cite = qaCite(fact);
+
+  if (kind === 'yoy') {
+    const prev = scoped.find((e) =>
+      e.metric === metric && e.period_year === year - 1 &&
+      e.comparison_group === fact.comparison_group && e.adjustment !== 'before');
+    if (!prev || !fact.normalized_value || !prev.normalized_value) {
+      return {
+        status: 'insufficient_evidence',
+        answer: `证据不足：${year} 年「${metricName}」缺可比上年值，同比无法复算。`,
+        evidence_ids: [fact.evidence_id], citations: [cite],
+      };
+    }
+    const a = Number(fact.normalized_value);
+    const b = Number(prev.normalized_value);
+    if (!isFinite(a) || !isFinite(b) || b === 0) {
+      return {
+        status: 'insufficient_evidence',
+        answer: `证据不足：${year} 年「${metricName}」同比无法复算（基期缺失或为 0）。`,
+        evidence_ids: [fact.evidence_id, prev.evidence_id].filter(Boolean),
+        citations: [cite, qaCite(prev)],
+      };
+    }
+    const pct = ((a - b) / Math.abs(b)) * 100;
+    return {
+      status: 'ok',
+      answer: `${fact.company_name || fact.company_code} ${year} 年${metricName}同比 ${qaFmtPct(pct)}%。计算式：(current - previous) / |previous| × 100。`,
+      evidence_ids: [fact.evidence_id, prev.evidence_id],
+      citations: [cite, qaCite(prev)],
+    };
+  }
+
+  // value
+  const scopeTxt = { consolidated: '合并', parent_shareholders: '归母', parent_company: '母公司' }[fact.scope] || (fact.scope && fact.scope !== 'unknown' ? fact.scope : '—');
+  return {
+    status: 'ok',
+    answer: `${fact.company_name || fact.company_code} ${year} 年${metricName}为 ${fact.value} ${fact.unit || ''}，口径：${scopeTxt}（PDF 第 ${fact.page} 页）。`,
+    evidence_ids: [fact.evidence_id],
+    citations: [cite],
+  };
+}
+
+function qaRenderItem(item) {
+  const cites = (item.citations || []).map((c) => {
+    const label = `${esc(c.evidence_id)} · ${esc(c.company_name || '')} ${esc(c.metric_name || '')}${c.page ? ' · p' + esc(String(c.page)) : ''}`;
+    return `<a class="evidence-chip" data-idx="${c.idx}">${label}</a>`;
+  }).join('');
+  return `<div class="qa-item">
+    <div class="q">问：${esc(item.question)}</div>
+    <div class="a">${esc(item.answer)}</div>
+    <div class="meta">${qaScore(item.status)}${cites}</div>
+  </div>`;
+}
+
+function qaAsk() {
+  const input = $('#qa-input');
+  const q = (input.value || '').trim();
+  if (!q) return;
+  const out = qaAnswer(q);
+  const item = { question: q, ...out };
+  $('#qa-history').insertAdjacentHTML('afterbegin', qaRenderItem(item));
+  $('#qa-empty').style.display = 'none';
+  input.value = '';
+  // 引用芯片 → 跳证据页并定位
+  $$('#qa-history a.evidence-chip').forEach((a) => {
+    a.addEventListener('click', () => {
+      const idx = +a.dataset.idx;
+      const ev = (DATA.evidence || [])[idx];
+      if (!ev) return;
+      $$('#tabs button').forEach((x) => x.classList.remove('active'));
+      $$('.tab').forEach((x) => x.classList.remove('active'));
+      const evTab = $('#tabs button[data-tab="evidence"]');
+      if (evTab) evTab.classList.add('active');
+      const sec = $('#tab-evidence');
+      if (sec) sec.classList.add('active');
+      showSource(ev);
+      // 同步高亮证据表
+      $$('#ev-table tbody tr').forEach((tr) => {
+        tr.classList.toggle('selected', +tr.dataset.idx === idx);
+      });
+    });
+  });
+}
+
 /* ---------- 启动 ---------- */
 $('#mat-filter').addEventListener('input', renderMaterials);
 $('#ck-filter').addEventListener('change', renderChecks);
 $('#ev2-filter').addEventListener('input', renderEvents);
+$('#qa-ask').addEventListener('click', qaAsk);
+$('#qa-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); qaAsk(); }
+});
+document.addEventListener('click', (e) => {
+  const s = e.target.closest('.qa-sample');
+  if (!s) return;
+  e.preventDefault();
+  $('#qa-input').value = s.textContent.trim();
+  qaAsk();
+});
 
 fetch('data/bundle.json')
   .then((r) => r.json())
@@ -272,6 +526,9 @@ fetch('data/bundle.json')
     renderEvidence();
     renderChecks();
     renderEvents();
+    const n = (DATA.evidence || []).length;
+    const cnt = $('#qa-ev-count');
+    if (cnt) cnt.textContent = n;
   })
   .catch((e) => {
     document.querySelector('main').innerHTML =

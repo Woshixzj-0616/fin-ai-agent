@@ -28,6 +28,7 @@
 
 <nav id="tabs">
   <button data-tab="yoy" class="active">指标与同比</button>
+  <button data-tab="qa">受限问答</button>
   <button data-tab="materials">材料台账</button>
   <button data-tab="evidence">证据与溯源</button>
   <button data-tab="checks">陈述核查</button>
@@ -52,6 +53,25 @@
       </table>
     </div>
     <div id="yoy-basis" class="foot-note"></div>
+  </section>
+
+  <!-- 受限问答 -->
+  <section id="tab-qa" class="tab">
+    <div class="bar">
+      <span>只基于本页已加载的 <b id="qa-ev-count">—</b> 条证据回答 · 每个数字挂 evidence_id · 点引用可跳溯源</span>
+    </div>
+    <div class="qa-input-row">
+      <input id="qa-input" placeholder="如：贵州茅台 2023 年营业收入是多少 / 五粮液营收同比 / 有哪些指标 / 有什么问题" maxlength="300" />
+      <button id="qa-ask" class="btn" type="button">提问</button>
+    </div>
+    <div class="qa-hint">支持：查数 · 同比 · 异常 · 概览。不联网、不调模型，答案由本页证据确定性拼装。</div>
+    <div id="qa-history"></div>
+    <div class="qa-empty" id="qa-empty">还没有提问。示例：
+      <a href="#" class="qa-sample">贵州茅台 2023 年营业收入是多少</a> ·
+      <a href="#" class="qa-sample">五粮液 归母净利润同比</a> ·
+      <a href="#" class="qa-sample">比亚迪 有什么问题</a> ·
+      <a href="#" class="qa-sample">有哪些指标</a>
+    </div>
   </section>
 
   <!-- 材料台账 -->
