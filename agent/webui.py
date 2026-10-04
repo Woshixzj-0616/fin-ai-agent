@@ -18,12 +18,15 @@ from finance import analyze
 from extract import extract_material
 from main import report_markdown
 from materials import ROOT, Run, register, sha256, write_json
+from qa import answer as qa_answer  # noqa: I001
 
 MAX_UPLOAD = 40 * 1024 * 1024
 # 临时分析的工作区：不进正式 70 份年报台账，避免污染 data/agent 与测试夹具
 WORKSPACE = ROOT / "results" / "webui_work"
 # 页图文件名：{code}_{year}_{sha8}_p{page}.png，落在 results/ 根下（Run.output 不允许子目录）
 PAGE_PNG = re.compile(r"^\d{6}_\d{4}_[0-9a-f]{8}_p\d+\.png$")
+# 最近一次分析的证据：受限问答只认这份，不另建库。本地单人薄页面，够用。
+LAST_FACTS: list[dict] = []
 
 
 # ---------- 流水线（与 CLI live 同一条路） ----------
@@ -152,6 +155,8 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
     }
     if checks is not None:
         payload["checks"] = checks
+    LAST_FACTS.clear()
+    LAST_FACTS.extend(facts)
     run.finish(status="ok" if not failures else "partial_failure",
                materials=len(materials), evidence_count=len(facts),
                failures=len(failures), draft_checked=bool(checks))
@@ -271,7 +276,21 @@ pre.report {
 .status-line { font-size: 13px; color: var(--muted); min-height: 20px; }
 .status-line.busy { color: var(--accent); }
 .status-line.err { color: var(--bad); }
-#results[hidden], #checks[hidden], #evidence-card[hidden], #report-card[hidden] { display: none; }
+#results[hidden], #checks[hidden], #evidence-card[hidden], #report-card[hidden], #qa-card[hidden] { display: none; }
+.qa-item {
+  border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+  margin-top: 10px; background: #fff;
+}
+.qa-item .q { font-weight: 600; font-size: 13.5px; margin-bottom: 6px; }
+.qa-item .a { font-size: 13.5px; white-space: pre-wrap; word-break: break-word; }
+.qa-item .meta { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.evidence-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px;
+  font-size: 12px; background: #f9fafb; color: var(--info);
+  cursor: default; text-decoration: none;
+}
+a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; }
 .empty {
   padding: 28px; text-align: center; color: var(--muted); font-size: 14px;
 }
@@ -310,7 +329,7 @@ pre.report {
 <body>
 <header>
   <h1>金融投研智能体</h1>
-  <p class="sub">丢入一份财报 → 抽指标 → 出核查报告。每个数字带页码，点页码可回看原文页图。</p>
+  <p class="sub">丢入一份财报 → 抽指标 → 出核查报告 → 受限问答。每个数字带页码与 evidence_id，点页码可回看原文页图。</p>
 </header>
 <main>
   <section class="card">
@@ -383,9 +402,21 @@ pre.report {
     </div>
   </section>
 
+  <section class="card" id="qa-card" hidden>
+    <h2>5. 受限问答</h2>
+    <p class="hint" style="margin:0 0 10px">只基于本次已抽取的证据回答；每个数字挂 evidence_id，点页码可溯源。不答年报以外的事。</p>
+    <div class="row" style="margin-top:0">
+      <input type="text" id="qa-input" placeholder="如：2024年营业收入是多少 / 营收同比 / 有什么问题 / 有哪些指标"
+             style="flex:1;min-width:220px" maxlength="500">
+      <button id="qa-ask" type="button">提问</button>
+    </div>
+    <div class="status-line" id="qa-status"></div>
+    <div id="qa-history"></div>
+  </section>
+
   <section class="card" id="report-card" hidden>
     <h2>
-      5. 核查报告
+      6. 核查报告
       <span class="actions">
         <button class="secondary" id="export-md" type="button">导出 Markdown</button>
         <button class="secondary" id="export-pdf" type="button">导出 PDF</button>
@@ -512,6 +543,8 @@ async function run() {
   $('#checks').hidden = true;
   $('#evidence-card').hidden = true;
   $('#report-card').hidden = true;
+  $('#qa-card').hidden = true;
+  $('#qa-history').innerHTML = '';
   try {
     const res = await fetch('/api/analyze', { method: 'POST', body: form });
     const data = await res.json();
@@ -604,6 +637,69 @@ function render(data) {
 
   $('#report').textContent = data.report_md || '';
   $('#report-card').hidden = false;
+
+  $('#qa-history').innerHTML = '';
+  $('#qa-input').value = '';
+  $('#qa-card').hidden = false;
+}
+
+function qaBadge(status) {
+  const map = {
+    ok: ['ok', '已答'],
+    insufficient_evidence: ['info', '证据不足'],
+    out_of_scope: ['warn', '超范围'],
+  };
+  const [cls, text] = map[status] || ['muted', status || '—'];
+  return `<span class="badge ${cls}">${esc(text)}</span>`;
+}
+
+function renderQa(item) {
+  const cites = (item.citations || []).map((c) => {
+    const label = `${esc(c.evidence_id)} · ${esc(c.metric_name || c.metric || '')}${c.page ? ' · p' + esc(String(c.page)) : ''}`;
+    if (c.page_image) {
+      return `<a class="evidence-chip page-link" href="/img/${esc(c.page_image)}" data-img="${esc(c.page_image)}" data-page="${esc(String(c.page ?? ''))}">${label}</a>`;
+    }
+    return `<span class="evidence-chip">${label}</span>`;
+  }).join('');
+  const ids = (item.evidence_ids || []).map((id) => `<code style="font-size:11px">${esc(id)}</code>`).join(' ');
+  return `<div class="qa-item">
+    <div class="q">问：${esc(item.question)}</div>
+    <div class="a">${esc(item.answer)}</div>
+    <div class="meta">${qaBadge(item.status)}${cites || (ids ? '<span class="hint">证据：' + ids + '</span>' : '')}</div>
+  </div>`;
+}
+
+async function qaAsk() {
+  const q = $('#qa-input').value.trim();
+  if (!q) { $('#qa-status').textContent = '先输入问题'; $('#qa-status').className = 'status-line err'; return; }
+  if (!window.__last) { $('#qa-status').textContent = '请先完成一次分析'; $('#qa-status').className = 'status-line err'; return; }
+  $('#qa-ask').disabled = true;
+  $('#qa-status').textContent = '正在基于证据作答…';
+  $('#qa-status').className = 'status-line busy';
+  try {
+    const res = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q }),
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      $('#qa-status').textContent = data.error || ('提问失败 HTTP ' + res.status);
+      $('#qa-status').className = 'status-line err';
+      return;
+    }
+    const item = { question: q, ...data };
+    $('#qa-history').insertAdjacentHTML('afterbegin', renderQa(item));
+    $('#qa-input').value = '';
+    const n = (data.evidence_ids || []).length;
+    $('#qa-status').textContent = n ? `已答，引用 ${n} 条证据` : '已答（无引用证据）';
+    $('#qa-status').className = 'status-line';
+  } catch (e) {
+    $('#qa-status').textContent = '请求失败：' + e;
+    $('#qa-status').className = 'status-line err';
+  } finally {
+    $('#qa-ask').disabled = false;
+  }
 }
 
 function exportMarkdown() {
@@ -680,6 +776,10 @@ $('#prefill').addEventListener('click', prefill);
 $('#pdf').addEventListener('change', onFilePicked);
 $('#export-md').addEventListener('click', exportMarkdown);
 $('#export-pdf').addEventListener('click', exportPdf);
+$('#qa-ask').addEventListener('click', qaAsk);
+$('#qa-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); qaAsk(); }
+});
 $('#lb-close').addEventListener('click', closeLightbox);
 $('#lightbox').addEventListener('click', (e) => {
   if (e.target.id === 'lightbox') closeLightbox();
@@ -780,8 +880,46 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(blob)
 
+    def _ask_json(self) -> None:
+        """受限问答：只认上次分析的 facts，答案必挂 evidence_id。"""
+        length = int(self.headers.get("Content-Length") or 0)
+        if length <= 0 or length > 64 * 1024:
+            _json(self, 400, {"error": "请求体为空或过大"})
+            return
+        try:
+            body = json.loads(self.rfile.read(length).decode("utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            _json(self, 400, {"error": "请求体不是合法 JSON"})
+            return
+        question = (body.get("question") or "").strip() if isinstance(body, dict) else ""
+        if not question:
+            _json(self, 400, {"error": "缺少 question"})
+            return
+        client, run = None, None
+        try:
+            from llm_check import LLMClient
+            client = LLMClient.from_environment()
+            run = Run(ROOT, "webui-ask", {"command": "webui-ask", "question_len": len(question)})
+        except Exception:  # noqa: BLE001 — 未配模型时降级纯确定性问答
+            client, run = None, None
+        try:
+            out = qa_answer(question, list(LAST_FACTS), client=client, run=run,
+                            use_llm=client is not None)
+            if run is not None:
+                run.finish(status="ok", question_len=len(question),
+                           answer_status=out.get("status"),
+                           evidence_count=len(out.get("evidence_ids") or []))
+            _json(self, 200, out)
+        except Exception as exc:
+            traceback.print_exc()
+            _json(self, 400, {"error": f"{type(exc).__name__}: {exc}"})
+
     def do_POST(self):
         try:
+            ctype = self.headers.get("Content-Type") or ""
+            if self.path == "/api/ask" and ctype.startswith("application/json"):
+                self._ask_json()
+                return
             fields, pdf = _parse_multipart(self)
             if self.path == "/api/prefill":
                 if not pdf:

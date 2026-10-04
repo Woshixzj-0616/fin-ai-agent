@@ -925,6 +925,145 @@ class WebUITests(unittest.TestCase):
                 self.assertIn("page_image", row)
 
 
+class QATests(unittest.TestCase):
+    """受限问答：确定性解析 + 本地拼装答案，evidence_id 必挂。"""
+
+    def _facts(self):
+        cur = {**evidence(2024, "80000000"), "report_year": 2024,
+               "company_code": "600519", "company_name": "贵州茅台",
+               "metric": "revenue", "period_year": 2024,
+               "metric_name": "营业收入", "normalized_value": "80000000",
+               "unit": "元", "scope": "consolidated", "issues": [],
+               "page": 5, "page_image": "x_p5.png"}
+        prev = {**evidence(2023, "70000000"), "report_year": 2024,
+                "company_code": "600519", "company_name": "贵州茅台",
+                "metric": "revenue", "period_year": 2023,
+                "metric_name": "营业收入", "normalized_value": "70000000",
+                "unit": "元", "scope": "consolidated", "issues": [],
+                "comparison_group": cur.get("comparison_group", "same-report-table"),
+                "page": 6}
+        cur.setdefault("comparison_group", "same-report-table")
+        bad = {**evidence(2024, "9"), "report_year": 2024,
+               "company_code": "600519", "company_name": "贵州茅台",
+               "metric": "basic_eps", "period_year": 2024,
+               "metric_name": "基本每股收益", "issues": ["unit_unknown"],
+               "comparison_group": "same-report-table", "page": 9}
+        return [cur, prev, bad]
+
+    def test_match_metric_longest_alias(self):
+        from qa import match_metric
+        self.assertEqual(match_metric("2024年营业收入是多少"), "revenue")
+        self.assertEqual(match_metric("扣非归母净利润"), "adjusted_parent_net_profit")
+        self.assertIsNone(match_metric("今天天气怎么样"))
+
+    def test_match_year_and_kind(self):
+        from qa import match_kind, match_year
+        self.assertEqual(match_year("2024年营收多少"), 2024)
+        self.assertEqual(match_year("营收多少", [{"period_year": 2023}]), 2023)
+        self.assertEqual(match_kind("营收同比"), "yoy")
+        self.assertEqual(match_kind("有什么问题"), "issues")
+        self.assertEqual(match_kind("有哪些指标"), "overview")
+        self.assertEqual(match_kind("2024营收是多少"), "value")
+
+    def test_answer_value_hangs_evidence_id(self):
+        from qa import answer
+        out = answer("2024年营业收入是多少", self._facts())
+        self.assertEqual(out["status"], "ok")
+        self.assertTrue(out["evidence_ids"])
+        self.assertIn("2024", out["answer"])
+        self.assertEqual(out["citations"][0]["evidence_id"], out["evidence_ids"][0])
+        self.assertEqual(out["citations"][0]["page"], 5)
+
+    def test_answer_value_missing_is_insufficient(self):
+        from qa import answer
+        out = answer("2024年总资产是多少", self._facts())
+        self.assertEqual(out["status"], "insufficient_evidence")
+        self.assertEqual(out["evidence_ids"], [])
+        self.assertIn("证据不足", out["answer"])
+
+    def test_answer_yoy_cites_both_years(self):
+        from qa import answer
+        out = answer("2024年营业收入同比", self._facts())
+        self.assertEqual(out["status"], "ok")
+        self.assertEqual(len(out["evidence_ids"]), 2)
+        self.assertIn("%", out["answer"])
+
+    def test_answer_issues_lists_flagged(self):
+        from qa import answer
+        out = answer("有什么问题", self._facts())
+        self.assertEqual(out["status"], "ok")
+        self.assertTrue(out["evidence_ids"])
+        self.assertIn("unit_unknown", out["answer"])
+
+    def test_answer_overview_lists_metrics(self):
+        from qa import answer
+        out = answer("有哪些指标", self._facts())
+        self.assertEqual(out["status"], "ok")
+        self.assertTrue(out["evidence_ids"])
+        self.assertIn("营业收入", out["answer"])
+
+    def test_empty_question_and_facts(self):
+        from qa import answer
+        self.assertEqual(answer("", self._facts())["status"], "out_of_scope")
+        self.assertEqual(answer("营收", [])["status"], "insufficient_evidence")
+        out = answer("今天天气怎么样", self._facts())
+        self.assertEqual(out["status"], "out_of_scope")
+
+    def test_llm_intent_only_when_deterministic_misses(self):
+        from qa import answer
+        called = {"n": 0}
+
+        class Stub:
+            def chat(self, messages, run):
+                called["n"] += 1
+                return json.dumps({"metric": "revenue", "period_year": 2024, "kind": "value"})
+
+        run = SimpleNamespace(event=lambda *a, **k: None)
+        # 确定性已命中，不走 LLM
+        answer("2024年营业收入是多少", self._facts(), client=Stub(), run=run)
+        self.assertEqual(called["n"], 0)
+        # 确定性未命中指标，才走 LLM
+        out = answer("那个收入数字是多少？2024年的", self._facts(), client=Stub(), run=run)
+        self.assertEqual(called["n"], 1)
+        self.assertEqual(out["intent"]["source"], "llm")
+        self.assertEqual(out["status"], "ok")
+
+    def test_llm_must_not_invent_numbers(self):
+        """模型就算胡说指标，答案正文也只准本地拼装，数值必须来自 facts。"""
+        from qa import answer
+
+        class Stub:
+            def chat(self, messages, run):
+                return json.dumps({"metric": "revenue", "period_year": 2024,
+                                   "kind": "value", "free_text": "营收是999亿"})
+
+        run = SimpleNamespace(event=lambda *a, **k: None)
+        out = answer("那个收入数字是多少？2024年的", self._facts(), client=Stub(), run=run)
+        self.assertNotIn("999", out["answer"])
+        self.assertIn("80000000", out["answer"])
+
+    def test_ok_value_requires_evidence_ids(self):
+        from qa import answer
+        out = answer("2024年营收多少", self._facts())
+        self.assertEqual(out["status"], "ok")
+        self.assertTrue(out["evidence_ids"])
+
+    def test_webui_page_has_qa_bar(self):
+        from webui import PAGE
+        self.assertIn("受限问答", PAGE)
+        self.assertIn("qa-input", PAGE)
+        self.assertIn("/api/ask", PAGE)
+        self.assertIn("evidence-chip", PAGE)
+
+    def test_webui_last_facts_store(self):
+        import webui
+        self.assertIsInstance(webui.LAST_FACTS, list)
+        webui.LAST_FACTS.clear()
+        webui.LAST_FACTS.append({"evidence_id": "e1"})
+        self.assertEqual(webui.LAST_FACTS[0]["evidence_id"], "e1")
+        webui.LAST_FACTS.clear()
+
+
 if __name__ == "__main__":
     class TestLog(io.StringIO):
         def write(self, value):

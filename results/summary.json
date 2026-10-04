@@ -1,11 +1,10 @@
 {
-  "run_id": "20261003_213157_72093e3d",
-  "finished_at": "2026-10-03T21:32:01+08:00",
+  "run_id": "20261004_212407_e45aaa7c",
+  "finished_at": "2026-10-04T21:24:07+08:00",
   "output_sha256": {
-    "evidence.csv": "40c3ddc0f4c02c842720fa713e85af45f96dc3f50976756f4ae611d04138785d",
-    "evidence.json": "ce6a996e029e059125fc1faa1c058a1f0542fb28e6c169e402f8e5d07ba4a348",
-    "failures.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
-    "run.json": "7ddbf2e1ba98402f4247b5a892d8c503d84b842fb27216eab0cf35e7b9030950"
+    "run.json": "70a4f43179c8b6132af423503a0577f8fc65cbd948bf993ebc2515bdd146f378",
+    "test_results.txt": "cad4a7c6cb8bd93bec8a43945e41078d47d67d9a93c5679d38264a446f4b74e6",
+    "test_summary.json": "9ffb5839b0e45aff78e7adfa52b91e4c080e5d49d1e8d04b75df35a8aa4a8b45"
   },
   "history_policy": {
     "keep_runs": 20,
@@ -13,8 +12,8 @@
     "oversized_latest": "保留完整本次运行，清除更早历史"
   },
   "status": "ok",
-  "e3": 1.0,
-  "e4": 1.0,
-  "e5_old": 4,
-  "e5_new": 8
+  "tests": 108,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0
 }

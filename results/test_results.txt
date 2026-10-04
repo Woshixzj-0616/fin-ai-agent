@@ -35,13 +35,16 @@ test_oversized_latest_is_complete_and_older_history_removed (__main__.FlatOutput
 test_adjusted_comparative_preferred (__main__.GeometryTests.test_adjusted_comparative_preferred) ... ok
 test_dedupe_backfills_unit_and_recomputes_normalized (__main__.GeometryTests.test_dedupe_backfills_unit_and_recomputes_normalized) ... ok
 test_missing_current_value_preserved (__main__.GeometryTests.test_missing_current_value_preserved) ... ok
+test_scanned_pdf_gets_human_error (__main__.GeometryTests.test_scanned_pdf_gets_human_error) ... ok
 test_statement_title_normalized (__main__.GeometryTests.test_statement_title_normalized) ... ok
 test_total_revenue_is_not_revenue (__main__.GeometryTests.test_total_revenue_is_not_revenue) ... ok
 test_year_and_adjustment_use_geometry (__main__.GeometryTests.test_year_and_adjustment_use_geometry) ... ok
 test_approx_operator_is_judged_not_rejected (__main__.LLMFlowTests.test_approx_operator_is_judged_not_rejected) ... ok
+test_arbitrary_company_resolves_from_facts (__main__.LLMFlowTests.test_arbitrary_company_resolves_from_facts) ... ok
 test_company_absent_from_draft_still_stops (__main__.LLMFlowTests.test_company_absent_from_draft_still_stops) ... ok
 test_company_and_metric_failures_are_explicit (__main__.LLMFlowTests.test_company_and_metric_failures_are_explicit) ... ok
 test_company_from_draft_intro_is_resolved (__main__.LLMFlowTests.test_company_from_draft_intro_is_resolved) ... ok
+test_company_not_in_facts_still_stops (__main__.LLMFlowTests.test_company_not_in_facts_still_stops) ... ok
 test_dual_track_report_sections (__main__.LLMFlowTests.test_dual_track_report_sections) ... ok
 test_explicit_scope_and_forecasts_are_not_overridden (__main__.LLMFlowTests.test_explicit_scope_and_forecasts_are_not_overridden) ... ok
 test_fabricated_numeric_value_is_not_used (__main__.LLMFlowTests.test_fabricated_numeric_value_is_not_used) ... ok
@@ -66,6 +69,20 @@ test_approx_within_default_tolerance (__main__.OperatorCompareTests.test_approx_
 test_bad_operator_and_negative_tolerance (__main__.OperatorCompareTests.test_bad_operator_and_negative_tolerance) ... ok
 test_eq_still_uses_disclosed_precision (__main__.OperatorCompareTests.test_eq_still_uses_disclosed_precision) ... ok
 test_inequalities (__main__.OperatorCompareTests.test_inequalities) ... ok
+test_answer_issues_lists_flagged (__main__.QATests.test_answer_issues_lists_flagged) ... ok
+test_answer_overview_lists_metrics (__main__.QATests.test_answer_overview_lists_metrics) ... ok
+test_answer_value_hangs_evidence_id (__main__.QATests.test_answer_value_hangs_evidence_id) ... ok
+test_answer_value_missing_is_insufficient (__main__.QATests.test_answer_value_missing_is_insufficient) ... ok
+test_answer_yoy_cites_both_years (__main__.QATests.test_answer_yoy_cites_both_years) ... ok
+test_empty_question_and_facts (__main__.QATests.test_empty_question_and_facts) ... ok
+test_llm_intent_only_when_deterministic_misses (__main__.QATests.test_llm_intent_only_when_deterministic_misses) ... ok
+test_llm_must_not_invent_numbers (__main__.QATests.test_llm_must_not_invent_numbers)
+模型就算胡说指标，答案正文也只准本地拼装，数值必须来自 facts。 ... ok
+test_match_metric_longest_alias (__main__.QATests.test_match_metric_longest_alias) ... ok
+test_match_year_and_kind (__main__.QATests.test_match_year_and_kind) ... ok
+test_ok_value_requires_evidence_ids (__main__.QATests.test_ok_value_requires_evidence_ids) ... ok
+test_webui_last_facts_store (__main__.QATests.test_webui_last_facts_store) ... ok
+test_webui_page_has_qa_bar (__main__.QATests.test_webui_page_has_qa_bar) ... ok
 test_all_disclosed_yoy_match_precision (__main__.RealReportIntegrationTests.test_all_disclosed_yoy_match_precision)
 凡年报披露了同比的行，按披露精度算完必须一致；核心 4 指标 × 9 份至少 36 行。 ... ok
 test_all_nine_reports_have_current_four_metrics (__main__.RealReportIntegrationTests.test_all_nine_reports_have_current_four_metrics) ... ok
@@ -83,8 +100,16 @@ test_loop_executes_tools_then_submits (__main__.ToolLoopTests.test_loop_executes
 test_loop_parse_rejects_garbage (__main__.ToolLoopTests.test_loop_parse_rejects_garbage) ... ok
 test_loop_tool_budget_is_enforced (__main__.ToolLoopTests.test_loop_tool_budget_is_enforced) ... ok
 test_unknown_tool_is_error_not_crash (__main__.ToolLoopTests.test_unknown_tool_is_error_not_crash) ... ok
+test_guess_identity_code_not_glued_to_year (__main__.WebUITests.test_guess_identity_code_not_glued_to_year) ... ok
+test_guess_identity_empty_pdf_is_safe (__main__.WebUITests.test_guess_identity_empty_pdf_is_safe) ... ok
+test_guess_identity_fills_code_name_year (__main__.WebUITests.test_guess_identity_fills_code_name_year) ... ok
+test_page_escapes_dynamic_html (__main__.WebUITests.test_page_escapes_dynamic_html) ... ok
+test_page_image_name_whitelist (__main__.WebUITests.test_page_image_name_whitelist) ... ok
+test_page_regex_matches_digits_not_backslash (__main__.WebUITests.test_page_regex_matches_digits_not_backslash) ... ok
+test_parse_multipart_fields_and_pdf (__main__.WebUITests.test_parse_multipart_fields_and_pdf) ... ok
+test_run_pipeline_smoke_and_page_images (__main__.WebUITests.test_run_pipeline_smoke_and_page_images) ... ok
 
 ----------------------------------------------------------------------
-Ran 84 tests in 17.785s
+Ran 108 tests in 19.278s
 
 OK
