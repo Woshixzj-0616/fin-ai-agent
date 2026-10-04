@@ -26,6 +26,16 @@ header .sub { margin: 0; opacity: .88; font-size: 13px; max-width: 720px; }
   background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
   font-size: 12px; font-weight: 600; letter-spacing: .3px;
 }
+.head-actions {
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.head-link {
+  display: inline-block; padding: 8px 18px; border-radius: 999px;
+  background: #fff; color: var(--accent); font-size: 13px; font-weight: 700;
+  text-decoration: none; box-shadow: 0 2px 8px rgba(0,0,0,.18);
+  transition: transform .15s; flex-shrink: 0;
+}
+.head-link:hover { transform: translateY(-1px); }
 
 /* ---------- 总览统计 ---------- */
 .overview {

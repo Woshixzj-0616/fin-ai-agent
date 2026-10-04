@@ -110,6 +110,6 @@ test_parse_multipart_fields_and_pdf (__main__.WebUITests.test_parse_multipart_fi
 test_run_pipeline_smoke_and_page_images (__main__.WebUITests.test_run_pipeline_smoke_and_page_images) ... ok
 
 ----------------------------------------------------------------------
-Ran 108 tests in 17.856s
+Ran 108 tests in 16.601s
 
 OK
