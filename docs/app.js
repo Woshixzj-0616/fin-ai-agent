@@ -238,7 +238,14 @@ function renderChecks() {
   const rows = filter ? all.filter((c) => c.status === filter) : all;
   $('#ck-count').textContent = `${rows.length} / ${all.length} 条结构化陈述 · 判定由本地 Python 规则生成`;
   $('#ck-table tbody').innerHTML = rows.map((c) => {
-    const ev = (c.evidence_ids || []).join(', ') || '—';
+    const evHtml = (c.evidence_ids || []).length
+      ? (c.evidence_ids || []).map((id) => {
+          const idx = (DATA.evidence || []).findIndex((e) => e.evidence_id === id);
+          return idx >= 0
+            ? `<a class="evidence-chip" data-idx="${idx}">${esc(id.slice(0, 10))}…</a>`
+            : esc(id.slice(0, 10)) + '…';
+        }).join(' ')
+      : '—';
     return `
     <tr>
       <td class="mono">${esc(c.claim_id)}</td>
@@ -246,9 +253,27 @@ function renderChecks() {
       <td class="muted">${esc(c.check_item || '—')}</td>
       <td>${statusBadge(c.status)}</td>
       <td>${esc(c.reason || '—')}${c.calculation && c.calculation.value ? `<br><span class="muted">程序建议：<b>${esc(c.calculation.value)}</b></span>` : ''}${c.suggestion ? `<br><span class="muted">${esc(c.suggestion)}</span>` : ''}</td>
-      <td class="mono muted">${esc(ev)}${c.page ? ` · p${esc(c.page)}` : ''}</td>
+      <td class="mono muted">${evHtml}${c.page ? ` · p${esc(c.page)}` : ''}</td>
     </tr>`;
   }).join('') || `<tr><td colspan="6" class="empty">没有核查项</td></tr>`;
+  // 核查页证据芯片 → 跳证据页定位（与问答页同一交互）
+  $$('#ck-table a.evidence-chip').forEach((a) => {
+    a.addEventListener('click', () => {
+      const idx = +a.dataset.idx;
+      const ev = (DATA.evidence || [])[idx];
+      if (!ev) return;
+      $$('#tabs button').forEach((x) => x.classList.remove('active'));
+      $$('.tab').forEach((x) => x.classList.remove('active'));
+      const evTab = $('#tabs button[data-tab="evidence"]');
+      if (evTab) evTab.classList.add('active');
+      const sec = $('#tab-evidence');
+      if (sec) sec.classList.add('active');
+      showSource(ev);
+      $$('#ev-table tbody tr').forEach((tr) => {
+        tr.classList.toggle('selected', +tr.dataset.idx === idx);
+      });
+    });
+  });
 }
 
 /* ---------- 审计日志 ---------- */
@@ -469,10 +494,20 @@ function qaAnswer(question) {
         citations: [cite, qaCite(prev)],
       };
     }
-    const pct = ((a - b) / Math.abs(b)) * 100;
+    // 与后端 finance.yoy 一致：负基期拒绝常规同比，不套 abs
+    if (b < 0) {
+      const change = a > 0 ? '扭亏为盈' : a === 0 ? '亏损归零' : a > b ? '减亏' : '亏损扩大';
+      return {
+        status: 'insufficient_evidence',
+        answer: `证据不足：${year} 年「${metricName}」同比无法按常规公式计算（基期为负），方向：${change}。`,
+        evidence_ids: [fact.evidence_id, prev.evidence_id].filter(Boolean),
+        citations: [cite, qaCite(prev)],
+      };
+    }
+    const pct = ((a - b) / b) * 100;
     return {
       status: 'ok',
-      answer: `${fact.company_name || fact.company_code} ${year} 年${metricName}同比 ${qaFmtPct(pct)}%。计算式：(current - previous) / |previous| × 100。`,
+      answer: `${fact.company_name || fact.company_code} ${year} 年${metricName}同比 ${qaFmtPct(pct)}%。计算式：(current - previous) / previous × 100。`,
       evidence_ids: [fact.evidence_id, prev.evidence_id],
       citations: [cite, qaCite(prev)],
     };

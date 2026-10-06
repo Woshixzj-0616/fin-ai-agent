@@ -182,6 +182,7 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
             "value": f.get("value"), "unit": f.get("unit"),
             "normalized_value": f.get("normalized_value"),
             "page": f.get("page"), "page_image": f.get("page_image"),
+            "value_bbox": f.get("value_bbox"), "label_bbox": f.get("label_bbox"),
             "scope": f.get("scope"), "adjustment": f.get("adjustment"),
             "issues": f.get("issues") or [],
         } for f in facts],
@@ -308,11 +309,23 @@ a.page-link {
   color: var(--accent); cursor: pointer; text-decoration: underline;
   text-underline-offset: 2px; font-variant-numeric: tabular-nums;
 }
-pre.report {
-  white-space: pre-wrap; word-break: break-word; font-size: 12.5px;
-  background: #f9fafb; border: 1px solid var(--line); border-radius: 8px;
-  padding: 14px; max-height: 480px; overflow: auto; margin: 0;
+.report-md {
+  font-size: 13px; line-height: 1.7; background: #f9fafb;
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px; max-height: 520px; overflow: auto;
 }
+.report-md h1 { font-size: 17px; margin: 14px 0 8px; }
+.report-md h2 { font-size: 15px; margin: 12px 0 6px; color: var(--accent); }
+.report-md h3 { font-size: 13.5px; margin: 10px 0 4px; }
+.report-md table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 12px; }
+.report-md th, .report-md td { border: 1px solid var(--line); padding: 5px 8px; text-align: left; }
+.report-md th { background: #eef1f5; font-weight: 600; }
+.report-md code { background: #eef1f5; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+.report-md pre { background: #eef1f5; padding: 10px; border-radius: 6px; overflow: auto; }
+.report-md ul, .report-md ol { padding-left: 20px; margin: 6px 0; }
+.report-md li { margin: 3px 0; }
+.report-md strong { font-weight: 600; }
+.report-md hr { border: 0; border-top: 1px solid var(--line); margin: 12px 0; }
 .status-line { font-size: 13px; color: var(--muted); min-height: 20px; }
 .status-line.busy { color: var(--accent); }
 .status-line.err { color: var(--bad); }
@@ -338,7 +351,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   border: 2px dashed var(--line); border-radius: 12px; padding: 24px;
   text-align: center; transition: border-color .15s;
 }
-.upload-area:hover { border-color: var(--accent); }
+.upload-area:hover, .upload-area.dragover { border-color: var(--accent); background: #f0f5ff; }
 .auto-info {
   margin-top: 12px; padding: 10px 14px; border-radius: 10px;
   background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 13.5px;
@@ -368,9 +381,22 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   border-bottom: 1px solid var(--line); font-size: 13px;
 }
 #lightbox .bar button { padding: 6px 12px; font-size: 12.5px; }
-#lightbox img {
+#lightbox img, #lightbox canvas {
   max-width: 100%; max-height: calc(92vh - 52px); object-fit: contain;
   background: #f2f4f7; display: block; margin: 0 auto;
+}
+.lb-canvas-wrap { text-align: center; }
+@media (max-width: 640px) {
+  main { margin: 12px; }
+  header { padding: 20px 16px; }
+  h1 { font-size: 20px; }
+  .stats { flex-wrap: wrap; }
+  .stat { min-width: 44%; }
+  .card { padding: 16px; }
+  table.grid th, table.grid td { padding: 6px 8px; font-size: 12px; }
+  .qa-item .row, .row { flex-wrap: wrap; }
+  .grid { grid-template-columns: 1fr; }
+  pre.report { font-size: 12px; }
 }
 @media print {
   header .sub, main > .card:first-child, .status-line,
@@ -483,7 +509,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
         <button class="secondary" id="export-pdf" type="button">导出 PDF</button>
       </span>
     </h2>
-    <pre class="report" id="report"></pre>
+    <div class="report-md" id="report"></div>
   </section>
 </main>
 
@@ -494,7 +520,9 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
       <span class="hint" id="lb-hint"></span>
       <button class="secondary" id="lb-close" type="button" style="margin-left:auto">关闭</button>
     </div>
-    <img id="lb-img" alt="年报原文页图">
+    <div class="lb-canvas-wrap">
+      <canvas id="lb-canvas"></canvas>
+    </div>
   </div>
 </div>
 
@@ -524,6 +552,44 @@ const scopeZh = (s) => ({
 const adjZh = (a) => ({
   as_reported: '披露值', before: '调整前', after: '调整后',
 }[a] || a || '—');
+
+function renderMd(md) {
+  // 极简 Markdown 渲染：标题/表格/加粗/代码/列表/分隔线；正文经 esc 后再注入标签
+  const lines = String(md).split('\n');
+  let html = '', inTable = false, inList = false, inCode = false;
+  const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+  const closeTable = () => { if (inTable) { html += '</table>'; inTable = false; } };
+  for (const line of lines) {
+    if (line.startsWith('```')) { closeList(); closeTable(); html += inCode ? '</pre>' : '<pre>'; inCode = !inCode; continue; }
+    if (inCode) { html += esc(line) + '\n'; continue; }
+    if (/^\|/.test(line)) {
+      closeList();
+      const cells = line.split('|').slice(1, -1).map((c) => c.trim());
+      if (/^[-: |]+$/.test(line)) continue;
+      if (!inTable) { html += '<table>'; inTable = true; html += '<tr>' + cells.map((c) => `<th>${esc(c)}</th>`).join('') + '</tr>'; }
+      else html += '<tr>' + cells.map((c) => `<td>${esc(c)}</td>`).join('') + '</tr>';
+      continue;
+    }
+    closeTable();
+    const h = line.match(/^(#{1,4})\s+(.*)/);
+    if (h) { closeList(); html += `<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`; continue; }
+    if (/^---+$/.test(line.trim())) { closeList(); html += '<hr>'; continue; }
+    const li = line.match(/^\s*[-*+]\s+(.*)/);
+    if (li) { if (!inList) { html += '<ul>'; inList = true; } html += `<li>${inline(li[1])}</li>`; continue; }
+    const oli = line.match(/^\s*\d+[.)]\s+(.*)/);
+    if (oli) { if (!inList) { html += '<ul>'; inList = true; } html += `<li>${inline(oli[1])}</li>`; continue; }
+    closeList();
+    if (line.trim()) html += `<p>${inline(line)}</p>`;
+  }
+  if (inCode) html += '</pre>';
+  closeList(); closeTable();
+  return html;
+}
+function inline(s) {
+  return esc(s)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
+}
 const badge = (s) => {
   const map = {
     'match': 'ok', '一致': 'ok', '证据支持': 'ok', 'evidence_supported': 'ok',
@@ -547,17 +613,45 @@ const pageCell = (row) => {
   const page = row.page ?? '—';
   const img = row.page_image;
   if (!img) return esc(String(page));
-  return `<a class="page-link" href="/img/${esc(img)}" data-img="${esc(img)}" data-page="${esc(String(page))}">${esc(String(page))}</a>`;
+  const boxes = [];
+  if (row.value_bbox && row.value_bbox.length >= 4) {
+    boxes.push({ x0: row.value_bbox[0], y0: row.value_bbox[1], x1: row.value_bbox[2], y1: row.value_bbox[3], kind: 'value' });
+  }
+  if (row.label_bbox && row.label_bbox.length >= 4) {
+    boxes.push({ x0: row.label_bbox[0], y0: row.label_bbox[1], x1: row.label_bbox[2], y1: row.label_bbox[3], kind: 'label' });
+  }
+  const bboxAttr = boxes.length ? ` data-bbox='${esc(JSON.stringify(boxes))}'` : '';
+  return `<a class="page-link" href="/img/${esc(img)}" data-img="${esc(img)}" data-page="${esc(String(page))}"${bboxAttr}>${esc(String(page))}</a>`;
 };
 function setStatus(text, cls) {
   const el = $('#status');
   el.textContent = text || '';
   el.className = 'status-line' + (cls ? ' ' + cls : '');
 }
-function openLightbox(img, page) {
-  $('#lb-img').src = '/img/' + img;
+function openLightbox(img, page, bboxes) {
   $('#lb-title').textContent = '原文页图 · 第 ' + page + ' 页';
-  $('#lb-hint').textContent = '点页码可回看年报原页（未画框，仅溯源）';
+  $('#lb-hint').textContent = bboxes && bboxes.length ? '蓝=数值 · 绿=标签' : '点页码可回看年报原页';
+  const canvas = $('#lb-canvas');
+  const ctx = canvas.getContext('2d');
+  const image = new Image();
+  image.onload = () => {
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    ctx.drawImage(image, 0, 0);
+    if (bboxes && bboxes.length) {
+      for (const b of bboxes) {
+        if (!b || b.length < 4) continue;
+        ctx.strokeStyle = b.kind === 'label' ? '#22c55e' : '#3b82f6';
+        ctx.lineWidth = Math.max(2, image.naturalWidth / 400);
+        if (b.kind === 'label') ctx.setLineDash([6, 4]);
+        else ctx.setLineDash([]);
+        // bbox 是 PDF pt 坐标，页图 2x 渲染，按 2 倍映射
+        ctx.strokeRect(b.x0 * 2, b.y0 * 2, (b.x1 - b.x0) * 2, (b.y1 - b.y0) * 2);
+      }
+      ctx.setLineDash([]);
+    }
+  };
+  image.src = '/img/' + img;
   $('#lightbox').hidden = false;
 }
 function closeLightbox() {
@@ -636,7 +730,14 @@ async function run() {
   form.append('draft', draft || '');
 
   $('#run').disabled = true;
-  setStatus('正在抽取指标并核算（含渲染页图），请稍候…', 'busy');
+  // 分段进度提示，避免 7 秒只有单调「请稍候」
+  const stages = ['正在识别 PDF 身份…', '正在抽取指标…', '正在渲染页图…', '正在核算同比与核查…'];
+  let stageIdx = 0;
+  setStatus(stages[0], 'busy');
+  const stageTimer = setInterval(() => {
+    stageIdx = Math.min(stageIdx + 1, stages.length - 1);
+    setStatus(stages[stageIdx] + '（已耗时 ' + (stageIdx * 2) + 's+）', 'busy');
+  }, 2500);
   for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card']) {
     $('#' + id).hidden = true;
   }
@@ -654,6 +755,7 @@ async function run() {
   } catch (e) {
     setStatus('请求失败：' + e, 'err');
   } finally {
+    clearInterval(stageTimer);
     $('#run').disabled = false;
   }
 }
@@ -739,7 +841,7 @@ function render(data) {
   }
 
   // ── ④⑤ 报告与问答 ──
-  $('#report').textContent = data.report_md || '';
+  $('#report').innerHTML = renderMd(data.report_md || '(无报告)');
   $('#report-card').hidden = false;
   $('#qa-history').innerHTML = '';
   $('#qa-input').value = '';
@@ -893,7 +995,26 @@ document.addEventListener('click', (e) => {
   const a = e.target.closest('a.page-link');
   if (!a) return;
   e.preventDefault();
-  openLightbox(a.dataset.img, a.dataset.page || '');
+  let boxes = [];
+  try { boxes = JSON.parse(a.dataset.bbox || '[]'); } catch (_) {}
+  openLightbox(a.dataset.img, a.dataset.page || '', boxes);
+});
+
+// 拖放上传
+const upArea = $('#upload-area');
+upArea.addEventListener('dragover', (e) => { e.preventDefault(); upArea.classList.add('dragover'); });
+upArea.addEventListener('dragleave', () => upArea.classList.remove('dragover'));
+upArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  upArea.classList.remove('dragover');
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (!f) return;
+  if (!f.name.toLowerCase().endsWith('.pdf')) { setStatus('请拖入 PDF 文件', 'err'); return; }
+  const input = $('#pdf');
+  const dt = new DataTransfer();
+  dt.items.add(f);
+  input.files = dt.files;
+  onFilePicked();
 });
 </script>
 </body>
