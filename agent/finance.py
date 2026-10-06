@@ -9,6 +9,18 @@ UNITS = {"元": Decimal(1), "千元": Decimal(1000), "万元": Decimal(10000),
 NON_AMOUNT_UNITS = {"元/股", "%", "％"}
 UNKNOWN = {None, "", "unknown"}
 
+# 每股/收益率类指标没有合并或归母口径可言；缺 scope 不拦。
+# check_claim 与 comparable 共用同一份清单，避免两处逻辑漂移。
+SCOPE_AGNOSTIC_METRICS = frozenset({
+    "basic_eps", "diluted_eps", "deducted_basic_eps",
+    "weighted_roe", "deducted_weighted_roe", "book_value_per_share",
+})
+
+
+def scope_agnostic(metric, unit=None) -> bool:
+    """该指标/单位是否不需要 scope 口径即可比较。"""
+    return unit in NON_AMOUNT_UNITS or metric in SCOPE_AGNOSTIC_METRICS
+
 
 def decimal(value) -> Decimal | None:
     if value is None or value == "":
@@ -209,8 +221,12 @@ def compare_amount(actual, actual_unit: str, claimed, claimed_unit: str,
 
 def comparable(current: dict, previous: dict) -> list[str]:
     reasons = []
+    skip_scope = scope_agnostic(current.get("metric"), current.get("unit")) \
+        and scope_agnostic(previous.get("metric"), previous.get("unit"))
     for field in ("company_code", "metric", "currency", "scope", "period_kind",
                   "duration_months", "comparison_group"):
+        if field == "scope" and skip_scope:
+            continue
         a, b = current.get(field), previous.get(field)
         if a in UNKNOWN or b in UNKNOWN:
             reasons.append(f"{field} 未明确")
@@ -232,8 +248,11 @@ def evidence_yoy(current: dict, previous: dict | None) -> dict:
     if reasons:
         return result("not_comparable", reasons=reasons)
     try:
-        a = convert(current.get("value"), current.get("unit"))
-        b = convert(previous.get("value"), previous.get("unit"))
+        if current.get("unit") in NON_AMOUNT_UNITS or previous.get("unit") in NON_AMOUNT_UNITS:
+            a, b = decimal(current.get("value")), decimal(previous.get("value"))
+        else:
+            a = convert(current.get("value"), current.get("unit"))
+            b = convert(previous.get("value"), previous.get("unit"))
     except ValueError as exc:
         return result("not_comparable", reasons=[str(exc)])
     answer = yoy(a, b)
@@ -260,14 +279,17 @@ def analyze(facts: list[dict], run) -> dict:
         disclosure_check = None
         if computation["status"] == "ok" and reported:
             places = max(0, -decimal(reported["value"]).as_tuple().exponent)
+            step = Decimal(1).scaleb(-places)
             with localcontext() as context:
                 context.prec = 40
-                rounded = decimal(computation["value"]).quantize(
-                    Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP)
+                rounded = decimal(computation["value"]).quantize(step, rounding=ROUND_HALF_UP)
+            # ±1 ULP：PDF 显示值本身已四舍五入，反算同比会有末位噪声（如 19.15 vs 披露 19.16）
+            diff = abs(rounded - decimal(reported["value"]))
             disclosure_check = {
-                "status": "match" if rounded == decimal(reported["value"]) else "mismatch",
+                "status": "match" if diff <= step else "mismatch",
                 "calculated_rounded": text(rounded), "reported": reported["value"],
                 "decimals": places, "rounding": "ROUND_HALF_UP",
+                "tolerance_ulp": text(step),
                 "source_page": fact["page"], "source_bbox": reported["bbox"],
             }
         row = {
@@ -334,12 +356,8 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
     output["evidence_ids"] = [fact["evidence_id"]]
     output["source_file"], output["page"] = fact["source_file"], fact["page"]
     for field in ("scope", "currency", "period_kind"):
-        # 每股/收益率类指标没有合并或归母口径可言；缺 scope 不拦。
-        if field == "scope" and (fact.get("unit") in {"元/股", "%", "％"}
-                                 or claim["metric"] in {"basic_eps", "diluted_eps",
-                                                        "deducted_basic_eps", "weighted_roe",
-                                                        "deducted_weighted_roe",
-                                                        "book_value_per_share"}):
+        # 每股/收益率类指标没有合并或归母口径可言；缺 scope 不拦（与 comparable 同源）。
+        if field == "scope" and scope_agnostic(claim["metric"], fact.get("unit")):
             continue
         if not claim.get(field) or fact.get(field) in {None, "", "unknown"} or claim[field] != fact[field]:
             output.update(status="口径冲突／需人工复核", reason=f"{field} 不明确或不一致")

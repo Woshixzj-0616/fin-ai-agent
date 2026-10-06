@@ -8,7 +8,10 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import threading
+import time
 import traceback
+from collections import defaultdict
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -24,8 +27,45 @@ MAX_UPLOAD = 40 * 1024 * 1024
 WORKSPACE = ROOT / "results" / "webui_work"
 # 页图文件名：{code}_{year}_{sha8}_p{page}.png，落在 results/ 根下（Run.output 不允许子目录）
 PAGE_PNG = re.compile(r"^\d{6}_\d{4}_[0-9a-f]{8}_p\d+\.png$")
-# 最近一次分析的证据：受限问答只认这份，不另建库。本地单人薄页面，够用。
+# 最近一次分析的证据：受限问答只认这份，不另建库。
+# ThreadingHTTPServer 多线程下必须持锁读写，否则 A 的分析会喂给 B 的提问。
 LAST_FACTS: list[dict] = []
+_LAST_LOCK = threading.Lock()
+
+# ── Render 防护：令牌桶限流 + 分析并发锁 + 工作区 TTL ──
+_RATE_CAPACITY = 10        # 每 IP 突发上限
+_RATE_REFILL_PER_SEC = 0.2  # 每秒补 0.2 个（即 1 个/5 秒）
+_rate_buckets: dict[str, tuple[float, float]] = {}  # ip → (tokens, last_ts)
+_rate_lock = threading.Lock()
+_ANALYZE_LOCK = threading.Lock()  # 同时刻只允许一个分析，防 free tier 被打穿
+_WORK_TTL_SEC = 24 * 3600         # webui_work 里超 24h 的上传自动清理
+
+
+def _rate_limit(ip: str, cost: float = 1.0) -> bool:
+    """令牌桶限流；返回 True=放行，False=应拒绝。"""
+    now = time.monotonic()
+    with _rate_lock:
+        tokens, last = _rate_buckets.get(ip, (_RATE_CAPACITY, now))
+        tokens = min(_RATE_CAPACITY, tokens + (now - last) * _RATE_REFILL_PER_SEC)
+        if tokens < cost:
+            _rate_buckets[ip] = (tokens, now)
+            return False
+        _rate_buckets[ip] = (tokens - cost, now)
+        return True
+
+
+def _cleanup_work_dir() -> None:
+    """清理 webui_work 里超时的上传 PDF 与页图，防磁盘被吃满。"""
+    try:
+        cutoff = time.time() - _WORK_TTL_SEC
+        work = WORKSPACE
+        if not work.is_dir():
+            return
+        for p in work.iterdir():
+            if p.is_file() and p.stat().st_mtime < cutoff:
+                p.unlink(missing_ok=True)
+    except OSError:
+        pass  # 清理失败不阻断分析
 
 
 # ---------- 流水线（与 CLI live 同一条路） ----------
@@ -154,8 +194,9 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
     }
     if checks is not None:
         payload["checks"] = checks
-    LAST_FACTS.clear()
-    LAST_FACTS.extend(facts)
+    with _LAST_LOCK:
+        LAST_FACTS.clear()
+        LAST_FACTS.extend(facts)
     run.finish(status="ok" if not failures else "partial_failure",
                materials=len(materials), evidence_count=len(facts),
                failures=len(failures), draft_checked=bool(checks))
@@ -252,14 +293,14 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .stat.bad .n { color: var(--bad); }
 .stat.info .n { color: var(--info); }
 table.grid {
-  width: 100%; border-collapse: collapse; font-size: 13px; background: #fff;
+  width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; background: #fff;
 }
 table.grid th, table.grid td {
   border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left;
 }
 table.grid th {
   background: #f9fafb; font-weight: 600; color: var(--muted); font-size: 12px;
-  position: sticky; top: 0; z-index: 1;
+  position: sticky; top: 0; z-index: 1; white-space: nowrap;
 }
 table.grid td.num { text-align: right; font-variant-numeric: tabular-nums; }
 .table-wrap { overflow: auto; max-height: 420px; border: 1px solid var(--line); border-radius: 8px; }
@@ -468,6 +509,21 @@ const fmt = (v) => {
   if (!isFinite(n)) return String(v);
   return n.toLocaleString('zh-CN', { maximumFractionDigits: 4 });
 };
+const fmtBig = (v) => {
+  if (v === null || v === undefined || v === '') return '—';
+  const n = Number(v);
+  if (!isFinite(n)) return String(v);
+  const abs = Math.abs(n);
+  if (abs >= 1e8) return (n / 1e8).toLocaleString('zh-CN', { maximumFractionDigits: 2 }) + ' 亿';
+  return n.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+};
+const scopeZh = (s) => ({
+  consolidated: '合并', parent_shareholders: '归母', parent_company: '母公司',
+  unknown: '未知',
+}[s] || s || '—');
+const adjZh = (a) => ({
+  as_reported: '披露值', before: '调整前', after: '调整后',
+}[a] || a || '—');
 const badge = (s) => {
   const map = {
     'match': 'ok', '一致': 'ok', '证据支持': 'ok', 'evidence_supported': 'ok',
@@ -621,8 +677,8 @@ function render(data) {
     <td>${esc(e.period_year)}</td>
     <td class="num">${fmt(e.value)}</td>
     <td>${esc(e.unit || '—')}</td>
-    <td>${esc(e.scope || '—')}</td>
-    <td>${esc(e.adjustment || '—')}</td>
+    <td>${esc(scopeZh(e.scope))}</td>
+    <td>${esc(adjZh(e.adjustment))}</td>
     <td class="num">${pageCell(e)}</td>
     <td>${(e.issues && e.issues.length) ? badge(String(e.issues.join('；'))) : '<span class="badge ok">干净</span>'}</td>
   </tr>`).join('');
@@ -640,8 +696,8 @@ function render(data) {
       : '未核对（缺披露值）';
     return `<tr>
       <td>${esc(r.metric_name || r.metric)}</td>
-      <td class="num">${fmt(r.current)}</td>
-      <td class="num">${fmt(r.previous)}</td>
+      <td class="num">${fmtBig(r.current)}</td>
+      <td class="num">${fmtBig(r.previous)}</td>
       <td class="num">${esc(yoy)}</td>
       <td class="num">${check ? fmt(check.reported) + '%' : '—'}</td>
       <td>${badge(outcome)}</td>
@@ -771,7 +827,7 @@ function exportMarkdown() {
     const outcome = check
       ? (check.status === 'match' ? '一致' : '不一致，需复核')
       : '未核对（缺披露值）';
-    lines.push(`| ${r.metric_name || r.metric} | ${fmt(r.current)} | ${fmt(r.previous)} | ${yoy} | ${check ? fmt(check.reported) + '%' : '—'} | ${outcome} | ${r.page ?? '—'} |`);
+    lines.push(`| ${r.metric_name || r.metric} | ${fmtBig(r.current)} | ${fmtBig(r.previous)} | ${yoy} | ${check ? fmt(check.reported) + '%' : '—'} | ${outcome} | ${r.page ?? '—'} |`);
   });
   const sigs = data.signals || [];
   if (sigs.length) {
@@ -798,7 +854,7 @@ function exportMarkdown() {
     lines.push('| 证据ID | 指标 | 年度 | 数值 | 单位 | 口径 | 页 |');
     lines.push('| --- | --- | ---: | ---: | --- | --- | ---: |');
     data.evidence.forEach((e) => {
-      lines.push(`| ${e.evidence_id} | ${e.metric_name || e.metric} | ${e.period_year ?? '—'} | ${e.value ?? '—'} | ${e.unit || '—'} | ${e.scope || '—'} | ${e.page ?? '—'} |`);
+      lines.push(`| ${e.evidence_id} | ${e.metric_name || e.metric} | ${e.period_year ?? '—'} | ${e.value ?? '—'} | ${e.unit || '—'} | ${scopeZh(e.scope)} | ${e.page ?? '—'} |`);
     });
   }
   lines.push('', '## 核查报告', '');
@@ -949,7 +1005,9 @@ class Handler(BaseHTTPRequestHandler):
         except Exception:  # noqa: BLE001 — 未配模型时降级纯确定性问答
             client, run = None, None
         try:
-            out = qa_answer(question, list(LAST_FACTS), client=client, run=run,
+            with _LAST_LOCK:
+                facts_snapshot = list(LAST_FACTS)
+            out = qa_answer(question, facts_snapshot, client=client, run=run,
                             use_llm=client is not None)
             if run is not None:
                 run.finish(status="ok", question_len=len(question),
@@ -960,8 +1018,16 @@ class Handler(BaseHTTPRequestHandler):
             traceback.print_exc()
             _json(self, 400, {"error": f"{type(exc).__name__}: {exc}"})
 
+    def _client_ip(self) -> str:
+        fwd = self.headers.get("X-Forwarded-For") or ""
+        return fwd.split(",")[0].strip() or self.client_address[0]
+
     def do_POST(self):
         try:
+            ip = self._client_ip()
+            if not _rate_limit(ip):
+                _json(self, 429, {"error": "请求过于频繁，请稍后再试"})
+                return
             ctype = self.headers.get("Content-Type") or ""
             if self.path == "/api/ask" and ctype.startswith("application/json"):
                 self._ask_json()
@@ -1000,10 +1066,17 @@ class Handler(BaseHTTPRequestHandler):
             if not re.fullmatch(r"\d{4}", year_raw):
                 _json(self, 400, {"error": "未能从 PDF 识别报告年度，请检查文件是否为标准年报"})
                 return
-            payload = run_pipeline(pdf, code, name, int(year_raw),
-                                   draft=draft or None)
-            payload["auto_detected"] = auto
-            _json(self, 200, payload)
+            if not _ANALYZE_LOCK.acquire(blocking=False):
+                _json(self, 429, {"error": "已有分析任务在进行中，请稍后再试"})
+                return
+            try:
+                _cleanup_work_dir()
+                payload = run_pipeline(pdf, code, name, int(year_raw),
+                                       draft=draft or None)
+                payload["auto_detected"] = auto
+                _json(self, 200, payload)
+            finally:
+                _ANALYZE_LOCK.release()
         except Exception as exc:
             traceback.print_exc()
             _json(self, 400, {"error": f"{type(exc).__name__}: {exc}"})

@@ -27,6 +27,20 @@ function fmtNum(v) {
   if (!isFinite(n)) return esc(v);
   return n.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
 }
+function fmtBig(v) {
+  if (v === null || v === undefined || v === '') return '—';
+  const n = Number(v);
+  if (!isFinite(n)) return esc(v);
+  const abs = Math.abs(n);
+  if (abs >= 1e8) return (n / 1e8).toLocaleString('zh-CN', { maximumFractionDigits: 2 }) + ' 亿';
+  return n.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+}
+function scopeZh(s) {
+  return { consolidated: '合并', parent_shareholders: '归母', parent_company: '母公司', unknown: '未知' }[s] || s || '—';
+}
+function adjZh(a) {
+  return { as_reported: '披露值', before: '调整前', after: '调整后' }[a] || a || '—';
+}
 function statusBadge(s) {
   const map = {
     '证据支持': 'ok', '确认错误': 'bad',
@@ -86,8 +100,8 @@ function renderYoy() {
       <td>${esc(r.company_name || r.company_code)}</td>
       <td class="num">${esc(r.report_year)}</td>
       <td>${esc(r.metric_name || r.metric)}</td>
-      <td class="num mono">${fmtNum(r.current)}</td>
-      <td class="num mono">${fmtNum(r.previous)}</td>
+      <td class="num mono">${fmtBig(r.current)}</td>
+      <td class="num mono">${fmtBig(r.previous)}</td>
       <td class="num mono">${esc(yoy)}</td>
       <td class="num mono">${check ? fmtNum(check.reported) + '%' : '—'}</td>
       <td>${statusBadge(outcome)}</td>
@@ -147,11 +161,11 @@ function renderEvidence() {
     <tr class="clickable" data-idx="${evidence.indexOf(e)}">
       <td>${esc(e.company_name || e.company_code || '')}</td>
       <td>${esc(e.metric_name)}</td>
-      <td class="num">${esc(e.period_year)}${e.adjustment !== 'as_reported' ? ' <span class="muted">' + esc(e.adjustment) + '</span>' : ''}</td>
-      <td class="num mono">${fmtNum(e.value)}</td>
+      <td class="num">${esc(e.period_year)}${e.adjustment !== 'as_reported' ? ' <span class="muted">' + esc(adjZh(e.adjustment)) + '</span>' : ''}</td>
+      <td class="num mono">${fmtBig(e.value)}</td>
       <td>${esc(e.unit || '—')}</td>
       <td class="num">${esc(e.page)}</td>
-      <td class="muted">${esc(e.scope || '—')}</td>
+      <td class="muted">${esc(scopeZh(e.scope))}</td>
     </tr>`).join('');
   $$('#ev-table tbody tr').forEach((tr) => {
     tr.addEventListener('click', () => {
@@ -177,9 +191,9 @@ function showSource(e) {
     <div class="src-meta">
       <b>原始标签</b> ${esc(e.original_label || '—')}<br>
       <b>数值</b> ${esc(e.raw_value ?? '—')} <b>单位</b> ${esc(e.unit || '—')}
-      → 归一 <b>${fmtNum(e.normalized_value)}</b> ${esc(e.normalized_unit || '')}<br>
-      <b>期间</b> ${esc(e.period_year)} 年 · <b>口径</b> ${esc(e.scope || '—')}
-      · <b>调整列</b> ${esc(e.adjustment)}<br>
+      → 归一 <b>${fmtBig(e.normalized_value)}</b> ${esc(e.normalized_unit || '')}<br>
+      <b>期间</b> ${esc(e.period_year)} 年 · <b>口径</b> ${esc(scopeZh(e.scope))}
+      · <b>调整列</b> ${esc(adjZh(e.adjustment))}<br>
       <b>定位</b> PDF 第 ${esc(e.page)} 页 · bbox <span class="mono">[${(e.value_bbox || []).map((n) => Number(n).toFixed(1)).join(', ')}]</span><br>
       <b>提取</b> ${esc(e.extraction_method)} · <b>指纹</b> <span class="mono">${shortSha(e.source_sha256)}</span>
       ${e.issues && e.issues.length ? `<br><b>待复核</b> ${esc(e.issues.join('、'))}` : ''}
@@ -258,16 +272,32 @@ function renderEvents() {
 }
 
 /* ---------- 受限问答（静态确定性，不调模型） ---------- */
+/* 单一事实源：与 agent/extract.py METRICS 同步（14 个），[0]=展示名 */
 const METRICS = {
-  revenue: ['营业收入', '营收'],
-  total_revenue: ['营业总收入'],
-  parent_net_profit: ['归母净利润', '归母净利', '归属于上市公司股东的净利润'],
-  adjusted_parent_net_profit: ['扣非归母净利润', '扣非归母净利', '扣非净利润', '扣非净利',
-                               '归属于上市公司股东的扣除非经常性损益的净利润'],
-  operating_cash_flow: ['经营活动产生的现金流量净额', '经营现金流净额', '经营活动现金流量净额'],
-  basic_eps: ['基本每股收益', '每股收益'],
-  weighted_roe: ['加权平均净资产收益率', '加权ROE', '净资产收益率'],
-  total_assets: ['总资产', '资产总额', '资产总计'],
+  total_revenue: ['营业总收入', '营业总收入'],
+  revenue: ['营业收入', '营业收入', '营收'],
+  parent_net_profit: ['归母净利润', '归属于上市公司股东的净利润', '归属于母公司股东的净利润',
+    '归属于母公司所有者的净利润', '归属于本行股东的净利润', '归属于本公司股东的净利润',
+    '归母净利润', '归母净利'],
+  adjusted_parent_net_profit: ['扣非归母净利润', '归属于上市公司股东的扣除非经常性损益的净利润',
+    '归属于母公司股东的扣除非经常性损益的净利润', '归属于母公司所有者的扣除非经常性损益的净利润',
+    '扣除非经常性损益后的归属于上市公司股东的净利润', '扣除非经常性损益后归属于上市公司股东的净利润',
+    '扣非归母净利润', '扣非归母净利', '扣非净利润', '扣非净利'],
+  operating_cash_flow: ['经营现金流净额', '经营活动产生的现金流量净额', '经营现金流净额', '经营活动现金流量净额'],
+  basic_eps: ['基本每股收益', '基本每股收益', '每股收益'],
+  diluted_eps: ['稀释每股收益', '稀释每股收益'],
+  deducted_basic_eps: ['扣非基本每股收益', '扣除非经常性损益后的基本每股收益', '扣非基本每股收益', '扣非每股收益', '扣非EPS'],
+  weighted_roe: ['加权平均净资产收益率', '加权平均净资产收益率', '净资产收益率（加权平均）', '净资产收益率(加权平均)',
+    '加权ROE', '净资产收益率'],
+  deducted_weighted_roe: ['扣非加权平均净资产收益率', '扣除非经常性损益后的加权平均净资产收益率',
+    '扣非加权平均净资产收益率', '扣非加权ROE', '扣非ROE'],
+  total_assets: ['总资产', '总资产', '资产总额', '资产总计'],
+  parent_equity: ['归母净资产', '归属于上市公司股东的净资产', '归属于母公司股东的净资产',
+    '归属于母公司所有者权益', '归属于上市公司股东的所有者权益',
+    '归母净资产', '归母权益'],
+  book_value_per_share: ['每股净资产', '归属于上市公司股东的每股净资产', '归属于母公司股东的每股净资产',
+    '归属于上市公司普通股股东的每股净资产', '每股净资产'],
+  revenue_after_deduction: ['营业收入扣除后金额', '营业收入扣除后金额', '扣除后营业收入'],
 };
 const YOY_CUE = /同比|增长|增幅|降幅|变化|yoy|回落|上升|下降/i;
 const ISSUE_CUE = /问题|异常|issue|错误|风险|瑕疵|待复核|不一致/i;

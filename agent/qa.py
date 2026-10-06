@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import re
 
-from llm_check import METRICS
+from llm_check import COMPANIES, METRICS
 from tools import compute_yoy, find_evidence
 
 # 问题类型：value=查数 yoy=同比 issues=异常 overview=概览
@@ -142,6 +142,57 @@ def _company_of(facts: list[dict]) -> str:
     return ""
 
 
+def _company_label(facts: list[dict]) -> str:
+    """展示用公司名：优先中文名，退回代码。"""
+    for f in facts:
+        name = f.get("company_name")
+        if name:
+            return str(name)
+        code = f.get("company_code")
+        if code:
+            return str(code)
+    return ""
+
+
+def match_company(question: str, facts: list[dict]) -> dict | None:
+    """问题里是否点名公司，以及点的是哪家。
+
+    返回 None = 未点名；否则 ``{"code", "name", "query"}``。
+    ``code=None`` 表示点名了但对不上任何已知公司/已加载材料。
+    """
+    q = question or ""
+    loaded: dict[str, str] = {}
+    for f in facts:
+        code = f.get("company_code") or ""
+        if code:
+            loaded.setdefault(code, f.get("company_name") or code)
+
+    best = None  # (match_len, code, name, query)
+    for code, name in loaded.items():
+        for token in (name, code):
+            if token and token in q:
+                cand = (len(token), code, name, token)
+                if best is None or cand[0] > best[0]:
+                    best = cand
+    for code, names in COMPANIES.items():
+        for token in names:
+            if token and token in q:
+                cand = (len(token), code, token, token)
+                if best is None or cand[0] > best[0]:
+                    best = cand
+    if best:
+        _, code, name, query = best
+        return {"code": code, "name": name, "query": query}
+
+    m = re.search(r"(?<!\d)([036]\d{5})(?!\d)", q)
+    if m:
+        code = m.group(1)
+        if code in loaded or code in COMPANIES:
+            return {"code": code, "name": loaded.get(code) or code, "query": code}
+        return {"code": None, "name": None, "query": code}
+    return None
+
+
 def _fmt_pct(val) -> str:
     """同比百分比展示：四舍五入两位，去掉多余 0。"""
     try:
@@ -161,7 +212,8 @@ def _answer_value(intent: dict, facts: list[dict], draft: str = "") -> dict:
                 "evidence_ids": [], "citations": [], "intent": intent}
     if not year:
         return _no_evidence("未识别出年度，无法查数。请写清「哪年·哪个指标」。", intent)
-    out = find_evidence(facts, company_name_or_code=_company_of(facts),
+    company = intent.get("company_code") or _company_of(facts)
+    out = find_evidence(facts, company_name_or_code=company,
                         metric=metric, period_year=int(year), draft=draft)
     if out.get("status") != "ok":
         return _no_evidence(
@@ -176,7 +228,8 @@ def _answer_value(intent: dict, facts: list[dict], draft: str = "") -> dict:
                  "parent_company": "母公司"}.get(scope, scope)
     page = cite.get("page")
     page_txt = f"（PDF 第 {page} 页）" if page else ""
-    answer = f"{year}年{name}为 {cite.get('value')} {unit}，口径：{scope_txt}{page_txt}。"
+    label = _company_label(facts)
+    answer = f"{label}{year}年{name}为 {cite.get('value')} {unit}，口径：{scope_txt}{page_txt}。"
     return _ok(answer, [cite], intent)
 
 
@@ -184,7 +237,8 @@ def _answer_yoy(intent: dict, facts: list[dict], draft: str = "") -> dict:
     metric, year = intent.get("metric"), intent.get("period_year")
     if not metric or not year:
         return _no_evidence("未识别出指标或年度，无法算同比。", intent)
-    out = compute_yoy(facts, company_name_or_code=_company_of(facts),
+    company = intent.get("company_code") or _company_of(facts)
+    out = compute_yoy(facts, company_name_or_code=company,
                       metric=metric, year=int(year), draft=draft)
     if out.get("status") != "ok" or not out.get("current_evidence_id"):
         return _no_evidence(
@@ -201,25 +255,27 @@ def _answer_yoy(intent: dict, facts: list[dict], draft: str = "") -> dict:
         if fact:
             cites.append(_cite(fact))
     name = METRICS.get(metric, [metric])[0]
+    label = _company_label(facts)
     if yoy.get("status") == "ok":
         val = _fmt_pct(yoy.get("value"))
         calc = yoy.get("formula") or yoy.get("calculation") or ""
-        answer = f"{year}年{name}同比 {val}%。"
+        answer = f"{label}{year}年{name}同比 {val}%。"
         if calc:
             answer += f"计算式：{calc}。"
     else:
-        answer = f"{year}年{name}同比未能复算（{yoy.get('reason') or yoy.get('status')}），证据见引用。"
+        answer = f"{label}{year}年{name}同比未能复算（{yoy.get('reason') or yoy.get('status')}），证据见引用。"
     return _ok(answer, cites, intent)
 
 
 def _answer_issues(intent: dict, facts: list[dict]) -> dict:
     flagged = [f for f in facts if f.get("issues")]
+    label = _company_label(facts)
     if not flagged:
-        return _ok("已加载证据未带问题标记（issues 为空），不代表业务无风险，仅表示抽取层干净。", [], intent)
+        return _ok(f"{label}：已加载证据未带问题标记（issues 为空），不代表业务无风险，仅表示抽取层干净。", [], intent)
     cites = [_cite(f) for f in flagged[:20]]
     lines = [f"· {c['metric_name']}（{c['period_year']}）：{'；'.join(str(x) for x in next(f['issues'] for f in flagged if f['evidence_id'] == c['evidence_id']))}"
              for c in cites]
-    answer = f"抽取层标记 {len(flagged)} 条待复核：\n" + "\n".join(lines)
+    answer = f"{label}：抽取层标记 {len(flagged)} 条待复核：\n" + "\n".join(lines)
     return _ok(answer, cites, intent, flagged_count=len(flagged))
 
 
@@ -240,7 +296,8 @@ def _answer_overview(intent: dict, facts: list[dict]) -> dict:
     cites = [_cite(f) for f in picked.values()]
     lines = [f"· {c['metric_name']}（{c['period_year']}）：{c.get('value')} {c.get('unit') or ''}"
              for c in cites]
-    answer = f"本次共 {len(facts)} 条证据，指标概览：\n" + "\n".join(lines)
+    label = _company_label(facts)
+    answer = f"{label}：本次共 {len(facts)} 条证据，指标概览：\n" + "\n".join(lines)
     return _ok(answer, cites, intent, total_facts=len(facts))
 
 
@@ -250,6 +307,7 @@ def answer(question: str, facts: list[dict], *, client=None, run=None,
 
     - 确定性解析优先；失败且给了 client 才走 LLM 意图解析；
     - 正文一律本地拼装，数值只出自 find_evidence / compute_yoy；
+    - 问题点名的公司必须与已加载材料一致，否则明确拒绝（防「问茅台答万科」）；
     - 返回值必含 evidence_ids（可为空，但 status 必须是 insufficient_evidence）。
     """
     q = (question or "").strip()
@@ -264,9 +322,24 @@ def answer(question: str, facts: list[dict], *, client=None, run=None,
                 "answer": "尚未加载任何证据，请先分析一份年报。", "evidence_ids": [], "citations": [],
                 "intent": {}}
 
+    # 公司一致性门控：问题点名的公司必须在已加载材料里，否则拒答（不猜、不串公司）。
+    asked = match_company(q, facts)
+    loaded_codes = {str(f.get("company_code")) for f in facts if f.get("company_code")}
+    if asked is not None and (asked["code"] is None or str(asked["code"]) not in loaded_codes):
+        label = _company_label(facts)
+        return {
+            "status": "wrong_company",
+            "answer": (f"当前分析的是「{label}」，问题问的是「{asked['query']}」。"
+                       "本问答只基于已加载材料作答，请先分析该公司后再提问。"),
+            "evidence_ids": [], "citations": [],
+            "intent": {"asked_company": asked, "source": "company_gate"},
+        }
+
     intent = match_intent(q, facts)
+    intent["company_code"] = str(asked["code"]) if asked and asked.get("code") else _company_of(facts)
     if use_llm and client is not None and run is not None and not intent.get("metric"):
         intent = parse_intent_with_llm(q, facts, client, run)
+        intent["company_code"] = str(asked["code"]) if asked and asked.get("code") else _company_of(facts)
 
     kind = intent.get("kind") or "value"
     if kind == "yoy":

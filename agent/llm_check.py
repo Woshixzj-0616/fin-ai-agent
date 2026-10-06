@@ -13,6 +13,7 @@ from pathlib import Path
 
 from finance import check_claim, decimal, text
 from materials import ROOT, sha256, write_json
+from extract import ADJUDICABLE, METRICS as _EXTRACT_METRICS
 
 # 已知别名仅作软匹配辅助（方便「茅台」→贵州茅台），不是准入白名单；
 # 公司能否解析取决于本次已加载材料/证据里有没有它。
@@ -67,17 +68,10 @@ def companies_from_facts(facts: list[dict] | None) -> dict[str, list[str]]:
             if candidate and candidate not in bucket:
                 bucket.append(candidate)
     return names
-METRICS = {
-    "revenue": ["营业收入", "营收"],
-    "total_revenue": ["营业总收入"],
-    "parent_net_profit": ["归母净利润", "归母净利", "归属于上市公司股东的净利润"],
-    "adjusted_parent_net_profit": ["扣非归母净利润", "扣非归母净利", "扣非净利润", "扣非净利",
-                                   "归属于上市公司股东的扣除非经常性损益的净利润"],
-    "operating_cash_flow": ["经营活动产生的现金流量净额", "经营现金流净额", "经营活动现金流量净额"],
-    "basic_eps": ["基本每股收益", "每股收益"],
-    "weighted_roe": ["加权平均净资产收益率", "加权ROE", "净资产收益率"],
-    "total_assets": ["总资产", "资产总额", "资产总计"],
-}
+# 单一事实源：指标目录从 extract.METRICS 派生（14 个），别名覆盖 PDF 标签与口语问法。
+# [0] 是展示名（短中文名），其余是匹配别名。ADJUDICABLE 是可数值裁决子集（8 个）。
+METRICS = {key: [name, *[a for a in aliases if a != name]]
+           for key, (name, aliases) in _EXTRACT_METRICS.items()}
 METRIC_NOTE = {
     "total_revenue": "营业总收入 ≠ 营业收入，禁止互替",
     "revenue": "营业收入 ≠ 营业总收入",
@@ -111,6 +105,11 @@ def schema() -> dict:
         "claim_type": {"type": "string", "enum": list(CLAIM_TYPES),
                        "description": "amount金额 yoy同比 direction方向 comparison跨公司比较 qualitative定性 forecast预测"},
         "company_name": {**nullable_string, "description": "原文公司名称或证券代码，不纠正错别字、不猜测"},
+        "company_b": {**nullable_string, "description": "comparison 时被比较的公司；非比较主张填 null"},
+        "comparison_operator": {
+            "type": ["string", "null"],
+            "enum": ["exceed", "at_least", "at_most", "below", "eq", None],
+            "description": "comparison 的方向：exceed=A高于B；null=非比较主张"},
         "period_year": nullable_integer,
         "period_kind": {"type": "string", "enum": ["annual", "quarter", "other", "unknown"]},
         "metric_text": {"type": "string", "description": "原文指标名称，不替换为另一个指标"},
@@ -160,7 +159,15 @@ def validate_schema(value, spec: dict) -> None:
     if "enum" in spec and value not in spec["enum"]:
         raise LLMError("模型返回了核查协议之外的枚举值")
     if isinstance(value, dict):
-        if set(value) != set(spec["required"]):
+        # 可空字段允许省略（模型对 comparison 之外的主张不填 company_b 等）；
+        # 必填字段缺失或出现额外字段仍拒绝。
+        required = set(spec.get("required") or ())
+        props = spec.get("properties") or {}
+        optional = {k for k, v in props.items()
+                    if isinstance(v, dict) and "null" in (v.get("type") or [])}
+        missing = required - set(value) - optional
+        extra = set(value) - required
+        if missing or extra:
             raise LLMError("模型返回的字段缺失或包含额外字段")
         for key, item in value.items():
             validate_schema(item, spec["properties"][key])
@@ -386,8 +393,29 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                           "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实")
 
     if item.get("claim_type") == "comparison" or item.get("verification_action") == "mark_out_of_scope":
+        # 有 company_b + comparison_operator 就尝试确定性跨公司比较
+        company_b = item.get("company_b")
+        comp_op = item.get("comparison_operator")
+        if company_b and comp_op and item.get("metric") not in (None, "unknown", "unsupported"):
+            from tools import compare_companies
+            code_a = resolve_company(item.get("company_name") or "", source, draft, facts)
+            code_b = resolve_company(company_b, source, draft, facts)
+            if code_a and code_b and code_a != code_b and item.get("period_year"):
+                result = compare_companies(
+                    facts, company_a=code_a, company_b=code_b,
+                    metric=item["metric"], period_year=int(item["period_year"]), draft=draft)
+                if result.get("verdict") in ("evidence_supported", "confirmed_error"):
+                    output.update(
+                        status="证据支持" if result["verdict"] == "evidence_supported" else "确认错误",
+                        track="deterministic", reason_code=result.get("reason_code"),
+                        reason=result.get("reason"),
+                        evidence_ids=result.get("evidence_ids") or [])
+                    return output
+                if result.get("verdict") == "needs_review":
+                    return stop(result.get("reason_code") or "comparison_needs_review",
+                                result.get("reason") or "跨公司比较缺少证据")
         return model_note("cross_company_comparison",
-                          "跨公司/跨库比较超出本阶段核验范围，仅作模型判断保留")
+                          "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留")
 
     if item.get("claim_type") == "qualitative":
         return model_note("qualitative_statement",

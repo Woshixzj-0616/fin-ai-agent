@@ -1,7 +1,12 @@
 test_absolute_base_requires_explicit_policy (__main__.DecimalRulesTests.test_absolute_base_requires_explicit_policy) ... ok
 test_comparable_evidence_with_unit_conversion (__main__.DecimalRulesTests.test_comparable_evidence_with_unit_conversion) ... ok
+test_comparable_skips_scope_for_per_share_metrics (__main__.DecimalRulesTests.test_comparable_skips_scope_for_per_share_metrics)
+每股/收益率类指标没有合并/归母口径，scope=unknown 不得拦同比（与 check_claim 同源）。 ... ok
+test_comparable_still_checks_scope_for_amounts (__main__.DecimalRulesTests.test_comparable_still_checks_scope_for_amounts)
+金额类指标 scope 不明仍拦——防止弱化成「什么都能比」。 ... ok
 test_context_conflicts_are_not_compared (__main__.DecimalRulesTests.test_context_conflicts_are_not_compared) ... ok
 test_current_zero_yoy (__main__.DecimalRulesTests.test_current_zero_yoy) ... ok
+test_default_scope_for_assets_and_equity (__main__.DecimalRulesTests.test_default_scope_for_assets_and_equity) ... ok
 test_float_and_nonfinite_rejected (__main__.DecimalRulesTests.test_float_and_nonfinite_rejected) ... ok
 test_half_rounding_boundaries (__main__.DecimalRulesTests.test_half_rounding_boundaries) ... ok
 test_missing_prior_not_replaced_with_other_year (__main__.DecimalRulesTests.test_missing_prior_not_replaced_with_other_year) ... ok
@@ -69,6 +74,8 @@ test_approx_within_default_tolerance (__main__.OperatorCompareTests.test_approx_
 test_bad_operator_and_negative_tolerance (__main__.OperatorCompareTests.test_bad_operator_and_negative_tolerance) ... ok
 test_eq_still_uses_disclosed_precision (__main__.OperatorCompareTests.test_eq_still_uses_disclosed_precision) ... ok
 test_inequalities (__main__.OperatorCompareTests.test_inequalities) ... ok
+test_answer_includes_company_name (__main__.QATests.test_answer_includes_company_name)
+答案必须带公司名，防止「问茅台答万科」看不出问题。 ... ok
 test_answer_issues_lists_flagged (__main__.QATests.test_answer_issues_lists_flagged) ... ok
 test_answer_overview_lists_metrics (__main__.QATests.test_answer_overview_lists_metrics) ... ok
 test_answer_value_hangs_evidence_id (__main__.QATests.test_answer_value_hangs_evidence_id) ... ok
@@ -78,9 +85,16 @@ test_empty_question_and_facts (__main__.QATests.test_empty_question_and_facts) .
 test_llm_intent_only_when_deterministic_misses (__main__.QATests.test_llm_intent_only_when_deterministic_misses) ... ok
 test_llm_must_not_invent_numbers (__main__.QATests.test_llm_must_not_invent_numbers)
 模型就算胡说指标，答案正文也只准本地拼装，数值必须来自 facts。 ... ok
+test_match_company_detects_alias_and_code (__main__.QATests.test_match_company_detects_alias_and_code) ... ok
 test_match_metric_longest_alias (__main__.QATests.test_match_metric_longest_alias) ... ok
 test_match_year_and_kind (__main__.QATests.test_match_year_and_kind) ... ok
+test_metric_catalog_covers_all_extract_metrics (__main__.QATests.test_metric_catalog_covers_all_extract_metrics)
+问答/取数目录 = extract 14 个指标全覆盖（原来只 8 个，问每股净资产答不出）。 ... ok
 test_ok_value_requires_evidence_ids (__main__.QATests.test_ok_value_requires_evidence_ids) ... ok
+test_question_other_company_is_rejected (__main__.QATests.test_question_other_company_is_rejected)
+问题点名的公司不是已加载那家 → 明确拒答，不给数值。 ... ok
+test_question_unknown_company_code_rejected (__main__.QATests.test_question_unknown_company_code_rejected) ... ok
+test_question_without_company_passes (__main__.QATests.test_question_without_company_passes) ... ok
 test_webui_last_facts_store (__main__.QATests.test_webui_last_facts_store) ... ok
 test_webui_page_has_qa_bar (__main__.QATests.test_webui_page_has_qa_bar) ... ok
 test_all_disclosed_yoy_match_precision (__main__.RealReportIntegrationTests.test_all_disclosed_yoy_match_precision)
@@ -94,22 +108,32 @@ test_comparison_uses_disclosed_precision (__main__.ReportTests.test_comparison_u
 test_disagreement_visible_in_markdown (__main__.ReportTests.test_disagreement_visible_in_markdown) ... ok
 test_missing_and_uncomputable_are_not_passes (__main__.ReportTests.test_missing_and_uncomputable_are_not_passes) ... ok
 test_compare_claim_is_only_verdict_source (__main__.ToolLoopTests.test_compare_claim_is_only_verdict_source) ... ok
+test_compare_companies_deterministic_verdict (__main__.ToolLoopTests.test_compare_companies_deterministic_verdict) ... ok
+test_compare_companies_missing_evidence (__main__.ToolLoopTests.test_compare_companies_missing_evidence) ... ok
+test_compute_trend_cagr_and_monotonic (__main__.ToolLoopTests.test_compute_trend_cagr_and_monotonic) ... ok
+test_compute_trend_not_monotonic (__main__.ToolLoopTests.test_compute_trend_not_monotonic) ... ok
 test_find_evidence_empty_is_not_guessable (__main__.ToolLoopTests.test_find_evidence_empty_is_not_guessable) ... ok
 test_find_evidence_returns_identity (__main__.ToolLoopTests.test_find_evidence_returns_identity) ... ok
 test_loop_executes_tools_then_submits (__main__.ToolLoopTests.test_loop_executes_tools_then_submits) ... ok
 test_loop_parse_rejects_garbage (__main__.ToolLoopTests.test_loop_parse_rejects_garbage) ... ok
 test_loop_tool_budget_is_enforced (__main__.ToolLoopTests.test_loop_tool_budget_is_enforced) ... ok
 test_unknown_tool_is_error_not_crash (__main__.ToolLoopTests.test_unknown_tool_is_error_not_crash) ... ok
+test_cleanup_work_dir_removes_expired (__main__.WebUITests.test_cleanup_work_dir_removes_expired) ... ok
 test_guess_identity_code_not_glued_to_year (__main__.WebUITests.test_guess_identity_code_not_glued_to_year) ... ok
 test_guess_identity_empty_pdf_is_safe (__main__.WebUITests.test_guess_identity_empty_pdf_is_safe) ... ok
 test_guess_identity_fills_code_name_year (__main__.WebUITests.test_guess_identity_fills_code_name_year) ... ok
+test_page_auto_detect_no_manual_fields_in_primary_flow (__main__.WebUITests.test_page_auto_detect_no_manual_fields_in_primary_flow)
+主流程只需 PDF：代码/公司/年度自动提取，手填区仅在识别失败时露出。 ... ok
 test_page_escapes_dynamic_html (__main__.WebUITests.test_page_escapes_dynamic_html) ... ok
 test_page_image_name_whitelist (__main__.WebUITests.test_page_image_name_whitelist) ... ok
 test_page_regex_matches_digits_not_backslash (__main__.WebUITests.test_page_regex_matches_digits_not_backslash) ... ok
+test_page_shows_three_direction_blocks (__main__.WebUITests.test_page_shows_three_direction_blocks)
+结果区按三个方向分块：结构化提取 / 财报分析 / 纠错核查。 ... ok
 test_parse_multipart_fields_and_pdf (__main__.WebUITests.test_parse_multipart_fields_and_pdf) ... ok
+test_rate_limit_blocks_burst (__main__.WebUITests.test_rate_limit_blocks_burst) ... ok
 test_run_pipeline_smoke_and_page_images (__main__.WebUITests.test_run_pipeline_smoke_and_page_images) ... ok
 
 ----------------------------------------------------------------------
-Ran 108 tests in 16.601s
+Ran 125 tests in 21.178s
 
 OK

@@ -96,7 +96,7 @@ main { padding: 18px 22px 40px; max-width: 1280px; margin: 0 auto; }
   border: 1px solid var(--line); border-radius: 10px; background: var(--card);
 }
 table.grid {
-  width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card);
+  width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; background: var(--card);
 }
 table.grid th {
   background: #f0f3f7; text-align: left; padding: 10px 11px;

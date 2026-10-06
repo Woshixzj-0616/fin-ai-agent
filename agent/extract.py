@@ -25,13 +25,15 @@ from words import (
 
 # 指标目录：key → (中文名, 别名列表)。别名按「长的在前」写，避免短名吃掉长名。
 # 前 4 个 key 是 gold 参考答案在用的，**不能改名**。
+# 别名同时覆盖 PDF 标签与口语问法（「营收」「加权ROE」），抽取与问答共用一份目录。
 METRICS: dict[str, tuple[str, list[str]]] = {
     "total_revenue": ("营业总收入", ["营业总收入"]),
-    "revenue": ("营业收入", ["营业收入"]),
+    "revenue": ("营业收入", ["营业收入", "营收"]),
     "parent_net_profit": ("归母净利润", [
         "归属于上市公司股东的净利润", "归属于母公司股东的净利润",
         "归属于母公司所有者的净利润", "归属于本行股东的净利润",
-        "归属于本公司股东的净利润"]),
+        "归属于本公司股东的净利润",
+        "归母净利润", "归母净利"]),
     "adjusted_parent_net_profit": ("扣非归母净利润", [
         "归属于上市公司股东的扣除非经常性损益的净利润",
         "归属于母公司股东的扣除非经常性损益的净利润",
@@ -42,22 +44,27 @@ METRICS: dict[str, tuple[str, list[str]]] = {
         "扣除非经常性损益后归属于本行股东的净利润",
         "归属于本公司股东的扣除非经常性损益的净利润",
         "归属于母公司股东的扣除非经常性损益后的净利润",
-        "扣除非经常性损益后归属于本公司股东的净利润"]),
-    "operating_cash_flow": ("经营现金流净额", ["经营活动产生的现金流量净额"]),
-    "basic_eps": ("基本每股收益", ["基本每股收益"]),
+        "扣除非经常性损益后归属于本公司股东的净利润",
+        "扣非归母净利润", "扣非归母净利", "扣非净利润", "扣非净利"]),
+    "operating_cash_flow": ("经营现金流净额", [
+        "经营活动产生的现金流量净额", "经营现金流净额", "经营活动现金流量净额"]),
+    "basic_eps": ("基本每股收益", ["基本每股收益", "每股收益"]),
     "diluted_eps": ("稀释每股收益", ["稀释每股收益"]),
     "deducted_basic_eps": ("扣非基本每股收益", [
-        "扣除非经常性损益后的基本每股收益"]),
+        "扣除非经常性损益后的基本每股收益", "扣非基本每股收益", "扣非每股收益", "扣非EPS"]),
     "weighted_roe": ("加权平均净资产收益率", [
-        "加权平均净资产收益率", "净资产收益率（加权平均）", "净资产收益率(加权平均)"]),
+        "加权平均净资产收益率", "净资产收益率（加权平均）", "净资产收益率(加权平均)",
+        "加权ROE", "净资产收益率"]),
     "deducted_weighted_roe": ("扣非加权平均净资产收益率", [
-        "扣除非经常性损益后的加权平均净资产收益率"]),
+        "扣除非经常性损益后的加权平均净资产收益率",
+        "扣非加权平均净资产收益率", "扣非加权ROE", "扣非ROE"]),
     "total_assets": ("总资产", ["总资产", "资产总额", "资产总计"]),
     "parent_equity": ("归母净资产", [
         "归属于上市公司股东的净资产", "归属于母公司股东的净资产",
         "归属于母公司所有者权益", "归属于上市公司股东的所有者权益",
         "归属于本行股东权益", "归属于母公司股东权益", "归属于本公司股东权益",
-        "归属于本行股东的净资产", "归属于本公司股东的净资产"]),
+        "归属于本行股东的净资产", "归属于本公司股东的净资产",
+        "归母净资产", "归母权益"]),
     "book_value_per_share": ("每股净资产", [
         "归属于上市公司股东的每股净资产", "归属于母公司股东的每股净资产",
         "归属于上市公司普通股股东的每股净资产", "归属于本行普通股股东的每股净资产",
@@ -65,6 +72,12 @@ METRICS: dict[str, tuple[str, list[str]]] = {
     "revenue_after_deduction": ("营业收入扣除后金额", [
         "营业收入扣除后金额", "扣除后营业收入"]),  # 蓝筹样本无此行（退市风险警示股才有），保留给现场新数据
 }
+
+# 可数值裁决子集：check_claim 能对这 8 个出确定性对错；其余只做取数/溯源。
+ADJUDICABLE = frozenset({
+    "revenue", "total_revenue", "parent_net_profit", "adjusted_parent_net_profit",
+    "operating_cash_flow", "basic_eps", "weighted_roe", "total_assets",
+})
 
 # 别名长优先，同长按目录序 —— 「营业总收入」先于「营业收入」，「扣非基本每股收益」先于「基本每股收益」。
 ALIASES: list[tuple[str, str, int]] = []
@@ -75,12 +88,13 @@ ALIASES.sort(key=lambda t: (-len(t[0]), t[2]))
 
 # 抽不出来就报错的指标（gold 与核查器的最小集合）；其余缺了只记录，不阻断。
 REQUIRED = ("revenue", "parent_net_profit", "adjusted_parent_net_profit", "operating_cash_flow")
-PARENT_METRICS = {"parent_net_profit", "adjusted_parent_net_profit"}
-CONSOLIDATED_METRICS = {"revenue", "operating_cash_flow", "total_revenue", "revenue_after_deduction"}
+PARENT_METRICS = {"parent_net_profit", "adjusted_parent_net_profit", "parent_equity"}
+CONSOLIDATED_METRICS = {"revenue", "operating_cash_flow", "total_revenue",
+                        "revenue_after_deduction", "total_assets"}
 
 
 def default_scope(metric: str) -> tuple[str, dict | None]:
-    """项目默认上下文：利润类归母、收入与现金流合并口径。旁证成功后再升级为 corroborated。"""
+    """项目默认上下文：利润/权益类归母、收入/现金流/资产合并口径。旁证成功后再升级为 corroborated。"""
     if metric in PARENT_METRICS:
         return "parent_shareholders", {"basis": "explicit_metric_label"}
     if metric in CONSOLIDATED_METRICS:
@@ -450,6 +464,8 @@ def _reported_yoy_for(row: dict, rows: list[dict], label: str) -> dict | None:
 
     # 找表头：任意上方行里含「增减」或「比…年」的格子
     yoy_headers = []
+    # 年份/调整列头：用于排除「值被误判成同比」（如 49.93 落在调整前列下）
+    value_headers = []
     for r in rows:
         if r["yc"] >= row["yc"]:
             continue
@@ -457,9 +473,17 @@ def _reported_yoy_for(row: dict, rows: list[dict], label: str) -> dict | None:
             ht = norm(h["text"])
             if "增减" in ht or ("比" in ht and ("上年" in ht or "同期" in ht or "年" in ht)):
                 yoy_headers.append(h)
+            elif re.match(r"20\d{2}年", ht) or ht in {"调整前", "调整后", "调整数"}:
+                value_headers.append(h)
     if not yoy_headers:
         return None
+
+    def under_value_header(xc: float) -> bool:
+        return any(h["x0"] - 2 <= xc <= h["x1"] + 2 for h in value_headers)
+
     # 找数值：本行与邻近折行里的百分数格子，x 对齐某个 yoy 表头
+    # 优先 % 显式带符号的；裸数字回退时跳过年份/调整列下的格子
+    bare = None
     for r in rows:
         if abs(r["yc"] - row["yc"]) > LABEL_SIT:
             continue
@@ -470,12 +494,18 @@ def _reported_yoy_for(row: dict, rows: list[dict], label: str) -> dict | None:
                 continue
             xc = (c["x0"] + c["x1"]) / 2
             for h in yoy_headers:
-                if h["x0"] - 2 <= xc <= h["x1"] + 2:
-                    rate = re.match(r"^(-?\d+(?:\.\d+)?)", t)
-                    if rate:
-                        return {"value": rate[1], "unit": "%", "bbox": cell_bbox(c),
-                                "header": {"text": h["text"], "bbox": cell_bbox(h)}}
-    return None
+                if not (h["x0"] - 2 <= xc <= h["x1"] + 2):
+                    continue
+                rate = re.match(r"^(-?\d+(?:\.\d+)?)", t)
+                if not rate:
+                    continue
+                hit = {"value": rate[1], "unit": "%", "bbox": cell_bbox(c),
+                       "header": {"text": h["text"], "bbox": cell_bbox(h)}}
+                if t.endswith("%") or t.endswith("％"):
+                    return hit
+                if bare is None and not under_value_header(xc):
+                    bare = hit
+    return bare
 
 
 def extract_via_words(page, report_year, material, currency_note, carry_cols=None):

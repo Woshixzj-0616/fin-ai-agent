@@ -126,6 +126,29 @@ class DecimalRulesTests(unittest.TestCase):
                 previous[field] = value
                 self.assertEqual(evidence_yoy(evidence(2024), previous)["status"], "not_comparable")
 
+    def test_comparable_skips_scope_for_per_share_metrics(self):
+        """每股/收益率类指标没有合并/归母口径，scope=unknown 不得拦同比（与 check_claim 同源）。"""
+        for metric, unit in [("basic_eps", "元/股"), ("diluted_eps", "元/股"),
+                             ("deducted_basic_eps", "元/股"), ("weighted_roe", "%"),
+                             ("deducted_weighted_roe", "%"), ("book_value_per_share", "元/股")]:
+            with self.subTest(metric=metric):
+                cur = evidence(2024, "10", metric=metric, unit=unit, scope="unknown")
+                prev = evidence(2023, "8", metric=metric, unit=unit, scope="unknown")
+                out = evidence_yoy(cur, prev)
+                self.assertEqual(out["status"], "ok", out.get("reasons"))
+
+    def test_comparable_still_checks_scope_for_amounts(self):
+        """金额类指标 scope 不明仍拦——防止弱化成「什么都能比」。"""
+        cur = evidence(2024, "10", scope="unknown")
+        prev = evidence(2023, "8", scope="unknown")
+        self.assertEqual(evidence_yoy(cur, prev)["status"], "not_comparable")
+
+    def test_default_scope_for_assets_and_equity(self):
+        from extract import default_scope
+        self.assertEqual(default_scope("total_assets")[0], "consolidated")
+        self.assertEqual(default_scope("parent_equity")[0], "parent_shareholders")
+        self.assertEqual(default_scope("basic_eps")[0], "unknown")
+
     def test_restatement_after_is_usable(self):
         self.assertEqual(evidence_yoy(evidence(2024), evidence(2023, adjustment="after"))["status"], "ok")
 
@@ -753,6 +776,64 @@ class ToolLoopTests(unittest.TestCase):
         from tools import dispatch
         self.assertGreaterEqual(MAX_TOOL_CALLS, 10)
 
+    def _two_companies(self):
+        a = {**evidence(2024, "100"), "company_code": "600519", "company_name": "贵州茅台",
+             "metric": "revenue", "period_year": 2024, "metric_name": "营业收入",
+             "normalized_value": "100", "unit": "元", "issues": []}
+        b = {**evidence(2024, "80"), "evidence_id": "b2024",
+             "company_code": "000858", "company_name": "五粮液",
+             "metric": "revenue", "period_year": 2024, "metric_name": "营业收入",
+             "normalized_value": "80", "unit": "元", "issues": []}
+        return [a, b]
+
+    def test_compare_companies_deterministic_verdict(self):
+        facts = self._two_companies()
+        out = self.dispatch("compare_companies", facts, {
+            "company_a": "贵州茅台", "company_b": "五粮液",
+            "metric": "revenue", "period_year": 2024, "operator": "exceed"})
+        self.assertEqual(out["verdict"], "evidence_supported")
+        self.assertEqual(len(out["evidence_ids"]), 2)
+        wrong = self.dispatch("compare_companies", facts, {
+            "company_a": "贵州茅台", "company_b": "五粮液",
+            "metric": "revenue", "period_year": 2024, "operator": "below"})
+        self.assertEqual(wrong["verdict"], "confirmed_error")
+
+    def test_compare_companies_missing_evidence(self):
+        facts = self._two_companies()
+        out = self.dispatch("compare_companies", facts, {
+            "company_a": "贵州茅台", "company_b": "五粮液",
+            "metric": "revenue", "period_year": 2023, "operator": "exceed"})
+        self.assertEqual(out["verdict"], "needs_review")
+        self.assertEqual(out["reason_code"], "missing_evidence")
+
+    def test_compute_trend_cagr_and_monotonic(self):
+        facts = []
+        for i, (y, v) in enumerate([(2022, "100"), (2023, "120"), (2024, "150"), (2025, "180")]):
+            facts.append({**evidence(y, v), "company_code": "600519", "company_name": "贵州茅台",
+                          "metric": "revenue", "period_year": y, "metric_name": "营业收入",
+                          "normalized_value": v, "unit": "元", "issues": []})
+        out = self.dispatch("compute_trend", facts, {
+            "company_name_or_code": "贵州茅台", "metric": "revenue",
+            "start_year": 2022, "end_year": 2025})
+        self.assertEqual(out["status"], "ok")
+        self.assertTrue(out["monotonic_up"])
+        self.assertFalse(out["monotonic_down"])
+        self.assertEqual(len(out["series"]), 4)
+        self.assertIsNotNone(out["cagr_pct"])
+        self.assertIsNotNone(out["total_change_pct"])
+
+    def test_compute_trend_not_monotonic(self):
+        facts = []
+        for y, v in [(2022, "100"), (2023, "90"), (2024, "110")]:
+            facts.append({**evidence(y, v), "company_code": "600519", "company_name": "贵州茅台",
+                          "metric": "revenue", "period_year": y, "metric_name": "营业收入",
+                          "normalized_value": v, "unit": "元", "issues": []})
+        out = self.dispatch("compute_trend", facts, {
+            "company_name_or_code": "600519", "metric": "revenue",
+            "start_year": 2022, "end_year": 2024})
+        self.assertFalse(out["monotonic_up"])
+        self.assertFalse(out["monotonic_down"])
+
 
 class FlatOutputTests(unittest.TestCase):
     def test_history_keeps_recent_complete_runs(self):
@@ -950,6 +1031,29 @@ class WebUITests(unittest.TestCase):
             for row in payload["rows"]:
                 self.assertIn("page_image", row)
 
+    def test_rate_limit_blocks_burst(self):
+        from webui import _rate_limit, _rate_buckets, _RATE_CAPACITY
+        ip = "test-ratelimit-ip"
+        _rate_buckets.pop(ip, None)
+        for _ in range(_RATE_CAPACITY):
+            self.assertTrue(_rate_limit(ip), "突发额度内应放行")
+        self.assertFalse(_rate_limit(ip), "超突发额度应拒绝")
+        _rate_buckets.pop(ip, None)
+
+    def test_cleanup_work_dir_removes_expired(self):
+        import os, time
+        from webui import _cleanup_work_dir, WORKSPACE, _WORK_TTL_SEC
+        WORKSPACE.mkdir(parents=True, exist_ok=True)
+        stale = WORKSPACE / "stale_test_file.pdf"
+        stale.write_bytes(b"x")
+        os.utime(stale, (time.time() - _WORK_TTL_SEC - 60, time.time() - _WORK_TTL_SEC - 60))
+        fresh = WORKSPACE / "fresh_test_file.pdf"
+        fresh.write_bytes(b"x")
+        _cleanup_work_dir()
+        self.assertFalse(stale.exists(), "过期文件应被清理")
+        self.assertTrue(fresh.exists(), "未过期文件应保留")
+        fresh.unlink(missing_ok=True)
+
 
 class QATests(unittest.TestCase):
     """受限问答：确定性解析 + 本地拼装答案，evidence_id 必挂。"""
@@ -1073,6 +1177,69 @@ class QATests(unittest.TestCase):
         out = answer("2024年营收多少", self._facts())
         self.assertEqual(out["status"], "ok")
         self.assertTrue(out["evidence_ids"])
+
+    def test_answer_includes_company_name(self):
+        """答案必须带公司名，防止「问茅台答万科」看不出问题。"""
+        from qa import answer
+        for q in ("2024年营业收入是多少", "2024年营业收入同比", "有什么问题", "有哪些指标"):
+            with self.subTest(q=q):
+                out = answer(q, self._facts())
+                self.assertEqual(out["status"], "ok")
+                self.assertIn("贵州茅台", out["answer"])
+
+    def test_question_other_company_is_rejected(self):
+        """问题点名的公司不是已加载那家 → 明确拒答，不给数值。"""
+        from qa import answer
+        out = answer("茅台2024年营业收入是多少", self._facts())  # facts 是贵州茅台，这里再试别名
+        self.assertEqual(out["status"], "ok")  # 别名指向同一公司，放行
+        vanke = [{**f, "company_code": "000002", "company_name": "万科企业"} for f in self._facts()]
+        out = answer("茅台2024年营业收入是多少", vanke)
+        self.assertEqual(out["status"], "wrong_company")
+        self.assertEqual(out["evidence_ids"], [])
+        self.assertIn("万科", out["answer"])
+        self.assertIn("茅台", out["answer"])
+
+    def test_question_unknown_company_code_rejected(self):
+        from qa import answer
+        out = answer("600519 2024年营业收入是多少", [
+            {**f, "company_code": "000002", "company_name": "万科企业"} for f in self._facts()])
+        self.assertEqual(out["status"], "wrong_company")
+        self.assertEqual(out["evidence_ids"], [])
+
+    def test_question_without_company_passes(self):
+        from qa import answer
+        out = answer("2024年营业收入是多少", self._facts())
+        self.assertEqual(out["status"], "ok")
+        self.assertIn("贵州茅台", out["answer"])
+
+    def test_match_company_detects_alias_and_code(self):
+        from qa import match_company
+        facts = self._facts()
+        self.assertIsNone(match_company("2024年营收多少", facts))
+        self.assertEqual(match_company("茅台2024年营收", facts)["code"], "600519")
+        self.assertEqual(match_company("贵州茅台2024年营收", facts)["code"], "600519")
+        self.assertEqual(match_company("600519年营收", facts)["code"], "600519")
+        self.assertIsNone(match_company("随便问问", facts))
+        unknown = match_company("300001营收多少", facts)
+        self.assertIsNotNone(unknown)
+        self.assertIsNone(unknown["code"])
+
+    def test_metric_catalog_covers_all_extract_metrics(self):
+        """问答/取数目录 = extract 14 个指标全覆盖（原来只 8 个，问每股净资产答不出）。"""
+        from extract import METRICS as EXTRACT_METRICS
+        from llm_check import METRICS as CHECK_METRICS
+        self.assertEqual(set(CHECK_METRICS), set(EXTRACT_METRICS))
+        self.assertEqual(len(CHECK_METRICS), 14)
+        # 6 个原先缺失的指标现在能被 match_metric 识别
+        from qa import match_metric
+        for q, key in [("每股净资产是多少", "book_value_per_share"),
+                       ("稀释每股收益", "diluted_eps"),
+                       ("扣非每股收益", "deducted_basic_eps"),
+                       ("扣非ROE", "deducted_weighted_roe"),
+                       ("归母净资产", "parent_equity"),
+                       ("营业收入扣除后金额", "revenue_after_deduction")]:
+            with self.subTest(q=q):
+                self.assertEqual(match_metric(q), key)
 
     def test_webui_page_has_qa_bar(self):
         from webui import PAGE
