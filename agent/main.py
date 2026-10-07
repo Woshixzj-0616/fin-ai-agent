@@ -1,4 +1,4 @@
-"""启动入口与报告流程。在new目录运行：python -B main.py --help。"""
+"""启动入口与报告流程：在项目根目录运行 python3 -B agent/main.py --help。"""
 from __future__ import annotations
 
 import argparse
@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 if sys.version_info < (3, 11):
-    raise SystemExit("本项目需要 Python 3.11+（本机验证 3.14.6）。")
+    raise SystemExit("本项目需要 Python 3.11+。实际运行版本记录于 results/run.json。")
 
 import pymupdf
 
@@ -19,7 +19,7 @@ from extract import extract_material
 from finance import analyze, check_claim, decimal
 from llm_check import LLMClient, LLMError, check_text
 
-def extract_selected(root: Path, run: Run, code=None, year=None, render=False):
+def extract_selected(root: Path, run: Run, code=None, year=None, render=False, report_kind=None):
     """code/year 既可传单值（CLI），也可传集合（测试批量圈定）。"""
     registry_path = root / "data" / "agent" / "materials.jsonl"
     if registry_path.exists():
@@ -32,7 +32,8 @@ def extract_selected(root: Path, run: Run, code=None, year=None, render=False):
         ok_year = (year is None if year is None else
                    m["report_year"] == year if isinstance(year, int) else
                    m["report_year"] in year)
-        return ok_code and ok_year
+        ok_kind = report_kind is None or m.get("report_kind", "annual") == report_kind
+        return ok_code and ok_year and ok_kind
 
     materials = [m for m in load_materials(root) if match(m)]
     if not materials:
@@ -64,12 +65,12 @@ def extract_selected(root: Path, run: Run, code=None, year=None, render=False):
 
 
 def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | None = None) -> str:
-    lines = ["# 年度财务证据与分析", "", analysis["basis"], "", analysis["limits"], "",
+    lines = ["# 财务证据与分析", "", analysis["basis"], "", analysis["limits"], "",
              "金额单位为人民币元；PDF页码从文件第一页开始计数，可能与印刷页码不同。", "",
-             "同比核对按年报披露的小数位数使用 ROUND_HALF_UP；一致只表示报告内部算术一致。", "",
-             "适用范围：当前已登记材料中的4类指标；24条固定参考答案尚待团队人工复签，"
+             "年报披露同比及半年报、季报披露同比均按原文小数位数使用 ROUND_HALF_UP 核对；一致只表示报告内部算术一致。", "",
+             "适用范围：当前指标目录与已识别的期间表头；24条固定参考答案尚待团队人工复签，"
              "新公司、新措辞和新版式的泛化能力尚未独立验证。", "",
-             "| 公司 | 报告年度 | 指标 | 本年 | 同报告上年 | 基期状态 | 复算同比（核对精度） | 年报披露同比 | 核对结果 | PDF页 |",
+             "| 公司 | 报告年度 / 本期期间 | 指标 | 本期 | 同报告上年同期 | 基期状态 | 复算同比（核对精度） | 披露同比 | 核对结果 | PDF页 |",
              "|---|---:|---|---:|---:|---|---|---|---|---:|"]
     for row in analysis["rows"]:
         calc = row["yoy"]
@@ -82,15 +83,23 @@ def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | 
             rate = str(check["calculated_rounded"]) + "%"
             reported = str(check["reported"]) + "%"
             outcome = {"match": "一致", "mismatch": "不一致，需复核"}.get(check["status"], "未核对")
-        lines.append(f"| {row['company_name']} | {row['report_year']} | {row['metric_name']} | "
+        period = f"{row.get('period_start', '未知')} 至 {row.get('period_end', '未知')}"
+        lines.append(f"| {row['company_name']} | {row['report_year']} / {period} | {row['metric_name']} | "
                      f"{row['current']} | {row['previous']} | {row['previous_adjustment']} | "
                      f"{rate} | {reported} | {outcome} | {row['page']} |")
     lines += ["", "## 辅助分析", ""]
     for signal in analysis["signals"]:
-        lines += [f"- {signal['document_id'].split('_')[0]}：{signal['description']} "
+        lines += [f"- 【{signal.get('epistemic_type', '事实')}】{signal['document_id'].split('_')[0]}：{signal['description']} "
                   f"{signal.get('value', '')}{signal.get('unit', '')}。{signal['interpretation']}"]
     if not analysis["signals"]:
         lines += ["没有产生可确认的辅助分析项。"]
+    lines += ["", "## 单季环比", "", "| 公司 | 指标 | 单季期间 | 状态 | 环比 % | 证据 |", "|---|---|---|---|---|---|"]
+    for row in analysis.get("qoq_rows", []):
+        c = row["qoq"]
+        lines.append(f"| {row['company_code']} | {row['metric']} | {row['period_start']} 至 {row['period_end']} | {c['status']} | {c.get('value', '—')} | {', '.join(row['evidence_ids'])} |")
+    if not analysis.get("qoq_rows"):
+        lines.append("| — | — | — | 缺少可比较单季数据 | — | — |")
+    lines += ["", "事实为原始字段及可复算结果；推论是待补证据的分析框架；本系统不生成投资观点。", ""]
     if checks is not None:
         lines += ["", "## 结构化样例核对", "",
                   "这些待核查字段已在样例JSON中人工填写。程序尚未自动理解自然语言，没有接入大模型。", "",
@@ -100,7 +109,7 @@ def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | 
                          f"{check.get('suggestion') or check.get('reason', '')} |")
     lines += ["", "## 来源与待复核事项", ""]
     for material in materials:
-        lines += [f"- {material['company_name']} {material['report_year']}年报："
+        lines += [f"- {material['company_name']} {material['report_year']}年 {material.get('report_kind', '财务报告')}："
                   f"[原始PDF](../{material['local_file']})；公告ID {material['announcement_id']}；"
                   f"SHA-256 {material['sha256']}。",
                   f"  披露日期状态：{material['disclosure_date_status']}；"
@@ -170,6 +179,14 @@ def parser() -> argparse.ArgumentParser:
     checker.add_argument("--ask-key", action="store_true", help="交互输入临时密钥，不回显、不保存；否则读取LLM_API_KEY")
     checker.add_argument("--no-loop", action="store_true",
                          help="跳过 JSON 多步工具循环，只用单次拆解（回退模式）")
+    announcement = commands.add_parser("announcement", help="质押/中标/股权变动公告结构化抽取")
+    announcement.add_argument("--pdf", type=Path, required=True)
+    announcement.add_argument("--type", choices=["auto", "pledge", "winning_bid", "equity_change"], default="auto")
+    announcement.add_argument("--ocr", action="store_true", help="需本地 Tesseract 与 chi_sim/eng 语言包；OCR 字段转人工复核")
+    audit = commands.add_parser("audit", help="本地估值倍数/引用核查（明确表达或结构化主张）")
+    audit.add_argument("--draft", type=Path)
+    audit.add_argument("--claims", type=Path)
+    audit.add_argument("--evidence", type=Path, default=ROOT / "results" / "evidence.json")
     return app
 
 
@@ -192,6 +209,43 @@ def main() -> int:
     run = Run(ROOT, args.command, parameters)
     print(f"运行记录：{run.folder}", flush=True)
     try:
+        if args.command == "announcement":
+            from announcements import extract_announcement
+            output = extract_announcement(run.read(args.pdf), args.type, run=run,
+                                          source_file=str(args.pdf), ocr=args.ocr)
+            write_json(run.output("announcement_events.json"), output)
+            run.finish(status=output["status"], event_count=len(output["events"]))
+            print(f"公告事件 {len(output['events'])} 条；结果：{run.folder / 'announcement_events.json'}")
+            return int(not output["events"])
+        if args.command == "audit":
+            from audit_checks import check_draft_supplements, check_reference, check_valuation
+            evidence_blob = run.read(args.evidence)
+            facts = json.loads(evidence_blob)
+            checks = []
+            if args.draft:
+                checks.extend(check_draft_supplements(run.read(args.draft).decode("utf-8-sig"), facts, root=ROOT, run=run))
+            if args.claims:
+                claims = json.loads(run.read(args.claims))
+                from llm_check import SECRET_PATTERN
+                if SECRET_PATTERN.search(json.dumps(claims, ensure_ascii=False)):
+                    raise ValueError("核查输入含疑似凭证，请先移除")
+                for claim in claims:
+                    if claim.get("kind") == "valuation":
+                        c = check_valuation(claim, facts)
+                    elif claim.get("kind") == "reference":
+                        c = check_reference(claim, facts, root=ROOT, run=run)
+                    else:
+                        raise ValueError("结构化审计主张 kind 必须为 valuation 或 reference")
+                    checks.append(c)
+                    run.event("supplemental_check", **{k: c.get(k) for k in ("claim_id", "status", "reason_code", "reason", "evidence_ids", "calculation")})
+            if not args.draft and not args.claims:
+                raise ValueError("audit 至少需要 --draft 或 --claims")
+            write_json(run.output("audit_checks.json"), {"checks": checks, "run_id": run.id, "evidence_sha256": sha256(evidence_blob)})
+            from llm_check import render_report
+            run.output("audit_report.md").write_text(render_report(checks, model="本地补充核查", run_id=run.id), encoding="utf-8")
+            run.finish(snapshot_prefix="audit", status="ok", checks=len(checks))
+            print(f"补充核查 {len(checks)} 项；结果：{run.folder / 'audit_report.md'}")
+            return 0
         if args.command == "import-existing":
             records, failures = import_legacy(ROOT, args.source, run)
             write_json(run.output("failures.json"), failures)
@@ -217,17 +271,17 @@ def main() -> int:
         if args.command == "live" and args.pdf:
             if not (args.code and args.name and args.year):
                 raise ValueError("现场新材料必须同时给 --pdf --code --name --year")
-            blob = args.pdf.read_bytes()
+            blob = run.read(args.pdf)
             # 上传材料没有公告号：用指纹派生稳定 ID，同一文件重复登记不产生新身份
             fingerprint = sha256(blob)
             record = register(ROOT, blob, {
                 "company_code": args.code, "company_name": args.name,
                 "report_year": int(args.year), "announcement_id": str(int(fingerprint[:8], 16)),
-                "title": f"{args.name}{args.year}年年度报告（现场登记）",
+                "title": f"{args.name}{args.year}年财务报告（现场登记）",
                 "disclosed_at": datetime.now(TZ).date().isoformat(),
                 "disclosure_date_status": "onsite_unverified",
                 "source_url": f"onsite://{args.pdf.name}",
-                "version_policy": "first", "license_status": "public_disclosure",
+                "version_policy": "first", "license_status": "uploaded_rights_unverified",
             }, run)
             print(f"已登记现场材料：{record['document_id']}")
         code = "600519" if args.command == "demo" else getattr(args, "code", None)

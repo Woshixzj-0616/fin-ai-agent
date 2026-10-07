@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "run_id": "20261007_214346_70f1f37a",
+  "steps": [
+    {
+      "step": 1,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "run_started",
+      "title": "开始任务",
+      "actor": "程序",
+      "rule": "按本次参数创建隔离运行",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "command": "audit"
+      }
+    },
+    {
+      "step": 2,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/results/evidence.json",
+        "sha256": "77c1131b90c0eb4e11743740881619dc509e5f08f10231f396b5eeb2dcf720d2",
+        "size_bytes": 892464
+      }
+    },
+    {
+      "step": 3,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/demo/audit_claims.json",
+        "sha256": "1ac8adf318ae743373f9058a7157cdf4c44afbf423c37d5fc37f8307cab159fd",
+        "size_bytes": 1468
+      }
+    },
+    {
+      "step": 4,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "supplemental_check",
+      "title": "倍数 / 引用核查",
+      "actor": "本地规则",
+      "rule": "区分内部一致性、来源支持性和待核实",
+      "evidence_ids": [
+        "8f99c7cf09961c5159ac7771"
+      ],
+      "evidence": [],
+      "detail": {
+        "claim_id": "PE-DEMO",
+        "status": "确认错误",
+        "reason_code": "valuation_internal_consistency",
+        "reason": "在所列输入和口径下倍数计算不一致",
+        "evidence_ids": [
+          "8f99c7cf09961c5159ac7771"
+        ],
+        "calculation": {
+          "status": "mismatch",
+          "value": "14.57",
+          "exact_value": "14.56876456876456876456876456876456876457",
+          "claimed_value": "20.00",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "-5.431235431235431235431235431",
+          "formula": "round_half_up(actual, decimals)",
+          "multiple_calculation": {
+            "status": "ok",
+            "value": "14.56876456876456876456876456876456876457",
+            "unit": "倍",
+            "formula": "numerator / denominator",
+            "operands": {
+              "numerator": "1000",
+              "denominator": "68.64"
+            }
+          }
+        }
+      }
+    },
+    {
+      "step": 5,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/raw/600519_贵州茅台_2024年年度报告.pdf",
+        "sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+        "size_bytes": 3626217
+      }
+    },
+    {
+      "step": 6,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "supplemental_check",
+      "title": "倍数 / 引用核查",
+      "actor": "本地规则",
+      "rule": "区分内部一致性、来源支持性和待核实",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "claim_id": "REF-OOB",
+        "status": "确认错误",
+        "reason_code": "reference_page_out_of_range",
+        "reason": "PDF 页序 999999 超出 1–143",
+        "evidence_ids": [],
+        "calculation": null
+      }
+    },
+    {
+      "step": 7,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/raw/600519_贵州茅台_2024年年度报告.pdf",
+        "sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+        "size_bytes": 3626217
+      }
+    },
+    {
+      "step": 8,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "supplemental_check",
+      "title": "倍数 / 引用核查",
+      "actor": "本地规则",
+      "rule": "区分内部一致性、来源支持性和待核实",
+      "evidence_ids": [
+        "80d5d67d35796958172e2d9f"
+      ],
+      "evidence": [],
+      "detail": {
+        "claim_id": "REF-SUPPORTED",
+        "status": "证据支持",
+        "reason_code": "reference_supported",
+        "reason": "引用页支持所核查内容",
+        "evidence_ids": [
+          "80d5d67d35796958172e2d9f"
+        ],
+        "calculation": null
+      }
+    },
+    {
+      "step": 9,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/raw/600519_贵州茅台_2024年年度报告.pdf",
+        "sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+        "size_bytes": 3626217
+      }
+    },
+    {
+      "step": 10,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "supplemental_check",
+      "title": "倍数 / 引用核查",
+      "actor": "本地规则",
+      "rule": "区分内部一致性、来源支持性和待核实",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "claim_id": "REF-UNKNOWN",
+        "status": "口径冲突／需人工复核",
+        "reason_code": "reference_page_numbering_unknown",
+        "reason": "请明确 PDF 页序或印刷页码；不默认两者相同",
+        "evidence_ids": [],
+        "calculation": null
+      }
+    },
+    {
+      "step": 11,
+      "time": "2026-10-07T21:43:46+08:00",
+      "run_id": "20261007_214346_70f1f37a",
+      "event": "run_finished",
+      "title": "完成运行",
+      "actor": "程序",
+      "rule": "汇总结果并保存可复现记录",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "status": "ok",
+        "checks": 4
+      }
+    }
+  ]
+}

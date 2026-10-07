@@ -164,7 +164,7 @@ def label_for(anchor: dict, cells: list[dict]) -> tuple[str, list[float]]:
 
 
 def metric_for(label: str):
-    clean = re.sub(r"[（(](?:人民币)?(?:亿|万)?元[）)]$", "", label)
+    clean = re.sub(r"[（(](?:人民币)?(?:亿|万)?元[）)]$", "", re.sub(r"\s+", "", label))
     return match_metric_at(clean, ALIASES)[0]
 
 
@@ -259,7 +259,7 @@ def corroborate_scope(document, sections: list[dict], fact: dict) -> dict | None
                 if end and index == end["page"] and hit.y1 >= end["bbox"][1]:
                     continue
                 label_region = pymupdf.Rect(page.rect.x0, hit.y0 - 18, hit.x0 - 1, hit.y1 + 18)
-                label = norm(page.get_text(clip=label_region))
+                label = re.sub(r"\s+", "", page.get_text(clip=label_region))
                 if alias in label:
                     return {"scope": "consolidated", "basis": "corroborated_current_value_in_statement",
                             "page": index + 1, "value_bbox": box(hit), "row_context": label,
@@ -728,6 +728,12 @@ def extract_total_revenue(document, material: dict, currency_note) -> list[dict]
             cols = min(groups, key=lambda g: abs(g[0] - label_cell["yc"]))[1]
             year_map = [(yr, cell) for _, yr, cell in cols]
         else:
+            # 重述附注也可能出现「合并利润表」，但只列上年调整前后。
+            # 没有可确认年份时，仅接受明确的本期/上期表头，不能把第一列硬认作本年。
+            nearby_headers = [norm("".join(c["text"] for c in r["cells"])) for r in rows
+                              if 0 < label_cell["yc"] - r["yc"] < 100]
+            if not any("本期" in h and "上期" in h for h in nearby_headers):
+                continue
             # 本期/上期：按列序左→右 = 本期→上期
             year_map = []
             ordered = sorted(nums, key=lambda c: c["x0"])
@@ -780,7 +786,7 @@ def _apply_scope(document, sections, facts, material):
                 fact["issues"].append("scope_unknown")
 
 
-def _dedupe(facts: list[dict]) -> list[dict]:
+def _dedupe(facts: list[dict], run=None) -> list[dict]:
     """同 (metric, period_year, adjustment) 只留一条；两通道都有时优先网格路径（护 gold），
     但缺字段要从输家补 —— 宁可字段更全（unit / reported_yoy / adjustment_header / 坐标框）。"""
     order = {"grid_cells_and_geometric_headers": 0, "words_geometry": 1,
@@ -794,6 +800,16 @@ def _dedupe(facts: list[dict]) -> list[dict]:
             continue
         winner, loser = (old, f) if order.get(old["extraction_method"], 9) <= order.get(f["extraction_method"], 9) \
             else (f, old)
+        if (winner.get("unit") and loser.get("unit") and
+                decimal(winner.get("normalized_value")) != decimal(loser.get("normalized_value"))):
+            winner["issues"] = list(dict.fromkeys(winner.get("issues", []) + ["conflicting_extraction_values"]))
+        if run is not None:
+            run.event("extraction_dedup", key=list(key), winner_evidence_id=winner["evidence_id"],
+                      loser_evidence_id=loser["evidence_id"], rule="grid > words > order_inference > income_statement",
+                      winner_method=winner["extraction_method"], loser_method=loser["extraction_method"],
+                      winner_candidate={k: winner.get(k) for k in ("value", "unit", "normalized_value", "original_label", "page")},
+                      loser_candidate={k: loser.get(k) for k in ("value", "unit", "normalized_value", "original_label", "page")},
+                      conflict="conflicting_extraction_values" in winner.get("issues", []))
         if not winner.get("reported_yoy") and loser.get("reported_yoy"):
             winner["reported_yoy"] = loser["reported_yoy"]
         if not winner.get("adjustment_header") and loser.get("adjustment_header"):
@@ -850,6 +866,11 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
         scanned = _scanned_pdf_hint(document, texts)
         if scanned:
             raise ValueError(scanned)
+        from periods import report_period
+        identity = report_period("".join(texts[:10]), material["report_year"])
+        if identity["report_kind"] in {"quarter", "half"}:
+            from interim import extract_interim
+            return extract_interim(document, material, run)
         currency = document_currency(document, texts)
 
         # ── 通道 1：表格线网格（gold 口径） ──
@@ -882,6 +903,7 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
                     raise ValueError("表头产生重复证据键，拒绝静默选列")
         except ValueError as exc:
             grid_error = str(exc)
+            grid_facts = []
 
         # ── 通道 2：words 级（稳健） ──
         words_facts = extract_words_document(document, material, currency)
@@ -889,7 +911,11 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
         # ── 通道 3：利润表补营业总收入 ──
         total_facts = extract_total_revenue(document, material, currency)
 
-        facts = _dedupe(grid_facts + words_facts + total_facts)
+        for channel, channel_facts in (("grid", grid_facts), ("words", words_facts), ("income_statement", total_facts)):
+            run.event("extraction_channel", document_id=material["document_id"], channel=channel,
+                      count=len(channel_facts), evidence_ids=[f["evidence_id"] for f in channel_facts],
+                      error=grid_error if channel == "grid" else None)
+        facts = _dedupe(grid_facts + words_facts + total_facts, run)
         if not facts:
             raise ValueError(grid_error or (
                 "未识别到「主要会计数据」摘要表。可能原因：①扫描版无文字层 ②版式过新/过偏 ③该 PDF 不是年度报告。"

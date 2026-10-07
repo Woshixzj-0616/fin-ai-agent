@@ -83,6 +83,11 @@ def guess_identity(blob: bytes) -> dict:
         return {}
     flat = re.sub(r"\s+", "", sample)
     guess: dict = {}
+    from periods import report_period
+    identity = report_period(flat)
+    if identity["report_kind"] != "unknown":
+        guess.update(year=identity["report_year"], report_kind=identity["report_kind"],
+                     period_end=identity["report_period_end"])
     # 兼容「2024年年度报告」「2024年度报告」「2024年报」等常见写法
     year = re.search(r"(20\d{2})年?(?:年度报告|度报告|度報告|年报)", flat)
     if year:
@@ -100,10 +105,13 @@ def guess_identity(blob: bytes) -> dict:
 
 def run_pipeline(blob: bytes, code: str, name: str, year: int,
                  draft: str | None = None, *, workspace: Path | None = None,
-                 root: Path | None = None) -> dict:
+                 root: Path | None = None, comparison_blobs: list[bytes] | None = None) -> dict:
     """丢一份财报走完整流水线。页图默认渲染，供页面「点击溯源」。"""
     work = (workspace or WORKSPACE).resolve()
     base = (root or ROOT).resolve()
+    if len(comparison_blobs or []) > 4:
+        raise ValueError("比较材料最多 4 份，请先选择相邻期间报告")
+    work.relative_to(base)  # 所有证据文件须在本次受控根目录中可定位。
     work.mkdir(parents=True, exist_ok=True)
     fingerprint = sha256(blob)
     # 上传材料没有公告号：用指纹派生稳定 ID，同一文件重复上传不产生新身份
@@ -115,11 +123,11 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
     record = register(work, blob, {
         "company_code": code, "company_name": name, "report_year": int(year),
         "announcement_id": announcement_id,
-        "title": f"{name}{year}年年度报告（网页登记）",
+        "title": f"{name}{year}年财务报告（网页登记）",
         "disclosed_at": datetime.now().date().isoformat(),
         "disclosure_date_status": "onsite_unverified",
         "source_url": f"webui://{fingerprint[:12]}",
-        "version_policy": "first", "license_status": "public_disclosure",
+        "version_policy": "first", "license_status": "uploaded_rights_unverified",
     }, run)
     # 只抽本次上传的那一份：同公司同年的旧材料不掺进来
     materials = [record]
@@ -131,18 +139,41 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
         failures = [{"document_id": record["document_id"],
                      "error_type": type(exc).__name__, "message": str(exc)}]
         run.event("extraction_failed", **failures[0])
-    page_images: dict[int, str] = {}
+    for extra in comparison_blobs or []:
+        identity = guess_identity(extra)
+        if identity.get("code") != code or not identity.get("year"):
+            raise ValueError("比较材料须明确为同一公司，并具有可识别的报告年度")
+        extra_hash = sha256(extra)
+        extra_record = register(work, extra, {
+            "company_code": code, "company_name": name, "report_year": identity["year"],
+            "announcement_id": str(int(extra_hash[:8], 16)),
+            "title": f"{name}{identity['year']}年比较报告", "disclosed_at": None,
+            "disclosure_date_status": "onsite_unverified", "source_url": f"webui://{extra_hash[:12]}",
+            "version_policy": "first", "license_status": "uploaded_rights_unverified"}, run)
+        if extra_record["document_id"] in {m["document_id"] for m in materials}:
+            continue
+        materials.append(extra_record)
+        try:
+            facts.extend(extract_material(work, extra_record, run))
+        except ValueError as exc:
+            failures.append({"document_id": extra_record["document_id"], "message": str(exc)})
+            run.event("extraction_failed", **failures[-1])
+    page_images: dict[tuple, str] = {}
     if facts:
         import pymupdf
-        with pymupdf.open(work / record["local_file"]) as doc:
-            for page in sorted({f["page"] for f in facts if f.get("page")}):
-                if not (1 <= page <= doc.page_count):
-                    continue
-                name_png = f"{record['company_code']}_{record['report_year']}_{record['sha256'][:8]}_p{page}.png"
-                doc[page - 1].get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6)).save(run.output(name_png))
-                page_images[page] = name_png
+        for material in materials:
+            with pymupdf.open(work / material["local_file"]) as doc:
+                for page in sorted({f["page"] for f in facts if f.get("page") and f["document_id"] == material["document_id"]}):
+                    if not (1 <= page <= doc.page_count):
+                        continue
+                    name_png = f"{material['company_code']}_{material['report_year']}_{material['sha256'][:8]}_p{page}.png"
+                    doc[page - 1].get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6)).save(run.output(name_png))
+                    page_images[(material["document_id"], page)] = name_png
     for fact in facts:
-        fact["page_image"] = page_images.get(fact.get("page"))
+        fact["page_image"] = page_images.get((fact["document_id"], fact.get("page")))
+        fact["source_file"] = str((work / fact["source_file"]).relative_to(base))
+    for material in materials:
+        material["local_file"] = str((work / material["local_file"]).relative_to(base))
     # 不用 evidence.json：那是审计台/CLI 的正式产物名，网页临时分析不覆盖
     write_json(run.output("webui_evidence.json"), facts)
     write_json(run.output("webui_failures.json"), failures)
@@ -170,9 +201,10 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
         } for m in materials],
         "rows": [{
             **row,
-            "page_image": page_images.get(row.get("page")),
+            "page_image": page_images.get((row["document_id"], row.get("page"))),
         } for row in analysis["rows"]],
         "signals": analysis["signals"],
+        "qoq_rows": analysis.get("qoq_rows", []),
         "basis": analysis["basis"],
         "limits": analysis["limits"],
         "counts": counts,
@@ -180,6 +212,7 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
             "evidence_id": f["evidence_id"], "metric": f.get("metric"),
             "metric_name": f.get("metric_name"), "period_year": f.get("period_year"),
             "value": f.get("value"), "unit": f.get("unit"),
+            "period_start": f.get("period_start"), "period_end": f.get("period_end"),
             "normalized_value": f.get("normalized_value"),
             "page": f.get("page"), "page_image": f.get("page_image"),
             "value_bbox": f.get("value_bbox"), "label_bbox": f.get("label_bbox"),
@@ -201,17 +234,32 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
     run.finish(status="ok" if not failures else "partial_failure",
                materials=len(materials), evidence_count=len(facts),
                failures=len(failures), draft_checked=bool(checks))
+    from trace import build_trace
+    payload["trace"] = build_trace(run.events, facts)
     return payload
 
 
 def _check_draft(draft: str, facts: list[dict], run) -> dict:
     """有草稿就走核查；没配模型时明确说清，不假装判过。"""
+    from llm_check import SECRET_PATTERN
+    if SECRET_PATTERN.search(draft):
+        return {"status": "failed", "reason": "草稿疑似包含凭证，拒绝处理与保存", "checks": []}
     try:
         from llm_check import LLMClient, LLMError, check_text
         client = LLMClient.from_environment()
     except Exception as exc:
-        return {"status": "skipped", "reason": f"未配置模型，跳过草稿核查：{exc}", "checks": []}
+        from audit_checks import check_draft_supplements
+        from llm_check import SECRET_PATTERN
+        if SECRET_PATTERN.search(draft):
+            return {"status": "failed", "reason": "草稿疑似包含凭证，拒绝处理与保存", "checks": []}
+        checks = check_draft_supplements(draft, facts, root=run.root, run=run)
+        from collections import Counter
+        return {"status": "completed" if checks else "skipped", "mode": "local_supplemental",
+                "reason": "未配置模型；仅检查明确表达的倍数与引用，其他句子未核查",
+                "counts": dict(Counter(c["status"] for c in checks)), "checks": checks}
     try:
+        if client.key in draft:
+            return {"status": "failed", "reason": "草稿含模型凭证，拒绝处理与保存", "checks": []}
         tmp = run.output("webui_draft.txt")
         tmp.write_text(draft, encoding="utf-8")
         bundle = check_text(tmp, facts, run, client, use_loop=True)
@@ -219,6 +267,64 @@ def _check_draft(draft: str, facts: list[dict], run) -> dict:
                 "counts": bundle.get("counts"), "checks": bundle.get("checks") or []}
     except Exception as exc:
         return {"status": "failed", "reason": str(exc), "checks": []}
+
+
+def run_announcement_pipeline(blob: bytes, event_type: str, *, root: Path | None = None, ocr: bool = False) -> dict:
+    from announcements import extract_announcement
+    from trace import build_trace
+    import pymupdf
+    base = root or ROOT
+    run = Run(base, "webui-announcement", {"event_type": event_type, "sha256": sha256(blob), "ocr": ocr})
+    path = run.output("webui_announcement.pdf")
+    path.write_bytes(blob)
+    try:
+        output = extract_announcement(run.read(path), event_type, run=run,
+                                      source_file="results/webui_announcement.pdf", ocr=ocr)
+    except Exception as exc:
+        run.event("extraction_failed", message=str(exc), error_type=type(exc).__name__)
+        run.finish(status="failed", reason=str(exc))
+        raise
+    evidence, images = [], {}
+    with pymupdf.open(stream=blob, filetype="pdf") as doc:
+        for event in output["events"]:
+            for field, value in event["fields"].items():
+                for i, loc in enumerate(value["evidence"]):
+                    page = loc["page"]
+                    if page not in images:
+                        name = f"000000_2026_{output['source_sha256'][:8]}_p{page}.png"
+                        doc[page-1].get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6)).save(run.output(name))
+                        images[page] = name
+                    evidence.append({"evidence_id": f"{event['event_id']}_{field}_{i}", "metric": field,
+                                     "metric_name": field, "event_name": event["event_name"], "value": loc["value"],
+                                     "normalized_value": loc["normalized_value"], "unit": loc.get("unit"),
+                                     "period_year": "—", "page": page, "page_image": images[page],
+                                     "value_bbox": loc.get("bbox"), "issues": list(dict.fromkeys(loc.get("issues", []) + value.get("issues", [])
+                                     + (["field_conflict"] if value["status"] == "conflict" else [])
+                                     + (["OCR 识别需人工复核" if ocr else "字段需人工复核"] if value["status"] == "needs_review" else []))),
+                                     "source_file": "results/webui_announcement.pdf", "source_sha256": output["source_sha256"]})
+    write_json(run.output("webui_announcement_events.json"), output)
+    with _LAST_LOCK:
+        LAST_FACTS.clear()
+    report = ["# 公告字段抽取", "", output["limits"]]
+    for event in output["events"]:
+        report.extend(["", f"## {event['event_name']} · {event['status']}", "",
+                       f"必填缺失：{','.join(event['missing_required']) or '无'}；冲突：{','.join(event['conflicts']) or '无'}。", "",
+                       "| 字段 | 原值 | 规范值 | 状态 | PDF 页序 |", "|---|---|---|---|---|"])
+        for field, value in event["fields"].items():
+            cells = [field, value.get("value") or "缺失", f"{value.get('normalized_value') or '—'} {value.get('normalized_unit') or ''}",
+                     value["status"], ",".join(str(loc["page"]) for loc in value["evidence"])]
+            report.append("| " + " | ".join(str(c).replace("|", "\\|").replace("\n", " ") for c in cells) + " |")
+    report_md = "\n".join(report) + "\n"
+    write_json(run.output("webui_announcement_evidence.json"), evidence)
+    run.output("webui_announcement_report.md").write_text(report_md, encoding="utf-8")
+    # 报告和字段清单纳入同次归档。
+    run.finish(status=output["status"], event_count=len(output["events"]))
+    return {"ok": bool(output["events"]), "run_id": run.id, "announcement": output,
+            "evidence": evidence, "trace": build_trace(run.events, evidence), "rows": [],
+            "issues": [e for e in evidence if e["issues"]], "counts": {
+                "events": len(output["events"]), "required_missing": sum(len(e["missing_required"]) for e in output["events"]),
+                "conflicts": sum(len(e["conflicts"]) for e in output["events"])}, "signals": [],
+            "report_md": report_md, "failures": []}
 
 
 # ---------- 页面 ----------
@@ -415,16 +521,28 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
 <body>
 <header>
   <h1>金融投研智能体</h1>
-  <p class="sub">丢入一份财报 → 抽指标 → 出核查报告 → 受限问答。每个数字带页码与 evidence_id，点页码可回看原文页图。</p>
+  <p class="sub">选择财报或公告 → 提取字段 → 分析与核查。每个数字带页码与 evidence_id，点页码可回看原文页图。</p>
 </header>
 <main>
   <section class="card">
-    <h2>上传财报</h2>
+    <h2>上传材料</h2>
+    <label for="task-type">任务</label>
+    <select id="task-type" style="padding:8px;margin-bottom:12px">
+      <option value="financial">财报分析 · 年报 / 半年报 / 季报</option>
+      <option value="pledge">公告字段 · 股份质押</option>
+      <option value="winning_bid">公告字段 · 中标</option>
+      <option value="equity_change">公告字段 · 股权变动</option>
+    </select>
+    <label style="margin:8px 0"><input id="ocr" type="checkbox"> 启用扫描公告 OCR（需先配置语言包；识别字段需人工复核）</label>
     <div class="upload-area" id="upload-area">
       <input type="file" id="pdf" accept="application/pdf">
       <div class="file-meta" id="file-meta"></div>
     </div>
     <div id="auto-info" class="auto-info" hidden></div>
+    <div style="margin-top:12px">
+      <label for="comparison-pdfs">比较财报（可选，最多 4 份同公司报告；环比需要相邻季度累计数或单季值）</label>
+      <input type="file" id="comparison-pdfs" accept="application/pdf" multiple>
+    </div>
     <div id="manual-fallback" hidden>
       <div class="grid" style="margin-top:10px">
         <div>
@@ -453,7 +571,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   </section>
 
   <section class="card" id="results" hidden>
-    <h2>① 结构化提取 <span class="dir-tag">方向一 · 非标准公告抠数据</span></h2>
+    <h2>① 结构化提取 <span class="dir-tag">财务证据 / 方向一公告字段</span></h2>
     <div class="stats" id="stats"></div>
     <div class="table-wrap">
       <table class="grid" id="evidence">
@@ -487,6 +605,15 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   <section class="card" id="checks" hidden>
     <h2>③ 纠错核查 <span class="dir-tag">方向五 · 研报纠错</span></h2>
     <div id="checks-body"></div>
+  </section>
+  <section class="card" id="announcement-card" hidden>
+    <h2>公告事件字段 <span class="dir-tag">方向一</span></h2>
+    <div id="announcement-body"></div>
+  </section>
+  <section class="card" id="trace-card" hidden>
+    <h2>执行轨迹</h2>
+    <p class="hint">展示本次文件访问、规则、工具、计算与实际拆句 JSON；步骤可展开，证据可定位。</p>
+    <div id="trace-body"></div>
   </section>
 
   <section class="card" id="qa-card" hidden>
@@ -526,6 +653,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   </div>
 </div>
 
+<script src="/trace.js"></script>
 <script>
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({
@@ -630,7 +758,7 @@ function setStatus(text, cls) {
 }
 function openLightbox(img, page, bboxes) {
   $('#lb-title').textContent = '原文页图 · 第 ' + page + ' 页';
-  $('#lb-hint').textContent = bboxes && bboxes.length ? '蓝=数值 · 绿=标签' : '点页码可回看年报原页';
+  $('#lb-hint').textContent = bboxes && bboxes.length ? '蓝=数值 · 绿=标签' : '点页码可回看材料原页';
   const canvas = $('#lb-canvas');
   const ctx = canvas.getContext('2d');
   const image = new Image();
@@ -646,7 +774,7 @@ function openLightbox(img, page, bboxes) {
         if (b.kind === 'label') ctx.setLineDash([6, 4]);
         else ctx.setLineDash([]);
         // bbox 是 PDF pt 坐标，页图 2x 渲染，按 2 倍映射
-        ctx.strokeRect(b.x0 * 2, b.y0 * 2, (b.x1 - b.x0) * 2, (b.y1 - b.y0) * 2);
+        ctx.strokeRect(b.x0 * 1.6, b.y0 * 1.6, (b.x1 - b.x0) * 1.6, (b.y1 - b.y0) * 1.6);
       }
       ctx.setLineDash([]);
     }
@@ -674,7 +802,7 @@ async function prefill() {
     const tags = [];
     if (data.name) tags.push(`<span class="tag">${esc(data.name)}</span>`);
     if (data.code) tags.push(`<span class="tag">${esc(data.code)}</span>`);
-    if (data.year) tags.push(`<span class="tag">${esc(data.year)} 年报</span>`);
+    if (data.year) tags.push(`<span class="tag">${esc(data.year)} ${esc(({annual:'年报',half:'半年报',quarter:'季报'})[data.report_kind] || '财务报告')}</span>`);
     const missing = [];
     if (!data.code) missing.push('代码');
     if (!data.name) missing.push('公司');
@@ -699,6 +827,8 @@ async function prefill() {
 }
 
 function onFilePicked() {
+  autoInfo = {};
+  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card', 'auto-info']) $('#' + id).hidden = true;
   const file = $('#pdf').files[0];
   if (!file) {
     $('#file-meta').textContent = '';
@@ -709,13 +839,14 @@ function onFilePicked() {
   const kb = file.size / 1024;
   const size = kb > 1024 ? (kb / 1024).toFixed(1) + ' MB' : Math.max(1, Math.round(kb)) + ' KB';
   $('#file-meta').textContent = file.name + ' · ' + size;
-  prefill();
+  if ($('#task-type').value === 'financial') prefill();
+  else setStatus('已选择公告，点「开始分析」提取事件字段', '');
 }
 
 async function run() {
   const file = $('#pdf').files[0];
   const draft = $('#draft').value;
-  if (!file) { setStatus('请选择年报 PDF', 'err'); return; }
+  if (!file) { setStatus('请选择财报或公告 PDF', 'err'); return; }
 
   // 自动识别到的（或手填的）字段
   const code = ($('#manual-fallback').hidden ? (autoInfo.code || '') : ($('#code').value.trim() || autoInfo.code || '')).trim();
@@ -728,6 +859,9 @@ async function run() {
   if (name) form.append('name', name);
   if (year) form.append('year', year);
   form.append('draft', draft || '');
+  form.append('event_type', $('#task-type').value);
+  form.append('ocr', $('#ocr').checked ? 'true' : 'false');
+  for (const comparison of $('#comparison-pdfs').files) form.append('comparison_pdf', comparison);
 
   $('#run').disabled = true;
   // 分段进度提示，避免 7 秒只有单调「请稍候」
@@ -738,12 +872,13 @@ async function run() {
     stageIdx = Math.min(stageIdx + 1, stages.length - 1);
     setStatus(stages[stageIdx] + '（已耗时 ' + (stageIdx * 2) + 's+）', 'busy');
   }, 2500);
-  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card']) {
+  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card']) {
     $('#' + id).hidden = true;
   }
   $('#qa-history').innerHTML = '';
   try {
-    const res = await fetch('/api/analyze', { method: 'POST', body: form });
+    const endpoint = $('#task-type').value === 'financial' ? '/api/analyze' : '/api/announcement';
+    const res = await fetch(endpoint, { method: 'POST', body: form });
     const data = await res.json();
     if (!res.ok || data.error) {
       setStatus(data.error || ('分析失败 HTTP ' + res.status), 'err');
@@ -751,7 +886,7 @@ async function run() {
     }
     render(data);
     const c = data.counts || {};
-    setStatus(`完成：提取证据 ${data.evidence.length} 条 · 同比一致 ${c.match || 0} · 不一致 ${c.mismatch || 0} · 待复核 ${data.issues.length} 条`, '');
+    setStatus(data.announcement ? `完成：公告事件 ${c.events || 0} 项 · 字段证据 ${data.evidence.length} 条 · 待复核 ${data.issues.length} 条` : `完成：提取证据 ${data.evidence.length} 条 · 同比一致 ${c.match || 0} · 不一致 ${c.mismatch || 0} · 待复核 ${data.issues.length} 条`, '');
   } catch (e) {
     setStatus('请求失败：' + e, 'err');
   } finally {
@@ -765,18 +900,24 @@ function render(data) {
   const c = data.counts || {};
 
   // ── ① 结构化提取：证据表 + 统计 ──
-  $('#stats').innerHTML = [
+  $('#stats').innerHTML = (data.announcement ? [
+    ['字段证据', (data.evidence || []).length, 'info'],
+    ['公告事件', c.events || 0, 'info'],
+    ['必填缺失', c.required_missing || 0, 'warn'],
+    ['冲突字段', c.conflicts || 0, 'bad'],
+    ['待复核', (data.issues || []).length, (data.issues || []).length ? 'warn' : 'ok'],
+  ] : [
     ['提取证据', (data.evidence || []).length, 'info'],
     ['同比一致', c.match || 0, 'ok'],
     ['同比不一致', c.mismatch || 0, 'bad'],
     ['缺披露值', c.unverified || 0, ''],
     ['待复核', (data.issues || []).length, (data.issues || []).length ? 'bad' : 'ok'],
-  ].map(([k, n, cls]) => `<div class="stat ${cls}"><div class="n">${n}</div><div class="k">${k}</div></div>`).join('');
+  ]).map(([k, n, cls]) => `<div class="stat ${cls}"><div class="n">${n}</div><div class="k">${k}</div></div>`).join('');
 
   const evBody = (data.evidence || []).map((e) => `<tr>
     <td>${esc(e.evidence_id)}</td>
-    <td>${esc(e.metric_name || e.metric)}</td>
-    <td>${esc(e.period_year)}</td>
+    <td>${esc(window.announcementFieldLabels[e.metric_name] || e.metric_name || e.metric)}</td>
+    <td>${esc(e.period_start && e.period_end ? e.period_start + ' 至 ' + e.period_end : e.period_year)}</td>
     <td class="num">${fmt(e.value)}</td>
     <td>${esc(e.unit || '—')}</td>
     <td>${esc(scopeZh(e.scope))}</td>
@@ -797,7 +938,7 @@ function render(data) {
       ? (check.status === 'match' ? '一致' : '不一致，需复核')
       : '未核对（缺披露值）';
     return `<tr>
-      <td>${esc(r.metric_name || r.metric)}</td>
+      <td>${esc(r.metric_name || r.metric)}<br><small>${esc(r.period_start || '')} 至 ${esc(r.period_end || '')}</small></td>
       <td class="num">${fmtBig(r.current)}</td>
       <td class="num">${fmtBig(r.previous)}</td>
       <td class="num">${esc(yoy)}</td>
@@ -809,8 +950,10 @@ function render(data) {
 
   const sigs = data.signals || [];
   $('#signals').innerHTML = sigs.length
-    ? '<div class="hint">辅助观察：' + sigs.map((s) => esc(s.description)).join('；') + '</div>'
+    ? sigs.map(s => `<div class="hint"><strong>【${esc(s.epistemic_type || '事实')}】</strong>${esc(s.description)} ${s.value == null ? '' : fmt(s.value)}${esc(s.unit || '')}<br>${esc(s.interpretation || '')}</div>`).join('')
     : '';
+  const qoq = data.qoq_rows || [];
+  if (qoq.length) $('#signals').innerHTML += '<h3>单季环比</h3>' + qoq.map(r => `<p>${esc(r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：${r.qoq.status === 'ok' ? fmt(r.qoq.value) + '%' : esc(r.qoq.reason ?? r.qoq.status)}</p>`).join('');
   $('#analysis-card').hidden = false;
 
   // ── ③ 纠错核查 ──
@@ -824,9 +967,9 @@ function render(data) {
         <td>${trackBadge(c.track)}</td>
         <td>${esc((c.original_sentence || '').slice(0, 80))}</td>
         <td>${badge(c.status)}</td>
-        <td>${esc(c.reason || c.reason_code || '—')}</td>
+        <td>${esc(c.reason || c.reason_code || '—')}${c.verification_scope ? '<br>'+esc(c.verification_scope) : ''}${c.correction ? '<details><summary>修改片段</summary>'+esc(c.correction.before)+' → '+esc(c.correction.after)+'<p>'+esc(c.correction.revised_sentence || '需人工调整句子')+'</p></details>' : ''}</td>
       </tr>`).join('');
-      box.innerHTML = `<div class="hint" style="margin-bottom:8px">双轨：A 确定（本地裁决）· B 模型（只解释）· C 人工（需复核）。${head || '已出结果'}</div>
+      box.innerHTML = `<div class="hint" style="margin-bottom:8px">${esc(data.checks.reason || '')}<br>双轨：A 确定（本地裁决）· B 模型（只解释）· C 人工（需复核）。${head || '已出结果'}</div>
         <div class="table-wrap"><table class="grid">
           <thead><tr><th>编号</th><th>轨道</th><th>原句</th><th>结论</th><th>说明</th></tr></thead>
           <tbody>${rows}</tbody>
@@ -846,6 +989,21 @@ function render(data) {
   $('#qa-history').innerHTML = '';
   $('#qa-input').value = '';
   $('#qa-card').hidden = false;
+  if (data.checks && data.checks.reason) $('#checks-body').insertAdjacentHTML('afterbegin', `<p class="hint">${esc(data.checks.reason)}</p>`);
+  if (data.announcement) {
+    $('#announcement-body').innerHTML = (data.announcement.events || []).map(e => `<h3>${esc(e.event_name)} · ${esc(window.announcementStatusLabels[e.status] || e.status)}</h3><p>必填缺失：${esc(e.missing_required.join('、') || '无')}；冲突：${esc(e.conflicts.join('、') || '无')}</p><table class="grid"><thead><tr><th>字段</th><th>原值</th><th>规范值</th><th>状态</th><th>原页位置</th></tr></thead><tbody>${Object.entries(e.fields).map(([k,v]) => `<tr><td>${esc(window.announcementFieldLabels[k] || k)}</td><td>${esc(v.value ?? '缺失')}</td><td>${esc(v.normalized_value ?? '—')} ${esc(v.normalized_unit || '')}</td><td>${esc(window.announcementStatusLabels[v.status] || v.status)}</td><td>${(data.evidence || []).filter(f => f.evidence_id.startsWith(e.event_id + '_' + k + '_')).map(pageCell).join(' ')}</td></tr>`).join('')}</tbody></table>`).join('') || '<p>未找到可明确提取的字段。</p>';
+    $('#announcement-card').hidden = false;
+    $('#analysis-card').hidden = true;
+    $('#qa-card').hidden = true;
+  }
+  window.renderExecutionTrace($('#trace-body'), data.trace || [], id => {
+    const e = (data.evidence || []).find(e => e.evidence_id === id);
+    if (e && e.page_image) {
+      const boxes = e.value_bbox ? [{x0:e.value_bbox[0], y0:e.value_bbox[1], x1:e.value_bbox[2], y1:e.value_bbox[3], kind:'value'}] : [];
+      openLightbox(e.page_image, e.page, boxes);
+    }
+  });
+  $('#trace-card').hidden = false;
 }
 
 function qaBadge(status) {
@@ -1044,10 +1202,13 @@ def _parse_multipart(handler: BaseHTTPRequestHandler) -> tuple[dict, bytes]:
     if length <= 0 or length > MAX_UPLOAD:
         raise ValueError("请求体为空或超过 40MiB")
     body = handler.rfile.read(length)
-    fields: dict[str, str] = {}
+    fields: dict = {}
     pdf = b""
     for part in body.split(boundary):
-        part = part.strip(b"\r\n")
+        if part.startswith(b"\r\n"):
+            part = part[2:]
+        if part.endswith(b"\r\n"):
+            part = part[:-2]
         if not part or part == b"--":
             continue
         if b"\r\n\r\n" not in part:
@@ -1061,6 +1222,8 @@ def _parse_multipart(handler: BaseHTTPRequestHandler) -> tuple[dict, bytes]:
         if name == "pdf" or 'filename="' in head_text:
             if name == "pdf":
                 pdf = content
+            elif name == "comparison_pdf":
+                fields.setdefault("_comparison_pdfs", []).append(content)
         else:
             fields[name] = content.decode("utf-8", errors="replace")
     return fields, pdf
@@ -1073,6 +1236,14 @@ class Handler(BaseHTTPRequestHandler):
         print(f"[webui] {self.address_string()} {fmt % args}")
 
     def do_GET(self):
+        if self.path == "/trace.js":
+            blob = (ROOT / "docs" / "trace.js").read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/javascript; charset=utf-8")
+            self.send_header("Content-Length", str(len(blob)))
+            self.end_headers()
+            self.wfile.write(blob)
+            return
         if self.path in ("/", "/index.html"):
             blob = PAGE.encode("utf-8")
             self.send_response(200)
@@ -1160,6 +1331,18 @@ class Handler(BaseHTTPRequestHandler):
                     return
                 _json(self, 200, guess_identity(pdf))
                 return
+            if self.path == "/api/announcement":
+                if not pdf:
+                    _json(self, 400, {"error": "缺少 PDF"})
+                    return
+                if not _ANALYZE_LOCK.acquire(blocking=False):
+                    _json(self, 429, {"error": "已有分析任务在进行中，请稍后再试"})
+                    return
+                try:
+                    _json(self, 200, run_announcement_pipeline(pdf, fields.get("event_type", "auto"), ocr=fields.get("ocr") == "true"))
+                finally:
+                    _ANALYZE_LOCK.release()
+                return
             if self.path != "/api/analyze":
                 _json(self, 404, {"error": "not found"})
                 return
@@ -1179,13 +1362,13 @@ class Handler(BaseHTTPRequestHandler):
             if not year_raw:
                 year_raw = str(auto.get("year") or "")
             if not re.fullmatch(r"\d{6}", code):
-                _json(self, 400, {"error": "未能从 PDF 识别证券代码，请检查文件是否为标准年报"})
+                _json(self, 400, {"error": "未能从 PDF 识别证券代码，请检查文件或手动补充财报身份"})
                 return
             if not name:
-                _json(self, 400, {"error": "未能从 PDF 识别公司名称，请检查文件是否为标准年报"})
+                _json(self, 400, {"error": "未能从 PDF 识别公司名称，请检查文件或手动补充财报身份"})
                 return
             if not re.fullmatch(r"\d{4}", year_raw):
-                _json(self, 400, {"error": "未能从 PDF 识别报告年度，请检查文件是否为标准年报"})
+                _json(self, 400, {"error": "未能从 PDF 识别报告年度，请检查文件或手动补充财报身份"})
                 return
             if not _ANALYZE_LOCK.acquire(blocking=False):
                 _json(self, 429, {"error": "已有分析任务在进行中，请稍后再试"})
@@ -1193,7 +1376,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 _cleanup_work_dir()
                 payload = run_pipeline(pdf, code, name, int(year_raw),
-                                       draft=draft or None)
+                                       draft=draft or None, comparison_blobs=fields.get("_comparison_pdfs", []))
                 payload["auto_detected"] = auto
                 _json(self, 200, payload)
             finally:

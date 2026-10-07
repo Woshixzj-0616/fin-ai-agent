@@ -5,17 +5,18 @@
     "check_item": "amount",
     "status": "证据支持",
     "evidence_ids": [
-      "138f1426f6b43b79d3f2384a"
+      "80d5d67d35796958172e2d9f"
     ],
     "calculation": {
       "status": "match",
       "value": "1708.99",
       "exact_value": "1708.9915227634",
       "claimed_value": "1708.99",
+      "operator": "eq",
       "decimals": 2,
       "rounding": "ROUND_HALF_UP",
       "difference": "0.0015227634",
-      "formula": "round_half_up(actual * source_factor / target_factor, decimals)",
+      "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
       "claimed_unit": "亿元",
       "actual_unit": "元",
       "actual_value": "170899152276.34"
@@ -31,17 +32,18 @@
     "check_item": "amount",
     "status": "证据支持",
     "evidence_ids": [
-      "eb72c72a30ca3604e5ed522a"
+      "2be69095a86bcc7a3ed837df"
     ],
     "calculation": {
       "status": "match",
       "value": "862.28",
       "exact_value": "862.2814642162",
       "claimed_value": "862.28",
+      "operator": "eq",
       "decimals": 2,
       "rounding": "ROUND_HALF_UP",
       "difference": "0.0014642162",
-      "formula": "round_half_up(actual * source_factor / target_factor, decimals)",
+      "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
       "claimed_unit": "亿元",
       "actual_unit": "元",
       "actual_value": "86228146421.62"
@@ -57,17 +59,18 @@
     "check_item": "amount",
     "status": "确认错误",
     "evidence_ids": [
-      "3d7ed42fa89add6f714a2e67"
+      "4741fbd1de2c041afda9c150"
     ],
     "calculation": {
       "status": "mismatch",
       "value": "862.41",
       "exact_value": "862.4090597742",
       "claimed_value": "860.00",
+      "operator": "eq",
       "decimals": 2,
       "rounding": "ROUND_HALF_UP",
       "difference": "2.4090597742",
-      "formula": "round_half_up(actual * source_factor / target_factor, decimals)",
+      "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
       "claimed_unit": "亿元",
       "actual_unit": "元",
       "actual_value": "86240905977.42"
@@ -75,7 +78,20 @@
     "suggestion": "将该核查项改为 862.41亿元，并引用所列年报页码。",
     "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
     "page": 5,
-    "reason": "可比口径下陈述值与证据或计算结果不同"
+    "reason": "可比口径下陈述值与证据或计算结果不同",
+    "correction": {
+      "field": "adjusted_parent_net_profit",
+      "before": "860.00亿元",
+      "after": "862.41亿元",
+      "original_sentence": "2024年，贵州茅台扣非归母净利润为860.00亿元。",
+      "revised_sentence": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+      "evidence_ids": [
+        "4741fbd1de2c041afda9c150"
+      ],
+      "page": 5,
+      "apply_automatically": true,
+      "condition": "只替换已核实的数值字段；不等式或未定位片段需人工编辑"
+    }
   },
   {
     "claim_id": "S4",
@@ -83,17 +99,18 @@
     "check_item": "amount",
     "status": "证据支持",
     "evidence_ids": [
-      "44358824717e64c5fb562b77"
+      "30c34ea1e187279a83a7a0ca"
     ],
     "calculation": {
       "status": "match",
       "value": "924.64",
       "exact_value": "924.6369216843",
       "claimed_value": "924.64",
+      "operator": "eq",
       "decimals": 2,
       "rounding": "ROUND_HALF_UP",
       "difference": "-0.0030783157",
-      "formula": "round_half_up(actual * source_factor / target_factor, decimals)",
+      "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
       "claimed_unit": "亿元",
       "actual_unit": "元",
       "actual_value": "92463692168.43"
@@ -109,14 +126,15 @@
     "check_item": "yoy",
     "status": "证据支持",
     "evidence_ids": [
-      "138f1426f6b43b79d3f2384a",
-      "3ac0c3bc647151a7c51cccf1"
+      "80d5d67d35796958172e2d9f",
+      "2085a6f9863e2a38438673c2"
     ],
     "calculation": {
       "status": "match",
       "value": "15.71",
       "exact_value": "15.71195129479080718889266823791667239671",
       "claimed_value": "15.71",
+      "operator": "eq",
       "decimals": 2,
       "rounding": "ROUND_HALF_UP",
       "difference": "0.001951294790807188892668237917",
@@ -133,8 +151,8 @@
         "formula": "(current - previous) / previous * 100",
         "negative_policy": "review",
         "evidence_ids": [
-          "138f1426f6b43b79d3f2384a",
-          "3ac0c3bc647151a7c51cccf1"
+          "80d5d67d35796958172e2d9f",
+          "2085a6f9863e2a38438673c2"
         ]
       }
     },
@@ -149,17 +167,18 @@
     "check_item": "amount",
     "status": "确认错误",
     "evidence_ids": [
-      "138f1426f6b43b79d3f2384a"
+      "80d5d67d35796958172e2d9f"
     ],
     "calculation": {
       "status": "mismatch",
       "value": "17089915.23",
       "exact_value": "17089915.227634",
       "claimed_value": "1708.99",
+      "operator": "eq",
       "decimals": 2,
       "rounding": "ROUND_HALF_UP",
       "difference": "17088206.237634",
-      "formula": "round_half_up(actual * source_factor / target_factor, decimals)",
+      "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
       "claimed_unit": "万元",
       "actual_unit": "元",
       "actual_value": "170899152276.34"
@@ -167,7 +186,20 @@
     "suggestion": "将该核查项改为 17089915.23万元，并引用所列年报页码。",
     "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
     "page": 5,
-    "reason": "可比口径下陈述值与证据或计算结果不同"
+    "reason": "可比口径下陈述值与证据或计算结果不同",
+    "correction": {
+      "field": "revenue",
+      "before": "1708.99万元",
+      "after": "17089915.23万元",
+      "original_sentence": "2024年，贵州茅台营业收入为1708.99万元。",
+      "revised_sentence": "2024年，贵州茅台营业收入为17089915.23万元。",
+      "evidence_ids": [
+        "80d5d67d35796958172e2d9f"
+      ],
+      "page": 5,
+      "apply_automatically": true,
+      "condition": "只替换已核实的数值字段；不等式或未定位片段需人工编辑"
+    }
   },
   {
     "claim_id": "S7",
@@ -185,7 +217,7 @@
     "check_item": "amount",
     "status": "口径冲突／需人工复核",
     "evidence_ids": [
-      "138f1426f6b43b79d3f2384a"
+      "80d5d67d35796958172e2d9f"
     ],
     "calculation": null,
     "suggestion": null,

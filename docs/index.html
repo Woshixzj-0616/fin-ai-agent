@@ -14,7 +14,7 @@
       <p class="sub">研究报告纠错核查 · 表格 + 点击溯源 + 审计日志 —— 每个结论都能指回原文第几页</p>
     </div>
     <div class="head-actions">
-      <a class="head-link" href="https://fin-ai-agent.onrender.com" target="_blank" rel="noopener">🚀 现场分析 · 丢财报出答案</a>
+      <a class="head-link" href="https://fin-ai-agent.onrender.com" target="_blank" rel="noopener">线上部署 · 待同步本轮修复</a>
       <div class="head-badge">预跑快照 · 可复现</div>
     </div>
   </div>
@@ -22,11 +22,11 @@
 
 <section id="overview" class="overview">
   <div class="stat-card"><div class="n" id="st-companies">—</div><div class="k">样本公司</div></div>
-  <div class="stat-card"><div class="n" id="st-materials">—</div><div class="k">年报材料</div></div>
+<div class="stat-card"><div class="n" id="st-materials">—</div><div class="k">财务报告材料</div></div>
   <div class="stat-card"><div class="n" id="st-evidence">—</div><div class="k">证据条数</div></div>
   <div class="stat-card ok"><div class="n" id="st-match">—</div><div class="k">同比一致</div></div>
   <div class="stat-card bad"><div class="n" id="st-mismatch">—</div><div class="k">同比不一致</div></div>
-  <div class="stat-card warn"><div class="n" id="st-review">—</div><div class="k">需人工复核</div></div>
+  <div class="stat-card warn"><div class="n" id="st-review">—</div><div class="k">缺披露或需复核</div></div>
 </section>
 
 <nav id="tabs">
@@ -36,6 +36,7 @@
   <button data-tab="evidence">证据与溯源</button>
   <button data-tab="checks">陈述核查</button>
   <button data-tab="events">审计日志</button>
+  <button data-tab="announcements">公告字段</button>
 </nav>
 
 <main>
@@ -49,7 +50,7 @@
     <div class="table-wrap">
       <table class="grid" id="yoy-table">
         <thead><tr>
-          <th>公司</th><th>年度</th><th>指标</th><th>本年</th><th>上年</th>
+          <th>公司</th><th>期间</th><th>指标</th><th>本期</th><th>上年同期</th>
           <th>复算同比</th><th>披露同比</th><th>核对</th><th>页</th>
         </tr></thead>
         <tbody></tbody>
@@ -151,6 +152,9 @@
 
   <!-- 审计日志 -->
   <section id="tab-events" class="tab">
+    <h2>执行轨迹</h2>
+    <p class="muted">来自实际运行事件。每步展示执行者、规则、原始记录与可定位证据。</p>
+    <div id="trace-view"></div>
     <div class="bar">
       <span id="ev2-count"></span>
       <input id="ev2-filter" placeholder="筛选事件类型…" />
@@ -164,13 +168,19 @@
       </table>
     </div>
   </section>
+  <section id="tab-announcements" class="tab">
+    <h2>方向一 · 公告事件字段</h2>
+    <p class="muted">本页为样例快照；本地 webui 可上传新公告实时提取。字段缺失与冲突会明确展示。</p>
+    <div id="announcement-view"></div>
+  </section>
 </main>
 
 <footer>
-  数据来源：巨潮资讯网公开年报 · 第三方（东方财富）仅作交叉验证 ·
+  数据来源：巨潮公开披露财务报告及公告 · 模拟材料另行标明 ·
   运行留痕见 <code>results/</code> · 源码见 <code>agent/</code>
 </footer>
 
+<script src="trace.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

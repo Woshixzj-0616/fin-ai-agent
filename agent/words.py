@@ -53,9 +53,9 @@ def to_num(s: str):
     return -float(t) if neg else float(t)
 
 
-def page_rows(page) -> list[dict]:
+def page_rows(page, textpage=None) -> list[dict]:
     """把一页切成「表格行」，行内按横坐标切成「单元格」。每个 cell 带完整 bbox。"""
-    words = page.get_text("words")
+    words = page.get_text("words", textpage=textpage)
     items = [{"t": w[4], "x0": w[0], "x1": w[2], "y0": w[1], "y1": w[3],
               "yc": (w[1] + w[3]) / 2}
              for w in words if w[4].strip()]

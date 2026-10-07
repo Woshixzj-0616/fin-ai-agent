@@ -14,6 +14,7 @@ import re
 
 from llm_check import COMPANIES, METRICS
 from tools import compute_yoy, find_evidence
+from periods import end_date
 
 # 问题类型：value=查数 yoy=同比 issues=异常 overview=概览
 KINDS = ("value", "yoy", "issues", "overview")
@@ -54,12 +55,42 @@ def match_kind(question: str) -> str:
 
 def match_intent(question: str, facts: list[dict] | None = None) -> dict:
     """确定性解析：指标 + 年度 + 问题类型。匹配不上就交 LLM。"""
-    return {
+    intent = {
         "metric": match_metric(question),
         "period_year": match_year(question, facts),
         "kind": match_kind(question),
         "source": "deterministic",
     }
+    year = intent["period_year"]
+    if year:
+        month, start = None, 1
+        if re.search(r"半年|半年度|上半年", question):
+            month = 6
+        elif re.search(r"前三季|前[三3]季度|年初至.*三季", question):
+            month = 9
+        elif (m := re.search(r"第?([一二三四1234])季度|Q([1-4])", question, re.I)):
+            q = int(m[2]) if m[2] else {"一": 1, "二": 2, "三": 3, "四": 4, "1": 1, "2": 2, "3": 3, "4": 4}[m[1]]
+            month, start = q*3, q*3-2
+        elif re.search(r"全年|年度报告|年报", question):
+            month = 12
+        if month:
+            intent.update(period_start=f"{year}-{start:02d}-01", period_end=end_date(year, month))
+    return intent
+
+
+def _question_facts(intent: dict, facts: list[dict]) -> list[dict]:
+    """按问题公司和期间后缀同时保留本期与可比基期，不把半年混成年报。"""
+    return [f for f in facts
+            if (not intent.get("company_code") or f.get("company_code") == intent["company_code"])
+            and (not intent.get("period_end") or str(f.get("period_end", ""))[4:] == intent["period_end"][4:])
+            and (not intent.get("period_start") or f.get("period_kind") == "instant"
+                 or str(f.get("period_start", ""))[4:] == intent["period_start"][4:])]
+
+
+def _period_label(fact: dict) -> str:
+    if fact.get("period_start") and fact.get("period_end"):
+        return f"{fact['period_start']}至{fact['period_end']}"
+    return str(fact.get("period_end") or f"{fact.get('period_year')}年")
 
 
 def parse_intent_with_llm(question: str, facts: list[dict], client, run) -> dict:
@@ -106,6 +137,7 @@ def _cite(fact: dict) -> dict:
         "metric": fact.get("metric"),
         "metric_name": fact.get("metric_name") or fact.get("metric"),
         "period_year": fact.get("period_year"),
+        "period_label": _period_label(fact),
         "value": fact.get("value"),
         "unit": fact.get("unit"),
         "page": fact.get("page"),
@@ -217,9 +249,11 @@ def _answer_value(intent: dict, facts: list[dict], draft: str = "") -> dict:
                         metric=metric, period_year=int(year), draft=draft)
     if out.get("status") != "ok":
         return _no_evidence(
-            f"证据不足：未找到 {year} 年「{METRICS.get(metric, [metric])[0]}」的唯一年报证据，不猜数值。",
+            f"证据不足：未找到 {year} 年「{METRICS.get(metric, [metric])[0]}」的唯一期间证据，请明确全年、半年或季度及口径。",
             intent)
     fact = next(f for f in facts if f["evidence_id"] == out["items"][0]["evidence_id"])
+    if fact.get("issues"):
+        return _no_evidence("证据含待复核标记，不能直接作为确定数值作答。", intent)
     cite = _cite(fact)
     name = cite["metric_name"]
     unit = cite.get("unit") or ""
@@ -229,7 +263,7 @@ def _answer_value(intent: dict, facts: list[dict], draft: str = "") -> dict:
     page = cite.get("page")
     page_txt = f"（PDF 第 {page} 页）" if page else ""
     label = _company_label(facts)
-    answer = f"{label}{year}年{name}为 {cite.get('value')} {unit}，口径：{scope_txt}{page_txt}。"
+    answer = f"{label}{_period_label(fact)} {name}为 {cite.get('value')} {unit}，口径：{scope_txt}{page_txt}。"
     return _ok(answer, [cite], intent)
 
 
@@ -256,14 +290,16 @@ def _answer_yoy(intent: dict, facts: list[dict], draft: str = "") -> dict:
             cites.append(_cite(fact))
     name = METRICS.get(metric, [metric])[0]
     label = _company_label(facts)
+    current = next(f for f in facts if f.get("evidence_id") == cur_id)
+    period_label = _period_label(current)
     if yoy.get("status") == "ok":
         val = _fmt_pct(yoy.get("value"))
         calc = yoy.get("formula") or yoy.get("calculation") or ""
-        answer = f"{label}{year}年{name}同比 {val}%。"
+        answer = f"{label}{period_label} {name}同比 {val}%。"
         if calc:
             answer += f"计算式：{calc}。"
     else:
-        answer = f"{label}{year}年{name}同比未能复算（{yoy.get('reason') or yoy.get('status')}），证据见引用。"
+        answer = f"{label}{period_label} {name}同比未能复算（{yoy.get('reason') or yoy.get('status')}），证据见引用。"
     return _ok(answer, cites, intent)
 
 
@@ -282,19 +318,20 @@ def _answer_issues(intent: dict, facts: list[dict]) -> dict:
 def _answer_overview(intent: dict, facts: list[dict]) -> dict:
     if not facts:
         return _no_evidence("本次未抽到任何证据。", intent)
-    # 每指标取最新一年、非 before
-    picked: dict[str, dict] = {}
+    # 每公司、期间、指标、来源和口径分别展示；不合并全年与季报。
+    picked: dict[tuple, dict] = {}
     for f in facts:
         if f.get("adjustment") == "before":
             continue
-        key = f.get("metric") or ""
+        key = (f.get("company_code"), f.get("metric"), f.get("period_start"), f.get("period_end"),
+               f.get("scope"), f.get("document_id"))
         cur = picked.get(key)
         if cur is None or (f.get("period_year") or 0) > (cur.get("period_year") or 0):
             picked[key] = f
     if not picked:
         return _no_evidence("证据均带 before 调整标记，无法汇总。", intent)
     cites = [_cite(f) for f in picked.values()]
-    lines = [f"· {c['metric_name']}（{c['period_year']}）：{c.get('value')} {c.get('unit') or ''}"
+    lines = [f"· {c['metric_name']}（{c['period_label']}）：{c.get('value')} {c.get('unit') or ''}"
              for c in cites]
     label = _company_label(facts)
     answer = f"{label}：本次共 {len(facts)} 条证据，指标概览：\n" + "\n".join(lines)
@@ -338,9 +375,13 @@ def answer(question: str, facts: list[dict], *, client=None, run=None,
     intent = match_intent(q, facts)
     intent["company_code"] = str(asked["code"]) if asked and asked.get("code") else _company_of(facts)
     if use_llm and client is not None and run is not None and not intent.get("metric"):
-        intent = parse_intent_with_llm(q, facts, client, run)
+        period_fields = {k: intent[k] for k in ("period_start", "period_end") if k in intent}
+        intent = {**parse_intent_with_llm(q, facts, client, run), **period_fields}
         intent["company_code"] = str(asked["code"]) if asked and asked.get("code") else _company_of(facts)
 
+    facts = _question_facts(intent, facts)
+    if not facts:
+        return _no_evidence("没有匹配问题公司与明确期间的证据。", intent)
     kind = intent.get("kind") or "value"
     if kind == "yoy":
         out = _answer_yoy(intent, facts, draft)
