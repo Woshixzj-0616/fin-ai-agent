@@ -173,6 +173,7 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("check-gold", help="比较固定参考答案；不自动生成或修改参考答案")
     checker = commands.add_parser("check-text", help="模型拆解自然语言草稿，再由Python规则逐项核查")
     checker.add_argument("--file", type=Path, required=True, help="UTF-8纯草稿文件，不要选含凭证的接入说明")
+    checker.add_argument("--evidence", type=Path, help="复用已有 evidence.json，跳过全量重抽（真实模型联调用）")
     checker.add_argument("--base-url", help="兼容Chat Completions的HTTPS Base URL；也可设置LLM_BASE_URL")
     checker.add_argument("--model", help="模型名；也可设置LLM_MODEL")
     checker.add_argument("--format", choices=["json_schema", "json_object"], help="默认读取LLM_FORMAT，否则使用json_schema")
@@ -289,7 +290,14 @@ def main() -> int:
         if args.command == "live":
             code = args.code
             year = args.year
-        materials, facts, failures = extract_selected(ROOT, run, code, year, getattr(args, "render", False))
+        if args.command == "check-text" and getattr(args, "evidence", None):
+            facts = json.loads(run.read(args.evidence).decode("utf-8"))
+            if isinstance(facts, dict):
+                facts = facts.get("facts", [])
+            materials, failures = [], []
+            run.event("facts_reused", path=str(args.evidence), count=len(facts))
+        else:
+            materials, facts, failures = extract_selected(ROOT, run, code, year, getattr(args, "render", False))
         if args.command == "check-text":
             if failures:
                 raise LLMError("材料抽取不完整，本次未调用模型；请先检查failures.json")

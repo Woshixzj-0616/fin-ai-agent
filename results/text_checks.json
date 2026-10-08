@@ -1,0 +1,452 @@
+{
+  "schema_version": 2,
+  "run_id": "20261008_203812_8e75213f",
+  "status": "completed",
+  "mode": "fallback_single_shot",
+  "model": "deepseek-chat",
+  "provider_host": "api.deepseek.com",
+  "response_format": "json_object",
+  "sentences": [
+    {
+      "sentence_id": 1,
+      "text": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。"
+    },
+    {
+      "sentence_id": 2,
+      "text": "基本每股收益为68.64元/股。"
+    },
+    {
+      "sentence_id": 3,
+      "text": "其中营业收入为1800亿元，这一数字需要核查。"
+    }
+  ],
+  "parsed": {
+    "items": [
+      {
+        "claim_id": "c1",
+        "sentence_id": 1,
+        "quote": "贵州茅台2024年实现营业收入约1708.99亿元",
+        "context_quote": null,
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "amount",
+        "value": "1708.99",
+        "unit": "亿元",
+        "operator": "approx",
+        "tolerance_pct": 2,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "approximate",
+        "plain_claim": "贵州茅台2024年营业收入约1708.99亿元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      },
+      {
+        "claim_id": "c2",
+        "sentence_id": 1,
+        "quote": "归属于上市公司股东的净利润为862.28亿元",
+        "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元",
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "归属于上市公司股东的净利润",
+        "metric": "parent_net_profit",
+        "scope": "parent_shareholders",
+        "kind": "amount",
+        "value": "862.28",
+        "unit": "亿元",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年归母净利润为862.28亿元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      },
+      {
+        "claim_id": "c3",
+        "sentence_id": 2,
+        "quote": "基本每股收益为68.64元/股",
+        "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "基本每股收益",
+        "metric": "basic_eps",
+        "scope": "consolidated",
+        "kind": "amount",
+        "value": "68.64",
+        "unit": "元/股",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年基本每股收益为68.64元/股。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      },
+      {
+        "claim_id": "c4",
+        "sentence_id": 3,
+        "quote": "其中营业收入为1800亿元",
+        "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "amount",
+        "value": "1800",
+        "unit": "亿元",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年营业收入为1800亿元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      }
+    ],
+    "unclaimed_sentences": []
+  },
+  "checks": [
+    {
+      "claim_id": "C1",
+      "original_sentence": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+      "quote": "贵州茅台2024年实现营业收入约1708.99亿元",
+      "track": "deterministic",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "reason": "在陈述运算符与容差下与原文证据一致",
+      "evidence_ids": [
+        "80d5d67d35796958172e2d9f"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "80d5d67d35796958172e2d9f",
+          "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "170899152276.34",
+          "unit": "元",
+          "period_year": 2024,
+          "scope": "consolidated",
+          "value_bbox": [
+            205.13,
+            263.06,
+            306.17,
+            277.73
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "match",
+        "value": "1708.9915227634",
+        "exact_value": "1708.9915227634",
+        "claimed_value": "1708.99",
+        "operator": "approx",
+        "tolerance_pct": "2",
+        "relative_error_pct": "0.00008910303999271608982830316054960123274177",
+        "difference": "0.0015227634",
+        "warning": null,
+        "formula": "abs(actual-claimed)/abs(actual)*100 <= 2% | unit=actual * source_factor / target_factor",
+        "claimed_unit": "亿元",
+        "actual_unit": "元",
+        "actual_value": "170899152276.34"
+      },
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年营业收入约1708.99亿元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "check_item": "amount",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "normalized_claim": {
+        "id": "C1",
+        "sentence": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "revenue",
+        "kind": "amount",
+        "value": "1708.99",
+        "unit": "亿元",
+        "currency": "CNY",
+        "scope": "consolidated",
+        "period_kind": "annual",
+        "operator": "approx",
+        "tolerance_pct": 2
+      },
+      "sentence_id": 1
+    },
+    {
+      "claim_id": "C2",
+      "original_sentence": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+      "quote": "归属于上市公司股东的净利润为862.28亿元",
+      "track": "deterministic",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "2be69095a86bcc7a3ed837df"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "2be69095a86bcc7a3ed837df",
+          "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "归母净利润",
+          "value": "86228146421.62",
+          "unit": "元",
+          "period_year": 2024,
+          "scope": "parent_shareholders",
+          "value_bbox": [
+            205.13,
+            277.73,
+            306.17,
+            301.61
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "match",
+        "value": "862.28",
+        "exact_value": "862.2814642162",
+        "claimed_value": "862.28",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "0.0014642162",
+        "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+        "claimed_unit": "亿元",
+        "actual_unit": "元",
+        "actual_value": "86228146421.62"
+      },
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年归母净利润为862.28亿元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "check_item": "amount",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "normalized_claim": {
+        "id": "C2",
+        "sentence": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "parent_net_profit",
+        "kind": "amount",
+        "value": "862.28",
+        "unit": "亿元",
+        "currency": "CNY",
+        "scope": "parent_shareholders",
+        "period_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 1
+    },
+    {
+      "claim_id": "C3",
+      "original_sentence": "基本每股收益为68.64元/股。",
+      "quote": "基本每股收益为68.64元/股",
+      "track": "deterministic",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "8f99c7cf09961c5159ac7771"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "8f99c7cf09961c5159ac7771",
+          "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "基本每股收益",
+          "value": "68.64",
+          "unit": "元/股",
+          "period_year": 2024,
+          "scope": "unknown",
+          "value_bbox": [
+            284.93,
+            530.519,
+            311.33,
+            541.079
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "match",
+        "value": "68.64",
+        "exact_value": "68.64",
+        "claimed_value": "68.64",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "0.00",
+        "formula": "round_half_up(actual, decimals)",
+        "claimed_unit": "元/股",
+        "actual_unit": "元/股",
+        "actual_value": "68.64"
+      },
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年基本每股收益为68.64元/股。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "check_item": "amount",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "normalized_claim": {
+        "id": "C3",
+        "sentence": "基本每股收益为68.64元/股。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "basic_eps",
+        "kind": "amount",
+        "value": "68.64",
+        "unit": "元/股",
+        "currency": "CNY",
+        "scope": "consolidated",
+        "period_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 2
+    },
+    {
+      "claim_id": "C4",
+      "original_sentence": "其中营业收入为1800亿元，这一数字需要核查。",
+      "quote": "其中营业收入为1800亿元",
+      "track": "deterministic",
+      "status": "确认错误",
+      "reason_code": "deterministic_check",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "80d5d67d35796958172e2d9f"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "80d5d67d35796958172e2d9f",
+          "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "170899152276.34",
+          "unit": "元",
+          "period_year": 2024,
+          "scope": "consolidated",
+          "value_bbox": [
+            205.13,
+            263.06,
+            306.17,
+            277.73
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "mismatch",
+        "value": "1709",
+        "exact_value": "1708.9915227634",
+        "claimed_value": "1800",
+        "operator": "eq",
+        "decimals": 0,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "-91.0084772366",
+        "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+        "claimed_unit": "亿元",
+        "actual_unit": "元",
+        "actual_value": "170899152276.34"
+      },
+      "expected": "1709",
+      "suggestion": "将该核查项改为 1709亿元，并引用所列年报页码。",
+      "plain_claim": "贵州茅台2024年营业收入为1800亿元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "check_item": "amount",
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "page": 5,
+      "correction": {
+        "field": "revenue",
+        "before": "1800亿元",
+        "after": "1709亿元",
+        "original_sentence": "其中营业收入为1800亿元，这一数字需要核查。",
+        "revised_sentence": "其中营业收入为1709亿元，这一数字需要核查。",
+        "evidence_ids": [
+          "80d5d67d35796958172e2d9f"
+        ],
+        "page": 5,
+        "apply_automatically": true,
+        "condition": "只替换已核实的数值字段；不等式或未定位片段需人工编辑"
+      },
+      "normalized_claim": {
+        "id": "C4",
+        "sentence": "其中营业收入为1800亿元，这一数字需要核查。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "revenue",
+        "kind": "amount",
+        "value": "1800",
+        "unit": "亿元",
+        "currency": "CNY",
+        "scope": "consolidated",
+        "period_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 3
+    }
+  ],
+  "tools_used": [],
+  "counts": {
+    "证据支持": 3,
+    "确认错误": 1
+  },
+  "tracks": {
+    "deterministic": 4
+  }
+}

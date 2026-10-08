@@ -1,13 +1,12 @@
 {
-  "run_id": "20261007_214346_70f1f37a",
-  "finished_at": "2026-10-07T21:43:46+08:00",
+  "run_id": "20261008_203812_8e75213f",
+  "finished_at": "2026-10-08T20:38:20+08:00",
   "output_sha256": {
-    "audit_checks.json": "36621b51482b6fa3dce011a1072b49416bb618e8b44877d6c869779ffeedccbd",
-    "audit_events.jsonl": "1726860c97aeb62a17d6166785260ac43adc60ab028c8ff6d40f8effda3d396a",
-    "audit_report.md": "b74a392e88bb50cae7a43fc740f7a0db9c85fd3c665bac7e3d23c75d0dc62f6f",
-    "audit_run.json": "c97a10112fe034185a398792687309f7190f3626fe98b2d747f9948e976926b2",
-    "run.json": "c97a10112fe034185a398792687309f7190f3626fe98b2d747f9948e976926b2",
-    "trace.json": "49691bb7aa65b5b9091cee7c2fbbe7cb2b472c500f331aa2f126fea7107807b1"
+    "checked_draft.txt": "b00cc2e4e12c2aacd58838f7a5d37e845ade9ec9fde4bea36de2916b4affa532",
+    "run.json": "37f8851fd42149e7bddf6fcf4d63623dce4e8dfca7c77864d2f8e01ff81ebc93",
+    "text_checks.json": "04772564ce4fb64d90f2dfd77ff8ac0edf95e47ece21bb160550def1cb153514",
+    "text_report.md": "627a1cda70b150f8fcc1c27790b867750bf83fcc2945ba5c387e161a703efcae",
+    "trace.json": "25726612f13155d5950ec33169a15d71fe880890df65f4785df67d7b589a5e2e"
   },
   "history_policy": {
     "keep_runs": 20,
@@ -15,5 +14,13 @@
     "oversized_latest": "保留完整本次运行，清除更早历史"
   },
   "status": "ok",
-  "checks": 4
+  "materials": 0,
+  "evidence_count": 365,
+  "checks": 4,
+  "counts": {
+    "证据支持": 3,
+    "确认错误": 1
+  },
+  "mode": "fallback_single_shot",
+  "tools_used": 0
 }
