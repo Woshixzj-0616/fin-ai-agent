@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import threading
 import time
@@ -276,6 +277,9 @@ def _check_draft(draft: str, facts: list[dict], run) -> dict:
             return {"status": "failed", "reason": "草稿含模型凭证，拒绝处理与保存", "checks": []}
         tmp = run.output("webui_draft.txt")
         tmp.write_text(draft, encoding="utf-8")
+        # 网页核查默认走流式，降低长草稿超时风险；可用 LLM_STREAM=0 关闭
+        if os.environ.get("LLM_STREAM", "").lower() not in {"0", "false", "no", "off"}:
+            client.stream = True
         bundle = check_text(tmp, facts, run, client, use_loop=True)
         tools_used = bundle.get("tools_used") or []
         return {"status": "completed", "mode": bundle.get("mode"),
@@ -896,7 +900,10 @@ async function run() {
 
   $('#run').disabled = true;
   // 分段进度提示，避免 7 秒只有单调「请稍候」
-  const stages = ['正在识别 PDF 身份…', '正在抽取指标…', '正在渲染页图…', '正在核算同比与核查…'];
+  const hasDraft = !!(draft || '').trim();
+  const stages = hasDraft
+    ? ['正在识别 PDF 身份…', '正在抽取指标…', '正在渲染页图…', '正在流式核查草稿（工具循环）…']
+    : ['正在识别 PDF 身份…', '正在抽取指标…', '正在渲染页图…', '正在核算同比与核查…'];
   let stageIdx = 0;
   setStatus(stages[0], 'busy');
   const stageTimer = setInterval(() => {
@@ -907,6 +914,11 @@ async function run() {
     $('#' + id).hidden = true;
   }
   $('#qa-history').innerHTML = '';
+  // 有草稿时先亮出核查卡「生成中」，避免用户以为没反应
+  if (hasDraft) {
+    $('#checks-body').innerHTML = '<div class="hint">正在流式核查草稿…（LLM 拆句 → 工具裁决 → 双轨报告）</div>';
+    $('#checks').hidden = false;
+  }
   try {
     const endpoint = $('#task-type').value === 'financial' ? '/api/analyze' : '/api/announcement';
     const res = await fetch(endpoint, { method: 'POST', body: form });
