@@ -12,6 +12,7 @@
 | 2 | 年报、半年报、季报身份与精确期间；同期间同比；累计流量拆单季后环比；非经常性差额占比、扣非增速、利润现金流背离幅度及连续性、历史列示值变化线索。 |
 | 5 | 保留收入/利润/单位/口径核查；新增 PE、PB、明确输入的 EV/EBITDA 内部一致性核查；PDF 页序、印刷页标签和页内支持性核查；输出修改前后片段。 |
 | 留痕 | 两套网页共用轨迹组件；记录真实抽取、去重、公式、模型拆句 JSON、门控、工具参数及结果；归档全部核心 Python 模块、脚本和界面源码指纹。 |
+| Skill / MCP | Skill 作业规程 `skills/fin-report-audit/`；MCP 服务 `agent/mcp_server.py`（JSON-RPC/stdio，与 `tools.tool_specs` 同源）。编排/Tool/Prompt/日志分别在 `agent_loop.py` / `tools.py` / `llm_check.py` / `trace.py`。 |
 
 事实、推论和模型判断分别标明。原因分析在缺少毛利、费用、回款等明细时给出补证框架，不生成未经证实的因果结论。
 
@@ -23,6 +24,13 @@
 python3 -m pip install -r requirements.txt
 python3 -B -m unittest discover -s agent -p 'test*.py'
 python3 -B agent/webui.py
+```
+
+MCP 客户端接入（stdio）与自检：
+
+```bash
+python3 -B agent/mcp_server.py --facts results/evidence.json --self-test
+python3 -B agent/mcp_server.py --facts results/evidence.json   # 作为 MCP server
 ```
 
 打开 http://127.0.0.1:8765/ 。选择财务分析或三类公告；半年报可同时上传同公司的季报作为比较材料。网页上传不进入正式材料台账。
@@ -46,4 +54,4 @@ python3 -B agent/main.py audit --claims data/demo/audit_claims.json
 
 集中披露见 [第三方与来源清单](docs/第三方与来源清单.md)。公开披露 PDF 的再分发许可未被默认认定为开放许可；本仓协作源码的许可证需权利人共同确定。LLM 的实际模型名、主机、调用模式与用量在每次运行记录中保存，不记录密钥。
 
-本轮修改先保留在本地分支 `fix/competition-gaps`。GitHub 远端和已部署网页的版本应以实际提交、部署记录为准。
+方向 1/2/5 修复与 Skill/MCP 骨架已合入 `main`。GitHub 远端和已部署网页的版本应以实际提交、部署记录为准。
