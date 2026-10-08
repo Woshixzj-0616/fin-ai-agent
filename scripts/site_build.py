@@ -184,6 +184,12 @@ def main() -> int:
     }
     (SITE / "data" / "bundle.json").write_text(
         json.dumps(bundle, ensure_ascii=False), encoding="utf-8")
+    # 问题集评测报告（若已跑）挂到静态站
+    qe = RESULTS / "question_eval.json"
+    if qe.is_file():
+        (SITE / "data" / "question_eval.json").write_text(
+            qe.read_text(encoding="utf-8"), encoding="utf-8")
+        print(f"question_eval={qe.stat().st_size} bytes")
     print(f"materials={len(mats)} evidence={len(evidence)} pages={len(page_map)} "
           f"companies={len(companies)} bundle={ (SITE / 'data' / 'bundle.json').stat().st_size } bytes")
     return 0

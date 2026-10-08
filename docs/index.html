@@ -37,6 +37,7 @@
   <button data-tab="checks">陈述核查</button>
   <button data-tab="events">审计日志</button>
   <button data-tab="announcements">公告字段</button>
+  <button data-tab="eval">评测报告</button>
 </nav>
 
 <main>
@@ -172,6 +173,13 @@
     <h2>方向一 · 公告事件字段</h2>
     <p class="muted">本页为样例快照；本地 webui 可上传新公告实时提取。字段缺失与冲突会明确展示。</p>
     <div id="announcement-view"></div>
+  </section>
+
+  <!-- 评测报告 -->
+  <section id="tab-eval" class="tab">
+    <h2>问题集评测报告</h2>
+    <p class="muted">金标派生自本次抽取证据，程序自动打分；不是独立人工盲测。完整机器记录见 <code>results/question_eval.json</code>。</p>
+    <div id="eval-view"><p class="muted">加载中…</p></div>
   </section>
 </main>
 

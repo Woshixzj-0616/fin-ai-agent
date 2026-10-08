@@ -256,15 +256,21 @@ def _check_draft(draft: str, facts: list[dict], run) -> dict:
         from collections import Counter
         return {"status": "completed" if checks else "skipped", "mode": "local_supplemental",
                 "reason": "未配置模型；仅检查明确表达的倍数与引用，其他句子未核查",
-                "counts": dict(Counter(c["status"] for c in checks)), "checks": checks}
+                "counts": dict(Counter(c["status"] for c in checks)), "checks": checks,
+                "tools_used": 0, "tool_names": []}
     try:
         if client.key in draft:
             return {"status": "failed", "reason": "草稿含模型凭证，拒绝处理与保存", "checks": []}
         tmp = run.output("webui_draft.txt")
         tmp.write_text(draft, encoding="utf-8")
         bundle = check_text(tmp, facts, run, client, use_loop=True)
+        tools_used = bundle.get("tools_used") or []
         return {"status": "completed", "mode": bundle.get("mode"),
-                "counts": bundle.get("counts"), "checks": bundle.get("checks") or []}
+                "counts": bundle.get("counts"), "checks": bundle.get("checks") or [],
+                "tools_used": len(tools_used),
+                "tool_names": [t.get("name") for t in tools_used],
+                "model": getattr(client, "model", None),
+                "provider_host": getattr(client, "host", None)}
     except Exception as exc:
         return {"status": "failed", "reason": str(exc), "checks": []}
 
@@ -962,6 +968,22 @@ function render(data) {
     if (data.checks.status === 'completed') {
       const counts = data.checks.counts || {};
       const head = Object.entries(counts).map(([k, v]) => `${esc(k)} ${v}`).join(' · ');
+      const modeMap = {
+        native_tool_calls: ['原生工具循环', 'ok'],
+        json_multi_step: ['JSON 多步协议', 'ok'],
+        fallback_single_shot_tools_preserved: ['单次拆解 · 工具裁决已保留', 'warn'],
+        fallback_single_shot: ['单次拆解（回退）', 'warn'],
+        local_supplemental: ['本地补充核查', 'info'],
+      };
+      const [modeText, modeCls] = modeMap[data.checks.mode] || [data.checks.mode || '—', 'muted'];
+      const nTools = data.checks.tools_used || 0;
+      const toolNames = (data.checks.tool_names || []).slice(0, 8).join('、');
+      const agentLine = `<div class="hint" style="margin-bottom:6px">
+        <span class="badge ${modeCls}">${esc(modeText)}</span>
+        <span class="badge info">工具调用 ${nTools} 次</span>
+        ${data.checks.model ? `<span class="badge muted">${esc(data.checks.model)}</span>` : ''}
+        ${toolNames ? `<br><span class="muted">工具：${esc(toolNames)}</span>` : ''}
+      </div>`;
       const rows = (data.checks.checks || []).map((c) => `<tr>
         <td>${esc(c.claim_id)}</td>
         <td>${trackBadge(c.track)}</td>
@@ -970,6 +992,7 @@ function render(data) {
         <td>${esc(c.reason || c.reason_code || '—')}${c.verification_scope ? '<br>'+esc(c.verification_scope) : ''}${c.correction ? '<details><summary>修改片段</summary>'+esc(c.correction.before)+' → '+esc(c.correction.after)+'<p>'+esc(c.correction.revised_sentence || '需人工调整句子')+'</p></details>' : ''}</td>
       </tr>`).join('');
       box.innerHTML = `<div class="hint" style="margin-bottom:8px">${esc(data.checks.reason || '')}<br>双轨：A 确定（本地裁决）· B 模型（只解释）· C 人工（需复核）。${head || '已出结果'}</div>
+        ${agentLine}
         <div class="table-wrap"><table class="grid">
           <thead><tr><th>编号</th><th>轨道</th><th>原句</th><th>结论</th><th>说明</th></tr></thead>
           <tbody>${rows}</tbody>

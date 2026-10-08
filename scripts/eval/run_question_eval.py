@@ -377,6 +377,10 @@ def main() -> int:
         "note": "金标派生自本次抽取证据，非独立人工盲测；见脚本 docstring 口径。",
     }
     write_json(run.output("question_eval.json"), {**report, "rows": rows})
+    # 同步到 Pages 静态站，供「评测报告」页展示
+    site_data = ROOT / "docs" / "data"
+    if site_data.is_dir():
+        write_json(site_data / "question_eval.json", report)
     md = ["# 问题集评测", "",
           f"- 用例 {len(cases)}；计分 {len(scored)}；通过 **{passed}**；失败 {report['failed']}；跳过 {report['skipped']}",
           f"- 通过率 **{report['pass_rate']}**",

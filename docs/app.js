@@ -630,3 +630,41 @@ fetch('data/bundle.json')
     document.querySelector('main').innerHTML =
       `<p class="load-error">数据加载失败：${esc(e.message)}</p>`;
   });
+
+fetch('data/question_eval.json')
+  .then((r) => r.ok ? r.json() : Promise.reject(new Error(r.status)))
+  .then((ev) => {
+    const root = $('#eval-view');
+    if (!root) return;
+    const pass = ev.passed ?? 0;
+    const scored = ev.scored ?? 0;
+    const rate = ev.pass_rate != null ? (ev.pass_rate * 100).toFixed(1) + '%' : '—';
+    const by = ev.by_type || {};
+    const typeRows = Object.entries(by).map(([t, b]) =>
+      `<tr><td>${esc(t)}</td><td>${b.pass}</td><td>${b.fail}</td></tr>`).join('');
+    const failed = (ev.failed_ids || []).map((id) => `<li><code>${esc(id)}</code></li>`).join('');
+    const llm = ev.llm_draft;
+    const llmHtml = llm
+      ? `<h3>LLM 草稿核查</h3><p>
+          skipped=${esc(String(llm.skipped))} · mode=<code>${esc(llm.mode || '—')}</code>
+          · tools=${esc(String(llm.tools_used ?? 0))} · ok=${esc(String(llm.ok))}<br>
+          counts：<code>${esc(JSON.stringify(llm.counts || {}))}</code>
+        </p>`
+      : '';
+    root.innerHTML = `
+      <div class="overview" style="margin:12px 0">
+        <div class="stat-card ok"><div class="n">${rate}</div><div class="k">通过率</div></div>
+        <div class="stat-card"><div class="n">${pass} / ${scored}</div><div class="k">通过 / 计分</div></div>
+        <div class="stat-card warn"><div class="n">${ev.skipped ?? 0}</div><div class="k">跳过</div></div>
+      </div>
+      <p class="muted">run_id：<code>${esc(ev.run_id || '—')}</code> · ${esc(ev.note || '')}</p>
+      <h3>分类型</h3>
+      <table class="grid"><thead><tr><th>类型</th><th>通过</th><th>失败</th></tr></thead>
+      <tbody>${typeRows}</tbody></table>
+      ${failed ? `<h3>失败用例</h3><ul>${failed}</ul>` : '<p class="muted">无失败用例。</p>'}
+      ${llmHtml}`;
+  })
+  .catch(() => {
+    const root = $('#eval-view');
+    if (root) root.innerHTML = '<p class="muted">尚未打包评测报告。先运行 <code>python scripts/eval/run_question_eval.py</code> 并重新 site_build。</p>';
+  });
