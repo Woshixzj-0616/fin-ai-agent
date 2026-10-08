@@ -1,0 +1,730 @@
+diff --git a/backend/app.py b/backend/app.py
+index dc6a6dc..7dc4138 100644
+--- a/backend/app.py
++++ b/backend/app.py
+@@ -3,6 +3,7 @@
+ from __future__ import annotations
+ 
+ import hashlib
++import json
+ import logging
+ import os
+ import subprocess
+@@ -46,6 +47,12 @@ from backend.deepseek_client import MODEL, ModelCallError, api_key_configured
+ from backend.deepseek_agent import answer_question, analyze_report
+ from backend.profit_agent import analyze_profit_report, answer_profit_question
+ from backend.module_registry import registrations
++from backend.modules.disclosure.entry import (
++    answer_follow_up as answer_disclosure_follow_up,
++    insufficient_material_result,
++    partial_result_from_checkpoint,
++)
++from backend.modules.disclosure.agent import MODULE_ID as DISCLOSURE_MODULE_ID, MODULE_VERSION as DISCLOSURE_MODULE_VERSION
+ from backend.review_api import router as review_router
+ from backend.review_database import init_review_db
+ from backend.pdf_reader import (
+@@ -84,7 +91,7 @@ def _source_revision() -> str | None:
+         return None
+ 
+ 
+-app = FastAPI(title="金融投研工作台", version="3.0.1")
++app = FastAPI(title="林研 · 披露与风险工作台", version="3.6.2")
+ app.add_middleware(
+     CORSMiddleware,
+     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+@@ -106,6 +113,8 @@ def _public_run(run: dict[str, Any], *, include_result: bool = True) -> dict[str
+         "id": run["id"],
+         "file_name": run["file_name"],
+         "analysis_module": run.get("analysis_module", "overview"),
++        "analysis_status": run.get("analysis_status", "pending"),
++        "review_status": run.get("review_status", "pending"),
+         "sha256": run["sha256"],
+         "status": run["status"],
+         "stage": run["stage"],
+@@ -163,6 +172,45 @@ def _record_page_search(
+     return results
+ 
+ 
++def _disclosure_review_status(result: dict[str, Any]) -> str:
++    """Keep open source/coverage checks visible without implying expert conclusions are proven."""
++    quality = result.get("run_quality") if isinstance(result.get("run_quality"), dict) else {}
++    if quality.get("critical_gaps") or result.get("quality_flags"):
++        return "open_items"
++    counts = quality.get("quote_verification_counts") if isinstance(quality.get("quote_verification_counts"), dict) else {}
++    if int(counts.get("quote_not_found") or 0) or int(counts.get("other_unverified") or 0):
++        return "open_items"
++    audit = result.get("audit_profile") if isinstance(result.get("audit_profile"), dict) else {}
++    if audit.get("opinion_verification_status") != "opinion_excerpt_and_type_verified":
++        return "open_items"
++    if any(item.get("evidence_status") not in {"verified_quote"} for item in result.get("findings", []) if isinstance(item, dict)):
++        return "open_items"
++    if any(
++        item.get("status") in {"confirmed_present", "explicit_no_disclosure"}
++        and item.get("verification_status") != "topic_and_quote_verified"
++        for item in result.get("coverage", []) if isinstance(item, dict)
++    ):
++        return "open_items"
++    if any(item.get("status") in {"searched_no_hit", "not_checked"} for item in result.get("coverage", []) if isinstance(item, dict)):
++        return "open_items"
++    if any(item.get("evidence_status") in {"linked_finding_reference_only", "direct_reference_unverified", "missing_reference"} for item in result.get("impacts", []) if isinstance(item, dict)):
++        return "open_items"
++    return "professional_review"
++
++
++def _checkpoint_result(module_recorder: RunRecorder, reason: str) -> dict[str, Any] | None:
++    checkpoint_path = module_recorder.artifacts_dir / "disclosure_checkpoint.json"
++    if not checkpoint_path.is_file():
++        return None
++    try:
++        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
++    except (OSError, json.JSONDecodeError):
++        return None
++    if not isinstance(checkpoint, dict):
++        return None
++    return partial_result_from_checkpoint(checkpoint, reason)
++
++
+ def _process_run(run_id: str) -> None:
+     run = get_run(run_id)
+     if not run:
+@@ -183,6 +231,7 @@ def _process_run(run_id: str) -> None:
+         labels = {
+             "business": "模块一｜业务与经营背景",
+             "profit": "模块二｜盈利来源与变化",
++            "disclosure": "模块六｜审计、披露与特殊事项",
+             "overview": "财报概览",
+         }
+         module_results: dict[str, dict[str, Any]] = {
+@@ -191,7 +240,7 @@ def _process_run(run_id: str) -> None:
+         }
+         module_pages: dict[str, list[int]] = {key: [] for key in module_keys}
+         business_context: dict[str, Any] | None = None
+-        update_run(run_id, status="running", stage="正在读取并索引全文")
++        update_run(run_id, status="running", analysis_status="running", review_status="pending", stage="正在读取并索引全文")
+         set_analysis_step(run_id, "读取并索引 PDF 全文", "进行中")
+         pdf_path = Path(run["file_path"])
+         content = pdf_path.read_bytes()
+@@ -276,6 +325,20 @@ def _process_run(run_id: str) -> None:
+             initial_pages = select_initial_pages(all_pages, analysis_module=module_key)
+             if not initial_pages:
+                 error = "PDF 中没有找到可发送给模型的文字页面。"
++                if module_key == DISCLOSURE_MODULE_ID:
++                    insufficient = insufficient_material_result(run["file_name"], extracted.page_count)
++                    module_recorder.record("module_insufficient_material", reason=error)
++                    module_recorder.write_result({
++                        "report_id": run["sha256"],
++                        "module_id": module_key,
++                        "module_version": module_version,
++                        "status": "insufficient_material",
++                        "error": error,
++                        "result": insufficient,
++                    })
++                    module_results[module_key] = {"status": "insufficient_material", "error": error, "result": insufficient}
++                    set_analysis_step(run_id, f"{module_label} · 读取年报正文", "资料不足", error)
++                    continue
+                 module_recorder.record("module_failed", error=error)
+                 module_recorder.write_result(
+                     {
+@@ -327,7 +390,7 @@ def _process_run(run_id: str) -> None:
+                     update_run(run_id, stage=f"正在{name}")
+ 
+             def on_tool(name: str, detail: str) -> None:
+-                if name in {"search_pdf_pages", "read_pdf_page"}:
++                if name in {"search_pdf_pages", "read_pdf_page", "search_report", "read_report_pages"}:
+                     step_name = f"{module_label} · 定向查阅原文"
+                     set_analysis_step(run_id, step_name, "进行中", f"正在调用 {name}：{detail}")
+                     update_run(run_id, stage=f"{module_label}正在查阅年报原文")
+@@ -380,6 +443,8 @@ def _process_run(run_id: str) -> None:
+                 result["document_sha256"] = run["sha256"]
+                 result["prompt_version"] = module_version
+                 result["workflow_trace"] = workflow["trace"]
++                workflow_status = str(workflow.get("status") or "completed")
++                module_completion = "partial" if workflow_status == "partial" else "completed"
+                 module_recorder.record(
+                     "module_result_ready",
+                     read_pages=module_pages[module_key],
+@@ -390,12 +455,12 @@ def _process_run(run_id: str) -> None:
+                         "report_id": run["sha256"],
+                         "module_id": module_key,
+                         "module_version": result["prompt_version"],
+-                        "status": "completed",
++                        "status": module_completion,
+                         "read_pages": module_pages[module_key],
+                         "result": result,
+                     }
+                 )
+-                module_results[module_key] = {"status": "completed", "error": None, "result": result}
++                module_results[module_key] = {"status": module_completion, "error": None, "result": result}
+                 if module_key == "business":
+                     business_context = result
+                 extra_pages = sorted(set(module_pages[module_key]) - selected_numbers)
+@@ -408,45 +473,63 @@ def _process_run(run_id: str) -> None:
+                 set_analysis_step(
+                     run_id,
+                     f"{module_label} · 分析模块",
+-                    "已完成",
++                    "已完成" if module_completion == "completed" else "部分完成",
+                     result.get("analysis_review_status", "结构化结果已保存。"),
+                 )
+             except (PdfInputError, ModelCallError) as exc:
+-                module_recorder.record("module_failed", error_type=type(exc).__name__, error=str(exc))
++                reason = str(exc)
++                partial_result = _checkpoint_result(module_recorder, reason) if module_key == DISCLOSURE_MODULE_ID else None
++                module_status = "partial" if partial_result is not None else "failed"
++                module_recorder.record("module_partial" if partial_result is not None else "module_failed", error_type=type(exc).__name__, error=reason)
+                 module_recorder.write_result(
+                     {
+                         "report_id": run["sha256"],
+                         "module_id": module_key,
+-                        "status": "failed",
+-                        "error": str(exc),
+-                        "result": None,
++                        "module_version": module_version,
++                        "status": module_status,
++                        "error": reason,
++                        "read_pages": partial_result.get("read_pages", []) if partial_result else [],
++                        "result": partial_result,
+                     }
+                 )
+                 if not combined:
+-                    raise
+-                module_results[module_key] = {"status": "failed", "error": str(exc), "result": None}
+-                set_analysis_step(run_id, f"{module_label} · 分析模块", "需要处理", str(exc))
++                    module_results[module_key] = {"status": module_status, "error": reason, "result": partial_result}
++                    set_analysis_step(run_id, f"{module_label} · 分析模块", "部分完成" if partial_result else "需要处理", reason)
++                else:
++                    module_results[module_key] = {"status": "failed", "error": reason, "result": None}
++                    set_analysis_step(run_id, f"{module_label} · 分析模块", "需要处理", reason)
+             except Exception:
+                 logger.exception("Run %s module %s failed unexpectedly", run_id, module_key)
+-                module_recorder.record("module_failed", error_type="UnexpectedError")
++                reason = "该模块处理时发生意外错误。"
++                partial_result = _checkpoint_result(module_recorder, reason) if module_key == DISCLOSURE_MODULE_ID else None
++                module_status = "partial" if partial_result is not None else "failed"
++                module_recorder.record("module_partial" if partial_result is not None else "module_failed", error_type="UnexpectedError", error=reason)
+                 module_recorder.write_result(
+                     {
+                         "report_id": run["sha256"],
+                         "module_id": module_key,
+-                        "status": "failed",
+-                        "error": "该模块处理时发生意外错误。",
+-                        "result": None,
++                        "module_version": module_version,
++                        "status": module_status,
++                        "error": reason,
++                        "read_pages": partial_result.get("read_pages", []) if partial_result else [],
++                        "result": partial_result,
+                     }
+                 )
+                 if not combined:
+-                    raise
+-                error = "该模块处理时发生意外错误；另一模块结果仍会保留。"
+-                module_results[module_key] = {"status": "failed", "error": error, "result": None}
+-                set_analysis_step(run_id, f"{module_label} · 分析模块", "需要处理", error)
++                    module_results[module_key] = {"status": module_status, "error": reason, "result": partial_result}
++                    set_analysis_step(run_id, f"{module_label} · 分析模块", "部分完成" if partial_result else "需要处理", reason)
++                else:
++                    module_results[module_key] = {"status": "failed", "error": "该模块处理时发生意外错误；另一模块结果仍会保留。", "result": None}
++                    set_analysis_step(run_id, f"{module_label} · 分析模块", "需要处理", "该模块处理时发生意外错误。")
+ 
+             update_run(
+                 run_id,
+-                stage=f"{module_label}分析完成" if module_results[module_key]["status"] == "completed" else f"{module_label}需要处理",
++                stage=(
++                    f"{module_label}分析完成" if module_results[module_key]["status"] == "completed"
++                    else f"{module_label}部分完成" if module_results[module_key]["status"] == "partial"
++                    else f"{module_label}资料不足" if module_results[module_key]["status"] == "insufficient_material"
++                    else f"{module_label}需要处理"
++                ),
+                 read_pages=sorted(accumulated_pages),
+                 result=combined_payload() if combined else None,
+             )
+@@ -483,6 +566,8 @@ def _process_run(run_id: str) -> None:
+             update_run(
+                 run_id,
+                 status="completed",
++                analysis_status="partial" if failed else "complete",
++                review_status="open_items" if failed else "professional_review",
+                 stage=stage,
+                 read_pages=sorted(accumulated_pages),
+                 result=combined_payload(),
+@@ -496,30 +581,63 @@ def _process_run(run_id: str) -> None:
+             )
+         else:
+             module_result = module_results[analysis_module]
+-            if module_result["status"] != "completed":
++            internal_status = module_result["status"]
++            if internal_status == "partial":
++                partial = module_result.get("result")
++                reason = module_result.get("error") or "模块六没有通过完整性门禁；已保留检查点。"
++                update_run(
++                    run_id,
++                    status="completed",
++                    analysis_status="partial",
++                    review_status="open_items",
++                    stage="模块六部分完成，需补齐检查项",
++                    read_pages=sorted(set(accumulated_pages) | set((partial or {}).get("read_pages", []))),
++                    result=partial,
++                    error=reason,
++                )
++                run_recorder.record("run_partial", analysis_status="partial", reason=reason)
++                return
++            if internal_status == "insufficient_material":
++                update_run(
++                    run_id,
++                    status="completed",
++                    analysis_status="insufficient_material",
++                    review_status="not_applicable",
++                    stage="资料不足：PDF 没有可读取正文",
++                    page_count=extracted.page_count,
++                    result=module_result.get("result"),
++                    error=module_result.get("error"),
++                )
++                run_recorder.record("run_insufficient_material", reason=module_result.get("error"))
++                return
++            if internal_status != "completed":
+                 error = module_result.get("error") or "分析模块未能完成。"
+-                update_run(run_id, status="failed", stage="需要处理", error=error)
++                update_run(run_id, status="failed", analysis_status="failed", review_status="not_applicable", stage="需要处理", error=error)
+                 run_recorder.record("run_failed", completed_modules=[], failed_modules=[analysis_module], error=error)
+                 return
++            result = module_result["result"]
++            review_status = _disclosure_review_status(result) if analysis_module == DISCLOSURE_MODULE_ID else "professional_review"
+             set_analysis_step(run_id, "保存结构化结果", "已完成", "模块结果和出处已保存。")
+             update_run(
+                 run_id,
+                 status="completed",
++                analysis_status="complete",
++                review_status=review_status,
+                 stage="分析完成",
+                 read_pages=sorted(accumulated_pages),
+-                result=module_result["result"],
++                result=result,
+                 error=None,
+             )
+             run_recorder.record(
+                 "run_completed",
+                 completed_modules=[analysis_module],
+                 failed_modules=[],
+-                result_artifact=run_recorder.save_artifact("run_result", module_result["result"]),
++                result_artifact=run_recorder.save_artifact("run_result", result),
+             )
+     except (PdfInputError, ModelCallError) as exc:
+         run_recorder.record("run_failed", error_type=type(exc).__name__, error=str(exc))
+         set_analysis_step(run_id, "分析任务", "需要处理", str(exc))
+-        update_run(run_id, status="failed", stage="需要处理", error=str(exc))
++        update_run(run_id, status="failed", analysis_status="failed", review_status="not_applicable", stage="需要处理", error=str(exc))
+     except Exception:
+         logger.exception("Run %s failed unexpectedly", run_id)
+         run_recorder.record("run_failed", error_type="UnexpectedError")
+@@ -527,6 +645,8 @@ def _process_run(run_id: str) -> None:
+         update_run(
+             run_id,
+             status="failed",
++            analysis_status="failed",
++            review_status="not_applicable",
+             stage="需要处理",
+             error="处理时发生意外错误。请查看后端运行窗口中的错误信息，再重试。",
+         )
+@@ -574,7 +694,30 @@ def _process_conversation_turn(run_id: str, turn_id: str) -> None:
+             "on_tool": on_tool,
+             "recorder": turn_recorder,
+         }
+-        if answer_function is answer_profit_question:
++        if run.get("analysis_module") == DISCLOSURE_MODULE_ID:
++            disclosure_context = ReportContext(
++                report_id=run["sha256"],
++                file_name=run["file_name"],
++                file_sha256=run["sha256"],
++                page_count=run["page_count"],
++                pages=[],
++                recorder=turn_recorder,
++                _get_page=lambda page_number: _record_page_access(
++                    turn_recorder, get_run_page, run_id, page_number
++                ),
++                _search_pages=lambda query: _record_page_search(
++                    turn_recorder, search_run_pages, run_id, query
++                ),
++                _on_progress=lambda name, status, detail: set_analysis_step(run_id, "模块六追问 · " + name, status, detail),
++                _on_tool=on_tool,
++            )
++            answer = answer_disclosure_follow_up(
++                disclosure_context,
++                initial_result=run["result"],
++                history=history,
++                question=turn["question"],
++            )
++        elif answer_function is answer_profit_question:
+             answer = answer_function(**answer_args)
+         else:
+             answer = answer_function(
+@@ -600,10 +743,10 @@ def _process_conversation_turn(run_id: str, turn_id: str) -> None:
+         update_run(
+             run_id,
+             status="completed",
+-            stage="分析完成",
++            stage="模块六追问已完成" if run.get("analysis_module") == DISCLOSURE_MODULE_ID else "分析完成",
+             read_pages=result["read_pages"],
+             result=result,
+-            error=None,
++            error=run.get("error") if run.get("analysis_status") == "partial" else None,
+         )
+         set_analysis_step(
+             run_id,
+@@ -614,7 +757,7 @@ def _process_conversation_turn(run_id: str, turn_id: str) -> None:
+     except (ModelCallError, PdfInputError) as exc:
+         turn_recorder.record("followup_failed", error_type=type(exc).__name__, error=str(exc))
+         update_conversation_turn(turn_id, status="failed", error=str(exc))
+-        update_run(run_id, status="completed", stage="分析完成", error=None)
++        update_run(run_id, status="completed", stage="模块六追问未完成" if run.get("analysis_module") == DISCLOSURE_MODULE_ID else "分析完成", error=run.get("error") if run.get("analysis_status") == "partial" else None)
+         set_analysis_step(run_id, "回答用户追问", "需要处理", str(exc))
+     except Exception:
+         logger.exception("Conversation turn %s failed unexpectedly", turn_id)
+@@ -624,13 +767,21 @@ def _process_conversation_turn(run_id: str, turn_id: str) -> None:
+             status="failed",
+             error="回答时发生意外错误，请稍后重试。",
+         )
+-        update_run(run_id, status="completed", stage="分析完成", error=None)
++        update_run(run_id, status="completed", stage="模块六追问未完成" if run.get("analysis_module") == DISCLOSURE_MODULE_ID else "分析完成", error=run.get("error") if run.get("analysis_status") == "partial" else None)
+         set_analysis_step(run_id, "回答用户追问", "需要处理", "回答时发生意外错误。")
+ 
+ 
+ @app.get("/api/health")
+ def health() -> dict[str, Any]:
+-    return {"status": "ok", "api_configured": api_key_configured(), "model": MODEL}
++    return {
++        "status": "ok",
++        "api_configured": api_key_configured(),
++        "model": MODEL,
++        "module_id": DISCLOSURE_MODULE_ID,
++        "module_title": "审计、披露与特殊事项",
++        "module_version": DISCLOSURE_MODULE_VERSION,
++        "workbench_id": "task06-disclosure-v3.6.2",
++    }
+ 
+ 
+ @app.post("/api/settings/deepseek-key")
+@@ -653,14 +804,14 @@ def save_deepseek_key(payload: DeepSeekKeyUpdate) -> dict[str, bool]:
+ async def create_analysis_run(
+     background_tasks: BackgroundTasks,
+     file: UploadFile = File(...),
+-    analysis_module: str = Form("overview"),
++    analysis_module: str = Form("disclosure"),
+ ) -> dict[str, Any]:
+     if not api_key_configured():
+         raise HTTPException(
+             status_code=503,
+             detail="尚未配置 DeepSeek API Key。请先在页面顶部打开配置窗口。",
+         )
+-    if analysis_module not in {"overview", "business", "profit", "complete"}:
++    if analysis_module not in {"overview", "business", "profit", "complete", "disclosure"}:
+         raise HTTPException(status_code=400, detail="未知的分析模块，请重新选择。")
+     file_name = Path(file.filename or "").name.strip()
+     if not file_name.lower().endswith(".pdf"):
+@@ -683,6 +834,8 @@ async def create_analysis_run(
+             "file_name": file_name[:240],
+             "file_path": str(pdf_path),
+             "analysis_module": analysis_module,
++            "analysis_status": "pending",
++            "review_status": "pending",
+             "sha256": hashlib.sha256(content).hexdigest(),
+             "status": "queued",
+             "stage": "已接收文件",
+@@ -747,8 +900,8 @@ def ask_about_run(
+     question = payload.question.strip()
+     if not question:
+         raise HTTPException(status_code=400, detail="请先输入要追问的问题。")
+-    if run["status"] != "completed" or not run.get("result"):
+-        raise HTTPException(status_code=409, detail="请等首次分析完成后再追问。")
++    if run["status"] != "completed" or not run.get("result") or run.get("analysis_status") not in {"complete", "partial"}:
++        raise HTTPException(status_code=409, detail="请等模块六分析或部分结果保存后再追问。")
+     if not api_key_configured():
+         raise HTTPException(status_code=503, detail="尚未配置 DeepSeek API Key。")
+     if has_pending_conversation_turn(run_id):
+diff --git a/backend/database.py b/backend/database.py
+index 3e3b034..3fbf139 100644
+--- a/backend/database.py
++++ b/backend/database.py
+@@ -36,6 +36,8 @@ def init_db() -> None:
+                 file_name TEXT NOT NULL,
+                 file_path TEXT NOT NULL,
+                 analysis_module TEXT NOT NULL DEFAULT 'overview',
++                analysis_status TEXT NOT NULL DEFAULT 'pending',
++                review_status TEXT NOT NULL DEFAULT 'pending',
+                 sha256 TEXT NOT NULL,
+                 status TEXT NOT NULL,
+                 stage TEXT NOT NULL,
+@@ -53,6 +55,10 @@ def init_db() -> None:
+             db.execute(
+                 "ALTER TABLE runs ADD COLUMN analysis_module TEXT NOT NULL DEFAULT 'overview'"
+             )
++        if "analysis_status" not in columns:
++            db.execute("ALTER TABLE runs ADD COLUMN analysis_status TEXT NOT NULL DEFAULT 'pending'")
++        if "review_status" not in columns:
++            db.execute("ALTER TABLE runs ADD COLUMN review_status TEXT NOT NULL DEFAULT 'pending'")
+         db.execute(
+             """
+             CREATE TABLE IF NOT EXISTS run_pages (
+@@ -94,6 +100,8 @@ def init_db() -> None:
+         )
+         db.execute(
+             "UPDATE runs SET status='failed', stage='服务重启', "
++            "analysis_status=CASE WHEN result IS NULL THEN 'failed' ELSE 'partial' END, "
++            "review_status=CASE WHEN result IS NULL THEN 'not_applicable' ELSE 'open_items' END, "
+             "error='服务在任务完成前重启，请重新提交文件。', updated_at=? "
+             "WHERE status IN ('queued', 'running')",
+             (now_iso(),),
+@@ -225,18 +233,20 @@ def create_run(run: dict[str, Any]) -> None:
+         db.execute(
+             """
+             INSERT INTO runs
+-              (id, file_name, file_path, analysis_module, sha256, status, stage, created_at, updated_at)
+-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
++              (id, file_name, file_path, analysis_module, analysis_status, review_status,
++               sha256, status, stage, created_at, updated_at)
++            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             """,
+             (
+-                run["id"], run["file_name"], run["file_path"], run.get("analysis_module", "overview"), run["sha256"],
++                run["id"], run["file_name"], run["file_path"], run.get("analysis_module", "overview"),
++                run.get("analysis_status", "pending"), run.get("review_status", "pending"), run["sha256"],
+                 run["status"], run["stage"], run["created_at"], run["updated_at"],
+             ),
+         )
+ 
+ 
+ def update_run(run_id: str, **fields: Any) -> None:
+-    allowed = {"status", "stage", "updated_at", "page_count", "read_pages", "error", "result"}
++    allowed = {"status", "analysis_status", "review_status", "stage", "updated_at", "page_count", "read_pages", "error", "result"}
+     values: dict[str, Any] = {key: value for key, value in fields.items() if key in allowed}
+     if "read_pages" in values and not isinstance(values["read_pages"], str):
+         values["read_pages"] = json.dumps(values["read_pages"], ensure_ascii=False)
+diff --git a/backend/module_registry.py b/backend/module_registry.py
+index 9c69ab5..dff9fec 100644
+--- a/backend/module_registry.py
++++ b/backend/module_registry.py
+@@ -22,8 +22,12 @@ def registrations() -> dict[str, ModuleRegistration]:
+     from backend.modules.profit.entry import MODULE_ID as profit_id
+     from backend.modules.profit.entry import MODULE_VERSION as profit_version
+     from backend.modules.profit.entry import run as profit_run
++    from backend.modules.disclosure.entry import MODULE_ID as disclosure_id
++    from backend.modules.disclosure.entry import MODULE_VERSION as disclosure_version
++    from backend.modules.disclosure.entry import run as disclosure_run
+ 
+     return {
+         business_id: ModuleRegistration(business_id, business_version, business_run),
+         profit_id: ModuleRegistration(profit_id, profit_version, profit_run),
++        disclosure_id: ModuleRegistration(disclosure_id, disclosure_version, disclosure_run),
+     }
+diff --git a/frontend/src/App.jsx b/frontend/src/App.jsx
+index 49bca61..6ef2716 100644
+--- a/frontend/src/App.jsx
++++ b/frontend/src/App.jsx
+@@ -1,5 +1,5 @@
+-import V2Workbench from './V2Workbench.jsx'
++import DisclosureWorkspace from './DisclosureWorkspace.jsx'
+ 
+ export default function App() {
+-  return <V2Workbench />
++  return <DisclosureWorkspace />
+ }
+diff --git a/frontend/src/styles.css b/frontend/src/styles.css
+index c8dd9e5..9276796 100644
+--- a/frontend/src/styles.css
++++ b/frontend/src/styles.css
+@@ -529,6 +529,182 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(37, 115, 91, .36
+ .module-context-note { padding: 11px 14px; border-color: #e2ebe4; background: #f8fbf8; color: #748279; font-size: 9px; line-height: 1.65; }
+ .business-result[id], .profit-result[id] { scroll-margin-top: 14px; }
+ 
++/* Module six standalone workbench */
++.disc-app { min-height: 100vh; color: #1c2825; background: radial-gradient(ellipse at 78% 8%, rgba(218,234,224,.42), transparent 34%), #f6f7f6; }
++.disc-topbar { position: sticky; top: 0; z-index: 8; min-height: 68px; padding: 0 clamp(18px, 5vw, 76px); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e8ece9; background: rgba(255,255,255,.94); backdrop-filter: blur(16px); }
++.disc-brand { display: flex; align-items: center; gap: 10px; color: #244d3d; text-decoration: none; }
++.disc-brand-mark { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid #d4e5da; border-radius: 10px; background: #f2f8f3; color: #398165; font-weight: 800; }
++.disc-brand b, .disc-brand small { display: block; }
++.disc-brand b { font-size: 13px; }
++.disc-brand small { margin-top: 3px; color: #91a097; font-size: 8px; letter-spacing: .12em; }
++.disc-top-title { display: flex; align-items: center; gap: 12px; color: #75847b; font-size: 11px; }
++.disc-top-title span { padding: 6px 8px; border-radius: 6px; background: #eff6f0; color: #528065; font-size: 9px; }
++.disc-top-title b { color: #486254; font-size: 11px; }
++.disc-model-button { display: flex; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid #e2e9e4; border-radius: 9px; background: #fff; color: #61716a; font-size: 10px; }
++.disc-model-button i { width: 7px; height: 7px; border-radius: 50%; background: #c89162; }
++.disc-model-button i.connected { background: #3f9b70; }
++.disc-model-button small { margin-left: 5px; color: #96a198; }
++.disc-layout { width: min(1460px, calc(100% - 42px)); margin: 0 auto; padding: 27px 0 42px; display: grid; grid-template-columns: minmax(275px, 345px) minmax(0, 1fr); align-items: start; gap: 25px; }
++.disc-sidebar, .disc-main { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
++.disc-main { gap: 14px; }
++.disc-sidebar .card, .disc-section, .disc-progress, .disc-chat, .disc-welcome, .disc-status-card, .disc-gap-card, .disc-reason { border: 1px solid #e3e9e5; border-radius: 15px; background: #fff; box-shadow: 0 9px 32px rgba(24,52,42,.045); }
++.disc-upload-card { padding: 20px; }
++.disc-eyebrow { color: #69927b; font-size: 9px; font-weight: 700; letter-spacing: .12em; }
++.disc-upload-card h1 { margin: 12px 0 8px; color: #1d3028; font-size: 23px; line-height: 1.4; letter-spacing: -.04em; }
++.disc-upload-card h1 span { color: #7c9788; }
++.disc-upload-card > p { margin: 0 0 18px; color: #819087; font-size: 10px; line-height: 1.8; }
++.disc-upload-card form { display: grid; gap: 11px; }
++.disc-upload-card input[type=file] { display: none; }
++.disc-dropzone { min-height: 152px; padding: 18px 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; border: 1px dashed #cedfd2; border-radius: 12px; background: #f9fcf9; color: #4d6858; }
++.disc-dropzone > span { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 12px; background: #e9f3eb; color: #488362; font-size: 20px; }
++.disc-dropzone b { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
++.disc-dropzone small { color: #91a096; font-size: 9px; }
++.disc-dropzone.selected { border-style: solid; background: #f4faf5; }
++.disc-primary { min-height: 41px; padding: 0 14px; border: 0; border-radius: 9px; background: #28765d; color: #fff; font-size: 10px; font-weight: 700; }
++.disc-primary:hover:not(:disabled) { background: #1c5b45; }
++.disc-primary:disabled { cursor: not-allowed; background: #bdcbc2; }
++.disc-private-note { margin-top: 13px; color: #94a198; font-size: 8px; line-height: 1.7; }
++.disc-inline-error { padding: 9px 11px; border: 1px solid #f0d8d0; border-radius: 8px; background: #fff8f5; color: #976d5f; font-size: 9px; line-height: 1.6; }
++.disc-history-card { padding: 17px 13px 12px; }
++.disc-history-heading { padding: 0 6px 11px; display: flex; justify-content: space-between; color: #52665a; font-size: 11px; }
++.disc-history-heading small { color: #98a39c; font-size: 9px; font-weight: 400; }
++.disc-history-item { width: 100%; display: flex; align-items: center; gap: 8px; padding: 10px 6px; border: 0; border-top: 1px solid #f0f3f1; background: transparent; text-align: left; }
++.disc-history-item:hover, .disc-history-item.selected { border-radius: 8px; background: #f4f8f4; }
++.disc-pdf-icon { flex: 0 0 30px; height: 23px; display: grid; place-items: center; border: 1px solid #f1dfd8; border-radius: 5px; color: #c77b61; font-size: 7px; }
++.disc-history-copy { min-width: 0; flex: 1; display: grid; gap: 4px; }
++.disc-history-copy b { overflow: hidden; color: #596b60; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
++.disc-history-copy small { color: #9aa49d; font-size: 8px; }
++.disc-history-item em { padding: 4px 6px; border-radius: 10px; background: #f0f4f0; color: #74847a; font-size: 8px; font-style: normal; white-space: nowrap; }
++.disc-history-item em.state-partial, .disc-history-item em.state-insufficient_material { background: #fff5e9; color: #9c7545; }
++.disc-history-item em.state-failed { background: #fff1ef; color: #a6665d; }
++.disc-quiet { padding: 7px 10px; border: 1px solid #e3eae4; border-radius: 8px; background: white; color: #6c7e72; font-size: 9px; }
++.disc-new-run { width: 100%; margin-top: 8px; }
++.disc-breadcrumb { color: #9aa59e; font-size: 9px; }
++.disc-welcome { min-height: 360px; padding: clamp(25px, 5vw, 58px); display: flex; flex-direction: column; justify-content: center; background: linear-gradient(140deg, #fff 28%, #f5faf6); }
++.disc-welcome > span { color: #80a08a; font-size: 9px; letter-spacing: .16em; }
++.disc-welcome h2 { margin: 16px 0 9px; color: #243a2e; font-size: clamp(22px, 3vw, 32px); }
++.disc-welcome p { max-width: 620px; color: #7e8d83; font-size: 11px; line-height: 1.85; }
++.disc-welcome > div { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 25px; color: #a4b1a8; font-size: 10px; }
++.disc-welcome > div b { padding: 9px 11px; border: 1px solid #e2ebe4; border-radius: 8px; background: white; color: #617668; font-size: 9px; }
++.disc-status-card { padding: 17px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
++.disc-status-card.is-partial { border-color: #f0dec5; background: #fffcf7; }
++.disc-status-card h2 { margin: 5px 0 5px; color: #30473a; font-size: 18px; }
++.disc-status-card p { margin: 0; color: #839087; font-size: 10px; line-height: 1.7; }
++.disc-status-badges { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
++.disc-status-badges span { padding: 6px 8px; border: 1px solid #e6ece7; border-radius: 15px; background: rgba(255,255,255,.75); color: #728178; font-size: 8px; }
++.disc-result-stack { display: grid; gap: 13px; }
++.disc-section { padding: 18px 20px; scroll-margin-top: 82px; }
++.disc-section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
++.disc-section-title > div { display: flex; align-items: center; gap: 9px; }
++.disc-section-title > div > span { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 8px; background: #eef6ef; color: #679076; font-size: 9px; }
++.disc-section-title h2 { margin: 0; color: #34483c; font-size: 14px; }
++.disc-section-title > small { color: #9aa49d; font-size: 8px; text-align: right; }
++.disc-context-line { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: #89978e; font-size: 9px; }
++.disc-context-line b { color: #425b4b; font-size: 12px; }
++.disc-summary { margin: 13px 0; padding: 13px 15px; border: 1px solid #e4ede6; border-radius: 10px; background: #f8fbf8; color: #54685a; font-size: 10px; line-height: 1.8; white-space: pre-wrap; }
++.disc-opinion-pill { margin: 13px 0; padding: 12px 14px; display: flex; align-items: center; gap: 11px; border: 1px solid #dfeae1; border-radius: 10px; background: #f8fbf8; }
++.disc-opinion-pill span { color: #8c9990; font-size: 9px; }
++.disc-opinion-pill strong { color: #3d614b; font-size: 14px; }
++.disc-opinion-pill em { margin-left: auto; color: #8c8065; font-size: 8px; font-style: normal; }
++.disc-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0; }
++.disc-field { min-width: 0; padding: 9px 10px; border: 1px solid #edf1ee; border-radius: 8px; background: #fcfdfc; }
++.disc-field > span { display: block; margin-bottom: 5px; color: #98a39b; font-size: 8px; text-transform: none; }
++.disc-field pre { max-height: 180px; margin: 0; overflow: auto; color: #56665b; font-family: inherit; font-size: 9px; line-height: 1.65; white-space: pre-wrap; word-break: break-word; }
++.disc-findings, .disc-impact-list, .disc-coverage-list, .disc-calculation-list { display: grid; gap: 11px; }
++.disc-finding, .disc-impact, .disc-coverage, .disc-calculation { padding: 13px; border: 1px solid #e9eeea; border-radius: 10px; background: #fdfefd; }
++.disc-finding-head, .disc-impact-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
++.disc-finding-head > div > span { color: #96a39a; font-size: 8px; letter-spacing: .07em; }
++.disc-finding-head h3, .disc-impact-head h3, .disc-calculation h3 { margin: 4px 0 7px; color: #405749; font-size: 12px; }
++.disc-finding-head em, .disc-impact-head em { padding: 5px 7px; border-radius: 11px; background: #f2f4ef; color: #7a857b; font-size: 8px; font-style: normal; }
++.disc-finding-head em.is-match, .disc-evidence-state.is-match { background: #edf7ef; color: #548263; }
++.disc-finding-head em.is-review, .disc-evidence-state.is-review { background: #fff5e9; color: #987343; }
++.disc-subfields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0; }
++.disc-subfields > div { padding: 8px 9px; border-radius: 7px; background: #f8faf8; }
++.disc-subfields b { color: #77867c; font-size: 8px; }
++.disc-subfields p { margin: 5px 0 0; color: #596a5f; font-size: 9px; line-height: 1.7; white-space: pre-wrap; }
++.disc-evidence-list { display: grid; gap: 7px; margin-top: 9px; }
++.disc-evidence { padding: 9px 10px; border-left: 2px solid #c6d9ca; border-radius: 0 7px 7px 0; background: #f8faf8; }
++.disc-evidence-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
++.disc-evidence-head strong { color: #64756a; font-size: 8px; }
++.disc-evidence-head a, .disc-evidence-head button { padding: 0; border: 0; background: transparent; color: #4f8566; font-size: 8px; text-decoration: none; }
++.disc-evidence-head button:disabled { color: #9ba69d; }
++.disc-evidence-state { padding: 3px 6px; border-radius: 10px; background: #f2f3ef; color: #8a8e83; font-size: 7px; }
++.disc-evidence blockquote { margin: 7px 0; color: #485b4d; font-size: 9px; line-height: 1.75; white-space: pre-wrap; }
++.disc-evidence p { margin: 4px 0; color: #7c8a80; font-size: 8px; line-height: 1.6; }
++.disc-evidence small { display: block; margin-top: 7px; color: #9aa49b; font-size: 7px; line-height: 1.5; }
++.disc-source-text { max-height: 260px; margin: 8px 0 0; padding: 9px; overflow: auto; border: 1px solid #e7ece8; border-radius: 6px; background: white; color: #56675c; font: 8px/1.7 'Microsoft YaHei', sans-serif; white-space: pre-wrap; }
++.disc-coverage-state { padding: 5px 7px; border-radius: 12px; background: #f0f3ef; color: #77847a; font-size: 8px; white-space: nowrap; }
++.disc-coverage-state.state-confirmed_present { background: #eef7ef; color: #598164; }
++.disc-coverage-state.state-explicit_no_disclosure { background: #eff4f0; color: #607e68; }
++.disc-coverage-state.state-searched_no_hit, .disc-coverage-state.state-not_checked { background: #fff5e9; color: #997648; }
++.disc-gap-card { padding: 13px 16px; border-color: #f0dfc7; background: #fffbf5; color: #856e4d; }
++.disc-gap-card h3, .disc-gap-card h2 { margin: 0 0 7px; color: #8b7049; font-size: 11px; }
++.disc-gap-card ul { margin: 0; padding-left: 17px; color: #8d795b; font-size: 9px; line-height: 1.8; }
++.disc-reason { padding: 12px 15px; color: #8c7156; font-size: 9px; line-height: 1.7; }
++.disc-subtitle { margin: 15px 0 7px; color: #64766a; font-size: 10px; }
++.disc-limitation-list { margin: 0; padding-left: 17px; color: #758279; font-size: 9px; line-height: 1.85; }
++.disc-guide { margin: 0; color: #6f8075; font-size: 9px; line-height: 1.8; white-space: pre-wrap; }
++.disc-empty { margin: 6px 0; padding: 9px 10px; border-radius: 7px; background: #fafbfa; color: #9aa39c; font-size: 9px; line-height: 1.7; }
++.disc-final-actions { padding: 10px 4px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: #99a39b; font-size: 8px; }
++.disc-final-actions a { color: #568269; text-decoration: none; }
++.disc-progress { padding: 16px 19px; }
++.disc-progress-heading { display: flex; align-items: center; gap: 11px; color: #597365; }
++.disc-progress-heading b, .disc-progress-heading small { display: block; }
++.disc-progress-heading b { font-size: 11px; }
++.disc-progress-heading small { margin-top: 4px; color: #97a198; font-size: 8px; }
++.disc-spinner { width: 14px; height: 14px; display: inline-block; border: 2px solid #d9e7db; border-top-color: #568d69; border-radius: 50%; animation: spin .8s linear infinite; }
++.disc-progress ol { margin: 14px 0 4px; padding: 0; list-style: none; display: grid; gap: 8px; }
++.disc-progress li { display: flex; gap: 9px; align-items: flex-start; color: #6c7d72; }
++.disc-progress li > span { width: 7px; height: 7px; margin-top: 4px; border-radius: 50%; background: #b8c8bb; }
++.disc-progress li.step-已完成 > span { background: #58a072; }
++.disc-progress li.step-需要处理 > span, .disc-progress li.step-部分完成 > span { background: #d29b54; }
++.disc-progress li b, .disc-progress li small { display: block; }
++.disc-progress li b { font-size: 8px; }
++.disc-progress li small, .disc-progress > small, .disc-progress > p { margin-top: 3px; color: #95a097; font-size: 8px; line-height: 1.6; }
++.disc-chat { padding: 18px 20px; }
++.disc-chat > p { margin: -4px 0 11px; color: #8b9790; font-size: 9px; line-height: 1.7; }
++.disc-chat-list { display: grid; gap: 10px; }
++.disc-chat-list article { padding: 10px 0; border-top: 1px solid #eef1ef; }
++.disc-chat-question { margin-bottom: 8px; color: #52665a; font-size: 10px; font-weight: 700; }
++.disc-chat-answer, .disc-chat-pending, .disc-chat-failed { color: #63736a; font-size: 9px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
++.disc-chat-pending { display: flex; gap: 8px; align-items: center; color: #8b998e; }
++.disc-chat-failed { color: #a46e63; }
++.disc-question-form { margin-top: 10px; padding: 10px; border: 1px solid #e7ece8; border-radius: 10px; background: #fbfcfb; }
++.disc-question-form textarea { width: 100%; resize: vertical; border: 0; outline: 0; background: transparent; color: #42564a; font-family: inherit; font-size: 10px; line-height: 1.7; }
++.disc-question-form > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
++.disc-question-form small, .disc-chat-hint { color: #9aa49c; font-size: 8px; }
++.disc-question-form .disc-primary { min-width: 100px; min-height: 34px; }
++.disc-footer { padding: 16px 4px 0; display: flex; justify-content: space-between; gap: 8px; color: #8c9990; font-size: 8px; }
++.disc-footer span { text-align: right; }
++.disc-modal-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(19,35,28,.45); backdrop-filter: blur(5px); }
++.disc-key-modal { width: min(440px, 100%); padding: 26px; border: 1px solid #e4ebe5; border-radius: 15px; background: white; box-shadow: 0 22px 80px rgba(18,48,33,.18); }
++.disc-key-modal h2 { margin: 7px 0; color: #253a2e; font-size: 21px; }
++.disc-key-modal > p { color: #7f8c83; font-size: 10px; line-height: 1.8; }
++.disc-key-modal label { display: block; margin: 17px 0 7px; color: #56695c; font-size: 9px; font-weight: 700; }
++.disc-key-input { display: flex; border: 1px solid #dfe8e1; border-radius: 8px; overflow: hidden; }
++.disc-key-input input { flex: 1; min-width: 0; padding: 11px; border: 0; outline: 0; font-size: 10px; }
++.disc-key-input button { padding: 0 11px; border: 0; border-left: 1px solid #e5ebe6; background: #fbfcfb; color: #829087; font-size: 8px; }
++.disc-key-actions { margin-top: 18px; display: flex; justify-content: flex-end; gap: 8px; }
++.disc-key-actions .disc-primary { min-width: 110px; }
++
++@media (max-width: 900px) {
++  .disc-layout { grid-template-columns: minmax(235px, 300px) minmax(0, 1fr); gap: 15px; }
++  .disc-topbar { padding: 0 20px; }
++  .disc-status-card { align-items: flex-start; flex-direction: column; }
++  .disc-status-badges { justify-content: flex-start; }
++}
++@media (max-width: 700px) {
++  .disc-topbar { min-height: 60px; }
++  .disc-top-title { display: none; }
++  .disc-layout { width: min(100% - 28px, 560px); grid-template-columns: 1fr; padding-top: 15px; }
++  .disc-field-grid, .disc-subfields { grid-template-columns: 1fr; }
++  .disc-section { padding: 15px; }
++  .disc-section-title { align-items: flex-start; flex-direction: column; }
++  .disc-section-title > small { text-align: left; }
++  .disc-footer { flex-direction: column; }
++  .disc-footer span { text-align: left; }
++}
++
+ @media (max-width: 720px) {
+   .combined-header { padding: 16px; }
+   .combined-header h2 { font-size: 19px; }
+diff --git a/frontend/vite.config.js b/frontend/vite.config.js
+index 5831f30..b9fb5d4 100644
+--- a/frontend/vite.config.js
++++ b/frontend/vite.config.js
+@@ -5,7 +5,7 @@ export default defineConfig({
+   plugins: [react()],
+   server: {
+     proxy: {
+-      '/api': 'http://127.0.0.1:8007',
++      '/api': 'http://127.0.0.1:8106',
+     },
+   },
+ })

@@ -1,0 +1,159 @@
+diff --git a/backend/app.py b/backend/app.py
+index 7610498..64ffebf 100644
+--- a/backend/app.py
++++ b/backend/app.py
+@@ -46,7 +46,12 @@ from backend.deepseek_client import MODEL, ModelCallError, api_key_configured
+ from backend.deepseek_agent import answer_question, analyze_report
+ from backend.profit_agent import analyze_profit_report, answer_profit_question
+ from backend.module_registry import registrations
+-from backend.modules.solvency.retrieval import SOLVENCY_TABLE_LAYOUT_TERMS
++from backend.modules.solvency.entry import MODULE_VERSION as SOLVENCY_VERSION
++from backend.modules.solvency.followup import answer_solvency_question
++from backend.modules.solvency.retrieval import (
++    SOLVENCY_TABLE_LAYOUT_TERMS,
++    select_initial_pages as select_solvency_initial_pages,
++)
+ from backend.review_api import router as review_router
+ from backend.review_database import init_review_db
+ from backend.pdf_reader import (
+@@ -85,7 +90,7 @@ def _source_revision() -> str | None:
+         return None
+ 
+ 
+-app = FastAPI(title="金融投研工作台", version="3.0.1")
++app = FastAPI(title="模块五｜债务与偿债能力工作台", version=SOLVENCY_VERSION)
+ app.add_middleware(
+     CORSMiddleware,
+     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+@@ -110,6 +115,7 @@ def _public_run(run: dict[str, Any], *, include_result: bool = True) -> dict[str
+         "sha256": run["sha256"],
+         "status": run["status"],
+         "stage": run["stage"],
++        "analysis_status": result.get("analysis_status") if isinstance(result, dict) else None,
+         "created_at": run["created_at"],
+         "updated_at": run["updated_at"],
+         "page_count": run["page_count"],
+@@ -184,6 +190,7 @@ def _process_run(run_id: str) -> None:
+         labels = {
+             "business": "模块一｜业务与经营背景",
+             "profit": "模块二｜盈利来源与变化",
++            "solvency": "模块五｜债务与偿债能力",
+             "overview": "财报概览",
+         }
+         module_results: dict[str, dict[str, Any]] = {
+@@ -277,7 +284,10 @@ def _process_run(run_id: str) -> None:
+                     read_pages=sorted(accumulated_pages),
+                     result=combined_payload(),
+                 )
+-            initial_pages = select_initial_pages(all_pages, analysis_module=module_key)
++            if module_key == "solvency":
++                initial_pages = select_solvency_initial_pages(all_pages)
++            else:
++                initial_pages = select_initial_pages(all_pages, analysis_module=module_key)
+             if not initial_pages:
+                 error = "PDF 中没有找到可发送给模型的文字页面。"
+                 module_recorder.record("module_failed", error=error)
+@@ -562,7 +572,10 @@ def _process_conversation_turn(run_id: str, turn_id: str) -> None:
+             elif name == "calculate_change":
+                 update_run(run_id, stage="正在核算可比数值")
+ 
+-        answer_function = answer_profit_question if run.get("analysis_module") == "profit" else answer_question
++        answer_function = {
++            "profit": answer_profit_question,
++            "solvency": answer_solvency_question,
++        }.get(run.get("analysis_module"), answer_question)
+         answer_args = {
+             "file_name": run["file_name"],
+             "page_count": run["page_count"],
+@@ -580,6 +593,8 @@ def _process_conversation_turn(run_id: str, turn_id: str) -> None:
+         }
+         if answer_function is answer_profit_question:
+             answer = answer_function(**answer_args)
++        elif answer_function is answer_solvency_question:
++            answer = answer_function(**answer_args)
+         else:
+             answer = answer_function(
+                 **answer_args,
+@@ -634,7 +649,13 @@ def _process_conversation_turn(run_id: str, turn_id: str) -> None:
+ 
+ @app.get("/api/health")
+ def health() -> dict[str, Any]:
+-    return {"status": "ok", "api_configured": api_key_configured(), "model": MODEL}
++    return {
++        "status": "ok",
++        "api_configured": api_key_configured(),
++        "model": MODEL,
++        "module_id": "solvency",
++        "module_version": SOLVENCY_VERSION,
++    }
+ 
+ 
+ @app.post("/api/settings/deepseek-key")
+@@ -664,7 +685,7 @@ async def create_analysis_run(
+             status_code=503,
+             detail="尚未配置 DeepSeek API Key。请先在页面顶部打开配置窗口。",
+         )
+-    if analysis_module not in {"overview", "business", "profit", "complete"}:
++    if analysis_module not in {"overview", "business", "profit", "complete", "solvency"}:
+         raise HTTPException(status_code=400, detail="未知的分析模块，请重新选择。")
+     file_name = Path(file.filename or "").name.strip()
+     if not file_name.lower().endswith(".pdf"):
+diff --git a/backend/module_registry.py b/backend/module_registry.py
+index 9c69ab5..e1e160a 100644
+--- a/backend/module_registry.py
++++ b/backend/module_registry.py
+@@ -22,8 +22,12 @@ def registrations() -> dict[str, ModuleRegistration]:
+     from backend.modules.profit.entry import MODULE_ID as profit_id
+     from backend.modules.profit.entry import MODULE_VERSION as profit_version
+     from backend.modules.profit.entry import run as profit_run
++    from backend.modules.solvency.entry import MODULE_ID as solvency_id
++    from backend.modules.solvency.entry import MODULE_VERSION as solvency_version
++    from backend.modules.solvency.entry import run as solvency_run
+ 
+     return {
+         business_id: ModuleRegistration(business_id, business_version, business_run),
+         profit_id: ModuleRegistration(profit_id, profit_version, profit_run),
++        solvency_id: ModuleRegistration(solvency_id, solvency_version, solvency_run),
+     }
+diff --git a/frontend/index.html b/frontend/index.html
+index aada980..445adeb 100644
+--- a/frontend/index.html
++++ b/frontend/index.html
+@@ -3,9 +3,9 @@
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <meta name="theme-color" content="#f6f7f8" />
+-    <meta name="description" content="基于上市公司年报分析业务经营与盈利变化，支持逐页回查和程序计算校验。" />
+-    <title>财报分析工作台 · 金融投研工作台 V3.2.1</title>
++    <meta name="theme-color" content="#f3f6f3" />
++    <meta name="description" content="模块五债务与偿债能力分析工作台，支持债务构成、到期安排、资金可用性、偿付指标、原文回查与追问。" />
++    <title>林研 · 模块五债务与偿债能力</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/frontend/src/App.jsx b/frontend/src/App.jsx
+index 49bca61..ec139c9 100644
+--- a/frontend/src/App.jsx
++++ b/frontend/src/App.jsx
+@@ -1,5 +1,5 @@
+-import V2Workbench from './V2Workbench.jsx'
++import SolvencyWorkbench from './SolvencyWorkbench.jsx'
+ 
+ export default function App() {
+-  return <V2Workbench />
++  return <SolvencyWorkbench />
+ }
+diff --git a/frontend/vite.config.js b/frontend/vite.config.js
+index 5831f30..6ced936 100644
+--- a/frontend/vite.config.js
++++ b/frontend/vite.config.js
+@@ -5,7 +5,7 @@ export default defineConfig({
+   plugins: [react()],
+   server: {
+     proxy: {
+-      '/api': 'http://127.0.0.1:8007',
++      '/api': process.env.VITE_API_TARGET || 'http://127.0.0.1:8105',
+     },
+   },
+ })

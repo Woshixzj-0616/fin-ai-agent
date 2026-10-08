@@ -1,0 +1,429 @@
+diff --git a/backend/review_agent.py b/backend/review_agent.py
+index 1ae28f1..aadd99f 100644
+--- a/backend/review_agent.py
++++ b/backend/review_agent.py
+@@ -8,7 +8,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+ from pathlib import Path
+ from typing import Any, Callable
+ 
+-from backend.deepseek_agent import _client, _safe_model_error
++from backend.core.legacy_runtime import _client, _safe_model_error
+ from backend.deepseek_client import MODEL, ModelCallError
+ 
+ 
+diff --git a/backend/review_api.py b/backend/review_api.py
+index 30ffd42..e88e81d 100644
+--- a/backend/review_api.py
++++ b/backend/review_api.py
+@@ -16,7 +16,7 @@ from fastapi.responses import FileResponse
+ from pydantic import BaseModel, Field
+ 
+ from backend.database import UPLOAD_DIR
+-from backend.deepseek_agent import _client, _safe_model_error
++from backend.core.legacy_runtime import _client, _safe_model_error
+ from backend.deepseek_client import MODEL, ModelCallError, api_key_configured
+ from backend.pdf_reader import MAX_UPLOAD_BYTES, PdfInputError, extract_all_pages
+ from backend.review_agent import _usage, extract_claims, verify_claim
+diff --git a/frontend/index.html b/frontend/index.html
+index aada980..c08d54c 100644
+--- a/frontend/index.html
++++ b/frontend/index.html
+@@ -4,8 +4,8 @@
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <meta name="theme-color" content="#f6f7f8" />
+-    <meta name="description" content="基于上市公司年报分析业务经营与盈利变化，支持逐页回查和程序计算校验。" />
+-    <title>财报分析工作台 · 金融投研工作台 V3.2.1</title>
++    <meta name="description" content="模块一业务与经营背景分析工作台：收入表身份、动态专题、行业战略解释、出处回查与年报追问。" />
++    <title>模块一 · 业务与经营背景分析工作台</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/frontend/src/App.jsx b/frontend/src/App.jsx
+index 49bca61..cf634a2 100644
+--- a/frontend/src/App.jsx
++++ b/frontend/src/App.jsx
+@@ -1,5 +1,5 @@
+-import V2Workbench from './V2Workbench.jsx'
++import BusinessWorkbench from './BusinessWorkbench.jsx'
+ 
+ export default function App() {
+-  return <V2Workbench />
++  return <BusinessWorkbench />
+ }
+diff --git a/frontend/src/V2Workbench.jsx b/frontend/src/V2Workbench.jsx
+index e41a9cf..fa70326 100644
+--- a/frontend/src/V2Workbench.jsx
++++ b/frontend/src/V2Workbench.jsx
+@@ -517,22 +517,119 @@ function formatRawAmount(value, unit) {
+ }
+ 
+ function EvidenceQuote({ item, runId }) {
+-  if (!item || (!item.evidence_quote && !item.source_pages?.length)) return null
++  if (!item || (!item.evidence_quote && !item.source_pages?.length && !item.evidence?.length)) return null
++  const evidenceItems = Array.isArray(item.evidence) ? item.evidence.filter((entry) => entry && typeof entry === 'object') : []
++  const roleNames = {
++    table_title: '原表标题',
++    table_header: '表头与指标口径',
++    row_value: '收入行金额',
++    component_row_value: '程序加总分项金额',
++    reported_yoy: '年报披露同比',
++    management_explanation: '公司解释',
++    supporting_fact: '支持事实',
++    company_explanation: '公司表述',
++    table_end: '表格边界',
++  }
+   return (
+     <div className="business-evidence">
+       {item.evidence_quote && <blockquote><span>{item.quote_verified ? '原文摘录已匹配' : '原文摘录待核对'}</span>{item.evidence_quote}</blockquote>}
+       {!!item.source_pages?.length && <div className="fact-pages">{item.source_pages.map((page) => <PagePill page={page} runId={runId} key={page} />)}</div>}
++      {!!evidenceItems.length && <details className="evidence-role-details">
++        <summary>分角色证据与核对状态（{evidenceItems.length} 项）</summary>
++        <div className="evidence-role-list">{evidenceItems.map((evidence, index) => <article key={`${evidence.role || 'evidence'}-${index}`}>
++          <div><strong>{roleNames[evidence.role] || evidence.role || '原文证据'}</strong><span>{evidence.quote_verified ? '摘录文字已匹配' : '摘录待核对'}</span></div>
++          {evidence.evidence_quote && <blockquote>{evidence.evidence_quote}</blockquote>}
++          {!!evidence.source_pages?.length && <div className="fact-pages">{evidence.source_pages.map((page) => <PagePill page={page} runId={runId} key={page} />)}</div>}
++          {(typeof evidence.current_value_match === 'boolean' || typeof evidence.previous_value_match === 'boolean') && <small>本期金额文字{evidence.current_value_match ? '已匹配' : '待核对'}；上期金额文字{evidence.previous_value_match ? '已匹配' : '待核对'}。文字匹配只说明摘录中出现对应文本，不证明行列含义。</small>}
++        </article>)}</div>
++      </details>}
+     </div>
+   )
+ }
+ 
++function tableIdentityStatusLabel(status) {
++  return ({
++    report_title_text_verified: '原表标题文字已匹配（不代表整表结构已核验）',
++    model_reported_title_unverified: '模型填写的表名待核对',
++    inferred_title_missing: '未识别原表名，按现有字段暂分组',
++  })[status] || '表格身份待复核'
++}
++
++function topicField(label, value) {
++  if (value == null || value === '' || (Array.isArray(value) && value.length === 0)) return null
++  if (Array.isArray(value)) return <div className="topic-field"><strong>{label}</strong><ul>{value.map((item, index) => <li key={index}>{typeof item === 'string' ? item : JSON.stringify(item)}</li>)}</ul></div>
++  return <p className="topic-field"><strong>{label}：</strong>{typeof value === 'string' ? value : JSON.stringify(value)}</p>
++}
++
++function revenueTotalOriginLabel(origin) {
++  if (origin === 'reported_in_annual_report') return '合计来源：年报列示值'
++  if (origin === 'derived_from_reported_complete_segments') return '合计来源：程序按已披露完整分项计算'
++  return '合计来源未记录，需复核'
++}
++
++function calculationStatusLabel(status) {
++  return ({
++    table_title_header_unit_and_both_values_matched: '标题、表头、单位及两期金额摘录均已匹配',
++    table_title_header_unit_and_current_value_matched: '标题、表头、单位及本期金额摘录已匹配',
++    derived_from_matched_rows_with_reported_table_boundary: '依据已匹配分项及表格边界计算',
++    legacy_quote_matched_values_not_independently_checked: '历史摘录已匹配，金额未独立核对',
++    calculation_inputs_not_fully_matched: '计算输入未完全匹配，需复核',
++  })[status] || (status ? `计算证据状态：${status}` : '计算证据状态未记录，需复核')
++}
++
++function reconciliationStatusLabel(status) {
++  return ({
++    matches_reported_total: '程序加总与年报合计一致',
++    differs_from_reported_total: '程序加总与年报合计有差异',
++    reported_total_unit_or_evidence_not_verified: '年报合计单位或证据未核实',
++  })[status] || '没有可显示的勾稽结论'
++}
++
++function RevenueTotalChecks({ item, runId }) {
++  const components = Array.isArray(item?.components) ? item.components : []
++  const reconciliation = item?.reconciliation_to_reported_total
++  if (!components.length && !reconciliation) return null
++  return <details className="revenue-calculation-details card">
++    <summary>程序计算明细与年报合计勾稽</summary>
++    {components.length > 0 && <>
++      <p>本项合计由以下分项相加得出；仅展示结果中保存的分项，不把缺失值视为零。</p>
++      <div className="revenue-component-list">{components.map((component, index) => <article key={`${component.name || 'component'}-${index}`}>
++        <strong>{component.name || `分项 ${index + 1}`}</strong><span>{formatRawAmount(component.current_value, component.current_unit)}</span>
++        {!!component.source_pages?.length && <div className="fact-pages">{component.source_pages.map((page) => <PagePill page={page} runId={runId} key={page} />)}</div>}
++        <EvidenceQuote item={component} runId={runId} />
++      </article>)}</div>
++    </>}
++    {reconciliation && <div className={`revenue-reconciliation reconciliation-${reconciliation.status || 'unavailable'}`}>
++      <strong>{reconciliationStatusLabel(reconciliation.status)}</strong>
++      {reconciliation.reported_total_value != null && <span>年报合计：{formatRawAmount(reconciliation.reported_total_value, reconciliation.reported_total_unit)}</span>}
++      {reconciliation.difference_value != null && <span>分项加总与年报合计差额：{formatRawAmount(reconciliation.difference_value, reconciliation.unit)}</span>}
++      {!!reconciliation.reported_total_source_pages?.length && <div className="fact-pages">年报合计页：{reconciliation.reported_total_source_pages.map((page) => <PagePill page={page} runId={runId} key={page} />)}</div>}
++    </div>}
++  </details>
++}
++
++function RevenueMetricBridges({ items, runId }) {
++  if (!Array.isArray(items) || !items.length) return null
++  return <section className="revenue-bridges card">
++    <div className="subsection-title"><span className="mini-icon">↔</span><h3>同表收入口径差额</h3></div>
++    <p>只在同一期间、范围、币种和原表条件满足时复算；差额本身不代表具体构成。</p>
++    <div className="revenue-bridge-list">{items.map((item, index) => <article key={`${item.table_name || 'bridge'}-${item.current_period || ''}-${index}`}>
++      <div className="business-card-top"><strong>{item.table_name || '原表名未记录'}{item.table_dimension ? ` · ${item.table_dimension}` : ''}</strong><span>{item.current_period || '期间未记录'} · {item.reporting_scope || '范围未记录'}</span></div>
++      <div className="revenue-bridge-equation"><span>{item.higher_metric}：{formatRawAmount(item.higher_value, item.higher_unit || '原单位未记录')}</span><b>−</b><span>{item.lower_metric}：{formatRawAmount(item.lower_value, item.lower_unit || '原单位未记录')}</span><b>=</b><strong>{formatRawAmount(item.difference_yuan, item.unit || '元')}</strong></div>
++      <small>{calculationStatusLabel(item.evidence_status)}。仅表示数值和原文证据条件，不证明差额的会计构成。</small>
++      {!!item.source_pages?.length && <div className="fact-pages">依据页：{item.source_pages.map((page) => <PagePill page={page} runId={runId} key={page} />)}</div>}
++      {item.evidence && <details className="evidence-role-details"><summary>两项原文依据</summary><EvidenceQuote item={{ evidence: item.evidence.higher_metric || [] }} runId={runId} /><EvidenceQuote item={{ evidence: item.evidence.lower_metric || [] }} runId={runId} /></details>}
++    </article>)}</div>
++  </section>
++}
++
+ function BusinessResultPanel({ run, result }) {
+   const revenue = result.revenue_total || {}
+   const segments = result.revenue_segments || []
+   const interpretationReviews = Array.isArray(result.interpretation_review_items)
+     ? result.interpretation_review_items
+     : []
+-  const groups = [...new Set(segments.map((item) => item.basis || '未注明口径'))]
++  const groups = new Map()
+   const otherRevenueTotals = (result.revenue_totals || []).filter((item) =>
+     item.metric_name !== revenue.metric_name
+     || item.current_value !== revenue.current_value
+@@ -543,10 +640,24 @@ function BusinessResultPanel({ run, result }) {
+     result.analysis_review_status
+     && result.analysis_review_status !== '六类内容均有可回查出处',
+   )
+-  const revenueGroups = groups.map((basis) => ({
+-    basis,
+-    items: segments.filter((item) => (item.basis || '未注明口径') === basis),
+-  }))
++  segments.forEach((item, index) => {
++    const fallbackIdentity = [item.table_name || '表名未识别', item.table_dimension || item.basis || '维度未识别'].join('::')
++    const identity = item.table_id ? `table:${item.table_id}` : `fallback:${fallbackIdentity}`
++    const group = groups.get(identity) || {
++      key: identity,
++      table_name: item.table_name || '',
++      table_dimension: item.table_dimension || item.basis || '',
++      table_identity_status: item.table_identity_status,
++      table_rows_complete: item.table_rows_complete,
++      table_row_count: item.table_row_count,
++      table_completeness_status: item.table_completeness_status,
++      items: [],
++      first_index: index,
++    }
++    group.items.push(item)
++    groups.set(identity, group)
++  })
++  const revenueGroups = [...groups.values()]
+   return (
+     <section className="result-wrap business-result" id="module-one">
+       <div className="result-header">
+@@ -576,21 +687,25 @@ function BusinessResultPanel({ run, result }) {
+           <p>{item.note}</p>
+           {!!item.candidate_pages?.length && <div className="fact-pages">候选页：{item.candidate_pages.map((page) => <PagePill page={page} runId={run.id} key={page} />)}</div>}
+         </article>)}</div>
+-        <small>程序只核对页码、摘录文字和计算条件；仍需人工确认表格含义、会计口径和因果解释。</small>
++        <small>{result.coverage_note || '程序只核对页码、摘录文字和计算条件；仍需人工确认表格含义、会计口径和因果解释。'}</small>
+       </section> : <EmptyModuleSection module="模块一" title="模块覆盖检查" />}
+ 
+-      {!!interpretationReviews.length && <section className="interpretation-review card">
++      <section className="interpretation-review card">
+         <div className="coverage-heading">
+-          <div><div className="summary-label">行业与战略解释 · 待映射复核</div><p>这些解释没有找到唯一对应的年报事实，暂不并入带出处的结论。</p></div>
++          <div><div className="summary-label">行业与战略解释 · 待映射复核</div><p>{interpretationReviews.length ? '这些解释没有找到唯一对应的年报事实，暂不并入带出处的结论。' : '检查模型分析中是否有无法对应到明确年报事实的行业或战略解释。'}</p></div>
+           <span>{interpretationReviews.length} 条</span>
+         </div>
+-        <div className="interpretation-review-list">{interpretationReviews.map((item, index) => <article className="interpretation-review-item" key={`${item.section}-${item.label}-${index}`}>
++        {!Object.prototype.hasOwnProperty.call(result, 'interpretation_review_items')
++          ? <p className="topic-empty-note">该历史结果没有保存待映射复核字段，不能据此判断当时是否存在未匹配解释。</p>
++          : interpretationReviews.length
++            ? <div className="interpretation-review-list">{interpretationReviews.map((item, index) => <article className="interpretation-review-item" key={`${item.section}-${item.label}-${index}`}>
+           <div className="business-card-top"><span className="business-status">{item.section === 'industry_context_analysis' ? '行业背景' : item.section === 'strategy_analysis' ? '公司战略与竞争' : item.section || '待复核'}</span><h4>{item.label || '未提供名称'}</h4></div>
+           {item.analysis && <p>{item.analysis}</p>}
+           {item.limitation && <p className="interpretation-review-limitation">限制：{item.limitation}</p>}
+           {item.reason && <div className="business-limitation">复核原因：{item.reason}</div>}
+         </article>)}</div>
+-      </section>}
++            : <p className="topic-empty-note">本次没有待映射项；行业和战略解释仍按各自事实条目展示，原文匹配不等于结论已证实。</p>}
++      </section>
+ 
+       {result.business_flow?.length ? <>
+         <div className="section-title-row"><div><span className="section-number">01</span><h3>公司如何经营</h3></div><span className="muted-label">只列年报披露的环节</span></div>
+@@ -620,18 +735,43 @@ function BusinessResultPanel({ run, result }) {
+         </article>)}</div>
+       </> : <><div className="section-title-row"><div><span className="section-number">03</span><h3>公司战略与竞争特点</h3></div></div><EmptyModuleSection module="模块一" title="公司战略与竞争特点" /></>}
+ 
++      {result.topics?.length ? <>
++        <div className="section-title-row"><div><span className="section-number">03A</span><h3>本年报动态经营专题</h3></div><span className="muted-label">按本次材料生成；不预设固定专题</span></div>
++        <div className="business-list topic-list">{result.topics.map((item, index) => <article className="business-list-card card topic-card" key={`${item.fact_id || item.title || 'topic'}-${index}`}>
++          <div className="business-card-top"><h4>{item.title || '经营专题'}</h4><span className="business-status">专题 {index + 1}</span></div>
++          {topicField('要回答的问题', item.question)}
++          {topicField('年报观察', item.observation)}
++          {topicField('分析', item.analysis)}
++          {topicField('其他可能解释', item.alternative_explanations)}
++          {topicField('证据限制', item.limitation)}
++          {topicField('交给后续模块核查', item.handoff)}
++          {item.observation_numeric_evidence_status === 'numeric_magnitudes_need_review' && <div className="business-limitation">观察中的部分数字尚未在所列原文页定位：{(item.unlocated_observation_numbers || []).join('、') || '未返回具体数字'}。这是定位提醒，不等于数字或整条结论已被证伪。</div>}
++          <EvidenceQuote item={item} runId={run.id} />
++        </article>)}</div>
++      </> : <><div className="section-title-row"><div><span className="section-number">03A</span><h3>本年报动态经营专题</h3></div></div><div className="empty-result card">本次没有生成动态专题；这不代表年报不存在值得继续核查的经营问题。</div></>}
++
+       <div className="section-title-row"><div><span className="section-number">04</span><h3>收入结构与变化</h3></div><span className="muted-label">不同拆分口径分别展示，不跨组相加</span></div>
+       <article className="revenue-total-card card">
+         <div><span className="fact-name">{revenue.metric_name || '收入指标'}</span><div className="revenue-total-value">{formatRawAmount(revenue.current_value, revenue.current_unit)}</div><span className="business-period">{revenue.current_period || result.period}</span>{revenue.reported_yoy && <small className="reported-yoy">年报披露同比：{revenue.reported_yoy}</small>}</div>
+         <div><span className="fact-name">上期</span><div className="revenue-prior-value">{formatRawAmount(revenue.previous_value, revenue.previous_unit)}</div><span className="business-period">{revenue.previous_period || '未披露'}</span></div>
+         <div><span className="fact-name">程序复算同比</span><div className="revenue-total-value">{totalChange.change_percent != null ? totalChange.change_percent + '%' : '未计算'}</div><span className="business-period">{totalChange.difference_yuan != null ? '差额 ' + formatRawAmount(totalChange.difference_yuan, '元') : '年度、口径或单位不满足计算条件'}</span></div>
++        <div className="revenue-total-identity">
++          <span>{tableIdentityStatusLabel(revenue.table_identity_status)}</span>
++          {revenue.table_name && <span>原表：{revenue.table_name}</span>}
++          {revenue.table_dimension && <span>拆分维度：{revenue.table_dimension}</span>}
++          <span>{revenueTotalOriginLabel(revenue.total_origin)}</span>
++          <span>{calculationStatusLabel(revenue.calculation_evidence_status)}</span>
++          {revenue.unit_evidence_status && <span>单位证据：{revenue.unit_evidence_status}</span>}
++        </div>
+         <EvidenceQuote item={revenue} runId={run.id} />
+       </article>
++      <RevenueTotalChecks item={revenue} runId={run.id} />
+       {!!otherRevenueTotals.length && <section className="revenue-denominators card"><div className="subsection-title"><span className="mini-icon">＝</span><h3>其他已披露收入合计口径</h3></div>
+         <p>每个合计单独保留；分部占比只使用同指标、同期间和同范围的分母。</p>
+-        <div className="revenue-total-list">{otherRevenueTotals.map((item, index) => <article key={item.metric_name + index}><div><strong>{item.metric_name}</strong><small>{item.reporting_scope} · {item.currency}</small></div><div>{formatRawAmount(item.current_value, item.current_unit)}<small>{item.current_period}</small></div><div>上期 {formatRawAmount(item.previous_value, item.previous_unit)}<small>{item.previous_period || '未披露'}</small></div>{item.reported_yoy && <div>年报披露同比：{item.reported_yoy}</div>}<EvidenceQuote item={item} runId={run.id} /></article>)}</div>
++        <div className="revenue-total-list">{otherRevenueTotals.map((item, index) => <article key={item.table_id || `${item.metric_name}-${index}`}><div><strong>{item.metric_name}</strong><small>{item.reporting_scope} · {item.currency}</small><small>{tableIdentityStatusLabel(item.table_identity_status)}{item.table_name ? ` · 原表：${item.table_name}` : ''}{item.table_dimension ? ` · 维度：${item.table_dimension}` : ''}</small><small>{revenueTotalOriginLabel(item.total_origin)}</small><small>{calculationStatusLabel(item.calculation_evidence_status)}</small></div><div>{formatRawAmount(item.current_value, item.current_unit)}<small>{item.current_period}</small></div><div>上期 {formatRawAmount(item.previous_value, item.previous_unit)}<small>{item.previous_period || '未披露'}</small></div>{item.reported_yoy && <div>年报披露同比：{item.reported_yoy}</div>}<EvidenceQuote item={item} runId={run.id} /><RevenueTotalChecks item={item} runId={run.id} /></article>)}</div>
+       </section>}
+-      {revenueGroups.length ? revenueGroups.map((group) => <RevenueGroupTable group={group} runId={run.id} key={group.basis} />) : <div className="empty-result card">报告中未找到可核实的分部收入表。建议查看年报中的主营业务分析，并确认是否披露了业务或地区拆分。</div>}
++      {revenueGroups.length ? revenueGroups.map((group) => <RevenueGroupTable group={group} runId={run.id} key={group.key} />) : <div className="empty-result card">报告中未找到可核实的分部收入表。建议查看年报中的主营业务分析，并确认是否披露了业务或地区拆分。</div>}
++      <RevenueMetricBridges items={result.revenue_metric_bridges} runId={run.id} />
+ 
+       {result.growth_drivers?.length ? <>
+         <div className="section-title-row"><div><span className="section-number">05</span><h3>经营变化与驱动因素</h3></div><span className="muted-label">事实、公司解释与推断分别标记</span></div>
+@@ -672,17 +812,19 @@ function RevenueGroupTable({ group, runId }) {
+   useEffect(() => setPage(0), [group.items.length])
+ 
+   return <section className="revenue-group">
+-    <div className="revenue-group-heading"><h4>{group.basis}口径</h4>{group.items.length > REVENUE_ROWS_PER_PAGE && <span>共 {group.items.length} 项 · 第 {page + 1}/{pageCount} 页</span>}</div>
++    <div className="revenue-group-heading"><h4>{group.table_name || '表名未识别'}</h4><span>{group.table_dimension ? `${group.table_dimension}拆分` : '拆分维度未识别'} · {group.items.length} 项</span></div>
++    <div className="revenue-identity-note card"><strong>{tableIdentityStatusLabel(group.table_identity_status)}</strong>{group.table_completeness_status && <span>表内分项状态：{group.table_completeness_status}</span>}{group.table_rows_complete != null && <span>模型声明{group.table_rows_complete ? '分项完整' : '分项可能不完整'}{group.table_row_count != null ? ` · ${group.table_row_count} 行` : ''}</span>}{group.items.length > REVENUE_ROWS_PER_PAGE && <span>第 {page + 1}/{pageCount} 页</span>}</div>
+     <div className="revenue-table-wrap card"><table className="revenue-table">
+-      <thead><tr><th>业务分部</th><th>本期收入</th><th>本期占比</th><th>上期收入</th><th>上期占比</th><th>同比</th><th>程序复算同比</th></tr></thead>
++      <thead><tr><th>业务分部</th><th>本期收入</th><th>本期占比</th><th>上期收入</th><th>上期占比</th><th>占比变化（百分点）</th><th>同比</th><th>程序复算同比</th></tr></thead>
+       <tbody>{visibleItems.map((item, index) => <tr key={item.name + index}>
+         <td><strong>{item.name}</strong>{item.gross_margin_current && <small>本期毛利率 {item.gross_margin_current}</small>}{item.company_explanation && <small>{item.company_explanation}</small>}{item.comparability_note && <em>{item.comparability_note}</em>}</td>
+         <td>{formatRawAmount(item.current_value, item.current_unit)}<small>{item.current_period}</small></td>
+         <td>{item.current_share_percent != null ? item.current_share_percent + '%' : <><span>未计算</span><small>{item.current_share_note}</small></>}</td>
+         <td>{formatRawAmount(item.previous_value, item.previous_unit)}<small>{item.previous_period}</small></td>
+         <td>{item.previous_share_percent != null ? item.previous_share_percent + '%' : <><span>未计算</span><small>{item.previous_share_note}</small></>}</td>
++        <td>{item.share_change_percentage_points != null ? `${item.share_change_percentage_points} 个百分点` : <><span>未计算</span><small>两期分母或期间口径未满足复算条件</small></>}</td>
+         <td>{item.reported_yoy || '年报未提供'}</td>
+-        <td>{item.calculated_change?.change_percent != null ? item.calculated_change.change_percent + '%' : '未计算'}</td>
++        <td>{item.calculated_change?.change_percent != null ? item.calculated_change.change_percent + '%' : '未计算'}<small>{item.calculation_evidence_status || '计算证据状态未提供'}</small>{item.unit_evidence_status && <small>单位：{item.unit_evidence_status}</small>}</td>
+       </tr>)}</tbody>
+     </table>
+     {visibleItems.map((item, index) => <div className="business-row-evidence" key={item.name + '-evidence-' + index}>
+@@ -713,7 +855,7 @@ function BusinessEvidenceList({ title, items, runId, nameKey, detailKey, metaKey
+ }
+ 
+ function ConversationPanel({ run, turns, question, onQuestionChange, onAsk, error, busy }) {
+-  if (!run || run.status !== 'completed' || !run.result) return null
++  if (!run || !['completed', 'running'].includes(run.status) || !run.result) return null
+   return (
+     <section className="conversation-card card">
+       <div className="subsection-title"><span className="mini-icon">↳</span><h3>继续追问这份年报</h3></div>
+@@ -1068,3 +1210,5 @@ export default function App() {
+     </div>
+   )
+ }
++
++export { BusinessResultPanel, ConversationPanel, DeepSeekKeyModal, FailedPanel, RunProgress, apiError, formatTime }
+diff --git a/frontend/src/styles.css b/frontend/src/styles.css
+index c906d77..01a34d2 100644
+--- a/frontend/src/styles.css
++++ b/frontend/src/styles.css
+@@ -326,8 +326,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(37, 115, 91, .36
+ .business-period { display: block; margin-top: 5px; color: #9aa69f; font-size: 9px; line-height: 1.5; }
+ .revenue-group { min-width: 0; }
+ .revenue-group > h4 { margin: 2px 0 8px; color: #60756a; font-size: 11px; }
+-.revenue-table-wrap { overflow: hidden; }
++.revenue-table-wrap { overflow-x: auto; }
+ .revenue-table { width: 100%; border-collapse: collapse; font-size: 9px; }
++.revenue-table { min-width: 780px; }
+ .revenue-table th, .revenue-table td { padding: 10px 9px; border-bottom: 1px solid #edf1ee; text-align: left; vertical-align: top; color: #637169; }
+ .revenue-table th { background: #f7faf8; color: #89968f; font-size: 8px; font-weight: 600; white-space: nowrap; }
+ .revenue-table td strong { display: block; color: #405348; font-size: 10px; }
+@@ -381,6 +382,23 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(37, 115, 91, .36
+ .revenue-total-list article strong { color: #485c50; }
+ .revenue-total-list article small { margin-top: 4px; color: #99a39d; font-size: 8px; }
+ .revenue-total-list .business-evidence { grid-column: 1 / -1; margin-top: 0; }
++.revenue-total-list article > .revenue-calculation-details { grid-column: 1 / -1; }
++.revenue-calculation-details, .revenue-bridges { padding: 12px 14px; }
++.revenue-calculation-details > summary { color: #63776b; cursor: pointer; font-size: 9px; font-weight: 600; }
++.revenue-calculation-details > p, .revenue-bridges > p { margin: 8px 0; color: #89968e; font-size: 8px; line-height: 1.6; }
++.revenue-component-list, .revenue-bridge-list { display: grid; gap: 8px; margin-top: 8px; }
++.revenue-component-list article, .revenue-bridge-list article { padding: 9px 10px; border: 1px solid #edf1ee; border-radius: 8px; background: #fbfcfb; color: #718077; font-size: 9px; }
++.revenue-component-list article > strong { color: #52675a; }
++.revenue-component-list article > span { margin-left: 8px; }
++.revenue-reconciliation { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 12px; margin-top: 10px; padding: 9px 10px; border-radius: 8px; background: #f5f8f5; color: #78867d; font-size: 8px; }
++.revenue-reconciliation > strong { color: #587461; }
++.revenue-reconciliation.reconciliation-differs_from_reported_total, .revenue-reconciliation.reconciliation-reported_total_unit_or_evidence_not_verified { background: #fff8ed; color: #90774e; }
++.revenue-reconciliation .fact-pages { flex-basis: 100%; }
++.revenue-bridge-list article .business-card-top { align-items: baseline; color: #65776d; font-size: 9px; }
++.revenue-bridge-list article .business-card-top > span { color: #909b94; font-size: 8px; text-align: right; }
++.revenue-bridge-equation { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 9px; color: #64746b; font-size: 9px; }
++.revenue-bridge-equation > strong { color: #365342; }
++.revenue-bridge-list article > small { display: block; margin-top: 7px; color: #8e9992; font-size: 8px; line-height: 1.55; }
+ .revenue-group-heading { display: flex; align-items: center; justify-content: space-between; margin: 2px 0 8px; }
+ .revenue-group-heading h4 { margin: 0; color: #60756a; font-size: 11px; }
+ .revenue-group-heading span { color: #98a39d; font-size: 8px; }
+@@ -392,7 +410,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(37, 115, 91, .36
+ 
+ @media (max-width: 820px) {
+   .revenue-table-wrap { overflow-x: auto; }
+-  .revenue-table { min-width: 680px; }
++  .revenue-table { min-width: 780px; }
+ }
+ @media (max-width: 560px) {
+   .business-flow-grid, .business-metric-grid { grid-template-columns: 1fr; }
+@@ -542,3 +560,44 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(37, 115, 91, .36
+   .combined-header h2 { font-size: 19px; }
+   .combined-nav { grid-template-columns: 1fr; }
+ }
++
++.business-workbench .brand-mark { display: grid; place-items: center; border: 1px solid #bdd6c5; border-radius: 12px; background: #edf6ef; font-size: 27px; line-height: 1; }
++.business-workbench .top-nav { gap: 0; }
++.business-workbench .hero-copy p { max-width: 720px; }
++.module-status-summary { padding: 17px 19px; border-color: #e1e9e3; }
++.module-status-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: #596b61; font-size: 11px; }
++.module-status-heading span { color: #89968f; font-size: 9px; overflow-wrap: anywhere; text-align: right; }
++.module-status-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
++.status-chip { display: inline-flex; align-items: center; padding: 5px 8px; border: 1px solid #dfebe2; border-radius: 20px; background: #f3f8f4; color: #5e8069; font-size: 9px; }
++.status-running { border-color: #e4e9d9; background: #f8f8ec; color: #8b8147; }
++.status-partial, .status-review { border-color: #f0e4d0; background: #fff8ed; color: #927747; }
++.status-insufficient, .status-failed { border-color: #efd9d5; background: #fff4f2; color: #a25f54; }
++.module-status-summary > p { margin: 10px 0 0; color: #8a968f; font-size: 9px; line-height: 1.65; }
++.module-status-failed { border-color: #efd9d5; background: #fff9f8; }
++.revenue-total-identity { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; padding-top: 10px; border-top: 1px solid #edf1ee; }
++.revenue-total-identity span { padding: 4px 7px; border-radius: 6px; background: #f4f8f5; color: #718177; font-size: 8px; line-height: 1.55; }
++.revenue-identity-note { display: flex; flex-wrap: wrap; gap: 7px 13px; align-items: center; margin-bottom: 7px; padding: 9px 11px; box-shadow: none; color: #87948c; font-size: 8px; }
++.revenue-identity-note strong { color: #6e8275; font-weight: 600; }
++.evidence-role-details { margin-top: 7px; border: 1px solid #edf1ee; border-radius: 7px; background: #fbfcfb; }
++.evidence-role-details > summary { padding: 6px 8px; color: #78867e; cursor: pointer; font-size: 8px; }
++.evidence-role-list { display: grid; gap: 7px; padding: 0 8px 8px; }
++.evidence-role-list article { padding-top: 7px; border-top: 1px solid #edf1ee; }
++.evidence-role-list article > div:first-child { display: flex; justify-content: space-between; gap: 8px; color: #64786b; font-size: 8px; }
++.evidence-role-list article > div:first-child span { color: #8a9990; }
++.evidence-role-list blockquote { margin-top: 5px; }
++.evidence-role-list article > small { display: block; margin-top: 5px; color: #8a7b5d; font-size: 8px; line-height: 1.5; }
++.topic-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
++.topic-card { min-width: 0; }
++.topic-card h4 { line-height: 1.55; }
++.topic-field { margin: 8px 0 0 !important; color: #758279 !important; font-size: 9px !important; line-height: 1.7 !important; overflow-wrap: anywhere; }
++.topic-field strong { color: #617469; font-weight: 650; }
++.topic-field ul { margin: 4px 0 0; padding-left: 16px; color: #758279; font-size: 9px; line-height: 1.7; }
++.topic-empty-note { margin: 10px 0 0; color: #8c9891; font-size: 9px; line-height: 1.7; }
++
++@media (max-width: 720px) {
++  .module-status-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
++  .module-status-heading span { text-align: left; }
++  .topic-list { grid-template-columns: 1fr; }
++  .revenue-total-card { grid-template-columns: 1fr; }
++  .revenue-total-identity { grid-column: 1; }
++}
+diff --git a/frontend/vite.config.js b/frontend/vite.config.js
+index 5831f30..0f74cac 100644
+--- a/frontend/vite.config.js
++++ b/frontend/vite.config.js
+@@ -5,7 +5,7 @@ export default defineConfig({
+   plugins: [react()],
+   server: {
+     proxy: {
+-      '/api': 'http://127.0.0.1:8007',
++      '/api': process.env.FINLAB_API_TARGET || 'http://127.0.0.1:8101',
+     },
+   },
+ })
