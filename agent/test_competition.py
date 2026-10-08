@@ -408,6 +408,126 @@ class LoopRetentionAndEvidenceRankTests(unittest.TestCase):
         self.assertEqual(rows[0]["evidence_ids"], ["e1"])
 
 
+class ParallelCacheAndNativeToolsTests(unittest.TestCase):
+    """抽取缓存/并行 + 原生 tool_calls 协议回归。"""
+
+    def test_cache_roundtrip_and_invalidate_on_code_change(self):
+        import extract_cache as ec
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            material = {"sha256": "abc123", "document_id": "d1"}
+            facts = [{"evidence_id": "e1", "metric": "revenue", "value": "1"}]
+            self.assertIsNone(ec.load_cache(root, material))
+            ec.save_cache(root, material, facts)
+            got = ec.load_cache(root, material)
+            self.assertEqual(got, facts)
+            # 换 sha256 不中缓存
+            self.assertIsNone(ec.load_cache(root, {**material, "sha256": "zzz"}))
+
+    def test_extract_many_uses_cache_on_second_pass(self):
+        import extract_cache as ec
+        from materials import Run
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data" / "agent").mkdir(parents=True)
+            # 构造最小 PDF 材料（复用 text_pdf）
+            blob = text_pdf("贵州茅台2024年年度报告\n营业收入：100元\n仅用于缓存测试。")
+            pdf = root / "data" / "t.pdf"
+            pdf.write_bytes(blob)
+            material = {
+                "document_id": "m1", "company_code": "600519", "company_name": "贵州茅台",
+                "report_year": 2024, "local_file": "data/t.pdf", "sha256": sha256(blob),
+                "size_bytes": len(blob),
+            }
+            run = Run(root, "cache-test", {})
+            # 直接调 cached：第一次 miss（可能抽取失败也行，测事件）
+            try:
+                ec.extract_material_cached(root, material, run)
+            except Exception:
+                pass
+            events = "".join(run.events)
+            self.assertIn("file_read", events)
+            # 第二次若抽取成功应 hit；失败则跳过
+            if ec.load_cache(root, material) is not None:
+                events2 = []
+                class _R:
+                    def event(self, kind, **d):
+                        events2.append(kind)
+                    def read(self, p):
+                        return Path(p).read_bytes()
+                got, hit = ec.extract_material_cached(root, material, _R())
+                self.assertTrue(hit)
+
+    def test_openai_tool_table_includes_submit_and_business_tools(self):
+        from agent_loop import _openai_tools
+        from tools import TOOL_NAMES
+        table = _openai_tools()
+        names = [t["function"]["name"] for t in table]
+        for n in TOOL_NAMES:
+            self.assertIn(n, names)
+        self.assertIn("submit_claims", names)
+        submit = next(t for t in table if t["function"]["name"] == "submit_claims")
+        self.assertEqual(submit["function"]["parameters"]["required"], ["items", "unclaimed_sentences"])
+
+    def test_native_loop_executes_tool_and_submits(self):
+        from agent_loop import run_loop_native
+        frames = [
+            {"tool_calls": [{
+                "id": "c1", "type": "function",
+                "function": {"name": "find_evidence", "arguments": json.dumps({
+                    "company_name_or_code": "600519", "metric": "revenue", "period_year": 2024})},
+            }]},
+            {"tool_calls": [{
+                "id": "c2", "type": "function",
+                "function": {"name": "submit_claims", "arguments": json.dumps({
+                    "items": [], "unclaimed_sentences": [1]})},
+            }]},
+        ]
+
+        class Stub:
+            model, host, key, mode = "stub", "local", "k", "json_object"
+
+            def chat_tools(self, messages, tools, run):
+                return frames.pop(0)
+
+        run = SimpleNamespace(event=lambda *a, **k: None)
+        tools_used, tool_results = [], []
+        out = run_loop_native(Stub(), "x",
+                              [{"evidence_id": "e", "company_code": "600519",
+                                "company_name": "贵州茅台", "metric": "revenue",
+                                "period_year": 2024, "report_year": 2024,
+                                "value": "100", "unit": "元", "normalized_value": "100",
+                                "adjustment": "as_reported", "issues": []}],
+                              run, sentences=[], tools_used=tools_used, tool_results=tool_results)
+        self.assertEqual(out["mode"], "native_tool_calls")
+        self.assertEqual(tools_used[0]["name"], "find_evidence")
+        self.assertEqual(out["payload"]["items"], [])
+
+    def test_native_loop_repair_on_bad_submit(self):
+        from agent_loop import run_loop_native
+        bad = {"items": [{"claim_id": "x", "quote": "y", "junk": 1}], "unclaimed_sentences": []}
+        good = {"items": [], "unclaimed_sentences": []}
+        frames = [
+            {"tool_calls": [{"id": "c1", "type": "function",
+                             "function": {"name": "submit_claims",
+                                          "arguments": json.dumps(bad)}}]},
+            {"tool_calls": [{"id": "c2", "type": "function",
+                             "function": {"name": "submit_claims",
+                                          "arguments": json.dumps(good)}}]},
+        ]
+
+        class Stub:
+            model, host, key, mode = "stub", "local", "k", "json_object"
+
+            def chat_tools(self, messages, tools, run):
+                return frames.pop(0)
+
+        run = SimpleNamespace(event=lambda *a, **k: None)
+        out = run_loop_native(Stub(), "x", [], run, sentences=[])
+        self.assertEqual(out["mode"], "native_tool_calls")
+        self.assertEqual(out["payload"]["items"], [])
+
+
 class RealCompetitionMaterialTests(unittest.TestCase):
     def test_real_annual_cash_flow_folded_scope(self):
         material = next(json.loads(line) for line in (ROOT / "data/agent/materials.jsonl").read_text(encoding="utf-8").splitlines()

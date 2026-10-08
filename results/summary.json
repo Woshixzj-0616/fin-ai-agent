@@ -1,12 +1,12 @@
 {
-  "run_id": "20261008_211443_be327e24",
-  "finished_at": "2026-10-08T21:14:55+08:00",
+  "run_id": "20261008_213603_0ae9e4e8",
+  "finished_at": "2026-10-08T21:36:10+08:00",
   "output_sha256": {
     "checked_draft.txt": "b00cc2e4e12c2aacd58838f7a5d37e845ade9ec9fde4bea36de2916b4affa532",
-    "run.json": "3b8075cd0a0436388675ed817a22ee0922a7e0949901986ffd64a31709a1cd29",
-    "text_checks.json": "80faf6a3185c93ec18198aa9826333bb1d19e592260ff8654f146c57c7c975ff",
-    "text_report.md": "3c559e6c1bfb8d895f7cc9df18fff125fb28677a8828d761e917db90bd157181",
-    "trace.json": "3ac42aa10239ba06e0a0036167e604929db095488a8e9592e51a5e60fa9d0ddc"
+    "run.json": "93dfc2b2c4d07337acfc2438088d6b2cce89eec0a74e7e3f0ccc5421d3b00ca5",
+    "text_checks.json": "a9462be89ab532e724d644eb383a3edf718fe803a0c9e5b02132ec25d0d748d5",
+    "text_report.md": "3ac159d84a7e5c143b9ee70b901ee61eeb70f2e54c3836a7bb18f2a523283ea9",
+    "trace.json": "6393395e21c886553c0fd6768471bcb14a7599548f00866c28bd4fc12cd5a132"
   },
   "history_policy": {
     "keep_runs": 20,
@@ -21,6 +21,6 @@
     "证据支持": 3,
     "确认错误": 1
   },
-  "mode": "fallback_single_shot_tools_preserved",
-  "tools_used": 10
+  "mode": "native_tool_calls",
+  "tools_used": 8
 }

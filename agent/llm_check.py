@@ -314,6 +314,42 @@ class LLMClient:
                 raise
             raise LLMError("模型响应不是 chat/completions 协议") from None
 
+    def chat_tools(self, messages: list[dict], tools: list[dict], run) -> dict:
+        """原生 function calling（OpenAI/DeepSeek tools 参数）。
+
+        返回 message dict：可能含 tool_calls 或 content。
+        """
+        payload = {"model": self.model, "stream": False, "temperature": 0,
+                   "messages": messages, "tools": tools, "tool_choice": "auto"}
+        request = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers={
+            "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
+        run.event("llm_chat_tools", provider_host=self.host, model=self.model,
+                  message_count=len(messages), tool_count=len(tools))
+        try:
+            with urllib.request.build_opener(NoRedirect()).open(request, timeout=60) as response:
+                blob = response.read(2 * 1024 * 1024 + 1)
+        except urllib.error.HTTPError as exc:
+            raise LLMError(f"模型接口HTTP {exc.code}；请核实服务地址与模型权限") from None
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
+            raise LLMError("模型接口连接失败或超时；请核实网络后重试") from None
+        if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):
+            raise LLMError("模型响应疑似含凭证，已拒绝保存")
+        try:
+            body = json.loads(blob)
+            choice = body["choices"][0]
+            message = choice.get("message") or {}
+            if message.get("refusal"):
+                raise LLMError("模型拒绝了本次工具调用请求")
+            usage = {k: v for k, v in (body.get("usage") or {}).items()
+                     if k in {"prompt_tokens", "completion_tokens", "total_tokens"} and type(v) is int}
+            run.event("llm_response_tools", finish_reason=choice.get("finish_reason"),
+                      has_tool_calls=bool(message.get("tool_calls")), usage=usage)
+            return message
+        except (ValueError, KeyError, IndexError, TypeError) as exc:
+            if isinstance(exc, LLMError):
+                raise
+            raise LLMError("模型响应不是 chat/completions 协议") from None
+
 
 def split_draft(draft: str) -> list[dict]:
     if not draft.strip() or len(draft) > MAX_DRAFT_CHARS:
@@ -656,9 +692,11 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
     tool_results: list[dict] = []
     if use_loop and hasattr(client, "chat"):
         try:
-            from agent_loop import run_loop, tool_summary
-            loop_out = run_loop(client, draft, facts, run, sentences=sentences,
-                                tools_used=tools_used, tool_results=tool_results)
+            from agent_loop import run_loop, run_loop_native, tool_summary
+            # 优先原生 tools（DeepSeek/OpenAI）；失败退回 JSON 多步协议
+            loop_fn = run_loop_native if hasattr(client, "chat_tools") else run_loop
+            loop_out = loop_fn(client, draft, facts, run, sentences=sentences,
+                               tools_used=tools_used, tool_results=tool_results)
             payload = loop_out["payload"]
             tools_used = loop_out["tools_used"]
             tool_results = loop_out.get("tool_results") or tool_results
@@ -666,15 +704,37 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
             run.event("tool_summary", tools=tool_summary(tools_used),
                       rounds=loop_out.get("rounds"), budget_left=loop_out.get("budget_left"))
         except LLMError as exc:
-            # 工具裁决不因 submit/协议失败而丢弃
-            preserved = sum(1 for t in tool_results
-                            if t.get("name") in {"compare_claim", "compare_companies"})
-            run.event("loop_fallback", reason=str(exc),
-                      preserved_tool_calls=len(tools_used),
-                      preserved_verdicts=preserved)
-            payload = client.extract(sentences, run, facts)
-            mode = ("fallback_single_shot_tools_preserved" if tools_used
-                    else "fallback_single_shot")
+            # 若原生失败且尚未尝试 JSON 协议，再试一轮 JSON 多步
+            if hasattr(client, "chat_tools") and not tools_used:
+                try:
+                    from agent_loop import run_loop, tool_summary
+                    loop_out = run_loop(client, draft, facts, run, sentences=sentences,
+                                        tools_used=tools_used, tool_results=tool_results)
+                    payload = loop_out["payload"]
+                    tools_used = loop_out["tools_used"]
+                    tool_results = loop_out.get("tool_results") or tool_results
+                    mode = loop_out["mode"]
+                    run.event("tool_summary", tools=tool_summary(tools_used),
+                              rounds=loop_out.get("rounds"),
+                              budget_left=loop_out.get("budget_left"))
+                except LLMError as exc2:
+                    preserved = sum(1 for t in tool_results
+                                    if t.get("name") in {"compare_claim", "compare_companies"})
+                    run.event("loop_fallback", reason=str(exc2),
+                              first_error=str(exc), preserved_tool_calls=len(tools_used),
+                              preserved_verdicts=preserved)
+                    payload = client.extract(sentences, run, facts)
+                    mode = ("fallback_single_shot_tools_preserved" if tools_used
+                            else "fallback_single_shot")
+            else:
+                preserved = sum(1 for t in tool_results
+                                if t.get("name") in {"compare_claim", "compare_companies"})
+                run.event("loop_fallback", reason=str(exc),
+                          preserved_tool_calls=len(tools_used),
+                          preserved_verdicts=preserved)
+                payload = client.extract(sentences, run, facts)
+                mode = ("fallback_single_shot_tools_preserved" if tools_used
+                        else "fallback_single_shot")
     else:
         payload = client.extract(sentences, run, facts)
     results = check_payload(payload, sentences, draft, facts)

@@ -165,3 +165,121 @@ def tool_summary(tools_used: list[dict]) -> str:
         return "（本模式未调用工具）"
     counts = Counter(t["name"] for t in tools_used)
     return "、".join(f"{n}×{c}" for n, c in counts.most_common())
+
+
+# ── 原生 function calling（DeepSeek/OpenAI tools 参数） ──
+
+def _openai_tools() -> list[dict]:
+    """tools.tool_specs + submit_claims → OpenAI function 工具表。"""
+    out = []
+    for spec in tool_specs():
+        out.append({
+            "type": "function",
+            "function": {
+                "name": spec["name"],
+                "description": spec["description"],
+                "parameters": spec["parameters"],
+            },
+        })
+    submit_props = schema()["properties"]
+    out.append({
+        "type": "function",
+        "function": {
+            "name": "submit_claims",
+            "description": "核查完成，提交结构化主张。items 必须符合主协议 Schema，禁止额外字段。",
+            "parameters": {
+                "type": "object",
+                "properties": submit_props,
+                "required": schema()["required"],
+                "additionalProperties": False,
+            },
+        },
+    })
+    return out
+
+
+def run_loop_native(client, draft: str, facts: list[dict], run,
+                    sentences: list[dict] | None = None,
+                    document_texts: dict | None = None,
+                    tools_used: list | None = None,
+                    tool_results: list | None = None) -> dict:
+    """原生 tools/tool_calls 循环。tools_used/tool_results 由调用方持有。"""
+    tools_used = tools_used if tools_used is not None else []
+    tool_results = tool_results if tool_results is not None else []
+    tool_budget = MAX_TOOL_CALLS
+    oai_tools = _openai_tools()
+    system = LOOP_SYSTEM.replace(
+        "每轮输出只能是下面两种 JSON 之一（不要 markdown 代码块）：",
+        "你通过平台的 tools/tool_calls 调用工具；就绪后调用 submit_claims，不要输出散文。"
+    )
+    messages = [
+        {"role": "system", "content": system},
+        {"role": "user", "content": json.dumps(
+            {"task": "parse_and_verify", "draft": draft, "sentences": sentences or []},
+            ensure_ascii=False)},
+    ]
+    run.event("agent_loop_start", protocol="native_tools",
+              max_rounds=MAX_ROUNDS, max_tools=MAX_TOOL_CALLS)
+
+    for round_no in range(1, MAX_ROUNDS + 1):
+        message = client.chat_tools(messages, oai_tools, run)
+        messages.append({k: v for k, v in message.items() if k != "function_call"})
+        tool_calls = message.get("tool_calls") or []
+
+        if not tool_calls:
+            content = message.get("content") or ""
+            run.event("agent_loop_round", round=round_no, action="no_tool_call",
+                      content_preview=content[:120])
+            raise LLMError("原生工具循环未收到 tool_calls；请改用 JSON 协议或检查模型权限")
+
+        for call in tool_calls:
+            fn = (call.get("function") or {})
+            name = fn.get("name") or ""
+            raw_args = fn.get("arguments") or "{}"
+            try:
+                args = json.loads(raw_args) if isinstance(raw_args, str) else (raw_args or {})
+            except ValueError:
+                args = {}
+            call_id = call.get("id") or f"call_{round_no}"
+
+            if name == "submit_claims":
+                run.event("agent_loop_round", round=round_no, action="submit_claims")
+                payload = {"items": args.get("items") or [],
+                           "unclaimed_sentences": args.get("unclaimed_sentences") or []}
+                try:
+                    validate_schema(payload, schema())
+                except LLMError as exc:
+                    run.event("loop_repair", round=round_no, repair_kind="submit",
+                              reason=str(exc), items=len(payload["items"]))
+                    messages.append({
+                        "role": "tool", "tool_call_id": call_id,
+                        "content": json.dumps({"status": "error", "error": str(exc)},
+                                              ensure_ascii=False),
+                    })
+                    break  # 回模型下一轮重提
+                run.event("agent_loop_submit", items=len(payload["items"]),
+                          tools_used=len(tools_used), protocol="native_tools")
+                return {"payload": payload, "tools_used": tools_used,
+                        "tool_results": tool_results, "rounds": round_no,
+                        "budget_left": tool_budget, "mode": "native_tool_calls"}
+
+            if tool_budget <= 0:
+                result = {"status": "error", "error": "工具调用预算已用尽"}
+            else:
+                result = dispatch(name, facts, args,
+                                  document_texts=document_texts, draft=draft)
+                tool_budget -= 1
+                tools_used.append({"round": round_no, "name": name,
+                                   "arguments": args, "status": result.get("status")})
+                tool_results.append({"round": round_no, "name": name,
+                                     "arguments": args, "result": result})
+                run.event("agent_tool", round=round_no, tool=name,
+                          status=result.get("status"), budget_left=tool_budget,
+                          arguments=args, result=result,
+                          evidence_ids=result.get("evidence_ids", []))
+            messages.append({
+                "role": "tool", "tool_call_id": call_id,
+                "content": json.dumps(result, ensure_ascii=False),
+            })
+
+    raise LLMError(f"原生工具循环超过 {MAX_ROUNDS} 轮仍未 submit_claims")

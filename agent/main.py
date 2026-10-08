@@ -38,21 +38,39 @@ def extract_selected(root: Path, run: Run, code=None, year=None, render=False, r
     materials = [m for m in load_materials(root) if match(m)]
     if not materials:
         raise ValueError("没有匹配的已登记材料，请先 import-existing 或 fetch")
-    facts, failures = [], []
-    for material in materials:
-        try:
-            found = extract_material(root, material, run)
-            facts.extend(found)
-            if render:
+    from extract_cache import extract_many, extract_material_cached
+    if len(materials) > 1:
+        facts, failures = extract_many(root, materials, run)
+        # 失败结构对齐旧字段
+        failures = [{"document_id": f.get("document_id"),
+                     "error_type": "ExtractionError", "message": f.get("error")}
+                    for f in failures]
+    else:
+        facts, failures = [], []
+        for material in materials:
+            try:
+                found, _ = extract_material_cached(root, material, run)
+                facts.extend(found)
+            except Exception as exc:
+                failure = {"document_id": material["document_id"],
+                           "error_type": type(exc).__name__, "message": str(exc)}
+                failures.append(failure)
+                run.event("extraction_failed", **failure)
+    if render:
+        for material in materials:
+            found = [f for f in facts if f.get("document_id") == material.get("document_id")
+                     or f.get("source_sha256") == material.get("sha256")]
+            if not found:
+                continue
+            try:
                 with pymupdf.open(root / material["local_file"]) as doc:
-                    for page in sorted({f["page"] for f in found}):
+                    for page in sorted({f["page"] for f in found if f.get("page")}):
                         name = f"{material['company_code']}_{material['report_year']}_{material['sha256'][:8]}_p{page}.png"
-                        doc[page - 1].get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6)).save(run.output(name))
-        except Exception as exc:
-            failure = {"document_id": material["document_id"],
-                       "error_type": type(exc).__name__, "message": str(exc)}
-            failures.append(failure)
-            run.event("extraction_failed", **failure)
+                        out = run.output(name)
+                        if not out.exists():
+                            doc[page - 1].get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6)).save(out)
+            except Exception:
+                pass
     write_json(run.output("evidence.json"), facts)
     write_json(run.output("failures.json"), failures)
     write_csv(run.output("evidence.csv"), facts, [

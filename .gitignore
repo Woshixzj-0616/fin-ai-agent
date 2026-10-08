@@ -20,3 +20,6 @@ results/webui_work/
 results/webui_*
 results/000000_*.png
 data/ocr/tessdata/
+
+# --- 抽取缓存（按 PDF 指纹本地重建，不入库）---
+data/cache/

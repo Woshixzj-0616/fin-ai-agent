@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "run_id": "20261008_211443_be327e24",
+  "run_id": "20261008_213603_0ae9e4e8",
   "steps": [
     {
       "step": 1,
-      "time": "2026-10-08T21:14:43+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:03+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "run_started",
       "title": "开始任务",
       "actor": "程序",
@@ -18,8 +18,8 @@
     },
     {
       "step": 2,
-      "time": "2026-10-08T21:14:43+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:03+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "file_read",
       "title": "读取材料",
       "actor": "程序",
@@ -34,8 +34,8 @@
     },
     {
       "step": 3,
-      "time": "2026-10-08T21:14:43+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:03+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "facts_reused",
       "title": "facts_reused",
       "actor": "程序",
@@ -49,8 +49,8 @@
     },
     {
       "step": 4,
-      "time": "2026-10-08T21:14:43+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:03+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "file_read",
       "title": "读取材料",
       "actor": "程序",
@@ -65,8 +65,8 @@
     },
     {
       "step": 5,
-      "time": "2026-10-08T21:14:43+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:03+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "draft_loaded",
       "title": "读取草稿",
       "actor": "程序",
@@ -81,8 +81,8 @@
     },
     {
       "step": 6,
-      "time": "2026-10-08T21:14:43+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:03+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_loop_start",
       "title": "开始工具循环",
       "actor": "程序",
@@ -90,16 +90,17 @@
       "evidence_ids": [],
       "evidence": [],
       "detail": {
+        "protocol": "native_tools",
         "max_rounds": 5,
         "max_tools": 30
       }
     },
     {
       "step": 7,
-      "time": "2026-10-08T21:14:43+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "llm_chat",
-      "title": "llm_chat",
+      "time": "2026-10-08T21:36:03+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "llm_chat_tools",
+      "title": "llm_chat_tools",
       "actor": "程序",
       "rule": "历史事件仅展示已记录信息",
       "evidence_ids": [],
@@ -107,28 +108,34 @@
       "detail": {
         "provider_host": "api.deepseek.com",
         "model": "deepseek-chat",
-        "message_count": 2
+        "message_count": 2,
+        "tool_count": 8
       }
     },
     {
       "step": 8,
-      "time": "2026-10-08T21:14:45+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "agent_loop_round",
-      "title": "模型请求下一步",
-      "actor": "LLM",
-      "rule": "只接受工具请求或结构化主张",
+      "time": "2026-10-08T21:36:05+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "llm_response_tools",
+      "title": "llm_response_tools",
+      "actor": "程序",
+      "rule": "历史事件仅展示已记录信息",
       "evidence_ids": [],
       "evidence": [],
       "detail": {
-        "round": 1,
-        "action": "call_tools"
+        "finish_reason": "tool_calls",
+        "has_tool_calls": true,
+        "usage": {
+          "prompt_tokens": 2767,
+          "completion_tokens": 259,
+          "total_tokens": 3026
+        }
       }
     },
     {
       "step": 9,
-      "time": "2026-10-08T21:14:45+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:05+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -288,8 +295,8 @@
     },
     {
       "step": 10,
-      "time": "2026-10-08T21:14:45+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:05+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -337,8 +344,8 @@
     },
     {
       "step": 11,
-      "time": "2026-10-08T21:14:45+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "time": "2026-10-08T21:36:05+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -347,96 +354,9 @@
       "evidence": [],
       "detail": {
         "round": 1,
-        "tool": "find_evidence",
-        "status": "error",
-        "budget_left": 27,
-        "arguments": {
-          "company_name_or_code": "贵州茅台",
-          "metric": "net_profit",
-          "period_year": 2024
-        },
-        "result": {
-          "status": "error",
-          "error": "指标不在目录",
-          "metric": "net_profit"
-        },
-        "evidence_ids": []
-      }
-    },
-    {
-      "step": 12,
-      "time": "2026-10-08T21:14:45+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "agent_tool",
-      "title": "执行工具",
-      "actor": "本地工具",
-      "rule": "记录实际工具名、参数及结果",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 1,
-        "tool": "find_evidence",
-        "status": "error",
-        "budget_left": 26,
-        "arguments": {
-          "company_name_or_code": "贵州茅台",
-          "metric": "eps",
-          "period_year": 2024
-        },
-        "result": {
-          "status": "error",
-          "error": "指标不在目录",
-          "metric": "eps"
-        },
-        "evidence_ids": []
-      }
-    },
-    {
-      "step": 13,
-      "time": "2026-10-08T21:14:45+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "llm_chat",
-      "title": "llm_chat",
-      "actor": "程序",
-      "rule": "历史事件仅展示已记录信息",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "provider_host": "api.deepseek.com",
-        "model": "deepseek-chat",
-        "message_count": 4
-      }
-    },
-    {
-      "step": 14,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "agent_loop_round",
-      "title": "模型请求下一步",
-      "actor": "LLM",
-      "rule": "只接受工具请求或结构化主张",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 2,
-        "action": "call_tools"
-      }
-    },
-    {
-      "step": 15,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "agent_tool",
-      "title": "执行工具",
-      "actor": "本地工具",
-      "rule": "记录实际工具名、参数及结果",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 2,
         "tool": "find_evidence",
         "status": "ok",
-        "budget_left": 25,
+        "budget_left": 27,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "parent_net_profit",
@@ -472,9 +392,9 @@
       }
     },
     {
-      "step": 16,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 12,
+      "time": "2026-10-08T21:36:05+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -482,10 +402,10 @@
       "evidence_ids": [],
       "evidence": [],
       "detail": {
-        "round": 2,
+        "round": 1,
         "tool": "find_evidence",
         "status": "ok",
-        "budget_left": 24,
+        "budget_left": 26,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "basic_eps",
@@ -521,9 +441,46 @@
       }
     },
     {
-      "step": 17,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 13,
+      "time": "2026-10-08T21:36:05+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "llm_chat_tools",
+      "title": "llm_chat_tools",
+      "actor": "程序",
+      "rule": "历史事件仅展示已记录信息",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "provider_host": "api.deepseek.com",
+        "model": "deepseek-chat",
+        "message_count": 7,
+        "tool_count": 8
+      }
+    },
+    {
+      "step": 14,
+      "time": "2026-10-08T21:36:07+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "llm_response_tools",
+      "title": "llm_response_tools",
+      "actor": "程序",
+      "rule": "历史事件仅展示已记录信息",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "finish_reason": "tool_calls",
+        "has_tool_calls": true,
+        "usage": {
+          "prompt_tokens": 4216,
+          "completion_tokens": 624,
+          "total_tokens": 4840
+        }
+      }
+    },
+    {
+      "step": 15,
+      "time": "2026-10-08T21:36:07+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -536,7 +493,7 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "证据支持",
-        "budget_left": 23,
+        "budget_left": 25,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "revenue",
@@ -544,7 +501,8 @@
           "kind": "amount",
           "claimed_value": "1708.99",
           "claimed_unit": "亿元",
-          "operator": "approx"
+          "operator": "approx",
+          "scope": "consolidated"
         },
         "result": {
           "verdict": "evidence_supported",
@@ -577,9 +535,9 @@
       }
     },
     {
-      "step": 18,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 16,
+      "time": "2026-10-08T21:36:07+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -592,7 +550,7 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "证据支持",
-        "budget_left": 22,
+        "budget_left": 24,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "parent_net_profit",
@@ -600,27 +558,28 @@
           "kind": "amount",
           "claimed_value": "862.28",
           "claimed_unit": "亿元",
-          "operator": "eq",
+          "operator": "approx",
           "scope": "parent_shareholders"
         },
         "result": {
           "verdict": "evidence_supported",
           "status": "证据支持",
           "reason_code": "deterministic_check",
-          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "reason": "在陈述运算符与容差下与原文证据一致",
           "evidence_ids": [
             "2be69095a86bcc7a3ed837df"
           ],
           "calculation": {
             "status": "match",
-            "value": "862.28",
+            "value": "862.2814642162",
             "exact_value": "862.2814642162",
             "claimed_value": "862.28",
-            "operator": "eq",
-            "decimals": 2,
-            "rounding": "ROUND_HALF_UP",
+            "operator": "approx",
+            "tolerance_pct": "2",
+            "relative_error_pct": "0.0001698072219760573197347269052200709756779",
             "difference": "0.0014642162",
-            "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+            "warning": null,
+            "formula": "abs(actual-claimed)/abs(actual)*100 <= 2% | unit=actual * source_factor / target_factor",
             "claimed_unit": "亿元",
             "actual_unit": "元",
             "actual_value": "86228146421.62"
@@ -633,9 +592,9 @@
       }
     },
     {
-      "step": 19,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 17,
+      "time": "2026-10-08T21:36:07+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -648,7 +607,7 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "证据支持",
-        "budget_left": 21,
+        "budget_left": 23,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "basic_eps",
@@ -688,9 +647,9 @@
       }
     },
     {
-      "step": 20,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 18,
+      "time": "2026-10-08T21:36:07+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -703,7 +662,7 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "确认错误",
-        "budget_left": 20,
+        "budget_left": 22,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "revenue",
@@ -711,7 +670,8 @@
           "kind": "amount",
           "claimed_value": "1800",
           "claimed_unit": "亿元",
-          "operator": "eq"
+          "operator": "eq",
+          "scope": "consolidated"
         },
         "result": {
           "verdict": "confirmed_error",
@@ -743,11 +703,11 @@
       }
     },
     {
-      "step": 21,
-      "time": "2026-10-08T21:14:46+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "llm_chat",
-      "title": "llm_chat",
+      "step": 19,
+      "time": "2026-10-08T21:36:07+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "llm_chat_tools",
+      "title": "llm_chat_tools",
       "actor": "程序",
       "rule": "历史事件仅展示已记录信息",
       "evidence_ids": [],
@@ -755,196 +715,81 @@
       "detail": {
         "provider_host": "api.deepseek.com",
         "model": "deepseek-chat",
-        "message_count": 6
+        "message_count": 12,
+        "tool_count": 8
       }
     },
     {
-      "step": 22,
-      "time": "2026-10-08T21:14:48+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "agent_loop_round",
-      "title": "模型请求下一步",
-      "actor": "LLM",
-      "rule": "只接受工具请求或结构化主张",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 3,
-        "action": "submit_claims"
-      }
-    },
-    {
-      "step": 23,
-      "time": "2026-10-08T21:14:48+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "loop_repair",
-      "title": "loop_repair",
+      "step": 20,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "llm_response_tools",
+      "title": "llm_response_tools",
       "actor": "程序",
       "rule": "历史事件仅展示已记录信息",
       "evidence_ids": [],
       "evidence": [],
       "detail": {
-        "round": 3,
-        "repair_kind": "submit",
-        "reason": "模型返回的字段缺失或包含额外字段",
-        "attempt": 1,
-        "items": 4
-      }
-    },
-    {
-      "step": 24,
-      "time": "2026-10-08T21:14:48+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "llm_chat",
-      "title": "llm_chat",
-      "actor": "程序",
-      "rule": "历史事件仅展示已记录信息",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "provider_host": "api.deepseek.com",
-        "model": "deepseek-chat",
-        "message_count": 8
-      }
-    },
-    {
-      "step": 25,
-      "time": "2026-10-08T21:14:50+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "agent_loop_round",
-      "title": "模型请求下一步",
-      "actor": "LLM",
-      "rule": "只接受工具请求或结构化主张",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 4,
-        "action": "submit_claims"
-      }
-    },
-    {
-      "step": 26,
-      "time": "2026-10-08T21:14:50+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "loop_repair",
-      "title": "loop_repair",
-      "actor": "程序",
-      "rule": "历史事件仅展示已记录信息",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 4,
-        "repair_kind": "submit",
-        "reason": "模型返回的字段缺失或包含额外字段",
-        "attempt": 2,
-        "items": 4
-      }
-    },
-    {
-      "step": 27,
-      "time": "2026-10-08T21:14:50+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "llm_chat",
-      "title": "llm_chat",
-      "actor": "程序",
-      "rule": "历史事件仅展示已记录信息",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "provider_host": "api.deepseek.com",
-        "model": "deepseek-chat",
-        "message_count": 10
-      }
-    },
-    {
-      "step": 28,
-      "time": "2026-10-08T21:14:52+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "agent_loop_round",
-      "title": "模型请求下一步",
-      "actor": "LLM",
-      "rule": "只接受工具请求或结构化主张",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 5,
-        "action": "submit_claims"
-      }
-    },
-    {
-      "step": 29,
-      "time": "2026-10-08T21:14:52+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "loop_submit_failed",
-      "title": "loop_submit_failed",
-      "actor": "程序",
-      "rule": "历史事件仅展示已记录信息",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "reason": "模型返回的字段缺失或包含额外字段",
-        "rounds": 5,
-        "tools_used": 10,
-        "repair_attempts": 2
-      }
-    },
-    {
-      "step": 30,
-      "time": "2026-10-08T21:14:52+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "loop_fallback",
-      "title": "工具循环回退",
-      "actor": "程序",
-      "rule": "保留回退原因，仍进行本地校验",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "reason": "submit_claims 校验失败（已修复2次）：模型返回的字段缺失或包含额外字段",
-        "preserved_tool_calls": 10,
-        "preserved_verdicts": 4
-      }
-    },
-    {
-      "step": 31,
-      "time": "2026-10-08T21:14:52+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "llm_request",
-      "title": "请求模型",
-      "actor": "LLM",
-      "rule": "模型负责结构化拆句；不授予裁决权",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "provider_host": "api.deepseek.com",
-        "model": "deepseek-chat",
-        "response_format": "json_object",
-        "sentence_count": 3
-      }
-    },
-    {
-      "step": 32,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
-      "event": "llm_response",
-      "title": "收到模型响应",
-      "actor": "LLM",
-      "rule": "响应通过本地 JSON Schema 校验后才继续",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "response_format": "json_object",
-        "item_count": 4,
+        "finish_reason": "tool_calls",
+        "has_tool_calls": true,
         "usage": {
-          "prompt_tokens": 2149,
-          "completion_tokens": 1022,
-          "total_tokens": 3171
+          "prompt_tokens": 5694,
+          "completion_tokens": 972,
+          "total_tokens": 6666
         }
       }
     },
     {
-      "step": 33,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 21,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "agent_loop_round",
+      "title": "模型请求下一步",
+      "actor": "LLM",
+      "rule": "只接受工具请求或结构化主张",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "round": 3,
+        "action": "submit_claims"
+      }
+    },
+    {
+      "step": 22,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "agent_loop_submit",
+      "title": "agent_loop_submit",
+      "actor": "程序",
+      "rule": "历史事件仅展示已记录信息",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "items": 4,
+        "tools_used": 8,
+        "protocol": "native_tools"
+      }
+    },
+    {
+      "step": 23,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
+      "event": "tool_summary",
+      "title": "工具调用汇总",
+      "actor": "程序",
+      "rule": "汇总实际发生的调用",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "tools": "compare_claim×4、find_evidence×3、list_catalog×1",
+        "rounds": 3,
+        "budget_left": 22
+      }
+    },
+    {
+      "step": 24,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "model_parse",
       "title": "模型拆句 JSON",
       "actor": "LLM",
@@ -971,7 +816,7 @@
             {
               "claim_id": "c1",
               "sentence_id": 1,
-              "quote": "贵州茅台2024年实现营业收入约1708.99亿元",
+              "quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
               "context_quote": null,
               "claim_type": "amount",
               "company_name": "贵州茅台",
@@ -990,7 +835,7 @@
               "direction": "unknown",
               "currency": "CNY",
               "qualifier": "approximate",
-              "plain_claim": "贵州茅台2024年营业收入约1708.99亿元。",
+              "plain_claim": "贵州茅台2024年营业收入约1708.99亿元",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
@@ -998,8 +843,8 @@
             {
               "claim_id": "c2",
               "sentence_id": 1,
-              "quote": "归属于上市公司股东的净利润为862.28亿元",
-              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元",
+              "quote": "归属于上市公司股东的净利润为862.28亿元。",
+              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
               "claim_type": "amount",
               "company_name": "贵州茅台",
               "company_b": null,
@@ -1012,12 +857,12 @@
               "kind": "amount",
               "value": "862.28",
               "unit": "亿元",
-              "operator": "eq",
-              "tolerance_pct": null,
+              "operator": "approx",
+              "tolerance_pct": 2,
               "direction": "unknown",
               "currency": "CNY",
-              "qualifier": "exact",
-              "plain_claim": "贵州茅台2024年归母净利润862.28亿元。",
+              "qualifier": "approximate",
+              "plain_claim": "贵州茅台2024年归母净利润862.28亿元",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
@@ -1025,7 +870,7 @@
             {
               "claim_id": "c3",
               "sentence_id": 2,
-              "quote": "基本每股收益为68.64元/股",
+              "quote": "基本每股收益为68.64元/股。",
               "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
               "claim_type": "amount",
               "company_name": "贵州茅台",
@@ -1035,7 +880,7 @@
               "period_kind": "annual",
               "metric_text": "基本每股收益",
               "metric": "basic_eps",
-              "scope": "consolidated",
+              "scope": "unknown",
               "kind": "amount",
               "value": "68.64",
               "unit": "元/股",
@@ -1044,7 +889,7 @@
               "direction": "unknown",
               "currency": "CNY",
               "qualifier": "exact",
-              "plain_claim": "贵州茅台2024年基本每股收益68.64元/股。",
+              "plain_claim": "贵州茅台2024年基本每股收益68.64元/股",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
@@ -1052,7 +897,7 @@
             {
               "claim_id": "c4",
               "sentence_id": 3,
-              "quote": "其中营业收入为1800亿元",
+              "quote": "其中营业收入为1800亿元，这一数字需要核查。",
               "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
               "claim_type": "amount",
               "company_name": "贵州茅台",
@@ -1071,7 +916,7 @@
               "direction": "unknown",
               "currency": "CNY",
               "qualifier": "exact",
-              "plain_claim": "贵州茅台2024年营业收入为1800亿元。",
+              "plain_claim": "贵州茅台2024年营业收入为1800亿元",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
@@ -1082,9 +927,9 @@
       }
     },
     {
-      "step": 34,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 25,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -1119,9 +964,9 @@
       }
     },
     {
-      "step": 35,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 26,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -1141,9 +986,9 @@
       }
     },
     {
-      "step": 36,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 27,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -1155,7 +1000,7 @@
       "detail": {
         "claim_id": "C2",
         "reason_code": "deterministic_check",
-        "reason": "单位、口径和陈述精度下与原文证据一致",
+        "reason": "在陈述运算符与容差下与原文证据一致",
         "evidence_ids": [
           "2be69095a86bcc7a3ed837df"
         ],
@@ -1172,15 +1017,15 @@
           "currency": "CNY",
           "scope": "parent_shareholders",
           "period_kind": "annual",
-          "operator": "eq",
-          "tolerance_pct": null
+          "operator": "approx",
+          "tolerance_pct": 2
         }
       }
     },
     {
-      "step": 37,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 28,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -1200,9 +1045,9 @@
       }
     },
     {
-      "step": 38,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 29,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -1229,7 +1074,7 @@
           "value": "68.64",
           "unit": "元/股",
           "currency": "CNY",
-          "scope": "consolidated",
+          "scope": "unknown",
           "period_kind": "annual",
           "operator": "eq",
           "tolerance_pct": null
@@ -1237,9 +1082,9 @@
       }
     },
     {
-      "step": 39,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 30,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -1259,9 +1104,9 @@
       }
     },
     {
-      "step": 40,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 31,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -1296,9 +1141,9 @@
       }
     },
     {
-      "step": 41,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 32,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -1318,9 +1163,9 @@
       }
     },
     {
-      "step": 42,
-      "time": "2026-10-08T21:14:55+08:00",
-      "run_id": "20261008_211443_be327e24",
+      "step": 33,
+      "time": "2026-10-08T21:36:09+08:00",
+      "run_id": "20261008_213603_0ae9e4e8",
       "event": "run_finished",
       "title": "完成运行",
       "actor": "程序",
@@ -1336,8 +1181,8 @@
           "证据支持": 3,
           "确认错误": 1
         },
-        "mode": "fallback_single_shot_tools_preserved",
-        "tools_used": 10
+        "mode": "native_tool_calls",
+        "tools_used": 8
       }
     }
   ]
