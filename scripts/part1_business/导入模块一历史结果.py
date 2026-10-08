@@ -88,7 +88,7 @@ def import_existing_results() -> None:
                 continue
 
             source_path = Path(str(report.get("input_path") or "")).resolve()
-            allowed_raw_dir = (Path(r"D:\ChatGPT项目\金融AI智能体") / "data" / "raw").resolve()
+            allowed_raw_dir = (ROOT / "data" / "raw").resolve()
             try:
                 source_path.relative_to(allowed_raw_dir)
             except ValueError:

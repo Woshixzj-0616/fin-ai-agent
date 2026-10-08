@@ -34,7 +34,7 @@ if ($existing) {
 
 $pythonCandidates = @(
     (Join-Path $ProjectRoot '.venv\Scripts\python.exe'),
-    'D:\ChatGPT项目\金融AI智能体\.venv\Scripts\python.exe',
+    $env:FINLAB_PYTHON,
     (Get-Command python.exe -ErrorAction SilentlyContinue).Source
 )
 $Python = $pythonCandidates | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1

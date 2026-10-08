@@ -27,7 +27,7 @@ LOG_ROOT = DATA_ROOT / "logs"
 LOCAL_CONFIG = ROOT / ".env"
 FALLBACK_CONFIG = Path(os.getenv(
     "FINLAB_FALLBACK_CONFIG_PATH",
-    r"D:\ChatGPT项目\金融AI智能体_V3.0.1\.env",
+    str(ROOT / ".env"),
 )).expanduser()
 PORT = 8104
 MAX_UPLOAD_BYTES = 25 * 1024 * 1024
