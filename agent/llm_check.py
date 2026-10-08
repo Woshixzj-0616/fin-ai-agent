@@ -612,6 +612,38 @@ def render_report(results: list[dict], *, model: str, run_id: str,
     return "\n".join(lines)
 
 
+def _tool_verdict_rows(tool_results: list[dict]) -> list[dict]:
+    """把循环里 compare_claim/compare_companies 的裁决转成检查行，避免 fallback 丢结果。"""
+    rows = []
+    for i, entry in enumerate(tool_results or []):
+        name = entry.get("name")
+        if name not in {"compare_claim", "compare_companies"}:
+            continue
+        result = entry.get("result") or {}
+        verdict = result.get("verdict")
+        if verdict not in {"evidence_supported", "confirmed_error"}:
+            continue
+        rows.append({
+            "claim_id": f"tool_{entry.get('round', 0)}_{i}",
+            "original_sentence": "",
+            "quote": json.dumps(entry.get("arguments") or {}, ensure_ascii=False),
+            "track": "deterministic",
+            "status": "证据支持" if verdict == "evidence_supported" else "确认错误",
+            "reason_code": result.get("reason_code") or "deterministic_check",
+            "reason": result.get("reason") or "工具循环内确定性裁决（submit 失败后仍保留）",
+            "evidence_ids": result.get("evidence_ids") or [],
+            "evidence": [],
+            "calculation": result.get("calculation"),
+            "expected": result.get("expected"),
+            "suggestion": None,
+            "plain_claim": f"工具裁决：{name}",
+            "interpretation": {"is_forecast": False, "ambiguity": "none",
+                               "claim_type": "tool_verdict"},
+            "source_tool": name,
+        })
+    return rows
+
+
 def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
                use_loop: bool = True) -> dict:
     draft = run.read(path).decode("utf-8-sig")
@@ -621,21 +653,38 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
     run.event("draft_loaded", characters=len(draft), sha256=sha256(draft.encode("utf-8")), sentences=len(sentences))
     mode = "fallback_single_shot"
     tools_used: list[dict] = []
+    tool_results: list[dict] = []
     if use_loop and hasattr(client, "chat"):
         try:
             from agent_loop import run_loop, tool_summary
-            loop_out = run_loop(client, draft, facts, run, sentences=sentences)
+            loop_out = run_loop(client, draft, facts, run, sentences=sentences,
+                                tools_used=tools_used, tool_results=tool_results)
             payload = loop_out["payload"]
             tools_used = loop_out["tools_used"]
+            tool_results = loop_out.get("tool_results") or tool_results
             mode = loop_out["mode"]
             run.event("tool_summary", tools=tool_summary(tools_used),
                       rounds=loop_out.get("rounds"), budget_left=loop_out.get("budget_left"))
         except LLMError as exc:
-            run.event("loop_fallback", reason=str(exc))
+            # 工具裁决不因 submit/协议失败而丢弃
+            preserved = sum(1 for t in tool_results
+                            if t.get("name") in {"compare_claim", "compare_companies"})
+            run.event("loop_fallback", reason=str(exc),
+                      preserved_tool_calls=len(tools_used),
+                      preserved_verdicts=preserved)
             payload = client.extract(sentences, run, facts)
+            mode = ("fallback_single_shot_tools_preserved" if tools_used
+                    else "fallback_single_shot")
     else:
         payload = client.extract(sentences, run, facts)
     results = check_payload(payload, sentences, draft, facts)
+    # 循环里已裁决、单次拆解未覆盖的，补进结果（同一 evidence+status 不重复）
+    seen = {(tuple(r.get("evidence_ids") or []), r.get("status")) for r in results}
+    for row in _tool_verdict_rows(tool_results):
+        key = (tuple(row.get("evidence_ids") or []), row.get("status"))
+        if key not in seen:
+            results.append(row)
+            seen.add(key)
     run.event("model_parse", sentences=sentences, parsed=payload)
     from audit_checks import check_draft_supplements
     results.extend(check_draft_supplements(draft, facts, root=run.root, run=run))
@@ -644,6 +693,7 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
               "response_format": client.mode,
               "sentences": sentences, "parsed": payload, "checks": results,
               "tools_used": tools_used,
+              "tool_results": tool_results,
               "counts": dict(Counter(row["status"] for row in results)),
               "tracks": dict(Counter(row.get("track") or "review" for row in results))}
     run.output("checked_draft.txt").write_text(draft, encoding="utf-8")

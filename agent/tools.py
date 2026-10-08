@@ -168,6 +168,51 @@ def list_catalog(kind: str, facts: list[dict] | None = None) -> dict:
     return _err(f"未知 kind：{kind}")
 
 
+def _fact_quality(f: dict) -> tuple:
+    """择优排序：问题少 > 有 bbox > 页码靠前（摘要表） > id 稳定。"""
+    issues = f.get("issues") or []
+    hard = sum(1 for i in issues if i in {
+        "conflicting_extraction_values", "unit_unknown", "scope_unknown", "value_conflict"})
+    return (hard, len(issues), 0 if f.get("value_bbox") else 1,
+            f.get("page") if isinstance(f.get("page"), int) else 10**9,
+            str(f.get("evidence_id") or ""))
+
+
+def _fact_identity(f: dict) -> tuple:
+    """同一数值/口径/调整列视为可合并重复（words+grid 同值双记等）。"""
+    return (f.get("normalized_value") or f.get("value"),
+            f.get("normalized_unit") or f.get("unit"),
+            f.get("scope"), f.get("adjustment"))
+
+
+def _pick_fact(matches: list[dict]) -> tuple[dict | None, list[dict]]:
+    """多条候选时择优；值冲突才判不可自动择优。
+
+    返回 (best_or_None, rest)。best 为 None 表示仍有冲突，应 ambiguous。
+    """
+    if not matches:
+        return None, []
+    if len(matches) == 1:
+        return matches[0], []
+    # 先按身份分组：同值同口径只留质量问题最少的一条
+    groups: dict[tuple, list[dict]] = {}
+    for f in matches:
+        groups.setdefault(_fact_identity(f), []).append(f)
+    collapsed = [min(g, key=_fact_quality) for g in groups.values()]
+    if len(collapsed) == 1:
+        return collapsed[0], []
+    # 多组：若仅一组无硬问题，选它；否则冲突
+    clean = [f for f in collapsed
+             if not any(i in (f.get("issues") or [])
+                        for i in ("conflicting_extraction_values", "value_conflict",
+                                  "unit_unknown", "scope_unknown"))]
+    if len(clean) == 1:
+        return clean[0], collapsed
+    if not clean:
+        return None, collapsed
+    return None, collapsed
+
+
 def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
                   period_year: int, source_report_year: int | None = None,
                   draft: str = "") -> dict:
@@ -185,11 +230,14 @@ def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
     if not matches:
         return {"status": "empty", "count": 0, "items": [],
                 "hint": "无该组合证据；不要猜测数值"}
-    if len(matches) > 1:
+    fact, rest = _pick_fact(matches)
+    if fact is None:
         return {"status": "ambiguous", "count": len(matches),
-                "evidence_ids": [f["evidence_id"] for f in matches],
-                "hint": "多条证据，请收窄条件或人工裁定"}
-    fact = matches[0]
+                "evidence_ids": [f["evidence_id"] for f in rest or matches],
+                "hint": "多条证据数值或口径冲突，不能静默选一条；请人工裁定"}
+    extra = []
+    if len(matches) > 1:
+        extra = [f["evidence_id"] for f in matches if f["evidence_id"] != fact["evidence_id"]]
     return {"status": "ok", "count": 1, "items": [{
         "evidence_id": fact["evidence_id"],
         "company_code": fact["company_code"],
@@ -201,7 +249,9 @@ def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
         "page": fact.get("page"), "value_bbox": fact.get("value_bbox"),
         "scope": fact.get("scope"), "adjustment": fact.get("adjustment"),
         "issues": fact.get("issues") or [],
-    }]}
+    }],
+        **({"duplicate_evidence_ids": extra, "selection_note": "同值/同口径多条，已按质量问题择优"} if extra else {}),
+    }
 
 
 def compute_yoy(facts: list[dict], *, company_name_or_code: str, metric: str, year: int,
@@ -261,11 +311,12 @@ def compare_claim(facts: list[dict], *, company_name_or_code: str, metric: str,
 
 
 def _one_fact(facts: list[dict], code: str, metric: str, year: int) -> dict | None:
-    """取该公司该指标该年的唯一非 before 证据。"""
+    """取该公司该指标该年的证据；同值多条择优，冲突则 None。"""
     matches = [f for f in facts
                if f.get("company_code") == code and f.get("metric") == metric
                and f.get("period_year") == int(year) and f.get("adjustment") != "before"]
-    return matches[0] if len(matches) == 1 else None
+    best, _ = _pick_fact(matches)
+    return best
 
 
 def _norm_value(fact: dict) -> Decimal | None:

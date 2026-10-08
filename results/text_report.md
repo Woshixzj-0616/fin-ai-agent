@@ -1,6 +1,6 @@
 # 草稿核查报告（双轨）
 
-运行：20261008_203812_8e75213f；结构化录入模型：deepseek-chat。
+运行：20261008_211443_be327e24；结构化录入模型：deepseek-chat。
 
 **A 栏 = 代码裁定（可复算）**：对错、正确值、计算式全部由本地 Python 生成。
 
@@ -114,8 +114,21 @@
 
 - 确定结论 4 条；模型判断 0 条；需人工 0 条。
 - 模型不产生「确认错误/证据支持」；这两类仅来自本地比较程序。
-- 运行模式：fallback_single_shot
+- 运行模式：fallback_single_shot_tools_preserved
 
 ## 工具调用链（agent）
 
-（本次为单次拆解模式，未走工具循环）
+| # | 轮次 | 工具 | 状态 |
+|---|---|---|---|
+| 1 | 1 | `list_catalog` | ok · kind=metrics |
+| 2 | 1 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
+| 3 | 1 | `find_evidence` | error · company_name_or_code=贵州茅台, metric=net_profit, period_year=2024 |
+| 4 | 1 | `find_evidence` | error · company_name_or_code=贵州茅台, metric=eps, period_year=2024 |
+| 5 | 2 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=parent_net_profit, period_year=2024 |
+| 6 | 2 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=basic_eps, period_year=2024 |
+| 7 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
+| 8 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=parent_net_profit, period_year=2024 |
+| 9 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=basic_eps, period_year=2024 |
+| 10 | 2 | `compare_claim` | 确认错误 · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
+
+说明：`compare_claim` 是唯一产生对错的工具；其余只供取数/理解。

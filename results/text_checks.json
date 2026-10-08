@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "run_id": "20261008_203812_8e75213f",
+  "run_id": "20261008_211443_be327e24",
   "status": "completed",
-  "mode": "fallback_single_shot",
+  "mode": "fallback_single_shot_tools_preserved",
   "model": "deepseek-chat",
   "provider_host": "api.deepseek.com",
   "response_format": "json_object",
@@ -71,7 +71,7 @@
         "direction": "unknown",
         "currency": "CNY",
         "qualifier": "exact",
-        "plain_claim": "贵州茅台2024年归母净利润为862.28亿元。",
+        "plain_claim": "贵州茅台2024年归母净利润862.28亿元。",
         "is_forecast": false,
         "ambiguity": "none",
         "verification_action": "compare_amount"
@@ -98,7 +98,7 @@
         "direction": "unknown",
         "currency": "CNY",
         "qualifier": "exact",
-        "plain_claim": "贵州茅台2024年基本每股收益为68.64元/股。",
+        "plain_claim": "贵州茅台2024年基本每股收益68.64元/股。",
         "is_forecast": false,
         "ambiguity": "none",
         "verification_action": "compare_amount"
@@ -254,7 +254,7 @@
       },
       "expected": null,
       "suggestion": null,
-      "plain_claim": "贵州茅台2024年归母净利润为862.28亿元。",
+      "plain_claim": "贵州茅台2024年归母净利润862.28亿元。",
       "interpretation": {
         "is_forecast": false,
         "ambiguity": "none",
@@ -327,7 +327,7 @@
       },
       "expected": null,
       "suggestion": null,
-      "plain_claim": "贵州茅台2024年基本每股收益为68.64元/股。",
+      "plain_claim": "贵州茅台2024年基本每股收益68.64元/股。",
       "interpretation": {
         "is_forecast": false,
         "ambiguity": "none",
@@ -441,7 +441,555 @@
       "sentence_id": 3
     }
   ],
-  "tools_used": [],
+  "tools_used": [
+    {
+      "round": 1,
+      "name": "list_catalog",
+      "arguments": {
+        "kind": "metrics"
+      },
+      "status": "ok"
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "status": "ok"
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "net_profit",
+        "period_year": 2024
+      },
+      "status": "error"
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "eps",
+        "period_year": 2024
+      },
+      "status": "error"
+    },
+    {
+      "round": 2,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024
+      },
+      "status": "ok"
+    },
+    {
+      "round": 2,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "basic_eps",
+        "period_year": 2024
+      },
+      "status": "ok"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1708.99",
+        "claimed_unit": "亿元",
+        "operator": "approx"
+      },
+      "status": "证据支持"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "862.28",
+        "claimed_unit": "亿元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "status": "证据支持"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "basic_eps",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "68.64",
+        "claimed_unit": "元/股",
+        "operator": "eq"
+      },
+      "status": "证据支持"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1800",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "status": "确认错误"
+    }
+  ],
+  "tool_results": [
+    {
+      "round": 1,
+      "name": "list_catalog",
+      "arguments": {
+        "kind": "metrics"
+      },
+      "result": {
+        "status": "ok",
+        "kind": "metrics",
+        "metrics": {
+          "total_revenue": {
+            "aliases": [
+              "营业总收入"
+            ],
+            "note": "营业总收入 ≠ 营业收入，禁止互替"
+          },
+          "revenue": {
+            "aliases": [
+              "营业收入",
+              "营收"
+            ],
+            "note": "营业收入 ≠ 营业总收入"
+          },
+          "parent_net_profit": {
+            "aliases": [
+              "归母净利润",
+              "归属于上市公司股东的净利润",
+              "归属于母公司股东的净利润",
+              "归属于母公司所有者的净利润",
+              "归属于本行股东的净利润",
+              "归属于本公司股东的净利润",
+              "归母净利"
+            ],
+            "note": null
+          },
+          "adjusted_parent_net_profit": {
+            "aliases": [
+              "扣非归母净利润",
+              "归属于上市公司股东的扣除非经常性损益的净利润",
+              "归属于母公司股东的扣除非经常性损益的净利润",
+              "归属于母公司所有者的扣除非经常性损益的净利润",
+              "扣除非经常性损益后的归属于上市公司股东的净利润",
+              "扣除非经常性损益后归属于上市公司股东的净利润",
+              "扣除非经常性损益后归属于母公司股东的净利润",
+              "扣除非经常性损益后归属于本行股东的净利润",
+              "归属于本公司股东的扣除非经常性损益的净利润",
+              "归属于母公司股东的扣除非经常性损益后的净利润",
+              "扣除非经常性损益后归属于本公司股东的净利润",
+              "扣非归母净利",
+              "扣非净利润",
+              "扣非净利"
+            ],
+            "note": null
+          },
+          "operating_cash_flow": {
+            "aliases": [
+              "经营现金流净额",
+              "经营活动产生的现金流量净额",
+              "经营活动现金流量净额"
+            ],
+            "note": null
+          },
+          "basic_eps": {
+            "aliases": [
+              "基本每股收益",
+              "每股收益"
+            ],
+            "note": null
+          },
+          "diluted_eps": {
+            "aliases": [
+              "稀释每股收益"
+            ],
+            "note": null
+          },
+          "deducted_basic_eps": {
+            "aliases": [
+              "扣非基本每股收益",
+              "扣除非经常性损益后的基本每股收益",
+              "扣非每股收益",
+              "扣非EPS"
+            ],
+            "note": null
+          },
+          "weighted_roe": {
+            "aliases": [
+              "加权平均净资产收益率",
+              "净资产收益率（加权平均）",
+              "净资产收益率(加权平均)",
+              "加权ROE",
+              "净资产收益率"
+            ],
+            "note": null
+          },
+          "deducted_weighted_roe": {
+            "aliases": [
+              "扣非加权平均净资产收益率",
+              "扣除非经常性损益后的加权平均净资产收益率",
+              "扣非加权ROE",
+              "扣非ROE"
+            ],
+            "note": null
+          },
+          "total_assets": {
+            "aliases": [
+              "总资产",
+              "资产总额",
+              "资产总计"
+            ],
+            "note": null
+          },
+          "parent_equity": {
+            "aliases": [
+              "归母净资产",
+              "归属于上市公司股东的净资产",
+              "归属于母公司股东的净资产",
+              "归属于母公司所有者权益",
+              "归属于上市公司股东的所有者权益",
+              "归属于本行股东权益",
+              "归属于母公司股东权益",
+              "归属于本公司股东权益",
+              "归属于本行股东的净资产",
+              "归属于本公司股东的净资产",
+              "归母权益"
+            ],
+            "note": null
+          },
+          "book_value_per_share": {
+            "aliases": [
+              "每股净资产",
+              "归属于上市公司股东的每股净资产",
+              "归属于母公司股东的每股净资产",
+              "归属于上市公司普通股股东的每股净资产",
+              "归属于本行普通股股东的每股净资产"
+            ],
+            "note": null
+          },
+          "revenue_after_deduction": {
+            "aliases": [
+              "营业收入扣除后金额",
+              "扣除后营业收入"
+            ],
+            "note": null
+          }
+        }
+      }
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "items": [
+          {
+            "evidence_id": "80d5d67d35796958172e2d9f",
+            "company_code": "600519",
+            "metric": "revenue",
+            "period_year": 2024,
+            "report_year": 2024,
+            "value": "170899152276.34",
+            "unit": "元",
+            "normalized_value": "170899152276.34",
+            "page": 5,
+            "value_bbox": [
+              205.13,
+              263.06,
+              306.17,
+              277.73
+            ],
+            "scope": "consolidated",
+            "adjustment": "as_reported",
+            "issues": []
+          }
+        ]
+      }
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "net_profit",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "error",
+        "error": "指标不在目录",
+        "metric": "net_profit"
+      }
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "eps",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "error",
+        "error": "指标不在目录",
+        "metric": "eps"
+      }
+    },
+    {
+      "round": 2,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "items": [
+          {
+            "evidence_id": "2be69095a86bcc7a3ed837df",
+            "company_code": "600519",
+            "metric": "parent_net_profit",
+            "period_year": 2024,
+            "report_year": 2024,
+            "value": "86228146421.62",
+            "unit": "元",
+            "normalized_value": "86228146421.62",
+            "page": 5,
+            "value_bbox": [
+              205.13,
+              277.73,
+              306.17,
+              301.61
+            ],
+            "scope": "parent_shareholders",
+            "adjustment": "as_reported",
+            "issues": []
+          }
+        ]
+      }
+    },
+    {
+      "round": 2,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "basic_eps",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "items": [
+          {
+            "evidence_id": "8f99c7cf09961c5159ac7771",
+            "company_code": "600519",
+            "metric": "basic_eps",
+            "period_year": 2024,
+            "report_year": 2024,
+            "value": "68.64",
+            "unit": "元/股",
+            "normalized_value": "68.64",
+            "page": 5,
+            "value_bbox": [
+              284.93,
+              530.519,
+              311.33,
+              541.079
+            ],
+            "scope": "unknown",
+            "adjustment": "as_reported",
+            "issues": []
+          }
+        ]
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1708.99",
+        "claimed_unit": "亿元",
+        "operator": "approx"
+      },
+      "result": {
+        "verdict": "evidence_supported",
+        "status": "证据支持",
+        "reason_code": "deterministic_check",
+        "reason": "在陈述运算符与容差下与原文证据一致",
+        "evidence_ids": [
+          "80d5d67d35796958172e2d9f"
+        ],
+        "calculation": {
+          "status": "match",
+          "value": "1708.9915227634",
+          "exact_value": "1708.9915227634",
+          "claimed_value": "1708.99",
+          "operator": "approx",
+          "tolerance_pct": "2",
+          "relative_error_pct": "0.00008910303999271608982830316054960123274177",
+          "difference": "0.0015227634",
+          "warning": null,
+          "formula": "abs(actual-claimed)/abs(actual)*100 <= 2% | unit=actual * source_factor / target_factor",
+          "claimed_unit": "亿元",
+          "actual_unit": "元",
+          "actual_value": "170899152276.34"
+        },
+        "expected": null
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "862.28",
+        "claimed_unit": "亿元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "result": {
+        "verdict": "evidence_supported",
+        "status": "证据支持",
+        "reason_code": "deterministic_check",
+        "reason": "单位、口径和陈述精度下与原文证据一致",
+        "evidence_ids": [
+          "2be69095a86bcc7a3ed837df"
+        ],
+        "calculation": {
+          "status": "match",
+          "value": "862.28",
+          "exact_value": "862.2814642162",
+          "claimed_value": "862.28",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "0.0014642162",
+          "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+          "claimed_unit": "亿元",
+          "actual_unit": "元",
+          "actual_value": "86228146421.62"
+        },
+        "expected": null
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "basic_eps",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "68.64",
+        "claimed_unit": "元/股",
+        "operator": "eq"
+      },
+      "result": {
+        "verdict": "evidence_supported",
+        "status": "证据支持",
+        "reason_code": "deterministic_check",
+        "reason": "单位、口径和陈述精度下与原文证据一致",
+        "evidence_ids": [
+          "8f99c7cf09961c5159ac7771"
+        ],
+        "calculation": {
+          "status": "match",
+          "value": "68.64",
+          "exact_value": "68.64",
+          "claimed_value": "68.64",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "0.00",
+          "formula": "round_half_up(actual, decimals)",
+          "claimed_unit": "元/股",
+          "actual_unit": "元/股",
+          "actual_value": "68.64"
+        },
+        "expected": null
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1800",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "result": {
+        "verdict": "confirmed_error",
+        "status": "确认错误",
+        "reason_code": "deterministic_check",
+        "reason": "可比口径下陈述值与证据或计算结果不同",
+        "evidence_ids": [
+          "80d5d67d35796958172e2d9f"
+        ],
+        "calculation": {
+          "status": "mismatch",
+          "value": "1709",
+          "exact_value": "1708.9915227634",
+          "claimed_value": "1800",
+          "operator": "eq",
+          "decimals": 0,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "-91.0084772366",
+          "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+          "claimed_unit": "亿元",
+          "actual_unit": "元",
+          "actual_value": "170899152276.34"
+        },
+        "expected": "1709"
+      }
+    }
+  ],
   "counts": {
     "证据支持": 3,
     "确认错误": 1

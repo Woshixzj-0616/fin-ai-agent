@@ -9,6 +9,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import pymupdf
@@ -301,6 +302,110 @@ class AuditRegressionTests(unittest.TestCase):
         fields, actual = _parse_multipart(handler)
         self.assertEqual(actual, blob)
         self.assertEqual(fields["_comparison_pdfs"], [blob])
+
+
+class LoopRetentionAndEvidenceRankTests(unittest.TestCase):
+    """循环成果保留 + find_evidence 择优：性能改造回归。"""
+
+    def _fact(self, eid, value="100", page=5, issues=None, bbox=True, unit="元"):
+        return {
+            "evidence_id": eid, "company_code": "600519", "company_name": "贵州茅台",
+            "metric": "revenue", "metric_name": "营业收入", "period_year": 2024,
+            "report_year": 2024, "value": value, "unit": unit,
+            "normalized_value": value, "normalized_unit": unit,
+            "scope": "consolidated", "adjustment": "as_reported",
+            "period_kind": "annual", "period_start": "2024-01-01", "period_end": "2024-12-31",
+            "duration_months": 12,
+            "issues": issues or [], "page": page,
+            "value_bbox": [0, 0, 1, 1] if bbox else None,
+            "source_file": "data/test.pdf", "source_sha256": "b" * 64,
+            "document_id": "doc", "currency": "CNY",
+        }
+
+    def test_find_evidence_collapses_same_value_duplicates(self):
+        from tools import dispatch
+        facts = [self._fact("a"), self._fact("b", page=6), self._fact("c", page=7, issues=["unit_unknown"])]
+        out = dispatch("find_evidence", facts, {
+            "company_name_or_code": "600519", "metric": "revenue", "period_year": 2024})
+        self.assertEqual(out["status"], "ok")
+        self.assertEqual(out["items"][0]["evidence_id"], "a")  # 有 bbox、页码靠前、无 issues
+        self.assertIn("duplicate_evidence_ids", out)
+
+    def test_find_evidence_prefers_clean_over_flagged(self):
+        from tools import dispatch
+        facts = [self._fact("bad", issues=["conflicting_extraction_values"]),
+                 self._fact("good", page=9)]
+        out = dispatch("find_evidence", facts, {
+            "company_name_or_code": "600519", "metric": "revenue", "period_year": 2024})
+        self.assertEqual(out["status"], "ok")
+        self.assertEqual(out["items"][0]["evidence_id"], "good")
+
+    def test_find_evidence_conflicting_values_still_ambiguous(self):
+        from tools import dispatch
+        facts = [self._fact("x", value="100"), self._fact("y", value="999")]
+        out = dispatch("find_evidence", facts, {
+            "company_name_or_code": "600519", "metric": "revenue", "period_year": 2024})
+        self.assertEqual(out["status"], "ambiguous")
+
+    def test_loop_preserves_tools_when_submit_schema_fails(self):
+        from agent_loop import run_loop
+        from llm_check import LLMError
+        bad_item = {"claim_id": "c1", "quote": "x", "extra_key": 1}  # 缺字段 + 额外字段
+        frames = [
+            {"action": "call_tools", "tool_calls": [
+                {"name": "compare_claim", "arguments": {
+                    "company_name_or_code": "600519", "metric": "revenue", "period_year": 2024,
+                    "kind": "amount", "claimed_value": "100", "claimed_unit": "元", "operator": "eq"}}]},
+            {"action": "submit_claims", "items": [bad_item], "unclaimed_sentences": []},
+            {"action": "submit_claims", "items": [bad_item], "unclaimed_sentences": []},
+            {"action": "submit_claims", "items": [bad_item], "unclaimed_sentences": []},
+        ]
+
+        class Stub:
+            model, host, key, mode = "stub", "local", "k", "json_object"
+
+            def chat(self, messages, run):
+                return json.dumps(frames.pop(0), ensure_ascii=False)
+
+        events = []
+        run = SimpleNamespace(event=lambda *a, **k: events.append(k.get("event") or a))
+        tools_used, tool_results = [], []
+        with self.assertRaises(LLMError):
+            run_loop(Stub(), "贵州茅台2024年营业收入为100元。", [self._fact("a")], run,
+                     sentences=[{"sentence_id": 1, "text": "x"}],
+                     tools_used=tools_used, tool_results=tool_results)
+        self.assertTrue(tools_used, "失败也必须保留工具调用")
+        self.assertEqual(tools_used[0]["name"], "compare_claim")
+        self.assertEqual(tool_results[0]["result"]["verdict"], "evidence_supported")
+
+    def test_loop_submit_repair_succeeds(self):
+        from agent_loop import run_loop
+        bad_item = {"claim_id": "c1", "quote": "x", "junk": 1}
+        frames = [
+            {"action": "submit_claims", "items": [bad_item], "unclaimed_sentences": []},
+            {"action": "submit_claims", "items": [], "unclaimed_sentences": []},
+        ]
+
+        class Stub:
+            model, host, key, mode = "stub", "local", "k", "json_object"
+
+            def chat(self, messages, run):
+                return json.dumps(frames.pop(0), ensure_ascii=False)
+
+        run = SimpleNamespace(event=lambda *a, **k: None)
+        out = run_loop(Stub(), "x", [], run, sentences=[])
+        self.assertEqual(out["mode"], "json_multi_step")
+        self.assertEqual(out["payload"]["items"], [])
+
+    def test_tool_verdict_rows_kept_after_fallback(self):
+        from llm_check import _tool_verdict_rows
+        rows = _tool_verdict_rows([{
+            "round": 1, "name": "compare_claim", "arguments": {"metric": "revenue"},
+            "result": {"verdict": "confirmed_error", "reason_code": "deterministic_check",
+                       "reason": "不一致", "evidence_ids": ["e1"], "expected": "1709"},
+        }])
+        self.assertEqual(rows[0]["status"], "确认错误")
+        self.assertEqual(rows[0]["evidence_ids"], ["e1"])
 
 
 class RealCompetitionMaterialTests(unittest.TestCase):
