@@ -600,6 +600,30 @@
   "local_file": "data/raw/600519_贵州茅台_2025年年度报告.pdf"
  },
  {
+  "code": "600519",
+  "name": "贵州茅台",
+  "year": 2025,
+  "title": "贵州茅台2025年第一季度报告",
+  "announcement_id": "1223413786",
+  "sha256": "f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+  "pages": 11,
+  "size_bytes": 154608,
+  "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-30/1223413786.PDF",
+  "local_file": "data/demo/real/moutai_2025_q1.pdf"
+ },
+ {
+  "code": "600519",
+  "name": "贵州茅台",
+  "year": 2025,
+  "title": "贵州茅台2025年半年度报告",
+  "announcement_id": "1224462930",
+  "sha256": "c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+  "pages": 103,
+  "size_bytes": 805855,
+  "source_url": "https://static.cninfo.com.cn/finalpage/2025-08-13/1224462930.PDF",
+  "local_file": "data/demo/real/moutai_2025_half.pdf"
+ },
+ {
   "code": "600887",
   "name": "伊利股份",
   "year": 2021,

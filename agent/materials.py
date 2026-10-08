@@ -73,10 +73,15 @@ class Run:
         # 已完成的旧日志在history.zip中；当前日志不再无限追加。
         (self.folder / "events.jsonl").write_text("", encoding="utf-8")
         self.command, self.files, self.events = command, set(), []
-        sources = [AGENT_DIR / name for name in (
-            "main.py", "materials.py", "extract.py", "finance.py", "llm_check.py", "test.py",
-            "requirements.txt", "run.ps1")]
+        sources = sorted(AGENT_DIR.glob("*.py")) + [AGENT_DIR.parent / "requirements.txt"]
         self.sources = {p.name: p.read_bytes() for p in sources if p.exists()}
+        for path in sorted((AGENT_DIR.parent / "scripts").rglob("*.py")):
+            relative = path.relative_to(AGENT_DIR.parent).as_posix()
+            self.sources[relative.replace("/", "__")] = path.read_bytes()
+        for relative in ("scripts/site_build.py", "scripts/setup_ocr.py", "docs/app.js", "docs/trace.js", "docs/index.html", "docs/style.css"):
+            path = AGENT_DIR.parent / relative
+            if path.exists():
+                self.sources[relative.replace("/", "__")] = path.read_bytes()
         write_json(self.output("run.json"), {
             "schema_version": 2, "run_id": self.id, "started_at": now(),
             "command": command, "parameters": parameters,
@@ -106,7 +111,14 @@ class Run:
                    size_bytes=len(blob))
         return blob
 
-    def finish(self, **summary) -> None:
+    def finish(self, *, snapshot_prefix=None, **summary) -> None:
+        self.event("run_finished", **summary)
+        if snapshot_prefix:
+            self.output(f"{snapshot_prefix}_events.jsonl").write_text("".join(self.events), encoding="utf-8")
+            self.output(f"{snapshot_prefix}_run.json").write_bytes((self.folder / "run.json").read_bytes())
+        from trace import build_trace
+        write_json(self.output("trace.json"), {"schema_version": 1, "run_id": self.id,
+                                              "steps": build_trace(self.events)})
         outputs = {name: sha256((self.folder / name).read_bytes())
                    for name in sorted(self.files) if name != "summary.json"
                    and (self.folder / name).is_file()}
@@ -114,7 +126,6 @@ class Run:
             "run_id": self.id, "finished_at": now(), "output_sha256": outputs,
             "history_policy": {"keep_runs": HISTORY_RUNS, "max_uncompressed_bytes": HISTORY_BYTES,
                                "oversized_latest": "保留完整本次运行，清除更早历史"}, **summary})
-        self.event("run_finished", **summary)
         self.save_history()
 
     def save_history(self) -> None:
@@ -176,10 +187,12 @@ def validate_pdf(blob: bytes, company_code: str | None = None,
         if company_code and company_name:
             if company_code not in text and company_name not in text:
                 raise ValueError("PDF前10页未核实公司身份")
-        if report_year and not re.search(rf"{report_year}年?(?:年度报告|年度報告)", text):
+        from periods import report_period
+        identity = report_period(text, report_year)
+        if report_year and identity["report_kind"] == "unknown":
             raise ValueError("PDF前10页未核实报告年度")
         return {"page_count": document.page_count, "identity_checked": bool(report_year),
-                "pdf_repaired_by_parser": document.is_repaired}
+                "pdf_repaired_by_parser": document.is_repaired, **identity}
 
 
 def load_materials(root: Path) -> list[dict]:

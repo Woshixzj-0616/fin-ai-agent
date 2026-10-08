@@ -238,10 +238,15 @@ def comparable(current: dict, previous: dict) -> list[str]:
         reasons.append("比较期间不是相邻两年")
     if previous.get("adjustment") == "before":
         reasons.append("基期为调整前，尚未确认可比性")
+    if current.get("issues") or previous.get("issues"):
+        reasons.append("证据存在待复核字段，不能用于确认同比")
     return reasons
 
 
 def evidence_yoy(current: dict, previous: dict | None) -> dict:
+    if current.get("period_kind") != "annual":
+        from periods import growth
+        return growth(current, previous)
     if previous is None:
         return result("missing", reason="同一报告中未找到唯一可比上年值")
     reasons = comparable(current, previous)
@@ -263,7 +268,11 @@ def evidence_yoy(current: dict, previous: dict | None) -> dict:
 def select_previous(facts: list[dict], current: dict) -> dict | None:
     candidates = [f for f in facts if f["comparison_group"] == current["comparison_group"]
                   and f["metric"] == current["metric"]
-                  and f["period_year"] == current["period_year"] - 1]
+                  and f["period_year"] == current["period_year"] - 1
+                  and f.get("duration_months") == current.get("duration_months")
+                  and (current.get("period_kind") == "annual" or
+                       (f.get("period_start", "")[4:] == current.get("period_start", "")[4:]
+                        and f.get("period_end", "")[4:] == current.get("period_end", "")[4:]))]
     after = [f for f in candidates if f["adjustment"] == "after"]
     preferred = after or [f for f in candidates if f["adjustment"] == "as_reported"]
     return preferred[0] if len(preferred) == 1 else None
@@ -304,12 +313,16 @@ def analyze(facts: list[dict], run) -> dict:
             "previous_evidence_id": previous["evidence_id"] if previous else None,
             "source_file": fact["source_file"], "page": fact["page"],
             "issues": fact["issues"], "document_id": fact["document_id"],
+            "epistemic_type": "事实", "period_kind": fact.get("period_kind"),
+            "period_start": fact.get("period_start"), "period_end": fact.get("period_end"),
+            "duration_months": fact.get("duration_months"),
         }
         rows.append(row)
-        groups.setdefault(fact["document_id"], {})[fact["metric"]] = (fact, row)
-        run.event("calculation", operation="annual_yoy", **row)
+        groups.setdefault((fact["document_id"], fact.get("period_start"), fact.get("period_end")), {}).setdefault(fact["metric"], []).append((fact, row))
+        run.event("calculation", operation="period_yoy", **row)
     signals = []
-    for document_id, metrics in groups.items():
+    for (document_id, _, _), options in groups.items():
+        metrics = {key: values[0] for key, values in options.items() if len(values) == 1}
         profit, adjusted, cash = (metrics.get(k) for k in
                                   ("parent_net_profit", "adjusted_parent_net_profit", "operating_cash_flow"))
         if profit and adjusted and not profit[0]["issues"] and not adjusted[0]["issues"]:
@@ -335,9 +348,61 @@ def analyze(facts: list[dict], run) -> dict:
                         "interpretation": "归母利润与合并经营现金流的归属口径不同；这里只比较各自同比方向，不作等式核验。",
                     })
     for signal in signals:
+        signal["epistemic_type"] = "事实"
         run.event("calculation", operation="auxiliary_signal", **signal)
+    from financial_signals import extended_signals
+    additions = extended_signals(facts, rows)
+    for signal in additions:
+        run.event("calculation", operation="financial_signal", **signal)
+    signals.extend(additions)
+    from periods import derive_quarter, growth, NON_ADDITIVE
+    quarter_facts = []
+    for fact in current:
+        if fact.get("metric") in NON_ADDITIVE:
+            continue
+        if fact.get("duration_months") == 3 and fact.get("period_start") and not fact.get("issues"):
+            quarter_facts.append(fact)
+        elif fact.get("period_start", "").endswith("01-01"):
+            candidates = [f for f in facts if f.get("company_code") == fact.get("company_code")
+                          and f.get("metric") == fact.get("metric") and f.get("period_year") == fact.get("period_year")
+                          and f.get("duration_months") == fact.get("duration_months", 0)-3
+                          and f.get("adjustment") != "before"]
+            derived = derive_quarter(fact, candidates[0] if len(candidates) == 1 else None)
+            if derived["status"] == "ok":
+                quarter_facts.append({**fact, **{k: derived[k] for k in ("period_start", "period_end")},
+                                      "duration_months": 3, "period_kind": "quarter", "value": derived["value"],
+                                      "unit": "元", "normalized_value": derived["value"], "derivation": derived})
+            run.event("calculation", operation="derive_quarter", evidence_ids=derived.get("evidence_ids", []), calculation=derived)
+    qoq_rows = []
+    # 同一单季在不同报告/派生通道重复出现时，等值才合流；冲突不任取一份。
+    quarter_groups = {}
+    for f in quarter_facts:
+        quarter_groups.setdefault((f["company_code"], f["metric"], f["period_start"], f["period_end"]), []).append(f)
+    quarter_facts = []
+    for key, options in quarter_groups.items():
+        options.sort(key=lambda f: bool(f.get("derivation")))
+        winner = {**options[0], "issues": list(options[0].get("issues", []))}
+        if len({(text(convert(f["value"], f["unit"])), f.get("currency"), f.get("scope")) for f in options}) != 1:
+            winner["issues"].append("conflicting_quarter_values")
+        quarter_facts.append(winner)
+        if len(options) > 1:
+            run.event("quarter_dedup", key=list(key), evidence_ids=[f["evidence_id"] for f in options], issues=winner["issues"])
+    for f in quarter_facts:
+        candidates = [p for p in quarter_facts if p["company_code"] == f["company_code"] and p["metric"] == f["metric"]
+                      and p.get("period_end", "") < f.get("period_start", "")]
+        candidates.sort(key=lambda p: p["period_end"], reverse=True)
+        nearest = [p for p in candidates if p["period_end"] == candidates[0]["period_end"]] if candidates else []
+        computation = growth(f, nearest[0] if len(nearest) == 1 else None, "qoq")
+        source_ids = list(dict.fromkeys(f.get("derivation", {}).get("evidence_ids", [f["evidence_id"]]) +
+                         (nearest[0].get("derivation", {}).get("evidence_ids", [nearest[0]["evidence_id"]]) if len(nearest) == 1 else [])))
+        computation["evidence_ids"] = source_ids
+        qoq_rows.append({"company_code": f["company_code"], "metric": f["metric"],
+                         "period_start": f["period_start"], "period_end": f["period_end"], "qoq": computation,
+                         "derivation": f.get("derivation"), "evidence_ids": source_ids, "epistemic_type": "事实"})
+        run.event("calculation", operation="quarter_qoq", **qoq_rows[-1])
     return {"rows": rows, "signals": signals,
-            "basis": "使用同一份年度报告中的本年与上年比较值，调整后列优先。",
+            "qoq_rows": qoq_rows,
+            "basis": "使用明确的报告期间和比较值；同比要求上年同期间，环比要求相邻单季，调整后列优先。",
             "limits": "结论相对于所选原始文件；未自动认定其为截至今日最新有效披露版本。"}
 
 
@@ -348,7 +413,11 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
     matches = [f for f in facts if f["company_code"] == claim["company_code"]
                and f["metric"] == claim["metric"] and f["period_year"] == claim["period_year"]
                and f["report_year"] == claim["source_report_year"]
-               and f["adjustment"] != "before"]
+               and f["adjustment"] != "before"
+               and (not claim.get("period_start") or f.get("period_start") == claim["period_start"])
+               and (not claim.get("period_end") or f.get("period_end") == claim["period_end"])]
+    if len(matches) > 1 and claim.get("period_kind") not in {None, "", "unknown"}:
+        matches = [f for f in matches if f.get("period_kind") == claim["period_kind"]]
     if len(matches) != 1:
         output["reason"] = "未找到唯一匹配的公司、年度、指标与文件版本"
         return output
@@ -390,7 +459,7 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
         calculation = {**comparison, "yoy_calculation": computation}
         expected = comparison.get("value")
     else:
-        output["reason"] = "首版结构化样例仅支持金额与年度同比"
+        output["reason"] = "结构化数值核查支持金额与可比期间同比；其他类型需单独核查"
         return output
     output["calculation"] = calculation
     if calculation["status"] == "match":
@@ -403,6 +472,16 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
                   else f"陈述运算符「{op}」不成立，或超出约定容差")
         output.update(status="确认错误", reason=reason,
                       suggestion=f"将该核查项改为 {expected}{claim['unit']}，并引用所列年报页码。")
+        import re
+        pattern = re.escape(str(claim["value"])) + r"\s*" + re.escape(claim["unit"])
+        replacement = f"{expected}{claim['unit']}"
+        revised, count = re.subn(pattern, replacement, claim["sentence"], count=1)
+        output["correction"] = {"field": claim["metric"], "before": f"{claim['value']}{claim['unit']}",
+                                "after": replacement, "original_sentence": claim["sentence"],
+                                "revised_sentence": revised if count else None,
+                                "evidence_ids": output["evidence_ids"], "page": output["page"],
+                                "apply_automatically": bool(count) and op == "eq",
+                                "condition": "只替换已核实的数值字段；不等式或未定位片段需人工编辑"}
     else:
         output.update(status="口径冲突／需人工复核", reason=calculation.get("reason"))
     return output

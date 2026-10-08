@@ -96,7 +96,8 @@ def run_loop(client, draft: str, facts: list[dict], run,
                 tools_used.append({"round": round_no, "name": name,
                                    "arguments": args, "status": result.get("status")})
                 run.event("agent_tool", round=round_no, tool=name,
-                          status=result.get("status"), budget_left=tool_budget)
+                          status=result.get("status"), budget_left=tool_budget,
+                          arguments=args, result=result, evidence_ids=result.get("evidence_ids", []))
                 results.append({"name": name, "arguments": args, "result": result})
             messages.append({"role": "assistant", "content": json.dumps(frame, ensure_ascii=False)})
             messages.append({"role": "user", "content": json.dumps(

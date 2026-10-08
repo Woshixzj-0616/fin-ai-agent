@@ -202,3 +202,6 @@ footer code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; }
   .overview { grid-template-columns: repeat(2, 1fr); }
   .head-inner { flex-direction: column; }
 }
+:is(.trace-step, #finance-signals details, #announcement-view details) { margin: 10px 0; padding: 10px; border: 1px solid var(--line, #e4e7ec); border-radius: 6px; }
+pre { overflow: auto; max-height: 400px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.trace-evidence, .announcement-source { cursor: pointer; padding: 4px 8px; margin: 4px; border: 1px solid #cbd5e0; border-radius: 4px; background: #eef4ff; color: #175cd3; }

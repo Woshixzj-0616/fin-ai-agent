@@ -111,7 +111,7 @@ def schema() -> dict:
             "enum": ["exceed", "at_least", "at_most", "below", "eq", None],
             "description": "comparison 的方向：exceed=A高于B；null=非比较主张"},
         "period_year": nullable_integer,
-        "period_kind": {"type": "string", "enum": ["annual", "quarter", "other", "unknown"]},
+        "period_kind": {"type": "string", "enum": ["annual", "half", "quarter", "instant", "other", "unknown"]},
         "metric_text": {"type": "string", "description": "原文指标名称，不替换为另一个指标"},
         "metric": {"type": "string", "enum": [*METRICS, "unsupported", "unknown"],
                    "description": "对齐到目录键；对不上用 unknown，禁止硬凑"},
@@ -438,8 +438,21 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                     "指标不在目录内（营收/营业总收入/归母/扣非/经营现金流/EPS/加权ROE/总资产）", "证据不足")
     if item["metric"] != metric and item["metric"] not in {"unknown", "unsupported"}:
         return stop("model_parse_conflict", "模型指标分类与原文指标名称不一致")
+    period_fields = {}
     if item["period_kind"] != "annual" or re.search(r"季度|半年|前三季|Q[1-4]", source, re.I):
-        return stop("unsupported_period", "只核对完整年度，不将季度或半年数据与年报全年值混比")
+        from periods import end_date
+        if re.search(r"半年|半年度|上半年", source):
+            expected_kind, month, start_month = "half", 6, 1
+        else:
+            quarter = re.search(r"(?:第?([一二三四1234])季度|Q([1-4]))", source, re.I)
+            cumulative = re.search(r"前三季|年初至", source)
+            if not quarter and not cumulative:
+                return stop("unsupported_period", "季度/半年期间没有明确起止，不能与全年值混比")
+            q = int(quarter[2]) if quarter and quarter[2] else {"一": 1, "二": 2, "三": 3, "四": 4, "1": 1, "2": 2, "3": 3, "4": 4}.get(quarter[1], 3) if quarter else 3
+            expected_kind, month, start_month = "quarter", q*3, 1 if cumulative else q*3-2
+        if item["period_kind"] != expected_kind:
+            return stop("model_parse_conflict", "模型期间分类与原文的半年/单季/累计表达不一致")
+        period_fields = {"period_start": f"{year}-{start_month:02d}-01", "period_end": end_date(year, month)}
 
     # 运算符：约数/不等式不再拒判；无运算符却带模糊词仍拒
     operator = item.get("operator") or "eq"
@@ -487,7 +500,7 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
     claim = {"id": claim_id, "sentence": sentence, "company_code": code,
              "period_year": year, "source_report_year": year, "metric": metric,
              "kind": kind, "value": text(value), "unit": UNITS[raw_unit],
-             "currency": item["currency"], "scope": item["scope"], "period_kind": "annual",
+             "currency": item["currency"], "scope": item["scope"], "period_kind": item["period_kind"], **period_fields,
              "operator": operator, "tolerance_pct": item.get("tolerance_pct")}
     try:
         checked = check_claim(claim, facts)
@@ -532,15 +545,15 @@ def render_report(results: list[dict], *, model: str, run_id: str,
     def cell(value):
         return str(value or "—").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("|", "\\|").replace("\n", " ")
 
-    det = [r for r in results if r.get("track") == "deterministic"]
+    det = [r for r in results if r.get("track") == "deterministic" and r.get("status") in {"确认错误", "证据支持"}]
     model_rows = [r for r in results if r.get("track") == "model"]
-    review = [r for r in results if r.get("track") not in {"deterministic", "model"}]
+    review = [r for r in results if r.get("track") != "model" and r not in det]
 
     lines = ["# 草稿核查报告（双轨）", "",
              f"运行：{run_id}；结构化录入模型：{cell(model)}。", "",
              "**A 栏 = 代码裁定（可复算）**：对错、正确值、计算式全部由本地 Python 生成。", "",
              "**B 栏 = 模型判断（未完全核实）**：语义解释，仅供参考，不作为对错结论。", "",
-             "核查上下文：默认人民币、完整年度；营业收入与经营现金流按合并口径。", "",
+             "核查上下文：期间、币种、口径与来源须可确认；营业收入与经营现金流按已记录的合并口径。", "",
              "## A. 确定结论（代码裁定）", "",
              "| ID | 主张 | 裁决 | 原因或建议 | 证据与页码 |",
              "|---|---|---|---|---|"]
@@ -552,6 +565,11 @@ def render_report(results: list[dict], *, model: str, run_id: str,
                      f"{'；'.join(citations) or '无可用证据'} |")
     if not det:
         lines.append("| — | （无确定结论） | | | |")
+    for row in det:
+        if row.get("verification_scope"):
+            lines += ["", f"- {cell(row['claim_id'])} 核查范围：{cell(row['verification_scope'])}。"]
+        if row.get("correction"):
+            lines += [f"- {cell(row['claim_id'])} 替换：{cell(row['correction'].get('before'))} → {cell(row['correction'].get('after'))}。"]
 
     lines += ["", "## B. 模型判断（未完全核实 · 仅供参考）", "",
               "| ID | 主张 | 解释 | 依据原文 | 状态 |",
@@ -596,7 +614,7 @@ def render_report(results: list[dict], *, model: str, run_id: str,
 
 def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
                use_loop: bool = True) -> dict:
-    draft = path.read_text(encoding="utf-8-sig")
+    draft = run.read(path).decode("utf-8-sig")
     if client.key in draft or SECRET_PATTERN.search(draft):
         raise LLMError("草稿疑似包含凭证，已停止读取后续流程；请使用单独的纯草稿文件")
     sentences = split_draft(draft)
@@ -618,6 +636,9 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
     else:
         payload = client.extract(sentences, run, facts)
     results = check_payload(payload, sentences, draft, facts)
+    run.event("model_parse", sentences=sentences, parsed=payload)
+    from audit_checks import check_draft_supplements
+    results.extend(check_draft_supplements(draft, facts, root=run.root, run=run))
     bundle = {"schema_version": 2, "run_id": run.id, "status": "completed",
               "mode": mode, "model": client.model, "provider_host": client.host,
               "response_format": client.mode,
@@ -631,6 +652,9 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
         render_report(results, model=client.model, run_id=run.id,
                       tools_used=tools_used, mode=mode), encoding="utf-8")
     for result in results:
+        run.event("claim_gate", claim_id=result["claim_id"], reason_code=result["reason_code"],
+                  reason=result.get("reason"), evidence_ids=result["evidence_ids"],
+                  normalized_claim=result.get("normalized_claim"))
         run.event("text_claim_checked", claim_id=result["claim_id"], status=result["status"],
                   reason_code=result["reason_code"], track=result.get("track"),
                   evidence_ids=result["evidence_ids"])

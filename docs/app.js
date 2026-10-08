@@ -98,7 +98,7 @@ function renderYoy() {
       : '未核对（缺披露值）';
     return `<tr>
       <td>${esc(r.company_name || r.company_code)}</td>
-      <td class="num">${esc(r.report_year)}</td>
+      <td class="num">${esc(r.period_start && r.period_end ? r.period_start + ' 至 ' + r.period_end : r.report_year)}</td>
       <td>${esc(r.metric_name || r.metric)}</td>
       <td class="num mono">${fmtBig(r.current)}</td>
       <td class="num mono">${fmtBig(r.previous)}</td>
@@ -110,6 +110,23 @@ function renderYoy() {
   }).join('') || `<tr><td colspan="9" class="empty">没有指标行</td></tr>`;
   const basis = DATA.analysis && DATA.analysis.basis;
   $('#yoy-basis').textContent = basis || '';
+  let signals = document.getElementById('finance-signals');
+  if (!signals) {
+    signals = document.createElement('div');
+    signals.id = 'finance-signals';
+    $('#yoy-basis').after(signals);
+  }
+  const signalSource = (s) => (DATA.evidence || []).find(e => e.document_id === s.document_id);
+  signals.innerHTML = ((DATA.analysis && DATA.analysis.signals) || [])
+    .filter(s => !co || signalSource(s)?.company_code === co)
+    .map(s => {
+      const source = signalSource(s);
+      const period = source ? `${source.company_name || source.company_code} · ${source.period_start || ''} 至 ${source.period_end || source.report_year}` : s.document_id || '';
+      return `<details><summary>【${esc(s.epistemic_type || '事实')}】${esc(period)} · ${esc(s.description)} ${s.value == null ? '' : fmtNum(s.value)}${esc(s.unit || '')}</summary><p>${esc(s.interpretation || '')}</p><pre>${esc(JSON.stringify(s.calculation || s.observations || {}, null, 2))}</pre></details>`;
+    }).join('');
+  signals.innerHTML += ((DATA.analysis && DATA.analysis.qoq_rows) || [])
+    .filter(r => !co || r.company_code === co)
+    .map(r => `<p>${esc(r.company_code)} 单季环比 ${esc(METRICS[r.metric]?.[0] || r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：${r.qoq.status === 'ok' ? fmtNum(r.qoq.value) + '%' : esc(r.qoq.reason ?? r.qoq.status)}</p>`).join('');
 }
 
 /* ---------- 材料台账 ---------- */
@@ -118,7 +135,7 @@ function renderMaterials() {
   const rows = (DATA.materials || []).filter((m) =>
     !q || (m.code || '').includes(q) || (m.name || '').includes(q) ||
     String(m.year || '').includes(q) || (m.title || '').includes(q));
-  $('#mat-count').textContent = `${rows.length} / ${(DATA.materials || []).length} 份年报`;
+  $('#mat-count').textContent = `${rows.length} / ${(DATA.materials || []).length} 份财务报告`;
   $('#mat-table tbody').innerHTML = rows.map((m) => `
     <tr>
       <td class="mono">${esc(m.code)}</td>
@@ -183,17 +200,17 @@ function renderEvidence() {
 }
 
 function showSource(e) {
+  const fieldName = window.announcementFieldLabels[e.metric_name] || e.metric_name;
   $('#src-title').textContent =
-    `${e.company_name || e.company_code} ${e.report_year} 年报 · 第 ${e.page} 页 · ${e.metric_name}`;
+    `${e.company_name || e.company_code || '公告'} · PDF 页序 ${e.page} · ${fieldName}`;
   const imgPath = e.page_image || (DATA.page_images || {})[e.page] ||
     (DATA.page_images || {})[`${e.company_code}_${e.report_year}_${e.page}`];
   const meta = `
     <div class="src-meta">
-      <b>原始标签</b> ${esc(e.original_label || '—')}<br>
+      <b>原始标签 / 字段</b> ${esc(window.announcementFieldLabels[e.original_label] || e.original_label || '—')}<br>
       <b>数值</b> ${esc(e.raw_value ?? '—')} <b>单位</b> ${esc(e.unit || '—')}
       → 归一 <b>${fmtBig(e.normalized_value)}</b> ${esc(e.normalized_unit || '')}<br>
-      <b>期间</b> ${esc(e.period_year)} 年 · <b>口径</b> ${esc(scopeZh(e.scope))}
-      · <b>调整列</b> ${esc(adjZh(e.adjustment))}<br>
+      ${e.period_year ? `<b>期间</b> ${esc(qaPeriodLabel(e))} · <b>口径</b> ${esc(scopeZh(e.scope))} · <b>调整列</b> ${esc(adjZh(e.adjustment))}<br>` : ''}
       <b>定位</b> PDF 第 ${esc(e.page)} 页 · bbox <span class="mono">[${(e.value_bbox || []).map((n) => Number(n).toFixed(1)).join(', ')}]</span><br>
       <b>提取</b> ${esc(e.extraction_method)} · <b>指纹</b> <span class="mono">${shortSha(e.source_sha256)}</span>
       ${e.issues && e.issues.length ? `<br><b>待复核</b> ${esc(e.issues.join('、'))}` : ''}
@@ -252,7 +269,7 @@ function renderChecks() {
       <td>${esc(c.original_sentence || c.sentence || '—')}</td>
       <td class="muted">${esc(c.check_item || '—')}</td>
       <td>${statusBadge(c.status)}</td>
-      <td>${esc(c.reason || '—')}${c.calculation && c.calculation.value ? `<br><span class="muted">程序建议：<b>${esc(c.calculation.value)}</b></span>` : ''}${c.suggestion ? `<br><span class="muted">${esc(c.suggestion)}</span>` : ''}</td>
+      <td>${esc(c.reason || '—')}${c.verification_scope ? `<br>${esc(c.verification_scope)}` : ''}${c.suggestion ? `<br>${esc(c.suggestion)}` : ''}${c.correction ? `<details><summary>修改片段</summary><p>${esc(c.correction.before)} → ${esc(c.correction.after)}</p><p>${esc(c.correction.revised_sentence || '需人工调整句子')}</p></details>` : ''}</td>
       <td class="mono muted">${evHtml}${c.page ? ` · p${esc(c.page)}` : ''}</td>
     </tr>`;
   }).join('') || `<tr><td colspan="6" class="empty">没有核查项</td></tr>`;
@@ -294,6 +311,25 @@ function renderEvents() {
       <td class="muted">${detail}</td>
     </tr>`;
   }).join('') || `<tr><td colspan="3" class="empty">没有事件</td></tr>`;
+  window.renderExecutionTrace($('#trace-view'), DATA.trace || [], id => {
+    const ev = [...(DATA.evidence || []), ...(DATA.announcements || []).flatMap(a => a.evidence || [])].find(e => e.evidence_id === id);
+    if (!ev) return;
+    $$('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === 'evidence'));
+    $$('.tab').forEach(t => t.classList.toggle('active', t.id === 'tab-evidence'));
+    showSource(ev);
+  });
+}
+
+function renderAnnouncements() {
+  const labels = window.announcementFieldLabels;
+  $('#announcement-view').innerHTML = (DATA.announcements || []).map(bundle => `<h3>${esc(bundle.sample_name || bundle.event_type)} ${bundle.simulated ? '· 模拟材料' : '· 真实公开披露'}</h3>${(bundle.events || []).map(e => `<details open><summary>${esc(e.event_name)} · ${esc(window.announcementStatusLabels[e.status] || e.status)}</summary><p>文件指纹：${esc(e.source_sha256)}<br>必填缺失：${esc(e.missing_required.map(k=>labels[k] || k).join('、') || '无')}；冲突：${esc(e.conflicts.map(k=>labels[k] || k).join('、') || '无')}</p><table class="grid"><thead><tr><th>字段</th><th>原值</th><th>规范值</th><th>状态</th><th>来源页</th></tr></thead><tbody>${Object.entries(e.fields).map(([k,v]) => `<tr><td>${esc(labels[k] || k)}</td><td>${esc(v.value ?? '缺失')}</td><td>${esc(v.normalized_value ?? '—')} ${esc(v.normalized_unit || '')}</td><td>${esc(window.announcementStatusLabels[v.status] || v.status)}</td><td>${v.evidence.map((x,i)=>`<button class="announcement-source" data-id="${esc(e.event_id+'_'+k+'_'+i)}">PDF 页序 ${esc(x.page)}</button>`).join(' ')}</td></tr>`).join('')}</tbody></table><details><summary>结构化字段与位置</summary><pre>${esc(JSON.stringify(e.fields, null, 2))}</pre></details></details>`).join('')}`).join('') || '<p>尚未打包公告样例；运行样例构建与 site_build 后可展示。</p>';
+  $$('.announcement-source').forEach(button => button.addEventListener('click', () => {
+    const ev = (DATA.announcements || []).flatMap(a => a.evidence || []).find(e => e.evidence_id === button.dataset.id);
+    if (!ev) return;
+    $$('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === 'evidence'));
+    $$('.tab').forEach(t => t.classList.toggle('active', t.id === 'tab-evidence'));
+    showSource(ev);
+  }));
 }
 
 /* ---------- 受限问答（静态确定性，不调模型） ---------- */
@@ -367,11 +403,28 @@ function qaMatchKind(q) {
   if (OVERVIEW_CUE.test(q) && !/多少|是啥|是多少|几多/.test(q)) return 'overview';
   return 'value';
 }
+function qaPeriod(q, year) {
+  let month = null, start = 1;
+  if (/半年|半年度|上半年/.test(q)) month = 6;
+  else if (/前三季|前[三3]季度|年初至.*三季/.test(q)) month = 9;
+  else {
+    const m = q.match(/第?([一二三四1234])季度|Q([1-4])/i);
+    if (m) {
+      const quarter = m[2] ? +m[2] : ({一:1, 二:2, 三:3, 四:4})[m[1]] || +m[1];
+      month = quarter * 3; start = quarter * 3 - 2;
+    } else if (/全年|年度报告|年报/.test(q)) month = 12;
+  }
+  return month ? {start: `${String(start).padStart(2, '0')}-01`, end: `${String(month).padStart(2, '0')}-${month === 3 || month === 12 ? '31' : '30'}`} : null;
+}
+function qaPeriodLabel(e) {
+  return e.period_start && e.period_end ? `${e.period_start} 至 ${e.period_end}` : e.period_end || `${e.period_year} 年`;
+}
 function qaCite(e) {
   return {
     evidence_id: e.evidence_id,
     metric_name: e.metric_name || e.metric,
     period_year: e.period_year,
+    period_label: qaPeriodLabel(e),
     value: e.value,
     unit: e.unit,
     page: e.page,
@@ -403,20 +456,24 @@ function qaAnswer(question) {
   const metric = qaMatchMetric(q);
   const company = qaMatchCompany(q);
   const kind = qaMatchKind(q);
-  const scoped = company ? all.filter((e) => e.company_code === company) : all;
-  const year = qaMatchYear(q, scoped);
+  const companyScoped = company ? all.filter((e) => e.company_code === company) : all;
+  const year = qaMatchYear(q, companyScoped);
+  const period = qaPeriod(q, year);
+  const scoped = companyScoped.filter(e => !period ||
+    (String(e.period_end || '').slice(5) === period.end &&
+     (e.period_kind === 'instant' || String(e.period_start || '').slice(5) === period.start)));
 
   if (kind === 'overview') {
     const picked = new Map();
     scoped.forEach((e) => {
-      const key = (e.company_code || '') + '|' + (e.metric || '');
+      const key = [e.company_code, e.metric, e.period_start, e.period_end, e.scope, e.document_id].join('|');
       const cur = picked.get(key);
       if (!cur || (e.period_year || 0) > (cur.period_year || 0)) picked.set(key, e);
     });
     const cites = [...picked.values()].map(qaCite);
     if (!cites.length) return { status: 'insufficient_evidence', answer: '无可汇总证据。', evidence_ids: [], citations: [] };
     const lines = cites.map((c) =>
-      `· ${esc(c.company_name)} ${esc(c.metric_name)}（${esc(c.period_year)}）：${fmtNum(c.value)} ${esc(c.unit || '')}`);
+      `· ${c.company_name} ${c.metric_name}（${c.period_label}）：${c.value} ${c.unit || ''}`);
     return {
       status: 'ok',
       answer: `指标概览（共 ${all.length} 条证据）：\n` + lines.join('\n'),
@@ -453,11 +510,11 @@ function qaAnswer(question) {
     };
   }
   const metricName = METRICS[metric][0];
-  const matches = scoped.filter((e) => e.metric === metric && e.period_year === year);
+  const matches = scoped.filter((e) => e.metric === metric && e.period_year === year && e.report_year === year);
   if (!matches.length) {
     return {
       status: 'insufficient_evidence',
-      answer: `证据不足：未找到 ${company ? (company + ' ') : ''}${year} 年「${metricName}」的年报证据，不猜数值。`,
+      answer: `证据不足：未找到 ${company ? (company + ' ') : ''}${year} 年「${metricName}」的对应期间证据。`,
       evidence_ids: [], citations: [],
     };
   }
@@ -465,51 +522,24 @@ function qaAnswer(question) {
     const cites = matches.map(qaCite);
     return {
       status: 'insufficient_evidence',
-      answer: `证据不足：${year} 年「${metricName}」命中 ${matches.length} 条，需收窄公司或口径。`,
+      answer: `证据不足：${year} 年「${metricName}」命中 ${matches.length} 条，需明确全年、半年或季度及公司、口径。`,
       evidence_ids: cites.map((c) => c.evidence_id), citations: cites,
     };
   }
 
   const fact = matches[0];
   const cite = qaCite(fact);
+  if (fact.issues?.length) return {status: 'insufficient_evidence', answer: '证据含待复核标记，不能直接作为确定数值作答。', evidence_ids: [fact.evidence_id], citations: [cite]};
 
   if (kind === 'yoy') {
-    const prev = scoped.find((e) =>
-      e.metric === metric && e.period_year === year - 1 &&
-      e.comparison_group === fact.comparison_group && e.adjustment !== 'before');
-    if (!prev || !fact.normalized_value || !prev.normalized_value) {
-      return {
-        status: 'insufficient_evidence',
-        answer: `证据不足：${year} 年「${metricName}」缺可比上年值，同比无法复算。`,
-        evidence_ids: [fact.evidence_id], citations: [cite],
-      };
-    }
-    const a = Number(fact.normalized_value);
-    const b = Number(prev.normalized_value);
-    if (!isFinite(a) || !isFinite(b) || b === 0) {
-      return {
-        status: 'insufficient_evidence',
-        answer: `证据不足：${year} 年「${metricName}」同比无法复算（基期缺失或为 0）。`,
-        evidence_ids: [fact.evidence_id, prev.evidence_id].filter(Boolean),
-        citations: [cite, qaCite(prev)],
-      };
-    }
-    // 与后端 finance.yoy 一致：负基期拒绝常规同比，不套 abs
-    if (b < 0) {
-      const change = a > 0 ? '扭亏为盈' : a === 0 ? '亏损归零' : a > b ? '减亏' : '亏损扩大';
-      return {
-        status: 'insufficient_evidence',
-        answer: `证据不足：${year} 年「${metricName}」同比无法按常规公式计算（基期为负），方向：${change}。`,
-        evidence_ids: [fact.evidence_id, prev.evidence_id].filter(Boolean),
-        citations: [cite, qaCite(prev)],
-      };
-    }
-    const pct = ((a - b) / b) * 100;
+    const row = (DATA.analysis?.rows || []).find(r => r.evidence_id === fact.evidence_id);
+    const computation = row?.yoy;
+    const cites = (computation?.evidence_ids || [fact.evidence_id]).map(id => (DATA.evidence || []).find(e => e.evidence_id === id)).filter(Boolean).map(qaCite);
+    if (computation?.status !== 'ok') return {status: 'insufficient_evidence', answer: `证据不足：${qaPeriodLabel(fact)}「${metricName}」同比无法复算（${computation?.reason || computation?.status || '缺少可比期间'}）。`, evidence_ids: cites.map(c => c.evidence_id), citations: cites};
     return {
       status: 'ok',
-      answer: `${fact.company_name || fact.company_code} ${year} 年${metricName}同比 ${qaFmtPct(pct)}%。计算式：(current - previous) / previous × 100。`,
-      evidence_ids: [fact.evidence_id, prev.evidence_id],
-      citations: [cite, qaCite(prev)],
+      answer: `${fact.company_name || fact.company_code} ${qaPeriodLabel(fact)} ${metricName}同比 ${qaFmtPct(computation.value)}%。计算式：${computation.formula}。`,
+      evidence_ids: cites.map(c => c.evidence_id), citations: cites,
     };
   }
 
@@ -517,7 +547,7 @@ function qaAnswer(question) {
   const scopeTxt = { consolidated: '合并', parent_shareholders: '归母', parent_company: '母公司' }[fact.scope] || (fact.scope && fact.scope !== 'unknown' ? fact.scope : '—');
   return {
     status: 'ok',
-    answer: `${fact.company_name || fact.company_code} ${year} 年${metricName}为 ${fact.value} ${fact.unit || ''}，口径：${scopeTxt}（PDF 第 ${fact.page} 页）。`,
+    answer: `${fact.company_name || fact.company_code} ${qaPeriodLabel(fact)} ${metricName}为 ${fact.value} ${fact.unit || ''}，口径：${scopeTxt}（PDF 第 ${fact.page} 页）。`,
     evidence_ids: [fact.evidence_id],
     citations: [cite],
   };
@@ -591,6 +621,7 @@ fetch('data/bundle.json')
     renderEvidence();
     renderChecks();
     renderEvents();
+    renderAnnouncements();
     const n = (DATA.evidence || []).length;
     const cnt = $('#qa-ev-count');
     if (cnt) cnt.textContent = n;

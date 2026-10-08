@@ -402,7 +402,7 @@ class RealReportIntegrationTests(unittest.TestCase):
         # 固定材料集 = 茅台/五粮液/伊利 × 2023–2025（与 124 条证据、36 项同比的验收口径一致）
         cls.materials, cls.facts, cls.failures = extract_selected(
             ROOT, cls.audit_run,
-            code={"600519", "000858", "600887"}, year={2023, 2024, 2025})
+            code={"600519", "000858", "600887"}, year={2023, 2024, 2025}, report_kind="annual")
         cls.analysis = analyze(cls.facts, cls.audit_run)
 
     def test_all_nine_reports_have_current_four_metrics(self):
@@ -963,8 +963,8 @@ class WebUITests(unittest.TestCase):
         import pymupdf
         doc = pymupdf.open()
         page = doc.new_page()
-        # 默认 Helvetica 不带中文，必须挂系统中文字体，否则 get_text() 取不到字
-        font = pymupdf.Font(fontfile=r"C:\Windows\Fonts\msyh.ttc")
+        # PyMuPDF 内置 CJK 字体，不依赖 Windows/macOS/Linux 的字体路径。
+        font = pymupdf.Font("cjk")
         page.insert_font(fontname="zh", fontbuffer=font.buffer)
         page.insert_text((72, 72), text, fontname="zh", fontsize=12)
         blob = doc.tobytes()

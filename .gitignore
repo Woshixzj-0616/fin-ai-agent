@@ -17,3 +17,6 @@ desktop.ini
 
 # --- 薄页面临时分析（不进正式台账）---
 results/webui_work/
+results/webui_*
+results/000000_*.png
+data/ocr/tessdata/

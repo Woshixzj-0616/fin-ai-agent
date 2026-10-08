@@ -43,25 +43,44 @@ def load_materials() -> list[dict]:
 
 
 def extract_multi(codes: list[tuple[str, int]]) -> list[dict]:
-    from main import extract_selected
-    from materials import Run
+    from main import extract_selected, report_markdown
+    from materials import Run, write_csv, write_json
+    from finance import analyze, check_claim
     run = Run(RESULTS.parent, "site_build", {"codes": [c for c, _ in codes]})
     print(f"抽取运行：{run.folder}", flush=True)
     all_facts: list[dict] = []
+    selected_materials = []
+    failures = []
     for code, year in codes:
         _m, facts, failed = extract_selected(ROOT, run, code, year, True)
         all_facts.extend(facts)
+        selected_materials.extend(_m)
+        failures.extend(failed)
         print(f"  {code} {year}: 证据 {len(facts)}", flush=True)
         # 页图已由 run.output 写入 results/，此处无需再拷
-    write = RESULTS / "evidence.json"
-    write.write_text(json.dumps(all_facts, ensure_ascii=False, indent=1), encoding="utf-8")
+    write_json(run.output("evidence.json"), all_facts)
+    write_csv(run.output("evidence.csv"), all_facts, [
+        "evidence_id", "company_code", "company_name", "report_year", "period_year",
+        "period_start", "period_end", "period_kind", "metric", "metric_name", "value",
+        "unit", "normalized_value", "normalized_unit", "currency", "scope", "adjustment",
+        "page", "source_file", "source_sha256", "announcement_id", "source_url",
+    ])
+    write_json(run.output("failures.json"), failures)
+    analysis = analyze(all_facts, run)
+    write_json(run.output("analysis.json"), analysis)
+    run.output("report.md").write_text(report_markdown(analysis, selected_materials), encoding="utf-8")
+    samples = json.loads(run.read(ROOT / "data/agent/samples.json"))
+    write_json(run.output("sample_checks.json"), [check_claim(c, all_facts) for c in samples["claims"]])
+    run.finish(snapshot_prefix="analysis", status="partial_failure" if failures else "ok", evidence_count=len(all_facts), failures=len(failures))
     return all_facts
 
 
 def copy_pages(evidence: list[dict]) -> dict[str, str]:
-    """页图拷进 docs/pages，key 用 company_year_page，避免多公司撞名。"""
+    """页图拷进 docs/pages，key 包含文件指纹，避免同公司同年不同报告撞名。"""
     (SITE / "pages").mkdir(parents=True, exist_ok=True)
     page_map: dict[str, str] = {}
+    required_pages = {f"{e['company_code']}_{e['report_year']}_{e['source_sha256'][:8]}_{e['page']}"
+                      for e in evidence if e.get("source_sha256") and e.get("page")}
     # results 下 PNG：{code}_{year}_{sha8}_p{page}.png
     for p in RESULTS.glob("*.png"):
         stem = p.stem
@@ -76,15 +95,17 @@ def copy_pages(evidence: list[dict]) -> dict[str, str]:
             page_no = int(page)
         except ValueError:
             continue
-        key = f"{code}_{year}_{page_no}"
+        fingerprint = parts[2]
+        key = f"{code}_{year}_{fingerprint}_{page_no}"
+        if key not in required_pages:
+            continue
         dst = f"pages/{key}.png"
         shutil.copy2(p, SITE / dst)
         page_map[key] = dst
-        page_map[str(page_no)] = dst  # 兼容旧键（单公司）
     # 每条证据挂 page_image
     for e in evidence:
-        key = f"{e.get('company_code')}_{e.get('report_year')}_{e.get('page')}"
-        e["page_image"] = page_map.get(key) or page_map.get(str(e.get("page")))
+        key = f"{e.get('company_code')}_{e.get('report_year')}_{(e.get('source_sha256') or '')[:8]}_{e.get('page')}"
+        e["page_image"] = page_map.get(key)
     return page_map
 
 
@@ -119,21 +140,37 @@ def main() -> int:
 
     checks_path = RESULTS / "sample_checks.json"
     checks = json.loads(checks_path.read_text(encoding="utf-8")) if checks_path.is_file() else []
+    audit_path = RESULTS / "audit_checks.json"
+    audit_matches = False
+    if audit_path.is_file():
+        from materials import sha256
+        audit = json.loads(audit_path.read_text(encoding="utf-8"))
+        if audit.get("evidence_sha256") == sha256((RESULTS / "evidence.json").read_bytes()):
+            checks.extend(audit.get("checks", []))
+            audit_matches = True
     analysis_path = RESULTS / "analysis.json"
     analysis = json.loads(analysis_path.read_text(encoding="utf-8")) if analysis_path.is_file() else {}
     events = []
-    events_path = RESULTS / "events.jsonl"
-    if events_path.is_file():
-        for line in events_path.read_text(encoding="utf-8").splitlines():
-            if line.strip():
-                try:
-                    events.append(json.loads(line))
-                except ValueError:
-                    pass
+    event_paths = [RESULTS / "analysis_events.jsonl"]
+    if audit_matches:
+        event_paths.append(RESULTS / "audit_events.jsonl")
+    if not event_paths[0].is_file():
+        event_paths[0] = RESULTS / "events.jsonl"
+    for events_path in event_paths:
+        if events_path.is_file():
+            for line in events_path.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    try:
+                        events.append(json.loads(line))
+                    except ValueError:
+                        pass
 
     companies = sorted({f"{e.get('company_code')}|{e.get('company_name')}" for e in evidence})
+    from trace import build_trace
+    sample_path = ROOT / "data" / "demo" / "announcement_examples.json"
+    announcements = json.loads(sample_path.read_text(encoding="utf-8")) if sample_path.is_file() else []
     bundle = {
-        "generated_from": "agent/results",
+        "generated_from": "results/（本次实跑）",
         "companies": [{"code": c.split("|")[0], "name": c.split("|", 1)[-1]} for c in companies],
         "materials": mats,
         "evidence": evidence,
@@ -141,6 +178,9 @@ def main() -> int:
         "checks": checks,
         "analysis": analysis,
         "events": events[-400:],
+        "trace": build_trace(events, evidence) + [step for sample in announcements for step in sample.get("trace", [])],
+        "announcements": announcements,
+        "analysis_run": json.loads((RESULTS / "analysis_run.json").read_text(encoding="utf-8")) if (RESULTS / "analysis_run.json").is_file() else None,
     }
     (SITE / "data" / "bundle.json").write_text(
         json.dumps(bundle, ensure_ascii=False), encoding="utf-8")
