@@ -1,0 +1,2 @@
+# 数据脚本与阶段一网页服务共用同一组 Python 依赖
+-r backend/requirements.txt

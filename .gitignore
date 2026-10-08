@@ -1,0 +1,50 @@
+# --- 个人证件（学生证照片，含姓名/学号/照片）---
+# 报名时由队长直接上传竞赛平台即可，不必进仓库
+# 如果确实需要放进来，删掉下面这行即可
+材料/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- 编辑器 / 系统 ---
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+# 扩充财报语料较大；保留在本机，协作者可运行下载脚本按来源复现
+/data/raw/*.pdf
+/data/raw/versions/
+/data/cases/原始报告/*.pdf
+
+# 阶段一：本地模型配置、上传文件和任务数据库
+.env
+/data/app/
+/data/开发运行/
+/data/并行开发/
+/logs/*.log
+/frontend/dist/
+/frontend/node_modules/
+/frontend/dist/
+
+# 模块化副本的本机运行内容
+/backend/modules_legacy_*/
+/backend/workbenches/__pycache__/
+/modules/**/__pycache__/
+/frontend/**/node_modules/
+/frontend/**/dist/
+/launchers/**/logs/
+/launchers/**/data/
+/data/**/logs/
+
+# 本地凭据、报告和运行产物
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.db
+*.log
+*.pdf

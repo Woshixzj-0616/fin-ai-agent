@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#143d32">
+  <title>模块四｜现金流与利润兑现</title>
+  <link rel="stylesheet" href="/cashflow.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">林</span>
+      <span><b>林研</b><small>FINLAB · MODULE 04</small></span>
+    </a>
+    <div class="module-name"><span class="live-dot"></span>模块四 · 现金流与利润兑现 <em>独立工作台 V1.0</em></div>
+    <div class="top-actions">
+      <span id="model-status" class="model-status">正在读取模型配置</span>
+      <button class="quiet-button" id="open-settings">配置</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar">
+      <section class="panel upload-panel">
+        <div class="panel-title"><div><small>从一份年报开始</small><h2>上传年报 PDF</h2></div><span class="module-chip">模块四</span></div>
+        <label class="dropzone" id="dropzone">
+          <input id="file-input" type="file" accept="application/pdf,.pdf">
+          <span class="upload-icon">↑</span>
+          <b id="file-label">点击选择，或把 PDF 拖到这里</b>
+          <small>文字版年报 PDF · 单个文件最大 25 MB</small>
+        </label>
+        <div class="file-meta" id="file-meta" hidden></div>
+        <button class="primary-button" id="analyze-button" disabled>开始现金流分析 <span>↗</span></button>
+        <p class="privacy-note">PDF 和分析记录仅保存在此工作台目录；本模块会向 DeepSeek 发送提取的年报文字。</p>
+        <p class="upload-error" id="upload-error" hidden></p>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="panel-title"><h2>最近分析</h2><span id="history-count" class="subtle-count">0 条</span></div>
+        <div id="history-list" class="history-list"><div class="empty-mini">读取本机历史记录…</div></div>
+      </section>
+
+      <section class="side-note">
+        <span>本模块输出</span>
+        <p>现金全貌、利润到经营现金、经营收付、投资现金、筹资与现金余额。</p>
+        <p>金额勾稽由程序计算；原文引用、模型判断与待复核项分开显示。</p>
+      </section>
+    </aside>
+
+    <section class="content">
+      <div class="hero">
+        <div class="crumb">工作台 <b>/</b> 财报分析 <b>/</b> <strong>模块四</strong></div>
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> CASH FLOW &amp; PROFIT CONVERSION</div>
+          <h1>看清现金，<span>追到利润兑现的路径。</span></h1>
+          <p>按模块四的专业流程分析现金来源、去向、勾稽关系与利润现金转化；所有金额和判断尽量回到年报页面核对。</p>
+        </div>
+      </div>
+
+      <section id="empty-state" class="empty-state">
+        <div class="empty-symbol">04</div>
+        <span class="eyebrow">MODULE FOUR</span>
+        <h2>这是一张完整的现金流分析工作台</h2>
+        <p>上传年报后，结果会按五个专业板块分别呈现，同时提供同比贡献桥、现金勾稽、专题观察、金额校验和原文回查。</p>
+        <div class="flow-steps"><b>全文读取</b><i>→</i><b>现金流模块分析</b><i>→</i><b>引用和金额复核</b></div>
+      </section>
+
+      <section id="run-view" hidden>
+        <div class="run-heading panel">
+          <div>
+            <div class="run-kicker">当前分析 · <span id="run-source">本次上传</span></div>
+            <h2 id="run-title">等待选择报告</h2>
+            <p id="run-subtitle"></p>
+          </div>
+          <div class="run-actions">
+            <span id="run-status" class="status-pill">等待分析</span>
+            <a id="open-pdf" class="quiet-button" href="#" target="_blank" rel="noreferrer" hidden>打开原始 PDF</a>
+          </div>
+        </div>
+
+        <div class="progress-panel panel" id="progress-panel">
+          <div class="progress-top"><b>运行进度</b><span id="progress-label">正在等待任务</span></div>
+          <div class="progress-track"><i id="progress-bar"></i></div>
+          <div id="progress-steps" class="progress-steps"></div>
+        </div>
+
+        <div class="result-summary panel" id="result-summary"></div>
+
+        <section id="five-sections" class="five-sections"></section>
+
+        <section class="special-grid">
+          <article class="panel special-card">
+            <div class="section-heading"><span class="section-number">06</span><div><small>同比拆解</small><h3>同比贡献桥</h3></div></div>
+            <div id="yoy-bridges"></div>
+          </article>
+          <article class="panel special-card">
+            <div class="section-heading"><span class="section-number">07</span><div><small>程序复算</small><h3>现金与利润勾稽</h3></div></div>
+            <div id="reconciliations"></div>
+          </article>
+        </section>
+
+        <section class="panel topic-panel">
+          <div class="section-heading"><span class="section-number">08</span><div><small>由分析结果归纳</small><h3>专题观察</h3></div></div>
+          <div id="topics"></div>
+        </section>
+
+        <section class="panel review-panel">
+          <div class="section-heading"><span class="section-number">09</span><div><small>证据质量与未通过项</small><h3>复核提示与金额校验</h3></div></div>
+          <div id="review-content"></div>
+        </section>
+
+        <section class="panel followup-panel">
+          <div class="section-heading"><span class="section-number">10</span><div><small>携带当前模块结果和年报原文</small><h3>继续追问模块四</h3></div></div>
+          <form id="followup-form" class="followup-form">
+            <input id="followup-input" maxlength="1200" placeholder="例如：经营现金净额同比变化主要由哪些调节项目贡献？" autocomplete="off">
+            <button type="submit" id="followup-submit">发送</button>
+          </form>
+          <p class="small-note">每轮追问都会重新附带模块四专业指导和本次分析结果；模型可搜索、读取本次年报页面。</p>
+          <div id="followup-list" class="followup-list"></div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="settings-dialog" class="dialog">
+    <form method="dialog" class="dialog-card" id="settings-form">
+      <button class="dialog-close" value="cancel" aria-label="关闭">×</button>
+      <div class="eyebrow">MODEL CONNECTION</div>
+      <h2>配置 DeepSeek</h2>
+      <p>密钥保存到模块四任务目录的本机 <code>.env</code> 文件。已有工作台配置只读作为备用，不会被本页面修改。</p>
+      <label>API Key <input id="api-key" type="password" autocomplete="new-password" placeholder="已配置时留空即可保留"></label>
+      <label>模型名称 <input id="model-name" value="deepseek-flash"></label>
+      <label>API 地址 <input id="base-url" value="https://api.deepseek.com"></label>
+      <div id="settings-error" class="error-text" hidden></div>
+      <div class="dialog-actions"><button class="quiet-button" value="cancel">取消</button><button class="primary-button" id="save-settings" value="default">保存配置</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="page-dialog" class="dialog page-dialog">
+    <div class="dialog-card">
+      <button class="dialog-close" id="close-page-dialog" aria-label="关闭">×</button>
+      <div class="eyebrow">SOURCE PAGE</div>
+      <h2 id="page-title">年报原文</h2>
+      <p id="page-subtitle"></p>
+      <pre id="page-text" class="page-text"></pre>
+      <a id="page-open-pdf" class="quiet-button" href="#" target="_blank" rel="noreferrer" hidden>在 PDF 中打开此页</a>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <script src="/cashflow.js" defer></script>
+</body>
+</html>

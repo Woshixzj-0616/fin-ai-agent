@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "purpose": "V3.0.1 共同基底及并行模块开发的共享年报样本身份校验",
+  "path_base": "D:/ChatGPT项目",
+  "samples": [
+    {
+      "file_name": "600887_伊利股份_2024年年度报告.pdf",
+      "relative_path": "金融AI智能体/data/raw/600887_伊利股份_2024年年度报告.pdf",
+      "company": "内蒙古伊利实业集团股份有限公司",
+      "stock_code": "600887",
+      "fiscal_year": 2024,
+      "bytes": 1522472,
+      "sha256": "A82A81E52F52DA3CD1B7F38DED08625DC18E3D4522B15D3EF76BF921E54C1F43"
+    },
+    {
+      "file_name": "300750_宁德时代_2024年年度报告.pdf",
+      "relative_path": "金融AI智能体/data/raw/300750_宁德时代_2024年年度报告.pdf",
+      "company": "宁德时代新能源科技股份有限公司",
+      "stock_code": "300750",
+      "fiscal_year": 2024,
+      "bytes": 2070073,
+      "sha256": "B4F1713D7B821EB076C102711D177FE942CCC2BC8DD171AE5D7A95799A65B0AD"
+    },
+    {
+      "file_name": "601012_隆基绿能_2024年年度报告.pdf",
+      "relative_path": "金融AI智能体/data/raw/601012_隆基绿能_2024年年度报告.pdf",
+      "company": "隆基绿能科技股份有限公司",
+      "stock_code": "601012",
+      "fiscal_year": 2024,
+      "bytes": 1875694,
+      "sha256": "C9E11FC7EC92A59D7D1CCFCF8A4F1FBB35EE8EC0435DF16A3E968497B5F64BB8"
+    },
+    {
+      "file_name": "000333_美的集团_2024年年度报告.pdf",
+      "relative_path": "金融AI智能体/data/raw/000333_美的集团_2024年年度报告.pdf",
+      "company": "美的集团股份有限公司",
+      "stock_code": "000333",
+      "fiscal_year": 2024,
+      "bytes": 6737887,
+      "sha256": "B17A9B9B84BCA1D2A4E4A3CADC5DD5BA5C85E3F1FD2D758ACD3315B5B040ECD9"
+    }
+  ]
+}
