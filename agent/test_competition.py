@@ -645,6 +645,43 @@ class HttpRetryAndStreamTests(unittest.TestCase):
         self.assertNotIn("sk-", str(err))
 
 
+class FrontendSearchAndTraceTests(unittest.TestCase):
+    """webui 语义检索 API + 轨迹可靠性角标。"""
+
+    def test_trace_labels_cover_reliability_events(self):
+        from trace import LABELS
+        for kind in ("loop_repair", "loop_fallback", "llm_retry", "loop_submit_failed"):
+            self.assertIn(kind, LABELS)
+            self.assertTrue(LABELS[kind][0])
+
+    def test_trace_js_has_reliability_badges(self):
+        js = (ROOT / "docs" / "trace.js").read_text(encoding="utf-8")
+        self.assertIn("loop_repair", js)
+        self.assertIn("llm_retry", js)
+        self.assertIn("traceEventBadges", js)
+
+    def test_webui_search_api_and_card(self):
+        html = (ROOT / "agent" / "webui.py").read_text(encoding="utf-8")
+        self.assertIn("/api/search", html)
+        self.assertIn('id="search-card"', html)
+        self.assertIn("searchRun", html)
+        self.assertIn("LAST_DOCUMENT_TEXTS", html)
+
+    def test_search_json_returns_hits(self):
+        import webui
+        # 直接调用工具层等价路径，确保 search_text 可被 webui 调用
+        from tools import search_text
+        fact = {"evidence_id": "e", "company_code": "600519", "company_name": "贵州茅台",
+                "metric": "revenue", "period_year": 2024, "report_year": 2024,
+                "value": "100", "unit": "元", "normalized_value": "100",
+                "adjustment": "as_reported", "issues": []}
+        docs = {"600519_2024": ["公司经营稳健。", "毛利率承压但份额提升。"]}
+        out = search_text([fact], docs, company_name_or_code="600519",
+                          source_report_year=2024, query="毛利率")
+        self.assertEqual(out["status"], "ok")
+        self.assertTrue(out["hits"])
+
+
 class RealCompetitionMaterialTests(unittest.TestCase):
     def test_real_annual_cash_flow_folded_scope(self):
         material = next(json.loads(line) for line in (ROOT / "data/agent/materials.jsonl").read_text(encoding="utf-8").splitlines()

@@ -30,6 +30,7 @@ PAGE_PNG = re.compile(r"^\d{6}_\d{4}_[0-9a-f]{8}_p\d+\.png$")
 # 最近一次分析的证据：受限问答只认这份，不另建库。
 # ThreadingHTTPServer 多线程下必须持锁读写，否则 A 的分析会喂给 B 的提问。
 LAST_FACTS: list[dict] = []
+LAST_DOCUMENT_TEXTS: dict[str, list[str]] = {}
 _LAST_LOCK = threading.Lock()
 
 # ── Render 防护：令牌桶限流 + 分析并发锁 + 工作区 TTL ──
@@ -172,6 +173,16 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
     for fact in facts:
         fact["page_image"] = page_images.get((fact["document_id"], fact.get("page")))
         fact["source_file"] = str((work / fact["source_file"]).relative_to(base))
+    # 页文本索引：供语义检索 search_text
+    doc_texts: dict[str, list[str]] = {}
+    for material in materials:
+        key = f"{material['company_code']}_{material['report_year']}"
+        try:
+            import pymupdf as _pm
+            with _pm.open(work / material["local_file"]) as _doc:
+                doc_texts[key] = [p.get_text() for p in _doc]
+        except Exception:
+            doc_texts.setdefault(key, [])
     for material in materials:
         material["local_file"] = str((work / material["local_file"]).relative_to(base))
     # 不用 evidence.json：那是审计台/CLI 的正式产物名，网页临时分析不覆盖
@@ -231,6 +242,8 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
     with _LAST_LOCK:
         LAST_FACTS.clear()
         LAST_FACTS.extend(facts)
+        LAST_DOCUMENT_TEXTS.clear()
+        LAST_DOCUMENT_TEXTS.update(doc_texts)
     run.finish(status="ok" if not failures else "partial_failure",
                materials=len(materials), evidence_count=len(facts),
                failures=len(failures), draft_checked=bool(checks))
@@ -622,6 +635,18 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
     <div id="trace-body"></div>
   </section>
 
+  <section class="card" id="search-card" hidden>
+    <h2>语义检索 <span class="dir-tag">相关段落召回</span></h2>
+    <p class="hint" style="margin:0 0 10px">在本次 PDF 全文里找相关段落（BM25 语义召回）。命中仅作理解辅助，<b>不能单独裁决数值</b>。</p>
+    <div class="row" style="margin-top:0">
+      <input type="text" id="search-input" placeholder="如：毛利率 / 经营现金流 / 质押"
+             style="flex:1;min-width:220px" maxlength="40">
+      <button id="search-btn" type="button">检索</button>
+    </div>
+    <div class="status-line" id="search-status"></div>
+    <div id="search-hits"></div>
+  </section>
+
   <section class="card" id="qa-card" hidden>
     <h2>④ 受限问答</h2>
     <p class="hint" style="margin:0 0 10px">只基于本次已抽取的证据回答；每个数字挂 evidence_id，点页码可溯源。</p>
@@ -834,7 +859,7 @@ async function prefill() {
 
 function onFilePicked() {
   autoInfo = {};
-  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card', 'auto-info']) $('#' + id).hidden = true;
+  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card', 'search-card', 'auto-info']) $('#' + id).hidden = true;
   const file = $('#pdf').files[0];
   if (!file) {
     $('#file-meta').textContent = '';
@@ -878,7 +903,7 @@ async function run() {
     stageIdx = Math.min(stageIdx + 1, stages.length - 1);
     setStatus(stages[stageIdx] + '（已耗时 ' + (stageIdx * 2) + 's+）', 'busy');
   }, 2500);
-  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card']) {
+  for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card', 'search-card']) {
     $('#' + id).hidden = true;
   }
   $('#qa-history').innerHTML = '';
@@ -1027,6 +1052,10 @@ function render(data) {
     }
   });
   $('#trace-card').hidden = false;
+  $('#search-card').hidden = false;
+  $('#search-hits').innerHTML = '';
+  $('#search-status').textContent = '';
+  $('#search-status').className = 'status-line';
 }
 
 function qaBadge(status) {
@@ -1053,6 +1082,44 @@ function renderQa(item) {
     <div class="a">${esc(item.answer)}</div>
     <div class="meta">${qaBadge(item.status)}${cites || (ids ? '<span class="hint">证据：' + ids + '</span>' : '')}</div>
   </div>`;
+}
+
+async function searchRun() {
+  const q = $('#search-input').value.trim();
+  if (!q) { $('#search-status').textContent = '先输入检索词'; $('#search-status').className = 'status-line err'; return; }
+  if (!window.__last) { $('#search-status').textContent = '请先完成一次分析'; $('#search-status').className = 'status-line err'; return; }
+  $('#search-btn').disabled = true;
+  $('#search-status').textContent = '正在语义检索…';
+  $('#search-status').className = 'status-line busy';
+  try {
+    const res = await fetch('/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: q, top_k: 8 }),
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      $('#search-status').textContent = data.error || ('检索失败 HTTP ' + res.status);
+      $('#search-status').className = 'status-line err';
+      return;
+    }
+    const hits = data.hits || [];
+    $('#search-hits').innerHTML = hits.length ? hits.map((h, i) => `
+      <div class="hint" style="margin:6px 0;padding:8px;border-left:3px solid #4a90d9">
+        <b>#${i + 1}</b> 页 ${esc(h.page)} · 分数 ${esc(h.score)} · ${esc(h.channel || '')}
+        ${h.match === 'exact' ? '<span class="badge ok">精确命中</span>' : ''}
+        <div style="margin-top:4px">${esc(h.snippet || '')}</div>
+      </div>`).join('') : '<p class="hint">无相关段落。</p>';
+    $('#search-status').textContent = hits.length
+      ? `命中 ${hits.length} 段 · ${data.channel || ''} · 命中不能单独裁决数值`
+      : '无结果';
+    $('#search-status').className = 'status-line';
+  } catch (e) {
+    $('#search-status').textContent = '请求失败：' + e;
+    $('#search-status').className = 'status-line err';
+  } finally {
+    $('#search-btn').disabled = false;
+  }
 }
 
 async function qaAsk() {
@@ -1164,6 +1231,10 @@ $('#export-pdf').addEventListener('click', exportPdf);
 $('#qa-ask').addEventListener('click', qaAsk);
 $('#qa-input').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') { e.preventDefault(); qaAsk(); }
+});
+$('#search-btn').addEventListener('click', searchRun);
+$('#search-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); searchRun(); }
 });
 $('#lb-close').addEventListener('click', closeLightbox);
 $('#lightbox').addEventListener('click', (e) => {
@@ -1297,6 +1368,41 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(blob)
 
+    def _search_json(self) -> None:
+        """语义检索：基于本次分析的 PDF 页文本，返回相关段落（不能单独裁决）。"""
+        length = int(self.headers.get("Content-Length") or 0)
+        if length <= 0 or length > 32 * 1024:
+            _json(self, 400, {"error": "请求体为空或过大"})
+            return
+        try:
+            body = json.loads(self.rfile.read(length).decode("utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            _json(self, 400, {"error": "请求体不是合法 JSON"})
+            return
+        query = (body.get("query") or "").strip() if isinstance(body, dict) else ""
+        top_k = int(body.get("top_k") or 8) if isinstance(body, dict) else 8
+        if not query or len(query) > 40:
+            _json(self, 400, {"error": "query 需为 1–40 字"})
+            return
+        with _LAST_LOCK:
+            facts_snapshot = list(LAST_FACTS)
+            docs = {k: list(v) for k, v in LAST_DOCUMENT_TEXTS.items()}
+        if not docs:
+            _json(self, 200, {"status": "empty", "hits": [],
+                              "hint": "请先完成一次分析，再做语义检索"})
+            return
+        from tools import search_text
+        # 默认检索第一份文档（通常即本次上传主报告）
+        key = next(iter(docs))
+        code, _, year = key.rpartition("_")
+        out = search_text(facts_snapshot, docs,
+                          company_name_or_code=code or "贵州茅台",
+                          source_report_year=int(year or 2024),
+                          query=query, top_k=top_k)
+        out["document_key"] = key
+        out["note"] = out.get("note") or "检索命中为相关段落，不能单独作为数值裁决依据"
+        _json(self, 200, out)
+
     def _ask_json(self) -> None:
         """受限问答：只认上次分析的 facts，答案必挂 evidence_id。"""
         length = int(self.headers.get("Content-Length") or 0)
@@ -1346,6 +1452,9 @@ class Handler(BaseHTTPRequestHandler):
             ctype = self.headers.get("Content-Type") or ""
             if self.path == "/api/ask" and ctype.startswith("application/json"):
                 self._ask_json()
+                return
+            if self.path == "/api/search" and ctype.startswith("application/json"):
+                self._search_json()
                 return
             fields, pdf = _parse_multipart(self)
             if self.path == "/api/prefill":
