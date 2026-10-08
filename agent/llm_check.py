@@ -216,7 +216,8 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 
 class LLMClient:
-    def __init__(self, base_url: str, model: str, key: str, mode="json_schema"):
+    def __init__(self, base_url: str, model: str, key: str, mode="json_schema",
+                 *, stream: bool | None = None):
         try:
             parts = urllib.parse.urlsplit(base_url)
         except ValueError:
@@ -233,6 +234,11 @@ class LLMClient:
         self.url = base_url.rstrip("/") + "/chat/completions"
         self.model, self.key, self.mode = model, key, mode
         self.host = parts.hostname
+        if stream is None:
+            stream = os.environ.get("LLM_STREAM", "").lower() in {"1", "true", "yes", "on"}
+        self.stream = bool(stream)
+        from llm_http import LLMHttp
+        self._http = LLMHttp(self.url, self.key)
 
     @classmethod
     def from_environment(cls, *, base_url=None, model=None, mode=None, ask_key=False):
@@ -240,6 +246,32 @@ class LLMClient:
         return cls(base_url or os.environ.get("LLM_BASE_URL", ""),
                    model or os.environ.get("LLM_MODEL", ""), key,
                    mode or os.environ.get("LLM_FORMAT", "json_schema"))
+
+    def _guard_blob(self, blob: bytes) -> None:
+        if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):
+            raise LLMError("模型响应疑似含凭证，已拒绝保存")
+
+    def _on_retry(self, run):
+        def _cb(attempt, status, wait):
+            run.event("llm_retry", attempt=attempt, status=status, wait_sec=round(wait, 2))
+        return _cb
+
+    def _request(self, payload: dict, run) -> dict:
+        """带退避重试的统一请求；可选流式。"""
+        try:
+            if self.stream:
+                body = self._http.post_stream(payload, on_retry=self._on_retry(run))
+            else:
+                body = self._http.post_json(payload, on_retry=self._on_retry(run))
+        except Exception as exc:  # TransportError 等
+            message = str(exc)
+            # 服务端错误正文可能回显认证信息；不保存、不打印该正文。
+            if re.search(r"HTTP\s*\d{3}", message):
+                raise LLMError(f"{message}；请核实服务地址、模型权限和结构化输出模式") from None
+            raise LLMError("模型接口连接失败或超时；请核实网络后重试") from None
+        # 密钥泄漏门控：序列化后检查
+        self._guard_blob(json.dumps(body, ensure_ascii=False).encode("utf-8"))
+        return body
 
     def extract(self, sentences: list[dict], run, facts: list[dict] | None = None) -> dict:
         contract = schema()
@@ -249,27 +281,14 @@ class LLMClient:
         system = SYSTEM_PROMPT + "\n本次已加载公司（不限于此，新材料的公司同样适用）：" + json.dumps(loaded, ensure_ascii=False)
         system += "\n指标词典：" + json.dumps(METRICS, ensure_ascii=False)
         system += "\nJSON Schema：" + json.dumps(contract, ensure_ascii=False)
-        payload = {"model": self.model, "stream": False, "temperature": 0, "response_format": response_format,
+        payload = {"model": self.model, "stream": self.stream, "temperature": 0,
+                   "response_format": response_format,
                    "messages": [{"role": "system", "content": system},
                                 {"role": "user", "content": json.dumps({"sentences": sentences}, ensure_ascii=False)}]}
-        request = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers={
-            "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
         run.event("llm_request", provider_host=self.host, model=self.model, response_format=self.mode,
-                  sentence_count=len(sentences))
+                  sentence_count=len(sentences), stream=self.stream)
+        body = self._request(payload, run)
         try:
-            with urllib.request.build_opener(NoRedirect()).open(request, timeout=60) as response:
-                blob = response.read(2 * 1024 * 1024 + 1)
-            if len(blob) > 2 * 1024 * 1024:
-                raise LLMError("模型响应超过2MiB限制")
-        except urllib.error.HTTPError as exc:
-            # 服务端错误正文可能回显认证信息；不保存、不打印该正文。
-            raise LLMError(f"模型接口HTTP {exc.code}；请核实服务地址、模型权限和结构化输出模式") from None
-        except (urllib.error.URLError, TimeoutError, ConnectionError):
-            raise LLMError("模型接口连接失败或超时；请核实网络后重试") from None
-        if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):
-            raise LLMError("模型响应疑似含凭证，已拒绝保存")
-        try:
-            body = json.loads(blob)
             choice = body["choices"][0]
             if choice.get("finish_reason") != "stop" or choice["message"].get("refusal"):
                 raise LLMError("模型未正常完成结构化输出（截断、拒绝或其他结束状态），本次未判定")
@@ -283,28 +302,18 @@ class LLMClient:
         usage_source = body.get("usage") or {}
         usage = {k: v for k, v in usage_source.items()
                  if k in {"prompt_tokens", "completion_tokens", "total_tokens"} and type(v) is int}
-        run.event("llm_response", response_format=self.mode, item_count=len(parsed["items"]), usage=usage)
+        run.event("llm_response", response_format=self.mode, item_count=len(parsed["items"]),
+                  usage=usage, stream=self.stream)
         return parsed
 
     def chat(self, messages: list[dict], run) -> str:
         """JSON 多步协议用：不锁 json_schema，只要求返回文本（调用方自己 json.loads）。"""
-        payload = {"model": self.model, "stream": False, "temperature": 0,
+        payload = {"model": self.model, "stream": self.stream, "temperature": 0,
                    "messages": messages}
-        request = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers={
-            "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
         run.event("llm_chat", provider_host=self.host, model=self.model,
-                  message_count=len(messages))
+                  message_count=len(messages), stream=self.stream)
+        body = self._request(payload, run)
         try:
-            with urllib.request.build_opener(NoRedirect()).open(request, timeout=60) as response:
-                blob = response.read(2 * 1024 * 1024 + 1)
-        except urllib.error.HTTPError as exc:
-            raise LLMError(f"模型接口HTTP {exc.code}；请核实服务地址与模型权限") from None
-        except (urllib.error.URLError, TimeoutError, ConnectionError):
-            raise LLMError("模型接口连接失败或超时；请核实网络后重试") from None
-        if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):
-            raise LLMError("模型响应疑似含凭证，已拒绝保存")
-        try:
-            body = json.loads(blob)
             choice = body["choices"][0]
             if choice.get("finish_reason") not in {"stop", "length", None} or choice["message"].get("refusal"):
                 raise LLMError("模型未正常完成多步协议帧")
@@ -319,23 +328,12 @@ class LLMClient:
 
         返回 message dict：可能含 tool_calls 或 content。
         """
-        payload = {"model": self.model, "stream": False, "temperature": 0,
+        payload = {"model": self.model, "stream": self.stream, "temperature": 0,
                    "messages": messages, "tools": tools, "tool_choice": "auto"}
-        request = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers={
-            "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
         run.event("llm_chat_tools", provider_host=self.host, model=self.model,
-                  message_count=len(messages), tool_count=len(tools))
+                  message_count=len(messages), tool_count=len(tools), stream=self.stream)
+        body = self._request(payload, run)
         try:
-            with urllib.request.build_opener(NoRedirect()).open(request, timeout=60) as response:
-                blob = response.read(2 * 1024 * 1024 + 1)
-        except urllib.error.HTTPError as exc:
-            raise LLMError(f"模型接口HTTP {exc.code}；请核实服务地址与模型权限") from None
-        except (urllib.error.URLError, TimeoutError, ConnectionError):
-            raise LLMError("模型接口连接失败或超时；请核实网络后重试") from None
-        if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):
-            raise LLMError("模型响应疑似含凭证，已拒绝保存")
-        try:
-            body = json.loads(blob)
             choice = body["choices"][0]
             message = choice.get("message") or {}
             if message.get("refusal"):
@@ -343,7 +341,8 @@ class LLMClient:
             usage = {k: v for k, v in (body.get("usage") or {}).items()
                      if k in {"prompt_tokens", "completion_tokens", "total_tokens"} and type(v) is int}
             run.event("llm_response_tools", finish_reason=choice.get("finish_reason"),
-                      has_tool_calls=bool(message.get("tool_calls")), usage=usage)
+                      has_tool_calls=bool(message.get("tool_calls")), usage=usage,
+                      stream=self.stream)
             return message
         except (ValueError, KeyError, IndexError, TypeError) as exc:
             if isinstance(exc, LLMError):

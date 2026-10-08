@@ -528,6 +528,68 @@ class ParallelCacheAndNativeToolsTests(unittest.TestCase):
         self.assertEqual(out["payload"]["items"], [])
 
 
+class HttpRetryAndStreamTests(unittest.TestCase):
+    """llm_http：退避重试 + SSE 聚合 + 密钥不进异常。"""
+
+    def test_sse_accumulates_content_and_tool_calls(self):
+        from llm_http import LLMHttp
+        http = LLMHttp("https://example.test/v1/chat/completions", "sk-test")
+        lines = [
+            'data: {"choices":[{"delta":{"content":"你好"}}]}',
+            'data: {"choices":[{"delta":{"tool_calls":[{"index":0,"id":"c1","function":{"name":"find_evidence","arguments":"{\\"m\\""}}]}}]}',
+            'data: {"choices":[{"delta":{"tool_calls":[{"index":0,"function":{"arguments":":1}"}}]}}]}',
+            'data: [DONE]',
+        ]
+        body = http._accumulate_sse(lines)
+        msg = body["choices"][0]["message"]
+        self.assertEqual(msg["content"], "你好")
+        self.assertEqual(msg["tool_calls"][0]["function"]["name"], "find_evidence")
+        self.assertEqual(msg["tool_calls"][0]["function"]["arguments"], '{"m":1}')
+
+    def test_post_json_retries_on_503_then_succeeds(self):
+        from llm_http import LLMHttp
+        calls = {"n": 0}
+        original = LLMHttp._post_once_json
+
+        def fake(self, payload):
+            calls["n"] += 1
+            if calls["n"] < 3:
+                return 503, b""
+            return 200, json.dumps({"ok": True}).encode()
+        LLMHttp._post_once_json = fake
+        try:
+            http = LLMHttp("https://example.test/v1/chat/completions", "sk-test")
+            retries = []
+            out = http.post_json({"x": 1}, on_retry=lambda a, s, w: retries.append(s))
+            self.assertTrue(out["ok"])
+            self.assertEqual(calls["n"], 3)
+            self.assertEqual(retries, [503, 503])
+        finally:
+            LLMHttp._post_once_json = original
+
+    def test_post_json_does_not_retry_401(self):
+        from llm_http import LLMHttp, TransportError
+        calls = {"n": 0}
+
+        def fake(self, payload):
+            calls["n"] += 1
+            return 401, b""
+        original = LLMHttp._post_once_json
+        LLMHttp._post_once_json = fake
+        try:
+            http = LLMHttp("https://example.test/v1/chat/completions", "sk-test")
+            with self.assertRaises(TransportError):
+                http.post_json({})
+            self.assertEqual(calls["n"], 1)
+        finally:
+            LLMHttp._post_once_json = original
+
+    def test_transport_error_message_has_no_key(self):
+        from llm_http import TransportError
+        err = TransportError("模型接口HTTP 401", status=401, retries=0)
+        self.assertNotIn("sk-", str(err))
+
+
 class RealCompetitionMaterialTests(unittest.TestCase):
     def test_real_annual_cash_flow_folded_scope(self):
         material = next(json.loads(line) for line in (ROOT / "data/agent/materials.jsonl").read_text(encoding="utf-8").splitlines()

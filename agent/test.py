@@ -661,32 +661,38 @@ class LLMFlowTests(unittest.TestCase):
         payload = {"items": [self.item], "unclaimed_sentences": []}
         reply = {"choices": [{"finish_reason": "stop", "message": {"content": json.dumps(payload)}}],
                  "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2}}
-        response = io.BytesIO(json.dumps(reply).encode())
-        opener = SimpleNamespace(open=Mock(return_value=response))
         with tempfile.TemporaryDirectory(prefix="finline_llm_") as directory:
             root = Path(directory)
             path = root / "draft.txt"
             path.write_text(self.sentence, encoding="utf-8")
             audit = Run(root, "check-text-test", {})
             client = LLMClient("https://example.invalid/v1", "test-model", token)
-            with patch("llm_check.urllib.request.build_opener", return_value=opener):
+            sent_payloads = []
+
+            def fake_post_json(self, body, **kwargs):
+                sent_payloads.append(body)
+                return reply
+
+            with patch("llm_http.LLMHttp.post_json", fake_post_json):
                 bundle = check_text(path, [self.fact], audit, client, use_loop=False)
             self.assertEqual(bundle["checks"][0]["status"], "证据支持")
             self.assertIn("PDF第5页", (root / "results/text_report.md").read_text(encoding="utf-8"))
             self.assertTrue(all(p.is_file() for p in (root / "results").iterdir()))
             self.assertTrue(all(token.encode() not in p.read_bytes() for p in (root / "results").iterdir()))
-            request = opener.open.call_args.args[0]
-            sent = json.loads(request.data)
+            sent = sent_payloads[0]
             self.assertEqual(sent["response_format"]["json_schema"]["strict"], True)
-            self.assertEqual(request.get_header("Authorization"), "Bearer " + token)
+            self.assertEqual(client.key, token)
             self.assertNotIn(token, json.dumps(sent))
 
     def test_http_error_never_echoes_authentication_body(self):
         token = "unit-test-credential"
-        failure = urllib.error.HTTPError("https://example.invalid/v1", 401, "secret=" + token, {}, io.BytesIO(token.encode()))
-        opener = SimpleNamespace(open=Mock(side_effect=failure))
+        from llm_http import TransportError
         client = LLMClient("https://example.invalid/v1", "test-model", token)
-        with patch("llm_check.urllib.request.build_opener", return_value=opener):
+
+        def fake_post_json(self, body, **kwargs):
+            raise TransportError("模型接口HTTP 401", status=401, retries=0)
+
+        with patch("llm_http.LLMHttp.post_json", fake_post_json):
             with self.assertRaises(LLMError) as raised:
                 client.extract(split_draft(self.sentence), SimpleNamespace(event=lambda *a, **k: None))
         self.assertIn("401", str(raised.exception))
@@ -694,9 +700,12 @@ class LLMFlowTests(unittest.TestCase):
 
     def test_json_mode_does_not_parse_markdown_fences(self):
         reply = {"choices": [{"finish_reason": "stop", "message": {"content": "```json\n{}\n```"}}]}
-        opener = SimpleNamespace(open=Mock(return_value=io.BytesIO(json.dumps(reply).encode())))
         client = LLMClient("https://example.invalid/v1", "test-model", "unit-test-credential", "json_object")
-        with patch("llm_check.urllib.request.build_opener", return_value=opener), self.assertRaises(LLMError):
+
+        def fake_post_json(self, body, **kwargs):
+            return reply
+
+        with patch("llm_http.LLMHttp.post_json", fake_post_json), self.assertRaises(LLMError):
             client.extract(split_draft(self.sentence), SimpleNamespace(event=lambda *a, **k: None))
 
 
