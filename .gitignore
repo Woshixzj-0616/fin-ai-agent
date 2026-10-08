@@ -39,6 +39,7 @@ desktop.ini
 /launchers/**/logs/
 /launchers/**/data/
 /data/**/logs/
+/data/modular_workbench/
 
 # 本地凭据、报告和运行产物
 .env.*
