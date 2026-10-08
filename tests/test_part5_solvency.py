@@ -3,10 +3,10 @@ from __future__ import annotations
 import json
 import unittest
 
-from backend.modules.solvency.agent import _attach_section_evidence, _clean_final, _prepare_calculation_display
-from backend.modules.solvency.calculations import calculate_metric
-from backend.modules.solvency.facts import add_facts
-from backend.modules.solvency.retrieval import select_initial_pages
+from modules.part5_solvency.agent import _attach_section_evidence, _clean_final, _prepare_calculation_display
+from modules.part5_solvency.calculations import calculate_metric
+from modules.part5_solvency.facts import add_facts
+from modules.part5_solvency.retrieval import select_initial_pages
 
 
 def _make_fact(column_header: str, *, with_layout: bool = True):

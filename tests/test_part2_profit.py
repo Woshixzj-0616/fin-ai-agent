@@ -3,7 +3,7 @@
 from decimal import Decimal
 import unittest
 
-from backend.modules.profit.engine import (
+from modules.part2_profit.engine import (
     _build_profit_trajectory,
     _calculate_profit_metrics,
     _build_analysis_blocks,
@@ -14,7 +14,7 @@ from backend.modules.profit.engine import (
     _reconcile_deducted_profit,
     _unique_line,
 )
-from backend.modules.profit.evidence import _header_has_currency, normalize_quote, verify_evidence
+from modules.part2_profit.evidence import _header_has_currency, normalize_quote, verify_evidence
 
 
 class ProfitV2EvidenceTests(unittest.TestCase):

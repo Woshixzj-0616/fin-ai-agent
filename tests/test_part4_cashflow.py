@@ -4,8 +4,8 @@ import unittest
 from types import SimpleNamespace
 from typing import Any
 
-from backend.modules.cashflow.agent import _precompute_operating_after_capex, _reference_hints_for_amount, _submit
-from backend.modules.cashflow.calculations import calculate
+from modules.part4_cashflow.agent import _precompute_operating_after_capex, _reference_hints_for_amount, _submit
+from modules.part4_cashflow.calculations import calculate
 
 
 def _fact(fact_id: str, metric_key: str, value: str, period: str = "2024年度") -> dict[str, Any]:

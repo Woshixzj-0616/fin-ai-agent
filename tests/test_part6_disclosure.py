@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 import json
 from types import SimpleNamespace
-from backend.modules.disclosure.agent import (
+from modules.part6_disclosure.agent import (
     _TOOLS,
     _compact_request_messages,
     _cover_identity,
@@ -19,7 +19,7 @@ from backend.modules.disclosure.agent import (
     _summary_topics_without_findings,
     analyze_disclosure_report,
 )
-from backend.modules.disclosure.entry import (
+from modules.part6_disclosure.entry import (
     answer_follow_up,
     insufficient_material_result,
     partial_result_from_checkpoint,

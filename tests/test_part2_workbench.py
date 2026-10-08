@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import backend.app as app
-from backend.modules.profit import engine
+from modules.part2_profit import engine
 
 
 class ProfitWorkbenchRecoveryTests(unittest.TestCase):
