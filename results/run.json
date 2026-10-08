@@ -1,14 +1,11 @@
 {
   "schema_version": 2,
-  "run_id": "20261008_215027_c81da961",
-  "started_at": "2026-10-08T21:50:27+08:00",
-  "command": "check-text",
+  "run_id": "20261008_221052_c14ce0a7",
+  "started_at": "2026-10-08T22:10:52+08:00",
+  "command": "question-eval",
   "parameters": {
-    "command": "check-text",
-    "file": "results\\llm_smoke_draft.txt",
-    "model": "deepseek-chat",
-    "provider_host": "api.deepseek.com",
-    "response_format": "json_object"
+    "cases": 103,
+    "with_llm": true
   },
   "versions": {
     "python": "3.14.6",
@@ -30,11 +27,12 @@
     "materials.py": "ca9c8275ea5929ea83293f9c8969c9c833a15065355a24ced203c86c6a45e5ea",
     "mcp_server.py": "4c72d73439b803a49298940831471c7a05960d867c3765da7212c8723b21c153",
     "periods.py": "0c91719ea1ffd95ecf1e0f0a1259416d44a72ab6ac816840ac823fe5a4acef81",
-    "qa.py": "dafbdc366771f9d6b574bcb80a5846279dc2f0b3d0eaabe83424de992e47a38c",
+    "qa.py": "93cdf6678171e7127cc332adda5823462a8bb6a82b490d2e0d69520a27e3d5bb",
+    "retrieval.py": "199420224c14a414f08e0d3ff26e5643995ac9677aaefa3fa011a24303d132d2",
     "test.py": "bd54294dfb0745a85efde242f920460526e6faad1fa8eee68738b832a9c4be83",
-    "test_competition.py": "2835ffcbac26e411ac9a3627c2478787462bff3bc1ec30735d8953918c11471a",
+    "test_competition.py": "28253b184bdb9b1c8edeb7b62ad2d980d9cd335a3e0f049cffca182984bea18d",
     "test_skill_mcp.py": "838b79760087c90bd4dd1da0959be72c7bd46801e7be0111e4fdbcc6b009770d",
-    "tools.py": "426aa4d99a98b4f4bf5e8d74d78a025438aa78d53cf83ed125fcbf784ffc1de9",
+    "tools.py": "1c8f8785e1fd8a2a3d28d9761009dcc2abb8d997ead61ded3d29035ddd9f7746",
     "trace.py": "bb075fd5e7eecfed55209749de454e188e5f979a45a789da95cd70122c26c0c3",
     "webui.py": "be574e5a403413a2b03ad772211678d91984a596d3570f9adbe5094fc6ac51f9",
     "words.py": "1d8383e61dbe7ab9c9d1e80a221202f0ca71b549791446ade8f10219ec85c0f1",
@@ -47,6 +45,7 @@
     "scripts__eval__build_eval_set.py": "faa4ab15da07b5685b9d8216fd49a89ab0186c5e332394a66c85fb2494b2c146",
     "scripts__eval__run_eval.py": "9a6848e344af33f9e4824bdb8e340eef83b39afff565eb71685d2c717ee57f61",
     "scripts__eval__run_llm_eval.py": "8b347355f6e171dc7ee0cedbe7b62c574da2770e162a17bb88e1be7027dea68c",
+    "scripts__eval__run_question_eval.py": "c04f1265e44c79eb49950a49d3bba1e9dda69783864a4a24509d923e3b408e0f",
     "scripts__eval__run_report_eval.py": "8ec662091ca22ff513a310ec43af3a5b880facf1a23d776fb07a2e35cf488874",
     "scripts__eval__run_semantic_eval.py": "a0148740a2837fb7413b5ed3b19e90f42720bc2119285b4c4c6a07122ea28352",
     "scripts__full_extract_demo.py": "597d44e465fa3228cd1982806ed7a1ebbf716c48f6944a8041462e13ef2451c5",

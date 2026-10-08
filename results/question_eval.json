@@ -1,0 +1,2120 @@
+{
+  "schema_version": 1,
+  "run_id": "20261008_221052_c14ce0a7",
+  "total_cases": 103,
+  "scored": 103,
+  "passed": 103,
+  "failed": 0,
+  "skipped": 0,
+  "pass_rate": 1.0,
+  "by_type": {
+    "qa_value": {
+      "pass": 24,
+      "fail": 0
+    },
+    "qa_yoy": {
+      "pass": 24,
+      "fail": 0
+    },
+    "tool_compare_claim": {
+      "pass": 48,
+      "fail": 0
+    },
+    "tool_compare_companies": {
+      "pass": 1,
+      "fail": 0
+    },
+    "tool_compute_trend": {
+      "pass": 2,
+      "fail": 0
+    },
+    "qa_reject": {
+      "pass": 1,
+      "fail": 0
+    },
+    "qa_insufficient": {
+      "pass": 1,
+      "fail": 0
+    },
+    "retrieval": {
+      "pass": 2,
+      "fail": 0
+    }
+  },
+  "failed_ids": [],
+  "llm_draft": {
+    "skipped": false,
+    "mode": "fallback_single_shot_tools_preserved",
+    "counts": {
+      "证据支持": 3,
+      "确认错误": 1
+    },
+    "tools_used": 7,
+    "ok": true
+  },
+  "note": "金标派生自本次抽取证据，非独立人工盲测；见脚本 docstring 口径。",
+  "rows": [
+    {
+      "id": "qa_value_000002_revenue_2024",
+      "type": "qa_value",
+      "question": "万科A2024年营业收入是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "3431.76",
+          "343176440712.96",
+          "343176440712.96"
+        ],
+        "evidence_id": "bd053f66ff46cbdbd0d893cf"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 营业收入为 343176440712.96 元，口径：合并（PDF 第 10 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000002_revenue_2024",
+      "type": "qa_yoy",
+      "question": "万科A2024年营业收入同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-26.32"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 营业收入同比 -26.32%。计算式：(current - previous) / previous * 10"
+      }
+    },
+    {
+      "id": "claim_ok_000002_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "343176440712.96",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "bd053f66ff46cbdbd0d893cf"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000002_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "343276440712.96",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "bd053f66ff46cbdbd0d893cf"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000002_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "万科A2024年归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "-494.78",
+          "-49478429211.96",
+          "-49478429211.96"
+        ],
+        "evidence_id": "0111004905d971a6e366eb18"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 归母净利润为 -49478429211.96 元，口径：归母（PDF 第 11 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000002_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "万科A2024年归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-506.81"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 归母净利润同比 -506.81%。计算式：(current - previous) / previous * "
+      }
+    },
+    {
+      "id": "claim_ok_000002_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "-49478429211.96",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "0111004905d971a6e366eb18"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000002_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "-49378429211.96",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "0111004905d971a6e366eb18"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000002_adjusted_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "万科A2024年扣非归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "-453.94",
+          "-45393719289.83",
+          "-45393719289.83"
+        ],
+        "evidence_id": "3e3a194a1999c6ae9645e1b3"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 扣非归母净利润为 -45393719289.83 元，口径：归母（PDF 第 11 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000002_adjusted_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "万科A2024年扣非归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-563.49"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 扣非归母净利润同比 -563.49%。计算式：(current - previous) / previous "
+      }
+    },
+    {
+      "id": "claim_ok_000002_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "-45393719289.83",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "3e3a194a1999c6ae9645e1b3"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000002_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "-45293719289.83",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "3e3a194a1999c6ae9645e1b3"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000002_operating_cash_flow_2024",
+      "type": "qa_value",
+      "question": "万科A2024年经营现金流净额是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "38.00",
+          "3799847632.35",
+          "3799847632.35"
+        ],
+        "evidence_id": "a7f8cb0d82012325f55d6d89"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 经营现金流净额为 3799847632.35 元，口径：合并（PDF 第 11 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000002_operating_cash_flow_2024",
+      "type": "qa_yoy",
+      "question": "万科A2024年经营现金流净额同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-2.87"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "万科A2024-01-01至2024-12-31 经营现金流净额同比 -2.87%。计算式：(current - previous) / previous * "
+      }
+    },
+    {
+      "id": "claim_ok_000002_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "3799847632.35",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "a7f8cb0d82012325f55d6d89"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000002_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "万科A",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "3899847632.35",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "a7f8cb0d82012325f55d6d89"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000333_revenue_2024",
+      "type": "qa_value",
+      "question": "美的集团2024年营业收入是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "4071.50",
+          "407149600",
+          "407149600000"
+        ],
+        "evidence_id": "0db602139fa031819cb578c3"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 营业收入为 407149600 千元，口径：合并（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000333_revenue_2024",
+      "type": "qa_yoy",
+      "question": "美的集团2024年营业收入同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "9.44"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 营业收入同比 9.44%。计算式：(current - previous) / previous * 100"
+      }
+    },
+    {
+      "id": "claim_ok_000333_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "407149600000",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "b344a74070063d07b2b95934"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000333_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "407249600000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "b344a74070063d07b2b95934"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000333_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "美的集团2024年归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "385.37",
+          "38537237",
+          "38537237000"
+        ],
+        "evidence_id": "6c50d4869667d82a37e0fc81"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 归母净利润为 38537237 千元，口径：归母（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000333_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "美的集团2024年归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "14.29"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 归母净利润同比 14.29%。计算式：(current - previous) / previous * 1"
+      }
+    },
+    {
+      "id": "claim_ok_000333_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "38537237000",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "f53198d4df65a9d4fb54326a"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000333_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "38637237000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "f53198d4df65a9d4fb54326a"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000333_adjusted_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "美的集团2024年扣非归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "357.41",
+          "35741418",
+          "35741418000"
+        ],
+        "evidence_id": "9add21cb661a3e9532e909eb"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 扣非归母净利润为 35741418 千元，口径：归母（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000333_adjusted_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "美的集团2024年扣非归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "8.39"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 扣非归母净利润同比 8.39%。计算式：(current - previous) / previous * "
+      }
+    },
+    {
+      "id": "claim_ok_000333_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "35741418000",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "e3274b43647eaef193cd271e"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000333_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "35841418000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "e3274b43647eaef193cd271e"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000333_operating_cash_flow_2024",
+      "type": "qa_value",
+      "question": "美的集团2024年经营现金流净额是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "605.12",
+          "60511572",
+          "60511572000"
+        ],
+        "evidence_id": "c1ed789526df84ecef45d941"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 经营现金流净额为 60511572 千元，口径：合并（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000333_operating_cash_flow_2024",
+      "type": "qa_yoy",
+      "question": "美的集团2024年经营现金流净额同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "4.51"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "美的集团2024-01-01至2024-12-31 经营现金流净额同比 4.51%。计算式：(current - previous) / previous * "
+      }
+    },
+    {
+      "id": "claim_ok_000333_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "60511572000",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "c1ed789526df84ecef45d941"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000333_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "60611572000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "c1ed789526df84ecef45d941"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000651_revenue_2024",
+      "type": "qa_value",
+      "question": "格力电器2024年营业收入是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "1891.64",
+          "189163654064.64",
+          "189163654064.64"
+        ],
+        "evidence_id": "9717a0be15c836f25674b052"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 营业收入为 189163654064.64 元，口径：合并（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000651_revenue_2024",
+      "type": "qa_yoy",
+      "question": "格力电器2024年营业收入同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-7.26"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 营业收入同比 -7.26%。计算式：(current - previous) / previous * 10"
+      }
+    },
+    {
+      "id": "claim_ok_000651_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "189163654064.64",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "be696050aa4ca553fa754dce"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000651_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "189263654064.64",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "be696050aa4ca553fa754dce"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000651_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "格力电器2024年归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "321.85",
+          "32184570372.28",
+          "32184570372.28"
+        ],
+        "evidence_id": "498f72ad7e538382330d5a78"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 归母净利润为 32184570372.28 元，口径：归母（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000651_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "格力电器2024年归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "10.91"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 归母净利润同比 10.91%。计算式：(current - previous) / previous * 1"
+      }
+    },
+    {
+      "id": "claim_ok_000651_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "32184570372.28",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "661d9680e3284bb52cd54769"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000651_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "32284570372.28",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "661d9680e3284bb52cd54769"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000651_adjusted_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "格力电器2024年扣非归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "301.00",
+          "30099760382.99",
+          "30099760382.99"
+        ],
+        "evidence_id": "6bb7b57a318d00e05648ebf1"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 扣非归母净利润为 30099760382.99 元，口径：归母（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000651_adjusted_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "格力电器2024年扣非归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "9.19"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 扣非归母净利润同比 9.19%。计算式：(current - previous) / previous * "
+      }
+    },
+    {
+      "id": "claim_ok_000651_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "30099760382.99",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "a0c2b45790d9acab289aa30b"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000651_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "30199760382.99",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "a0c2b45790d9acab289aa30b"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000651_operating_cash_flow_2024",
+      "type": "qa_value",
+      "question": "格力电器2024年经营现金流净额是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "293.69",
+          "29369250570.66",
+          "29369250570.66"
+        ],
+        "evidence_id": "3c709b53d6d118ac23af2e84"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 经营现金流净额为 29369250570.66 元，口径：合并（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000651_operating_cash_flow_2024",
+      "type": "qa_yoy",
+      "question": "格力电器2024年经营现金流净额同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-47.93"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "格力电器2024-01-01至2024-12-31 经营现金流净额同比 -47.93%。计算式：(current - previous) / previous "
+      }
+    },
+    {
+      "id": "claim_ok_000651_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "29369250570.66",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "a2bdbd8f29774012bd23631d"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000651_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "29469250570.66",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "a2bdbd8f29774012bd23631d"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000858_revenue_2024",
+      "type": "qa_value",
+      "question": "五粮液2024年营业收入是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "891.75",
+          "89175178322.70",
+          "89175178322.70"
+        ],
+        "evidence_id": "6ed986f2e1bce7859fe4e52a"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 营业收入为 89175178322.70 元，口径：合并（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000858_revenue_2024",
+      "type": "qa_yoy",
+      "question": "五粮液2024年营业收入同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "7.09"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 营业收入同比 7.09%。计算式：(current - previous) / previous * 100。"
+      }
+    },
+    {
+      "id": "claim_ok_000858_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "89175178322.70",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "6ed986f2e1bce7859fe4e52a"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000858_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "89275178322.70",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "6ed986f2e1bce7859fe4e52a"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000858_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "五粮液2024年归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "318.53",
+          "31853172533.98",
+          "31853172533.98"
+        ],
+        "evidence_id": "2524512a5c54e30903934102"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 归母净利润为 31853172533.98 元，口径：归母（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000858_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "五粮液2024年归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "5.44"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 归母净利润同比 5.44%。计算式：(current - previous) / previous * 100"
+      }
+    },
+    {
+      "id": "claim_ok_000858_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "31853172533.98",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "bb8beffdbbf137aed4a82195"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000858_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "31953172533.98",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "bb8beffdbbf137aed4a82195"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000858_adjusted_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "五粮液2024年扣非归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "317.42",
+          "31741959276.27",
+          "31741959276.27"
+        ],
+        "evidence_id": "c064cab499c452f07cc58ba2"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 扣非归母净利润为 31741959276.27 元，口径：归母（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000858_adjusted_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "五粮液2024年扣非归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "5.40"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 扣非归母净利润同比 5.4%。计算式：(current - previous) / previous * 10"
+      }
+    },
+    {
+      "id": "claim_ok_000858_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "31741959276.27",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "c0f70323d87ab782cc0227ca"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000858_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "31841959276.27",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "c0f70323d87ab782cc0227ca"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_000858_operating_cash_flow_2024",
+      "type": "qa_value",
+      "question": "五粮液2024年经营现金流净额是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "339.40",
+          "33939755192.78",
+          "33939755192.78"
+        ],
+        "evidence_id": "45d92d9edbd4e6d1a46bc1b5"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 经营现金流净额为 33939755192.78 元，口径：合并（PDF 第 7 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_000858_operating_cash_flow_2024",
+      "type": "qa_yoy",
+      "question": "五粮液2024年经营现金流净额同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-18.69"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "五粮液2024-01-01至2024-12-31 经营现金流净额同比 -18.69%。计算式：(current - previous) / previous *"
+      }
+    },
+    {
+      "id": "claim_ok_000858_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "33939755192.78",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "cae6b602a0646b1a77dd9238"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_000858_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "五粮液",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "34039755192.78",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "cae6b602a0646b1a77dd9238"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002415_revenue_2024",
+      "type": "qa_value",
+      "question": "海康威视2024年营业收入是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "924.96",
+          "92495525118.30",
+          "92495525118.30"
+        ],
+        "evidence_id": "4daa3a055981c1656177f3b1"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 营业收入为 92495525118.30 元，口径：合并（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002415_revenue_2024",
+      "type": "qa_yoy",
+      "question": "海康威视2024年营业收入同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "3.53"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 营业收入同比 3.53%。计算式：(current - previous) / previous * 100"
+      }
+    },
+    {
+      "id": "claim_ok_002415_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "92495525118.30",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "8e56103d56095a704371c466"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002415_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "92595525118.30",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "8e56103d56095a704371c466"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002415_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "海康威视2024年归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "119.77",
+          "11977327023.54",
+          "11977327023.54"
+        ],
+        "evidence_id": "40c7bb406bf84421174c2377"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 归母净利润为 11977327023.54 元，口径：归母（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002415_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "海康威视2024年归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-15.10"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 归母净利润同比 -15.1%。计算式：(current - previous) / previous * 1"
+      }
+    },
+    {
+      "id": "claim_ok_002415_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "11977327023.54",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "40c7bb406bf84421174c2377"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002415_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "12077327023.54",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "40c7bb406bf84421174c2377"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002415_adjusted_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "海康威视2024年扣非归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "118.15",
+          "11814861641.16",
+          "11814861641.16"
+        ],
+        "evidence_id": "c0c28d317c84d96d748212e1"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 扣非归母净利润为 11814861641.16 元，口径：归母（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002415_adjusted_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "海康威视2024年扣非归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-13.55"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 扣非归母净利润同比 -13.55%。计算式：(current - previous) / previous "
+      }
+    },
+    {
+      "id": "claim_ok_002415_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "11814861641.16",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "f97f59bc9dbdea5276d32f16"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002415_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "11914861641.16",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "f97f59bc9dbdea5276d32f16"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002415_operating_cash_flow_2024",
+      "type": "qa_value",
+      "question": "海康威视2024年经营现金流净额是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "132.64",
+          "13264092022.73",
+          "13264092022.73"
+        ],
+        "evidence_id": "81a0dd254d881e5534198523"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 经营现金流净额为 13264092022.73 元，口径：合并（PDF 第 9 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002415_operating_cash_flow_2024",
+      "type": "qa_yoy",
+      "question": "海康威视2024年经营现金流净额同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-20.20"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "海康威视2024-01-01至2024-12-31 经营现金流净额同比 -20.2%。计算式：(current - previous) / previous *"
+      }
+    },
+    {
+      "id": "claim_ok_002415_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "13264092022.73",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "81a0dd254d881e5534198523"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002415_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "海康威视",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "13364092022.73",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "81a0dd254d881e5534198523"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002594_revenue_2024",
+      "type": "qa_value",
+      "question": "比亚迪2024年营业收入是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "7771.02",
+          "777102455000.00",
+          "777102455000.00"
+        ],
+        "evidence_id": "632cd9ec5d04fcfcb03024cd"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 营业收入为 777102455000.00 元，口径：合并（PDF 第 10 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002594_revenue_2024",
+      "type": "qa_yoy",
+      "question": "比亚迪2024年营业收入同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "29.02"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 营业收入同比 29.02%。计算式：(current - previous) / previous * 100"
+      }
+    },
+    {
+      "id": "claim_ok_002594_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "777102455000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "e94f1d93b15fba8c591466fa"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002594_revenue_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "777202455000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "e94f1d93b15fba8c591466fa"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002594_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "比亚迪2024年归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "402.54",
+          "40254346000.00",
+          "40254346000.00"
+        ],
+        "evidence_id": "155ddba69a61d78160a884af"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 归母净利润为 40254346000.00 元，口径：归母（PDF 第 11 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002594_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "比亚迪2024年归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "34.00"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 归母净利润同比 34%。计算式：(current - previous) / previous * 100。"
+      }
+    },
+    {
+      "id": "claim_ok_002594_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "40254346000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "de654efde50a8e1a0273965a"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002594_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "40354346000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "de654efde50a8e1a0273965a"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002594_adjusted_parent_net_profit_2024",
+      "type": "qa_value",
+      "question": "比亚迪2024年扣非归母净利润是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "369.83",
+          "36982887000.00",
+          "36982887000.00"
+        ],
+        "evidence_id": "150b4da0b926f690bd0d6739"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 扣非归母净利润为 36982887000.00 元，口径：归母（PDF 第 11 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002594_adjusted_parent_net_profit_2024",
+      "type": "qa_yoy",
+      "question": "比亚迪2024年扣非归母净利润同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "29.94"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 扣非归母净利润同比 29.94%。计算式：(current - previous) / previous * "
+      }
+    },
+    {
+      "id": "claim_ok_002594_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "36982887000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "f90151e89f064dc4ea84a501"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002594_adjusted_parent_net_profit_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "adjusted_parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "37082887000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "f90151e89f064dc4ea84a501"
+        ]
+      }
+    },
+    {
+      "id": "qa_value_002594_operating_cash_flow_2024",
+      "type": "qa_value",
+      "question": "比亚迪2024年经营现金流净额是多少？",
+      "expect": {
+        "status": "ok",
+        "any_of": [
+          "1334.54",
+          "133453873000.00",
+          "133453873000.00"
+        ],
+        "evidence_id": "1f05eb824e81c477a413b82a"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 经营现金流净额为 133453873000.00 元，口径：合并（PDF 第 11 页）。"
+      }
+    },
+    {
+      "id": "qa_yoy_002594_operating_cash_flow_2024",
+      "type": "qa_yoy",
+      "question": "比亚迪2024年经营现金流净额同比是多少？",
+      "expect": {
+        "status": "ok",
+        "yoy_approx": "-21.37"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "answer": "比亚迪2024-01-01至2024-12-31 经营现金流净额同比 -21.37%。计算式：(current - previous) / previous *"
+      }
+    },
+    {
+      "id": "claim_ok_002594_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "133453873000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported",
+        "evidence_ids": [
+          "1f05eb824e81c477a413b82a"
+        ]
+      }
+    },
+    {
+      "id": "claim_bad_002594_operating_cash_flow_2024",
+      "type": "tool_compare_claim",
+      "args": {
+        "company_name_or_code": "比亚迪",
+        "metric": "operating_cash_flow",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "133553873000.00",
+        "claimed_unit": "元",
+        "operator": "eq",
+        "scope": "consolidated"
+      },
+      "expect": {
+        "verdict": "confirmed_error"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "confirmed_error",
+        "evidence_ids": [
+          "1f05eb824e81c477a413b82a"
+        ]
+      }
+    },
+    {
+      "id": "compare_000002_000333_revenue_2024",
+      "type": "tool_compare_companies",
+      "args": {
+        "company_a": "万科A",
+        "company_b": "美的集团",
+        "metric": "revenue",
+        "period_year": 2024,
+        "operator": "below"
+      },
+      "expect": {
+        "verdict": "evidence_supported"
+      },
+      "ok": true,
+      "detail": {
+        "verdict": "evidence_supported"
+      }
+    },
+    {
+      "id": "trend_000333_revenue",
+      "type": "tool_compute_trend",
+      "args": {
+        "company_name_or_code": "美的集团",
+        "metric": "revenue",
+        "start_year": 2022,
+        "end_year": 2024
+      },
+      "expect": {
+        "status": "ok"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "years": [
+          2022,
+          2023,
+          2024
+        ]
+      }
+    },
+    {
+      "id": "trend_000651_revenue",
+      "type": "tool_compute_trend",
+      "args": {
+        "company_name_or_code": "格力电器",
+        "metric": "revenue",
+        "start_year": 2022,
+        "end_year": 2024
+      },
+      "expect": {
+        "status": "ok"
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "years": [
+          2022,
+          2023,
+          2024
+        ]
+      }
+    },
+    {
+      "id": "qa_other_company_reject",
+      "type": "qa_reject",
+      "question": "中国石油2024年营业收入是多少？",
+      "expect": {
+        "status_not": "ok"
+      },
+      "ok": true,
+      "detail": {
+        "status": "wrong_company",
+        "answer": "当前分析的是「贵州茅台」，问题问的是「中国石油」。本问答只基于已加载材料作答，请先分析该公司后再提问。"
+      }
+    },
+    {
+      "id": "qa_unknown_metric",
+      "type": "qa_insufficient",
+      "question": "贵州茅台2019年商誉是多少？",
+      "expect": {
+        "status_in": [
+          "insufficient_evidence",
+          "out_of_scope"
+        ]
+      },
+      "ok": true,
+      "detail": {
+        "status": "out_of_scope"
+      }
+    },
+    {
+      "id": "retrieval_revenue_yoy",
+      "type": "retrieval",
+      "query": "营业收入同比",
+      "expect": {
+        "min_hits": 1
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "hits": 8,
+        "channel": "bm25"
+      }
+    },
+    {
+      "id": "retrieval_margin",
+      "type": "retrieval",
+      "query": "毛利率",
+      "expect": {
+        "min_hits": 1
+      },
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "hits": 8,
+        "channel": "bm25"
+      }
+    }
+  ]
+}

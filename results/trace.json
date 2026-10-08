@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "run_id": "20261008_215027_c81da961",
+  "run_id": "20261008_221052_c14ce0a7",
   "steps": [
     {
       "step": 1,
-      "time": "2026-10-08T21:50:27+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "time": "2026-10-08T22:10:52+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "run_started",
       "title": "开始任务",
       "actor": "程序",
@@ -13,13 +13,13 @@
       "evidence_ids": [],
       "evidence": [],
       "detail": {
-        "command": "check-text"
+        "command": "question-eval"
       }
     },
     {
       "step": 2,
-      "time": "2026-10-08T21:50:27+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "time": "2026-10-08T22:10:53+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "file_read",
       "title": "读取材料",
       "actor": "程序",
@@ -27,46 +27,15 @@
       "evidence_ids": [],
       "evidence": [],
       "detail": {
-        "path": "D:\\Desktop\\金融人工智能\\results\\evidence.json",
-        "sha256": "7d9c9a583729d800e0643113f8962e409d5701e8a17dfc4182acd9cee94206c1",
-        "size_bytes": 90711
+        "path": "D:\\Desktop\\金融人工智能\\results\\question_eval_draft.txt",
+        "sha256": "62d8ac3a541024848d6ffc79b11a7264a62d44d71ba43c7a689a6a67ffb6d3c8",
+        "size_bytes": 213
       }
     },
     {
       "step": 3,
-      "time": "2026-10-08T21:50:27+08:00",
-      "run_id": "20261008_215027_c81da961",
-      "event": "facts_reused",
-      "title": "facts_reused",
-      "actor": "程序",
-      "rule": "历史事件仅展示已记录信息",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "path": "results\\evidence.json",
-        "count": 35
-      }
-    },
-    {
-      "step": 4,
-      "time": "2026-10-08T21:50:27+08:00",
-      "run_id": "20261008_215027_c81da961",
-      "event": "file_read",
-      "title": "读取材料",
-      "actor": "程序",
-      "rule": "记录文件路径、SHA-256 与字节数",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "path": "D:\\Desktop\\金融人工智能\\results\\llm_smoke_draft.txt",
-        "sha256": "9e9b00a96aef4b9964d0c669a0e36adfacc9681ab9943afe983302349ce4af3f",
-        "size_bytes": 211
-      }
-    },
-    {
-      "step": 5,
-      "time": "2026-10-08T21:50:27+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "time": "2026-10-08T22:10:53+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "draft_loaded",
       "title": "读取草稿",
       "actor": "程序",
@@ -74,15 +43,15 @@
       "evidence_ids": [],
       "evidence": [],
       "detail": {
-        "characters": 89,
-        "sha256": "9e9b00a96aef4b9964d0c669a0e36adfacc9681ab9943afe983302349ce4af3f",
-        "sentences": 3
+        "characters": 91,
+        "sha256": "62d8ac3a541024848d6ffc79b11a7264a62d44d71ba43c7a689a6a67ffb6d3c8",
+        "sentences": 4
       }
     },
     {
-      "step": 6,
-      "time": "2026-10-08T21:50:27+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 4,
+      "time": "2026-10-08T22:10:53+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_loop_start",
       "title": "开始工具循环",
       "actor": "程序",
@@ -96,9 +65,9 @@
       }
     },
     {
-      "step": 7,
-      "time": "2026-10-08T21:50:27+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 5,
+      "time": "2026-10-08T22:10:53+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "llm_chat_tools",
       "title": "llm_chat_tools",
       "actor": "程序",
@@ -114,9 +83,9 @@
       }
     },
     {
-      "step": 8,
-      "time": "2026-10-08T21:50:28+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 6,
+      "time": "2026-10-08T22:10:54+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "llm_response_tools",
       "title": "llm_response_tools",
       "actor": "程序",
@@ -127,178 +96,17 @@
         "finish_reason": "tool_calls",
         "has_tool_calls": true,
         "usage": {
-          "prompt_tokens": 2767,
-          "completion_tokens": 259,
-          "total_tokens": 3026
+          "prompt_tokens": 2823,
+          "completion_tokens": 227,
+          "total_tokens": 3050
         },
         "stream": true
       }
     },
     {
-      "step": 9,
-      "time": "2026-10-08T21:50:28+08:00",
-      "run_id": "20261008_215027_c81da961",
-      "event": "agent_tool",
-      "title": "执行工具",
-      "actor": "本地工具",
-      "rule": "记录实际工具名、参数及结果",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "round": 1,
-        "tool": "list_catalog",
-        "status": "ok",
-        "budget_left": 29,
-        "arguments": {
-          "kind": "metrics"
-        },
-        "result": {
-          "status": "ok",
-          "kind": "metrics",
-          "metrics": {
-            "total_revenue": {
-              "aliases": [
-                "营业总收入"
-              ],
-              "note": "营业总收入 ≠ 营业收入，禁止互替"
-            },
-            "revenue": {
-              "aliases": [
-                "营业收入",
-                "营收"
-              ],
-              "note": "营业收入 ≠ 营业总收入"
-            },
-            "parent_net_profit": {
-              "aliases": [
-                "归母净利润",
-                "归属于上市公司股东的净利润",
-                "归属于母公司股东的净利润",
-                "归属于母公司所有者的净利润",
-                "归属于本行股东的净利润",
-                "归属于本公司股东的净利润",
-                "归母净利"
-              ],
-              "note": null
-            },
-            "adjusted_parent_net_profit": {
-              "aliases": [
-                "扣非归母净利润",
-                "归属于上市公司股东的扣除非经常性损益的净利润",
-                "归属于母公司股东的扣除非经常性损益的净利润",
-                "归属于母公司所有者的扣除非经常性损益的净利润",
-                "扣除非经常性损益后的归属于上市公司股东的净利润",
-                "扣除非经常性损益后归属于上市公司股东的净利润",
-                "扣除非经常性损益后归属于母公司股东的净利润",
-                "扣除非经常性损益后归属于本行股东的净利润",
-                "归属于本公司股东的扣除非经常性损益的净利润",
-                "归属于母公司股东的扣除非经常性损益后的净利润",
-                "扣除非经常性损益后归属于本公司股东的净利润",
-                "扣非归母净利",
-                "扣非净利润",
-                "扣非净利"
-              ],
-              "note": null
-            },
-            "operating_cash_flow": {
-              "aliases": [
-                "经营现金流净额",
-                "经营活动产生的现金流量净额",
-                "经营活动现金流量净额"
-              ],
-              "note": null
-            },
-            "basic_eps": {
-              "aliases": [
-                "基本每股收益",
-                "每股收益"
-              ],
-              "note": null
-            },
-            "diluted_eps": {
-              "aliases": [
-                "稀释每股收益"
-              ],
-              "note": null
-            },
-            "deducted_basic_eps": {
-              "aliases": [
-                "扣非基本每股收益",
-                "扣除非经常性损益后的基本每股收益",
-                "扣非每股收益",
-                "扣非EPS"
-              ],
-              "note": null
-            },
-            "weighted_roe": {
-              "aliases": [
-                "加权平均净资产收益率",
-                "净资产收益率（加权平均）",
-                "净资产收益率(加权平均)",
-                "加权ROE",
-                "净资产收益率"
-              ],
-              "note": null
-            },
-            "deducted_weighted_roe": {
-              "aliases": [
-                "扣非加权平均净资产收益率",
-                "扣除非经常性损益后的加权平均净资产收益率",
-                "扣非加权ROE",
-                "扣非ROE"
-              ],
-              "note": null
-            },
-            "total_assets": {
-              "aliases": [
-                "总资产",
-                "资产总额",
-                "资产总计"
-              ],
-              "note": null
-            },
-            "parent_equity": {
-              "aliases": [
-                "归母净资产",
-                "归属于上市公司股东的净资产",
-                "归属于母公司股东的净资产",
-                "归属于母公司所有者权益",
-                "归属于上市公司股东的所有者权益",
-                "归属于本行股东权益",
-                "归属于母公司股东权益",
-                "归属于本公司股东权益",
-                "归属于本行股东的净资产",
-                "归属于本公司股东的净资产",
-                "归母权益"
-              ],
-              "note": null
-            },
-            "book_value_per_share": {
-              "aliases": [
-                "每股净资产",
-                "归属于上市公司股东的每股净资产",
-                "归属于母公司股东的每股净资产",
-                "归属于上市公司普通股股东的每股净资产",
-                "归属于本行普通股股东的每股净资产"
-              ],
-              "note": null
-            },
-            "revenue_after_deduction": {
-              "aliases": [
-                "营业收入扣除后金额",
-                "扣除后营业收入"
-              ],
-              "note": null
-            }
-          }
-        },
-        "evidence_ids": []
-      }
-    },
-    {
-      "step": 10,
-      "time": "2026-10-08T21:50:28+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 7,
+      "time": "2026-10-08T22:10:54+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -309,7 +117,7 @@
         "round": 1,
         "tool": "find_evidence",
         "status": "ok",
-        "budget_left": 28,
+        "budget_left": 29,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "revenue",
@@ -345,9 +153,9 @@
       }
     },
     {
-      "step": 11,
-      "time": "2026-10-08T21:50:28+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 8,
+      "time": "2026-10-08T22:10:54+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -358,7 +166,7 @@
         "round": 1,
         "tool": "find_evidence",
         "status": "ok",
-        "budget_left": 27,
+        "budget_left": 28,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "parent_net_profit",
@@ -394,9 +202,9 @@
       }
     },
     {
-      "step": 12,
-      "time": "2026-10-08T21:50:28+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 9,
+      "time": "2026-10-08T22:10:54+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -407,7 +215,7 @@
         "round": 1,
         "tool": "find_evidence",
         "status": "ok",
-        "budget_left": 26,
+        "budget_left": 27,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "basic_eps",
@@ -443,9 +251,9 @@
       }
     },
     {
-      "step": 13,
-      "time": "2026-10-08T21:50:28+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 10,
+      "time": "2026-10-08T22:10:54+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "llm_chat_tools",
       "title": "llm_chat_tools",
       "actor": "程序",
@@ -455,15 +263,15 @@
       "detail": {
         "provider_host": "api.deepseek.com",
         "model": "deepseek-chat",
-        "message_count": 7,
+        "message_count": 6,
         "tool_count": 8,
         "stream": true
       }
     },
     {
-      "step": 14,
-      "time": "2026-10-08T21:50:30+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 11,
+      "time": "2026-10-08T22:10:56+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "llm_response_tools",
       "title": "llm_response_tools",
       "actor": "程序",
@@ -474,17 +282,17 @@
         "finish_reason": "tool_calls",
         "has_tool_calls": true,
         "usage": {
-          "prompt_tokens": 4216,
-          "completion_tokens": 624,
-          "total_tokens": 4840
+          "prompt_tokens": 3528,
+          "completion_tokens": 641,
+          "total_tokens": 4169
         },
         "stream": true
       }
     },
     {
-      "step": 15,
-      "time": "2026-10-08T21:50:30+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 12,
+      "time": "2026-10-08T22:10:56+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -497,7 +305,7 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "证据支持",
-        "budget_left": 25,
+        "budget_left": 26,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "revenue",
@@ -539,9 +347,9 @@
       }
     },
     {
-      "step": 16,
-      "time": "2026-10-08T21:50:30+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 13,
+      "time": "2026-10-08T22:10:56+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -554,7 +362,7 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "证据支持",
-        "budget_left": 24,
+        "budget_left": 25,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "parent_net_profit",
@@ -596,9 +404,9 @@
       }
     },
     {
-      "step": 17,
-      "time": "2026-10-08T21:50:30+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 14,
+      "time": "2026-10-08T22:10:56+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -611,7 +419,7 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "证据支持",
-        "budget_left": 23,
+        "budget_left": 24,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "basic_eps",
@@ -619,7 +427,8 @@
           "kind": "amount",
           "claimed_value": "68.64",
           "claimed_unit": "元/股",
-          "operator": "eq"
+          "operator": "eq",
+          "scope": "unknown"
         },
         "result": {
           "verdict": "evidence_supported",
@@ -651,9 +460,9 @@
       }
     },
     {
-      "step": 18,
-      "time": "2026-10-08T21:50:30+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 15,
+      "time": "2026-10-08T22:10:56+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_tool",
       "title": "执行工具",
       "actor": "本地工具",
@@ -666,13 +475,13 @@
         "round": 2,
         "tool": "compare_claim",
         "status": "确认错误",
-        "budget_left": 22,
+        "budget_left": 23,
         "arguments": {
           "company_name_or_code": "贵州茅台",
           "metric": "revenue",
           "period_year": 2024,
           "kind": "amount",
-          "claimed_value": "1800",
+          "claimed_value": "1709.99",
           "claimed_unit": "亿元",
           "operator": "eq",
           "scope": "consolidated"
@@ -687,19 +496,19 @@
           ],
           "calculation": {
             "status": "mismatch",
-            "value": "1709",
+            "value": "1708.99",
             "exact_value": "1708.9915227634",
-            "claimed_value": "1800",
+            "claimed_value": "1709.99",
             "operator": "eq",
-            "decimals": 0,
+            "decimals": 2,
             "rounding": "ROUND_HALF_UP",
-            "difference": "-91.0084772366",
+            "difference": "-0.9984772366",
             "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
             "claimed_unit": "亿元",
             "actual_unit": "元",
             "actual_value": "170899152276.34"
           },
-          "expected": "1709"
+          "expected": "1708.99"
         },
         "evidence_ids": [
           "80d5d67d35796958172e2d9f"
@@ -707,9 +516,9 @@
       }
     },
     {
-      "step": 19,
-      "time": "2026-10-08T21:50:30+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 16,
+      "time": "2026-10-08T22:10:56+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "llm_chat_tools",
       "title": "llm_chat_tools",
       "actor": "程序",
@@ -719,15 +528,15 @@
       "detail": {
         "provider_host": "api.deepseek.com",
         "model": "deepseek-chat",
-        "message_count": 12,
+        "message_count": 11,
         "tool_count": 8,
         "stream": true
       }
     },
     {
-      "step": 20,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 17,
+      "time": "2026-10-08T22:10:59+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "llm_response_tools",
       "title": "llm_response_tools",
       "actor": "程序",
@@ -735,20 +544,20 @@
       "evidence_ids": [],
       "evidence": [],
       "detail": {
-        "finish_reason": "tool_calls",
-        "has_tool_calls": true,
+        "finish_reason": "stop",
+        "has_tool_calls": false,
         "usage": {
-          "prompt_tokens": 5694,
-          "completion_tokens": 978,
-          "total_tokens": 6672
+          "prompt_tokens": 5029,
+          "completion_tokens": 714,
+          "total_tokens": 5743
         },
         "stream": true
       }
     },
     {
-      "step": 21,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 18,
+      "time": "2026-10-08T22:10:59+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "agent_loop_round",
       "title": "模型请求下一步",
       "actor": "LLM",
@@ -757,45 +566,69 @@
       "evidence": [],
       "detail": {
         "round": 3,
-        "action": "submit_claims"
+        "action": "no_tool_call",
+        "content_preview": "{\"items\":[{\"claim_id\":\"c1\",\"sentence_id\":1,\"quote\":\"贵州茅台2024年实现营业收入约1708.99亿元。\",\"context_quote\":null,\"claim_type\":\"amoun"
+      }
+    },
+    {
+      "step": 19,
+      "time": "2026-10-08T22:10:59+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
+      "event": "loop_fallback",
+      "title": "工具循环回退",
+      "actor": "程序",
+      "rule": "保留回退原因，仍进行本地校验",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "reason": "原生工具循环未收到 tool_calls；请改用 JSON 协议或检查模型权限",
+        "preserved_tool_calls": 7,
+        "preserved_verdicts": 4
+      }
+    },
+    {
+      "step": 20,
+      "time": "2026-10-08T22:10:59+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
+      "event": "llm_request",
+      "title": "请求模型",
+      "actor": "LLM",
+      "rule": "模型负责结构化拆句；不授予裁决权",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "provider_host": "api.deepseek.com",
+        "model": "deepseek-chat",
+        "response_format": "json_object",
+        "sentence_count": 4,
+        "stream": true
+      }
+    },
+    {
+      "step": 21,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
+      "event": "llm_response",
+      "title": "收到模型响应",
+      "actor": "LLM",
+      "rule": "响应通过本地 JSON Schema 校验后才继续",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "response_format": "json_object",
+        "item_count": 4,
+        "usage": {
+          "prompt_tokens": 2325,
+          "completion_tokens": 1020,
+          "total_tokens": 3345
+        },
+        "stream": true
       }
     },
     {
       "step": 22,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
-      "event": "agent_loop_submit",
-      "title": "agent_loop_submit",
-      "actor": "程序",
-      "rule": "历史事件仅展示已记录信息",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "items": 4,
-        "tools_used": 8,
-        "protocol": "native_tools"
-      }
-    },
-    {
-      "step": 23,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
-      "event": "tool_summary",
-      "title": "工具调用汇总",
-      "actor": "程序",
-      "rule": "汇总实际发生的调用",
-      "evidence_ids": [],
-      "evidence": [],
-      "detail": {
-        "tools": "compare_claim×4、find_evidence×3、list_catalog×1",
-        "rounds": 3,
-        "budget_left": 22
-      }
-    },
-    {
-      "step": 24,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "model_parse",
       "title": "模型拆句 JSON",
       "actor": "LLM",
@@ -806,15 +639,19 @@
         "sentences": [
           {
             "sentence_id": 1,
-            "text": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。"
+            "text": "贵州茅台2024年实现营业收入约1708.99亿元。"
           },
           {
             "sentence_id": 2,
-            "text": "基本每股收益为68.64元/股。"
+            "text": "归属于上市公司股东的净利润为862.28亿元。"
           },
           {
             "sentence_id": 3,
-            "text": "其中营业收入为1800亿元，这一数字需要核查。"
+            "text": "基本每股收益为68.64元/股。"
+          },
+          {
+            "sentence_id": 4,
+            "text": "其中营业收入为1709.99亿元，这一数字需要核查。"
           }
         ],
         "parsed": {
@@ -822,7 +659,7 @@
             {
               "claim_id": "c1",
               "sentence_id": 1,
-              "quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+              "quote": "贵州茅台2024年实现营业收入约1708.99亿元。",
               "context_quote": null,
               "claim_type": "amount",
               "company_name": "贵州茅台",
@@ -841,16 +678,16 @@
               "direction": "unknown",
               "currency": "CNY",
               "qualifier": "approximate",
-              "plain_claim": "贵州茅台2024年营业收入约1708.99亿元",
+              "plain_claim": "贵州茅台2024年营业收入约1708.99亿元。",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
             },
             {
               "claim_id": "c2",
-              "sentence_id": 1,
+              "sentence_id": 2,
               "quote": "归属于上市公司股东的净利润为862.28亿元。",
-              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元。",
               "claim_type": "amount",
               "company_name": "贵州茅台",
               "company_b": null,
@@ -863,21 +700,21 @@
               "kind": "amount",
               "value": "862.28",
               "unit": "亿元",
-              "operator": "approx",
-              "tolerance_pct": 2,
+              "operator": "eq",
+              "tolerance_pct": null,
               "direction": "unknown",
               "currency": "CNY",
-              "qualifier": "approximate",
-              "plain_claim": "贵州茅台2024年归母净利润862.28亿元",
+              "qualifier": "exact",
+              "plain_claim": "贵州茅台2024年归母净利润为862.28亿元。",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
             },
             {
               "claim_id": "c3",
-              "sentence_id": 2,
+              "sentence_id": 3,
               "quote": "基本每股收益为68.64元/股。",
-              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元。",
               "claim_type": "amount",
               "company_name": "贵州茅台",
               "company_b": null,
@@ -886,7 +723,7 @@
               "period_kind": "annual",
               "metric_text": "基本每股收益",
               "metric": "basic_eps",
-              "scope": "unknown",
+              "scope": "consolidated",
               "kind": "amount",
               "value": "68.64",
               "unit": "元/股",
@@ -895,16 +732,16 @@
               "direction": "unknown",
               "currency": "CNY",
               "qualifier": "exact",
-              "plain_claim": "贵州茅台2024年基本每股收益68.64元/股",
+              "plain_claim": "贵州茅台2024年基本每股收益为68.64元/股。",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
             },
             {
               "claim_id": "c4",
-              "sentence_id": 3,
-              "quote": "其中营业收入为1800亿元，这一数字需要核查。",
-              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+              "sentence_id": 4,
+              "quote": "其中营业收入为1709.99亿元，这一数字需要核查。",
+              "context_quote": "贵州茅台2024年实现营业收入约1708.99亿元。",
               "claim_type": "amount",
               "company_name": "贵州茅台",
               "company_b": null,
@@ -915,14 +752,14 @@
               "metric": "revenue",
               "scope": "consolidated",
               "kind": "amount",
-              "value": "1800",
+              "value": "1709.99",
               "unit": "亿元",
               "operator": "eq",
               "tolerance_pct": null,
               "direction": "unknown",
               "currency": "CNY",
               "qualifier": "exact",
-              "plain_claim": "贵州茅台2024年营业收入为1800亿元",
+              "plain_claim": "贵州茅台2024年营业收入为1709.99亿元。",
               "is_forecast": false,
               "ambiguity": "none",
               "verification_action": "compare_amount"
@@ -933,9 +770,9 @@
       }
     },
     {
-      "step": 25,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 23,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -953,7 +790,7 @@
         ],
         "normalized_claim": {
           "id": "C1",
-          "sentence": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+          "sentence": "贵州茅台2024年实现营业收入约1708.99亿元。",
           "company_code": "600519",
           "period_year": 2024,
           "source_report_year": 2024,
@@ -970,9 +807,9 @@
       }
     },
     {
-      "step": 26,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 24,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -992,9 +829,9 @@
       }
     },
     {
-      "step": 27,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 25,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -1006,13 +843,13 @@
       "detail": {
         "claim_id": "C2",
         "reason_code": "deterministic_check",
-        "reason": "在陈述运算符与容差下与原文证据一致",
+        "reason": "单位、口径和陈述精度下与原文证据一致",
         "evidence_ids": [
           "2be69095a86bcc7a3ed837df"
         ],
         "normalized_claim": {
           "id": "C2",
-          "sentence": "贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。",
+          "sentence": "归属于上市公司股东的净利润为862.28亿元。",
           "company_code": "600519",
           "period_year": 2024,
           "source_report_year": 2024,
@@ -1023,15 +860,15 @@
           "currency": "CNY",
           "scope": "parent_shareholders",
           "period_kind": "annual",
-          "operator": "approx",
-          "tolerance_pct": 2
+          "operator": "eq",
+          "tolerance_pct": null
         }
       }
     },
     {
-      "step": 28,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 26,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -1051,9 +888,9 @@
       }
     },
     {
-      "step": 29,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 27,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -1080,7 +917,7 @@
           "value": "68.64",
           "unit": "元/股",
           "currency": "CNY",
-          "scope": "unknown",
+          "scope": "consolidated",
           "period_kind": "annual",
           "operator": "eq",
           "tolerance_pct": null
@@ -1088,9 +925,9 @@
       }
     },
     {
-      "step": 30,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 28,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -1110,9 +947,9 @@
       }
     },
     {
-      "step": 31,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 29,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "claim_gate",
       "title": "主张门控",
       "actor": "本地规则",
@@ -1130,13 +967,13 @@
         ],
         "normalized_claim": {
           "id": "C4",
-          "sentence": "其中营业收入为1800亿元，这一数字需要核查。",
+          "sentence": "其中营业收入为1709.99亿元，这一数字需要核查。",
           "company_code": "600519",
           "period_year": 2024,
           "source_report_year": 2024,
           "metric": "revenue",
           "kind": "amount",
-          "value": "1800",
+          "value": "1709.99",
           "unit": "亿元",
           "currency": "CNY",
           "scope": "consolidated",
@@ -1147,9 +984,9 @@
       }
     },
     {
-      "step": 32,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 30,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "text_claim_checked",
       "title": "数值裁决",
       "actor": "本地规则",
@@ -1169,9 +1006,9 @@
       }
     },
     {
-      "step": 33,
-      "time": "2026-10-08T21:50:33+08:00",
-      "run_id": "20261008_215027_c81da961",
+      "step": 31,
+      "time": "2026-10-08T22:11:02+08:00",
+      "run_id": "20261008_221052_c14ce0a7",
       "event": "run_finished",
       "title": "完成运行",
       "actor": "程序",
@@ -1180,15 +1017,11 @@
       "evidence": [],
       "detail": {
         "status": "ok",
-        "materials": 0,
-        "evidence_count": 35,
-        "checks": 4,
-        "counts": {
-          "证据支持": 3,
-          "确认错误": 1
-        },
-        "mode": "native_tool_calls",
-        "tools_used": 8
+        "scored": 103,
+        "passed": 103,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "llm": true
       }
     }
   ]

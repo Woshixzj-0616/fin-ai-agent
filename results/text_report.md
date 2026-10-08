@@ -1,6 +1,6 @@
 # 草稿核查报告（双轨）
 
-运行：20261008_215027_c81da961；结构化录入模型：deepseek-chat。
+运行：20261008_221052_c14ce0a7；结构化录入模型：deepseek-chat。
 
 **A 栏 = 代码裁定（可复算）**：对错、正确值、计算式全部由本地 Python 生成。
 
@@ -12,11 +12,11 @@
 
 | ID | 主张 | 裁决 | 原因或建议 | 证据与页码 |
 |---|---|---|---|---|
-| C1 | 贵州茅台2024年实现营业收入约1708.99亿元，归属于上市公司股东的净利润为862.28亿元。 | 证据支持 | 在陈述运算符与容差下与原文证据一致 | [80d5d67d35796958172e2d9f](../data/raw/600519_贵州茅台_2024年年度报告.pdf)（PDF第5页） |
-| C2 | 归属于上市公司股东的净利润为862.28亿元。 | 证据支持 | 在陈述运算符与容差下与原文证据一致 | [2be69095a86bcc7a3ed837df](../data/raw/600519_贵州茅台_2024年年度报告.pdf)（PDF第5页） |
+| C1 | 贵州茅台2024年实现营业收入约1708.99亿元。 | 证据支持 | 在陈述运算符与容差下与原文证据一致 | [80d5d67d35796958172e2d9f](../data/raw/600519_贵州茅台_2024年年度报告.pdf)（PDF第5页） |
+| C2 | 归属于上市公司股东的净利润为862.28亿元。 | 证据支持 | 单位、口径和陈述精度下与原文证据一致 | [2be69095a86bcc7a3ed837df](../data/raw/600519_贵州茅台_2024年年度报告.pdf)（PDF第5页） |
 | C3 | 基本每股收益为68.64元/股。 | 证据支持 | 单位、口径和陈述精度下与原文证据一致 | [8f99c7cf09961c5159ac7771](../data/raw/600519_贵州茅台_2024年年度报告.pdf)（PDF第5页） |
-| C4 | 其中营业收入为1800亿元，这一数字需要核查。 | 确认错误 | 将该核查项改为 1709亿元，并引用所列年报页码。 | [80d5d67d35796958172e2d9f](../data/raw/600519_贵州茅台_2024年年度报告.pdf)（PDF第5页） |
-- C4 替换：1800亿元 → 1709亿元。
+| C4 | 其中营业收入为1709.99亿元，这一数字需要核查。 | 确认错误 | 将该核查项改为 1708.99亿元，并引用所列年报页码。 | [80d5d67d35796958172e2d9f](../data/raw/600519_贵州茅台_2024年年度报告.pdf)（PDF第5页） |
+- C4 替换：1709.99亿元 → 1708.99亿元。
 
 ## B. 模型判断（未完全核实 · 仅供参考）
 
@@ -57,15 +57,14 @@
 ```json
 {
   "status": "match",
-  "value": "862.2814642162",
+  "value": "862.28",
   "exact_value": "862.2814642162",
   "claimed_value": "862.28",
-  "operator": "approx",
-  "tolerance_pct": "2",
-  "relative_error_pct": "0.0001698072219760573197347269052200709756779",
+  "operator": "eq",
+  "decimals": 2,
+  "rounding": "ROUND_HALF_UP",
   "difference": "0.0014642162",
-  "warning": null,
-  "formula": "abs(actual-claimed)/abs(actual)*100 <= 2% | unit=actual * source_factor / target_factor",
+  "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
   "claimed_unit": "亿元",
   "actual_unit": "元",
   "actual_value": "86228146421.62"
@@ -96,13 +95,13 @@
 ```json
 {
   "status": "mismatch",
-  "value": "1709",
+  "value": "1708.99",
   "exact_value": "1708.9915227634",
-  "claimed_value": "1800",
+  "claimed_value": "1709.99",
   "operator": "eq",
-  "decimals": 0,
+  "decimals": 2,
   "rounding": "ROUND_HALF_UP",
-  "difference": "-91.0084772366",
+  "difference": "-0.9984772366",
   "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
   "claimed_unit": "亿元",
   "actual_unit": "元",
@@ -115,19 +114,18 @@
 
 - 确定结论 4 条；模型判断 0 条；需人工 0 条。
 - 模型不产生「确认错误/证据支持」；这两类仅来自本地比较程序。
-- 运行模式：native_tool_calls
+- 运行模式：fallback_single_shot_tools_preserved
 
 ## 工具调用链（agent）
 
 | # | 轮次 | 工具 | 状态 |
 |---|---|---|---|
-| 1 | 1 | `list_catalog` | ok · kind=metrics |
-| 2 | 1 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
-| 3 | 1 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=parent_net_profit, period_year=2024 |
-| 4 | 1 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=basic_eps, period_year=2024 |
-| 5 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
-| 6 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=parent_net_profit, period_year=2024 |
-| 7 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=basic_eps, period_year=2024 |
-| 8 | 2 | `compare_claim` | 确认错误 · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
+| 1 | 1 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
+| 2 | 1 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=parent_net_profit, period_year=2024 |
+| 3 | 1 | `find_evidence` | ok · company_name_or_code=贵州茅台, metric=basic_eps, period_year=2024 |
+| 4 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
+| 5 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=parent_net_profit, period_year=2024 |
+| 6 | 2 | `compare_claim` | 证据支持 · company_name_or_code=贵州茅台, metric=basic_eps, period_year=2024 |
+| 7 | 2 | `compare_claim` | 确认错误 · company_name_or_code=贵州茅台, metric=revenue, period_year=2024 |
 
 说明：`compare_claim` 是唯一产生对错的工具；其余只供取数/理解。

@@ -362,6 +362,18 @@ def answer(question: str, facts: list[dict], *, client=None, run=None,
     # 公司一致性门控：问题点名的公司必须在已加载材料里，否则拒答（不猜、不串公司）。
     asked = match_company(q, facts)
     loaded_codes = {str(f.get("company_code")) for f in facts if f.get("company_code")}
+    if asked is None:
+        # 问题里出现了像公司名、但未在别名表/已加载材料中的称呼 → 拒答（防「问A答B」）
+        loaded_name = _company_label(facts) or ""
+        corp_pat = re.compile(
+            r"(?:中国)?[\u4e00-\u9fff]{2,8}"
+            r"(?:股份有限公司|有限公司|公司|集团|银行|保险|证券|石油|石化|电力|能源|汽车|茅台|五粮液|平安)"
+        )
+        for m in corp_pat.finditer(q):
+            token = m.group(0)
+            if token and token not in loaded_name and loaded_name not in token:
+                asked = {"code": None, "name": None, "query": token}
+                break
     if asked is not None and (asked["code"] is None or str(asked["code"]) not in loaded_codes):
         label = _company_label(facts)
         return {

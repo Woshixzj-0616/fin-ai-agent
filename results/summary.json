@@ -1,12 +1,14 @@
 {
-  "run_id": "20261008_215027_c81da961",
-  "finished_at": "2026-10-08T21:50:33+08:00",
+  "run_id": "20261008_221052_c14ce0a7",
+  "finished_at": "2026-10-08T22:11:02+08:00",
   "output_sha256": {
-    "checked_draft.txt": "b00cc2e4e12c2aacd58838f7a5d37e845ade9ec9fde4bea36de2916b4affa532",
-    "run.json": "345537782dd44a89e5f05b9e1d9663bc951d03da7e06178f542c6bf3c7205622",
-    "text_checks.json": "7fadb50890ad2ce777c3f7cb2678f32bf057762bda40fa2717e18f23209a1a1d",
-    "text_report.md": "a516a3e564d2a58414115d37d76e2e6e0c0e038f3a57687c96eaa91d7f743c77",
-    "trace.json": "b279f06fe68d4b60931d416a6b706d4e5460ebaf3c4cc8ab067508dde5e531c3"
+    "checked_draft.txt": "62d8ac3a541024848d6ffc79b11a7264a62d44d71ba43c7a689a6a67ffb6d3c8",
+    "question_eval.json": "a45f813ba4bd8afa6956106032ba40ac318b193fec26d4d7ef80516698daacdd",
+    "question_eval.md": "b7acd9b1afb35490f7e1a578b896645ab0e51c18e2c215d7bc46970daf2b3787",
+    "run.json": "fab3dea16bd5a372ea245a77405faea09212ea06d5acab634e3bf239f1fe4e97",
+    "text_checks.json": "c840802e81c7505d50f43f4eb2f2757b5bbd4f720e19ffeafe57c37362a0bd0a",
+    "text_report.md": "dd6e506c8e1c6726c3fff828ad51a411be89e0d3cff98b70cce1630243e2a24d",
+    "trace.json": "2410845a2468113ddc12e2630818067e9b02cd9aaf4c8191b36f09ef3e33dfaf"
   },
   "history_policy": {
     "keep_runs": 20,
@@ -14,13 +16,9 @@
     "oversized_latest": "保留完整本次运行，清除更早历史"
   },
   "status": "ok",
-  "materials": 0,
-  "evidence_count": 35,
-  "checks": 4,
-  "counts": {
-    "证据支持": 3,
-    "确认错误": 1
-  },
-  "mode": "native_tool_calls",
-  "tools_used": 8
+  "scored": 103,
+  "passed": 103,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "llm": true
 }

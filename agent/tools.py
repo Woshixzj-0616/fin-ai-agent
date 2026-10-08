@@ -228,6 +228,22 @@ def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
                and f.get("period_year") == int(period_year)
                and f.get("report_year") == report_year
                and f.get("adjustment") != "before"]
+    if matches:
+        # 本报告年候选若全带 issues，放宽到其他报告年（如下年比较列的干净重述值）
+        probe, _ = _pick_fact(matches)
+        if probe is not None and (probe.get("issues") or []):
+            wider = [f for f in facts
+                     if f.get("company_code") == code and f.get("metric") == metric
+                     and f.get("period_year") == int(period_year)
+                     and f.get("adjustment") != "before"]
+            wide_best, _ = _pick_fact(wider)
+            if wide_best is not None and not (wide_best.get("issues") or []):
+                matches = wider
+    else:
+        matches = [f for f in facts
+                   if f.get("company_code") == code and f.get("metric") == metric
+                   and f.get("period_year") == int(period_year)
+                   and f.get("adjustment") != "before"]
     if not matches:
         return {"status": "empty", "count": 0, "items": [],
                 "hint": "无该组合证据；不要猜测数值"}
@@ -282,13 +298,16 @@ def compare_claim(facts: list[dict], *, company_name_or_code: str, metric: str,
         return {"verdict": "needs_review", "reason_code": "missing_evidence",
                 "evidence_ids": [], "detail": located}
     code = located["items"][0]["company_code"]
+    # check_claim 按 report_year 取唯一证据；采用 find_evidence 择优后的 report_year
+    # （例如 2024 年报带 issues、2025 比较列同值干净时，避免锁回脏证据）
+    chosen_report_year = located["items"][0].get("report_year") or int(source_report_year or period_year)
     value = claimed_value
     if kind == "yoy" and direction == "down" and decimal(claimed_value) and decimal(claimed_value) > 0:
         value = "-" + str(decimal(claimed_value))
     claim = {
         "id": "tool", "sentence": "", "company_code": code,
         "period_year": int(period_year),
-        "source_report_year": int(source_report_year or period_year),
+        "source_report_year": int(source_report_year or chosen_report_year),
         "metric": metric, "kind": kind,
         "value": value, "unit": claimed_unit,
         "currency": "CNY", "scope": scope, "period_kind": "annual",
