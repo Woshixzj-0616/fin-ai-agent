@@ -1,14 +1,16 @@
 {
   "schema_version": 2,
-  "run_id": "20261008_203812_8e75213f",
-  "started_at": "2026-10-08T20:38:12+08:00",
-  "command": "check-text",
+  "run_id": "20261008_205047_b69396f1",
+  "started_at": "2026-10-08T20:50:47+08:00",
+  "command": "live",
   "parameters": {
-    "command": "check-text",
-    "file": "results\\llm_smoke_draft.txt",
-    "model": "deepseek-chat",
-    "provider_host": "api.deepseek.com",
-    "response_format": "json_object"
+    "command": "live",
+    "pdf": null,
+    "code": "600519",
+    "name": null,
+    "year": 2024,
+    "render": true,
+    "proxy_configured": false
   },
   "versions": {
     "python": "3.14.6",
@@ -47,6 +49,7 @@
     "scripts__eval__run_llm_eval.py": "8b347355f6e171dc7ee0cedbe7b62c574da2770e162a17bb88e1be7027dea68c",
     "scripts__eval__run_report_eval.py": "8ec662091ca22ff513a310ec43af3a5b880facf1a23d776fb07a2e35cf488874",
     "scripts__eval__run_semantic_eval.py": "a0148740a2837fb7413b5ed3b19e90f42720bc2119285b4c4c6a07122ea28352",
+    "scripts__full_extract_demo.py": "597d44e465fa3228cd1982806ed7a1ebbf716c48f6944a8041462e13ef2451c5",
     "scripts__live_drill.py": "2ba72ce1de9b5c897f5832708d284658884786d8d50fadb207ee4217d9ca354a",
     "scripts__llm_smoke.py": "1f5f73cb7b3d8281fe6a565fa5d87bba1c8fd22d803a9642aaeec7b92a206533",
     "scripts__quality__crosscheck.py": "7687244d447b7ee13916aad8323f3f2c1defb935fe873e02b5fc4b3784051d51",

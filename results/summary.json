@@ -1,12 +1,16 @@
 {
-  "run_id": "20261008_203812_8e75213f",
-  "finished_at": "2026-10-08T20:38:20+08:00",
+  "run_id": "20261008_205047_b69396f1",
+  "finished_at": "2026-10-08T20:50:51+08:00",
   "output_sha256": {
-    "checked_draft.txt": "b00cc2e4e12c2aacd58838f7a5d37e845ade9ec9fde4bea36de2916b4affa532",
-    "run.json": "37f8851fd42149e7bddf6fcf4d63623dce4e8dfca7c77864d2f8e01ff81ebc93",
-    "text_checks.json": "04772564ce4fb64d90f2dfd77ff8ac0edf95e47ece21bb160550def1cb153514",
-    "text_report.md": "627a1cda70b150f8fcc1c27790b867750bf83fcc2945ba5c387e161a703efcae",
-    "trace.json": "25726612f13155d5950ec33169a15d71fe880890df65f4785df67d7b589a5e2e"
+    "600519_2024_5299f494_p5.png": "5ff3e0c589cb31f3eaa3f1da3dcd8fde892fc60163408b2f8cccf82c60a9803d",
+    "600519_2024_5299f494_p63.png": "7dcb749ce79080cf56f83528e7eda2bd674b143b98f8192b9a199d6e7b2906fd",
+    "analysis.json": "155982a3466f9c281477e3e292907766debb5cb649dde12235a179c27dc9f44e",
+    "evidence.csv": "728e5632a58e17f2f64ea51212acafbd52e57f729b912a326bad0257e4bc6d47",
+    "evidence.json": "7d9c9a583729d800e0643113f8962e409d5701e8a17dfc4182acd9cee94206c1",
+    "failures.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+    "live_report.md": "0bfe06f5aae535320ca0b74fa3b5bafe12f33bbd42b006159541c741b98ab8a8",
+    "run.json": "c1099b5a5f6991e7abca597448cca8b06305c42a810d721776304da33965f110",
+    "trace.json": "0c5e5ad683107f7f34d38623b3ece8d106389db360788d181d20130c133b5410"
   },
   "history_policy": {
     "keep_runs": 20,
@@ -14,13 +18,8 @@
     "oversized_latest": "保留完整本次运行，清除更早历史"
   },
   "status": "ok",
-  "materials": 0,
-  "evidence_count": 365,
-  "checks": 4,
-  "counts": {
-    "证据支持": 3,
-    "确认错误": 1
-  },
-  "mode": "fallback_single_shot",
-  "tools_used": 0
+  "materials": 1,
+  "evidence_count": 35,
+  "failures": 0,
+  "records_needing_review": 0
 }
