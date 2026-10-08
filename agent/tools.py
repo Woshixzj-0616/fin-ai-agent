@@ -127,13 +127,14 @@ def tool_specs() -> list[dict]:
         },
         {
             "name": "search_text",
-            "description": "在年报全文搜短语（≤40字），用于理解。命中结果**不能**单独作为数值裁决依据。",
+            "description": "在年报全文做语义检索（BM25/向量），返回相关段落。命中**不能**单独作为数值裁决依据。",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "company_name_or_code": {"type": "string"},
                     "source_report_year": {"type": "integer"},
-                    "query": {"type": "string"},
+                    "query": {"type": "string", "description": "检索问题或短语，≤40字"},
+                    "top_k": {"type": "integer", "description": "返回条数，默认 8，上限 20"},
                 },
                 "required": ["company_name_or_code", "source_report_year", "query"],
             },
@@ -446,8 +447,13 @@ def compute_trend(facts: list[dict], *, company_name_or_code: str, metric: str,
 
 
 def search_text(facts: list[dict], document_texts: dict | None = None, *,
-                company_name_or_code: str, source_report_year: int, query: str) -> dict:
-    """文档正文检索；document_texts 由调用方注入（code_year -> [page_text]）。"""
+                company_name_or_code: str, source_report_year: int, query: str,
+                top_k: int = 8) -> dict:
+    """文档正文语义检索（BM25 / 可选 embedding）。
+
+    document_texts 由调用方注入（code_year -> [page_text]）。
+    命中只是相关段落，**不能单独作为数值裁决依据**。
+    """
     if not query or len(query) > 40:
         return _err("query 需为 1–40 字")
     if not document_texts:
@@ -457,10 +463,25 @@ def search_text(facts: list[dict], document_texts: dict | None = None, *,
         return _err("公司无法对应到本次已加载材料", company=company_name_or_code)
     key = f"{code}_{int(source_report_year)}"
     pages = document_texts.get(key) or []
-    hits = [{"page": i + 1, "snippet": t[max(0, t.find(query) - 30): t.find(query) + len(query) + 30]}
-            for i, t in enumerate(pages) if query in t]
-    return {"status": "ok" if hits else "empty", "hits": hits[:8],
-            "note": "search_text 命中不能单独作为数值裁决依据"}
+    if not pages:
+        return {"status": "empty", "hits": [], "hint": f"未找到 {key} 的正文页文本"}
+
+    from retrieval import build_index
+    index = build_index(key, pages)
+    hits = index.search(query, k=max(1, min(int(top_k), 20)))
+
+    # 保留精确子串命中，标记 match=exact 便于快速定位
+    for i, t in enumerate(pages):
+        pos = t.find(query) if isinstance(t, str) else -1
+        if pos >= 0:
+            snippet = t[max(0, pos - 30): pos + len(query) + 30]
+            if not any(h.get("page") == i + 1 and h.get("snippet") == snippet for h in hits):
+                hits.insert(0, {"score": 1.0, "page": i + 1, "snippet": snippet,
+                                "match": "exact", "channel": "substring"})
+    return {"status": "ok" if hits else "empty",
+            "hits": hits[: max(1, min(int(top_k), 20))],
+            "channel": "embedding" if hits and hits[0].get("channel") == "embedding" else "bm25",
+            "note": "search_text 命中为相关段落检索，不能单独作为数值裁决依据；数值必须走 compare_claim"}
 
 
 def dispatch(name: str, facts: list[dict], arguments: dict,

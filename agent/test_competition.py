@@ -528,6 +528,61 @@ class ParallelCacheAndNativeToolsTests(unittest.TestCase):
         self.assertEqual(out["payload"]["items"], [])
 
 
+class SemanticRetrievalTests(unittest.TestCase):
+    """语义检索：BM25 召回优于子串；仍禁止单独裁决。"""
+
+    def test_bm25_finds_related_without_exact_substring(self):
+        from retrieval import build_index
+        pages = [
+            "贵州茅台酒股份有限公司2024年年度报告。主要会计数据如下。",
+            "毛利率有所承压，销售费用率上升，公司持续优化渠道结构。",
+            "经营活动产生的现金流量净额同比增长，回款质量改善。",
+        ]
+        idx = build_index("test", pages, cache=False)
+        hits = idx.search("毛利率承压", k=3)
+        self.assertTrue(hits)
+        self.assertEqual(hits[0]["page"], 2)
+        self.assertGreater(hits[0]["score"], 0)
+
+    def test_chunk_pages_keeps_page_numbers(self):
+        from retrieval import chunk_pages
+        chunks = chunk_pages(["第一段。第二段。", "第三段。"])
+        pages = {c["page"] for c in chunks}
+        self.assertEqual(pages, {1, 2})
+
+    def test_search_text_upgraded_and_forbids_verdict(self):
+        from tools import dispatch
+        fact = {"evidence_id": "e1", "company_code": "600519", "company_name": "贵州茅台",
+                "metric": "revenue", "period_year": 2024, "report_year": 2024,
+                "value": "100", "unit": "元", "normalized_value": "100",
+                "adjustment": "as_reported", "issues": []}
+        docs = {"600519_2024": ["公司持续研发创新。", "毛利率承压但份额提升，品牌力依然稳固。"]}
+        out = dispatch("search_text", [fact], {
+            "company_name_or_code": "贵州茅台", "source_report_year": 2024,
+            "query": "毛利率承压",
+        }, document_texts=docs)
+        self.assertEqual(out["status"], "ok")
+        self.assertTrue(out["hits"])
+        self.assertIn("不能单独作为数值裁决", out["note"])
+        self.assertIn(out["channel"], {"bm25", "embedding"})
+
+    def test_embedding_hook_uses_cosine_when_set(self):
+        from retrieval import DocumentIndex, set_embedding_hook, clear_cache
+        chunks = [{"chunk_id": "a", "page": 1, "start": 0, "end": 4, "text": "毛利率上升"},
+                  {"chunk_id": "b", "page": 2, "start": 0, "end": 4, "text": "现金流下降"}]
+        idx = DocumentIndex(doc_key="x", chunks=chunks)
+        set_embedding_hook(lambda texts: [
+            [1.0, 0.0] if "毛利" in t or "查询毛利" in t else [0.0, 1.0] for t in texts
+        ])
+        try:
+            hits = idx.search("查询毛利率", k=2)
+            self.assertEqual(hits[0]["channel"], "embedding")
+            self.assertEqual(hits[0]["page"], 1)
+        finally:
+            set_embedding_hook(None)
+            clear_cache()
+
+
 class HttpRetryAndStreamTests(unittest.TestCase):
     """llm_http：退避重试 + SSE 聚合 + 密钥不进异常。"""
 

@@ -64,7 +64,8 @@ MCP `tools/list` 直接读取该函数，避免两套定义漂移。
 逐年 yoy + CAGR + 单调性。覆盖「连续三年增长」类主张的证据整理；
 **趋势本身不产生对错**，需再走 `compare_claim` 或转 B 栏。
 
-## search_text(company_name_or_code, source_report_year, query)
+## search_text(company_name_or_code, source_report_year, query[, top_k])
 
-检索 `document_texts[code_year]`。返回 page + snippet。
-**命中不能单独作为数值裁决依据。**
+文档正文**语义检索**（BM25 字符 n-gram；可注入 embedding 钩子）。返回 page + snippet + score。
+检索命中只是相关段落，**不能单独作为数值裁决依据。**
+数值必须走 `compare_claim`。
