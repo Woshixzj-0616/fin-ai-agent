@@ -286,7 +286,7 @@ class AuditRegressionTests(unittest.TestCase):
         run.event("calculation", formula="120/100-1", evidence_ids=["q1"])
         run.finish(status="ok")
         self.assertTrue({"words.py", "tools.py", "webui.py", "agent_loop.py", "announcements.py", "requirements.txt"} <= set(run.sources))
-        trace = json.loads((run.folder / "trace.json").read_text())["steps"]
+        trace = json.loads((run.folder / "trace.json").read_text(encoding="utf-8"))["steps"]
         self.assertEqual(trace[-1]["event"], "run_finished")
         self.assertEqual(build_trace(run.events, [fact()])[1]["evidence"][0]["evidence_id"], "q1")
         step = build_trace([{"event": "extraction_channel", "evidence_ids": ["q1", "rejected_candidate"]}], [fact()])[0]
@@ -305,7 +305,7 @@ class AuditRegressionTests(unittest.TestCase):
 
 class RealCompetitionMaterialTests(unittest.TestCase):
     def test_real_annual_cash_flow_folded_scope(self):
-        material = next(json.loads(line) for line in (ROOT / "data/agent/materials.jsonl").read_text().splitlines()
+        material = next(json.loads(line) for line in (ROOT / "data/agent/materials.jsonl").read_text(encoding="utf-8").splitlines()
                         if (lambda m: m.get("company_code") == "600519" and m.get("report_year") == 2025
                             and "年度报告" in m.get("title", ""))(json.loads(line)))
         path = ROOT / material["local_file"]
