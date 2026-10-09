@@ -29,6 +29,7 @@ from backend.deepseek_client import ModelCallError
 from modules.part2_profit.evidence import verify_evidence, verify_financial_row_context
 from modules.part2_profit.facts import infer_profit_role, select_unique_line
 from modules.part2_profit.calculations import amount_change, gross_margin_percent, signed_profit_effect
+from modules.part2_profit.version import MODULE_VERSION
 
 
 MAX_PROFIT_EXTRA_PAGES = 8
@@ -108,12 +109,12 @@ COVERAGE_RULES = (
 
 def _profit_prompt(stage: str | None = None) -> str:
     prompt_dir = __import__("pathlib").Path(__file__).resolve().parent / "prompts"
-    content = (prompt_dir / "模块二_盈利来源与变化_v2.md").read_text(encoding="utf-8")
+    content = (prompt_dir / "模块二_盈利来源与变化_V3.2.3.md").read_text(encoding="utf-8")
     stage_names = {
-        "extract": "事实提取_v2.md",
-        "interpret": "盈利分析_v2.md",
-        "question": "追问_v2.md",
-        "repair": "补查_v2.md",
+        "extract": "事实提取_V3.2.3.md",
+        "interpret": "盈利分析_V3.2.3.md",
+        "question": "追问_V3.2.3.md",
+        "repair": "补查_V3.2.3.md",
     }
     if stage in stage_names:
         content += "\n\n" + (prompt_dir / stage_names[stage]).read_text(encoding="utf-8")
@@ -1261,8 +1262,8 @@ def _normalize_profit_result(
         "uncertainties": uncertainty_list,
         "read_pages": sorted(read_pages),
         "schema_version": "profit_analysis_v2",
-        "module_version": "模块二_盈利来源与变化_v2",
-        "prompt_version": "模块二_盈利来源与变化_v2",
+        "module_version": MODULE_VERSION,
+        "prompt_version": MODULE_VERSION,
         "analysis_blocks": _build_analysis_blocks(
             summary, rows, metrics, bridge, segments, special_items, normalized_findings,
             reconciliations, coverage, uncertainty_list,

@@ -6,11 +6,8 @@ from typing import Any
 
 from backend.core.context import ReportContext
 from modules.part2_profit.pipeline import analyze_profit_report
+from modules.part2_profit.version import MODULE_ID, MODULE_VERSION
 from backend.pdf_reader import select_initial_pages
-
-
-MODULE_ID = "profit"
-MODULE_VERSION = "模块二_盈利来源与变化_v2"
 
 
 def run(context: ReportContext) -> dict[str, Any]:

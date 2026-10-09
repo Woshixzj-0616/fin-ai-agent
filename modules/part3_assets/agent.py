@@ -17,7 +17,7 @@ from modules.part3_assets.facts import merge_asset_facts, validate_asset_facts
 
 
 MODULE_ID = "assets"
-MODULE_VERSION = "assets-v1.0"
+MODULE_VERSION = "v3.3.2"
 REQUIRED_ANALYSIS_FIELDS = (
     "summary", "asset_map", "receivables", "inventory", "long_term_assets",
     "efficiency", "findings", "limitations", "handoff", "additional_facts",

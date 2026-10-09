@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Callable
 
 from modules.part2_profit.engine import analyze_profit_report as _analyze
+from modules.part2_profit.version import MODULE_VERSION
 
 
 def analyze_profit_report(**kwargs: Any) -> dict[str, Any]:
@@ -12,7 +13,7 @@ def analyze_profit_report(**kwargs: Any) -> dict[str, Any]:
     result = workflow.get("result")
     if isinstance(result, dict):
         result.setdefault("schema_version", "profit_analysis_v2")
-        result.setdefault("module_version", "模块二_盈利来源与变化_v2")
+        result.setdefault("module_version", MODULE_VERSION)
     return workflow
 
 
