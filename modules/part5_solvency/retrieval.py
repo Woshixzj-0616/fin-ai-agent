@@ -179,9 +179,15 @@ def select_initial_pages(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     page_char_budget = min(MAX_CHARS_PER_PAGE, max(1, MAX_TOTAL_CHARS // max(1, len(chosen))))
     remaining = MAX_TOTAL_CHARS
     for page in sorted(chosen.values(), key=lambda item: int(item["page"])):
-        excerpt = str(page["text"])[: min(page_char_budget, remaining)].strip()
-        if excerpt:
-            result.append({"page": int(page["page"]), "text": excerpt})
+        full_text = str(page["text"])
+        layout_lines = re.findall(r"^\[PDF_TABLE_LAYOUT\][^\n]*$", full_text, flags=re.MULTILINE)
+        body = re.sub(r"\n?\[PDF_TABLE_LAYOUT\][^\n]*", "", full_text).strip()
+        excerpt = body[: min(page_char_budget, remaining)].strip()
+        if excerpt or layout_lines:
+            combined = "\n".join(part for part in (excerpt, *layout_lines) if part)
+            result.append({"page": int(page["page"]), "text": combined})
+            # Layout blocks are complete JSON records; preserve them in full and
+            # charge the ordinary text excerpt against the existing text budget.
             remaining -= len(excerpt)
         if remaining <= 0:
             break

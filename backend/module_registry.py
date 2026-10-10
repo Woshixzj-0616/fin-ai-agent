@@ -13,6 +13,8 @@ class ModuleRegistration:
     module_id: str
     version: str
     run: Callable[[ReportContext], dict[str, Any]]
+    table_layout_keywords: tuple[str, ...] = ()
+    initial_page_selector: Callable[[list[dict[str, Any]]], list[dict[str, Any]]] | None = None
 
 
 def registrations() -> dict[str, ModuleRegistration]:
@@ -31,6 +33,10 @@ def registrations() -> dict[str, ModuleRegistration]:
     from modules.part5_solvency.entry import MODULE_ID as solvency_id
     from modules.part5_solvency.entry import MODULE_VERSION as solvency_version
     from modules.part5_solvency.entry import run as solvency_run
+    from modules.part5_solvency.retrieval import (
+        SOLVENCY_TABLE_LAYOUT_TERMS,
+        select_initial_pages as select_solvency_pages,
+    )
     from modules.part6_disclosure.entry import MODULE_ID as disclosure_id
     from modules.part6_disclosure.entry import MODULE_VERSION as disclosure_version
     from modules.part6_disclosure.entry import run as disclosure_run
@@ -40,6 +46,12 @@ def registrations() -> dict[str, ModuleRegistration]:
         profit_id: ModuleRegistration(profit_id, profit_version, profit_run),
         assets_id: ModuleRegistration(assets_id, assets_version, assets_run),
         cashflow_id: ModuleRegistration(cashflow_id, cashflow_version, cashflow_run),
-        solvency_id: ModuleRegistration(solvency_id, solvency_version, solvency_run),
+        solvency_id: ModuleRegistration(
+            solvency_id,
+            solvency_version,
+            solvency_run,
+            table_layout_keywords=SOLVENCY_TABLE_LAYOUT_TERMS,
+            initial_page_selector=select_solvency_pages,
+        ),
         disclosure_id: ModuleRegistration(disclosure_id, disclosure_version, disclosure_run),
     }

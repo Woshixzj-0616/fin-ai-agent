@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import pymupdf
 
@@ -68,6 +69,8 @@ class PdfInputError(ValueError):
 class ExtractedPdf:
     page_count: int
     selected_pages: list[dict[str, int | str]]
+    table_layout_pages: list[int] = field(default_factory=list)
+    table_count: int = 0
 
 
 def _clean_text(text: str) -> str:
@@ -136,7 +139,87 @@ def extract_relevant_pages(content: bytes) -> ExtractedPdf:
         document.close()
 
 
-def extract_all_pages(content: bytes) -> ExtractedPdf:
+def _append_table_layout(
+    page: Any,
+    page_number: int,
+    text: str,
+    keywords: tuple[str, ...],
+) -> tuple[str, int]:
+    """Append bounded row/column data for relevant pages when PyMuPDF finds tables."""
+    compact_text = re.sub(r"\s+", "", text)
+    compact_keywords = tuple(re.sub(r"\s+", "", term) for term in keywords)
+    if not compact_keywords or not any(term in compact_text for term in compact_keywords):
+        return text, 0
+    find_tables = getattr(page, "find_tables", None)
+    if not callable(find_tables):
+        return text, 0
+    def serialize_tables(tables: Any) -> list[str]:
+        blocks: list[str] = []
+        for table_index, table in enumerate(tables or [], start=1):
+            if len(blocks) >= 6:
+                break
+            try:
+                extracted_rows = table.extract() or []
+                rows = [
+                    [str(cell or "").replace("\n", " ").strip() for cell in row]
+                    for row in extracted_rows
+                    if isinstance(row, (list, tuple))
+                ]
+                if len(rows) < 2:
+                    continue
+                if sum(len(row) for row in rows) > 300:
+                    continue
+                table_text = re.sub(r"\s+", "", "".join("".join(row) for row in rows))
+                if not any(term in table_text for term in compact_keywords):
+                    continue
+
+                row_objects = getattr(table, "rows", []) or []
+                cell_bboxes: list[list[list[float] | None]] = []
+                for row_index, row in enumerate(rows):
+                    source_cells = getattr(row_objects[row_index], "cells", []) if row_index < len(row_objects) else []
+                    box_row: list[list[float] | None] = []
+                    for column_index in range(len(row)):
+                        rect = source_cells[column_index] if column_index < len(source_cells) else None
+                        if rect is None:
+                            box_row.append(None)
+                        else:
+                            try:
+                                box_row.append([round(float(value), 1) for value in rect])
+                            except (TypeError, ValueError):
+                                box_row.append(None)
+                    cell_bboxes.append(box_row)
+
+                bbox = getattr(table, "bbox", None)
+                try:
+                    table_bbox = [round(float(value), 1) for value in bbox] if bbox is not None else None
+                except (TypeError, ValueError):
+                    table_bbox = None
+                payload = json.dumps(
+                    {"bbox": table_bbox, "rows": rows, "cell_bboxes": cell_bboxes},
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                )
+                blocks.append(f"[PDF_TABLE_LAYOUT] page={page_number} table={table_index} {payload}")
+            except Exception:
+                # A malformed or unsupported table must not make the whole report unreadable.
+                continue
+        return blocks
+
+    blocks: list[str] = []
+    for options in ({}, {"strategy": "text"}):
+        try:
+            found = find_tables(**options)
+        except Exception:
+            continue
+        blocks = serialize_tables(getattr(found, "tables", []))
+        if blocks:
+            break
+    if not blocks:
+        return text, 0
+    return text + "\n" + "\n".join(blocks), len(blocks)
+
+
+def extract_all_pages(content: bytes, *, table_layout_keywords: tuple[str, ...] = ()) -> ExtractedPdf:
     """Extract and retain text for every page so later questions can search beyond the first pass."""
     if len(content) > MAX_UPLOAD_BYTES:
         raise PdfInputError("文件超过 25 MB，请先压缩 PDF 后重试。")
@@ -152,13 +235,27 @@ def extract_all_pages(content: bytes) -> ExtractedPdf:
             raise PdfInputError("PDF 中没有可读取的页面。")
         if page_count > MAX_PDF_PAGES:
             raise PdfInputError(f"PDF 共 {page_count} 页，当前最多处理 {MAX_PDF_PAGES} 页。")
-        pages = [
-            {"page": index + 1, "text": _clean_text(document.load_page(index).get_text("text"))}
-            for index in range(page_count)
-        ]
+        pages: list[dict[str, int | str]] = []
+        table_layout_pages: list[int] = []
+        table_count = 0
+        for index in range(page_count):
+            page_number = index + 1
+            page = document.load_page(index)
+            text = _clean_text(page.get_text("text"))
+            if table_layout_keywords:
+                text, found_count = _append_table_layout(page, page_number, text, table_layout_keywords)
+                if found_count:
+                    table_layout_pages.append(page_number)
+                    table_count += found_count
+            pages.append({"page": page_number, "text": text})
         if not any(page["text"] for page in pages):
             raise PdfInputError("这份 PDF 没有可提取的文字，可能是扫描件；当前版本暂不处理扫描 PDF。")
-        return ExtractedPdf(page_count=page_count, selected_pages=pages)
+        return ExtractedPdf(
+            page_count=page_count,
+            selected_pages=pages,
+            table_layout_pages=table_layout_pages,
+            table_count=table_count,
+        )
     finally:
         document.close()
 

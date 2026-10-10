@@ -21,7 +21,33 @@ from modules.part6_disclosure.agent import (
 
 def run(context: ReportContext) -> dict:
     """Analyze an annual report and preserve all module-specific result fields."""
-    return analyze_disclosure_report(context)
+    try:
+        return analyze_disclosure_report(context)
+    except ModelCallError as exc:
+        checkpoint_path = context.recorder.artifacts_dir / "disclosure_checkpoint.json"
+        if not checkpoint_path.is_file():
+            raise
+        try:
+            checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            raise exc
+        if not isinstance(checkpoint, dict) or not any(
+            checkpoint.get(key)
+            for key in ("submitted_overview", "findings", "impacts", "calculations", "provisional_result")
+        ):
+            raise
+
+        result = partial_result_from_checkpoint(checkpoint, str(exc))
+        result["analysis_status"] = "partial"
+        read_pages = result.get("read_pages") if isinstance(result.get("read_pages"), list) else []
+        context.progress("模块六：检查点已保存", "部分完成", str(exc))
+        return {
+            "result": result,
+            "trace": [],
+            "read_pages": read_pages,
+            "status": "partial",
+            "error": str(exc),
+        }
 
 
 def partial_result_from_checkpoint(checkpoint: dict, reason: str) -> dict:
@@ -61,6 +87,7 @@ def partial_result_from_checkpoint(checkpoint: dict, reason: str) -> dict:
         "completion_issues": checkpoint.get("completion_issues", []),
     }
     result["partial_reason"] = reason
+    result["analysis_status"] = "partial"
     return result
 
 

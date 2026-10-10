@@ -77,6 +77,7 @@ def _now() -> str:
 
 
 def _public_run(run: dict[str, Any]) -> dict[str, Any]:
+    result = run.get("result") if isinstance(run.get("result"), dict) else {}
     return {
         "id": run["id"],
         "module_id": run["module_id"],
@@ -87,6 +88,9 @@ def _public_run(run: dict[str, Any]) -> dict[str, Any]:
         "created_at": run["created_at"],
         "updated_at": run["updated_at"],
         "error": run.get("error"),
+        "analysis_status": result.get("analysis_status"),
+        "analysis_status_field": result.get("analysis_status_field"),
+        "analysis_review_status": result.get("analysis_review_status"),
         "result": run.get("result"),
         "run_dir": run.get("run_dir"),
     }
@@ -141,7 +145,7 @@ pre{background:#152220;color:#e4f6ee;border-radius:10px;padding:16px;overflow:au
 const $=id=>document.getElementById(id);
 async function json(url,options){const r=await fetch(url,options);const d=await r.json().catch(()=>({detail:r.statusText}));if(!r.ok)throw new Error(d.detail||'请求失败');return d}
 async function refreshHealth(){try{const d=await json('/api/health');$('health').textContent=d.api_configured?'DeepSeek 已配置':'等待配置 Key';$('health').className='status '+(d.api_configured?'ok':'');}catch(e){$('health').textContent='服务不可用';$('health').className='status error'}}
-async function poll(id){for(let i=0;i<360;i++){const d=await json('/api/runs/'+id);$('message').textContent=d.status==='running'?'正在分析，模块会按需读取年报原文…':d.status==='queued'?'任务已排队…':'';if(d.status==='completed'){ $('result').innerHTML='<pre>'+JSON.stringify(d.result,null,2).replaceAll('&','&amp;').replaceAll('<','&lt;')+'</pre>';$('message').textContent='分析完成。';return}if(d.status==='failed'){ $('result').innerHTML='<div class="error">'+(d.error||'分析失败')+'</div>';return}await new Promise(r=>setTimeout(r,1000))}throw new Error('等待超时，请查看后台运行记录。')}
+async function poll(id){for(let i=0;i<360;i++){const d=await json('/api/runs/'+id);$('message').textContent=d.status==='running'?'正在分析，模块会按需读取年报原文…':d.status==='queued'?'任务已排队…':'';if(d.status==='completed'){ $('result').innerHTML='<pre>'+JSON.stringify(d.result,null,2).replaceAll('&','&amp;').replaceAll('<','&lt;')+'</pre>';const marker=d.analysis_status;const review=d.analysis_review_status;$('message').textContent=marker?`运行已结束 · ${d.analysis_status_field||'分析状态'}：${marker}`:review?`运行已结束 · 复核标记：${review}`:'运行已结束 · 请查看结果中的覆盖情况与待复核项。';return}if(d.status==='failed'){ $('result').innerHTML='<div class="error">'+(d.error||'分析失败')+'</div>';return}await new Promise(r=>setTimeout(r,1000))}throw new Error('等待超时，请查看后台运行记录。')}
 $('saveKey').onclick=async()=>{const key=$('key').value.trim();if(!key){$('keyMsg').textContent='请先输入 Key';return}try{await json('/api/settings/deepseek-key',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_key:key})});$('key').value='';$('keyMsg').textContent='已保存';refreshHealth()}catch(e){$('keyMsg').textContent=e.message}};
 $('start').onclick=async()=>{const f=$('pdf').files[0];if(!f){$('message').textContent='请选择 PDF';return}const form=new FormData();form.append('file',f);$('start').disabled=true;$('result').textContent='';try{const d=await json('/api/analyze',{method:'POST',body:form});await poll(d.id)}catch(e){$('message').textContent=e.message}finally{$('start').disabled=false}};
 refreshHealth();

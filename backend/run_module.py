@@ -40,7 +40,7 @@ def run_one(module_id: str, pdf_path: Path, output_dir: Path, config_file: Path 
         raise FileNotFoundError(f"未找到 PDF：{pdf_path}")
     content = pdf_path.read_bytes()
     file_hash = hashlib.sha256(content).hexdigest()
-    extracted = extract_all_pages(content)
+    extracted = extract_all_pages(content, table_layout_keywords=registration.table_layout_keywords)
     run_id = uuid.uuid4().hex
     attempt_id = uuid.uuid4().hex[:12]
     run_dir = output_dir.resolve() / run_id / attempt_id
@@ -53,6 +53,8 @@ def run_one(module_id: str, pdf_path: Path, output_dir: Path, config_file: Path 
         bytes=len(content),
         page_count=extracted.page_count,
         extracted_page_count=len(extracted.selected_pages),
+        table_layout_pages=extracted.table_layout_pages,
+        table_layout_count=extracted.table_count,
     )
     pages_ref = recorder.save_artifact("full_extracted_pages", extracted.selected_pages)
     model = os.getenv("DEEPSEEK_MODEL", "deepseek-flash")
@@ -68,13 +70,19 @@ def run_one(module_id: str, pdf_path: Path, output_dir: Path, config_file: Path 
             "sha256": file_hash,
             "page_count": extracted.page_count,
             "extracted_pages_artifact": pages_ref,
+            "table_layout_page_count": len(extracted.table_layout_pages),
+            "table_layout_count": extracted.table_count,
         },
         "model": model,
         "config_path": str(config.resolve()),
         "started_at": started,
     }
     recorder.write_manifest(manifest)
-    initial_pages = select_initial_pages(extracted.selected_pages, analysis_module=module_id)
+    initial_pages = (
+        registration.initial_page_selector(extracted.selected_pages)
+        if registration.initial_page_selector
+        else select_initial_pages(extracted.selected_pages, analysis_module=module_id)
+    )
     recorder.save_artifact("selected_initial_pages", initial_pages)
     recorder.record(
         "initial_pages_selected",
@@ -100,18 +108,43 @@ def run_one(module_id: str, pdf_path: Path, output_dir: Path, config_file: Path 
             recorder.save_artifact("legacy_workflow_trace", trace)
         read_pages = workflow.get("read_pages", [])
         recorder.record("module_result_ready", read_pages=read_pages)
+        analysis_status = None
+        analysis_status_field = None
+        if isinstance(module_result, dict):
+            for candidate in ("analysis_status", "analysis_completeness", "analysis_completion_status"):
+                value = module_result.get(candidate)
+                if value is not None and value != "":
+                    analysis_status = value
+                    analysis_status_field = candidate
+                    break
+        if analysis_status is None and workflow.get("status") == "partial":
+            analysis_status = "partial"
+            analysis_status_field = "workflow_status"
         envelope = {
             "report_id": file_hash,
             "module_id": module_id,
             "module_version": registration.version,
             "status": "completed",
+            "analysis_status": analysis_status,
+            "analysis_status_field": analysis_status_field,
+            "analysis_review_status": (
+                module_result.get("analysis_review_status") if isinstance(module_result, dict) else None
+            ),
+            "analysis_note": workflow.get("error"),
             "error": None,
             "read_pages": read_pages,
             "result": module_result,
             "completed_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }
         recorder.write_result(envelope)
-        recorder.progress("分析完成", "已完成")
+        run_detail = (
+            f"模块分析状态（{analysis_status_field}）：{analysis_status}"
+            if analysis_status is not None
+            else "模块已返回结果；本模块没有提供统一的完成度字段。"
+        )
+        if envelope["analysis_review_status"]:
+            run_detail += f"；复核标记：{envelope['analysis_review_status']}"
+        recorder.progress("模块运行已返回结果", "已完成", run_detail)
         return {"run_id": run_id, "attempt_id": attempt_id, "run_dir": str(run_dir), **envelope}
     except Exception as exc:
         error = str(exc)
