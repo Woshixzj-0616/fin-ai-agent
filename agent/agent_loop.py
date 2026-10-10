@@ -20,6 +20,7 @@ from collections import Counter
 
 from llm_check import LLMError, schema, validate_schema
 from tools import dispatch, tool_specs
+from backend_runtime import ExecutionLimit, load_config
 
 MAX_ROUNDS = 5
 MAX_TOOL_CALLS = 30
@@ -71,6 +72,30 @@ def _repair_messages(frame: dict | None, reason: str) -> str:
     )
 
 
+def _limits(client):
+    return (getattr(client, "config", None) or load_config())["tools"]
+
+
+def _system(client):
+    limits = _limits(client)
+    return LOOP_SYSTEM.replace(f"不超过 {MAX_TOOL_CALLS} 次", f"不超过 {limits['max_calls']} 次").replace(
+        f"不超过 {MAX_ROUNDS}", f"不超过 {limits['max_rounds']}")
+
+
+def _take_tool(client, left):
+    execution = getattr(client, "_execution", None)
+    if execution is not None:
+        try:
+            permitted = execution.before_tool()
+        except ExecutionLimit as exc:
+            raise LLMError(str(exc), terminal=True) from None
+        commit = getattr(client, "_checkpoint_commit", None)
+        if commit:
+            commit()
+        return permitted, max(0, execution.config["tools"]["max_calls"] - execution.tool_calls)
+    return left > 0, max(0, left - 1)
+
+
 def run_loop(client, draft: str, facts: list[dict], run,
              sentences: list[dict] | None = None,
              document_texts: dict | None = None,
@@ -80,23 +105,25 @@ def run_loop(client, draft: str, facts: list[dict], run,
     owned_tools = tools_used is None
     tools_used = tools_used if tools_used is not None else []
     tool_results = tool_results if tool_results is not None else []
-    tool_budget = MAX_TOOL_CALLS
+    limits = _limits(client)
+    tool_budget = limits["max_calls"]
     messages = [
-        {"role": "system", "content": LOOP_SYSTEM},
+        {"role": "system", "content": _system(client)},
         {"role": "user", "content": json.dumps(
             {"task": "parse_and_verify", "draft": draft,
-             "sentences": sentences or [], "tool_specs": tool_specs()},
+             "sentences": sentences or [], "tool_specs": tool_specs(),
+             "document_context": getattr(client, "_document_context", {})},
             ensure_ascii=False)},
     ]
-    run.event("agent_loop_start", max_rounds=MAX_ROUNDS, max_tools=MAX_TOOL_CALLS)
+    run.event("agent_loop_start", max_rounds=limits["max_rounds"], max_tools=limits["max_calls"])
     repairs = 0
 
-    for round_no in range(1, MAX_ROUNDS + 1):
+    for round_no in range(1, limits["max_rounds"] + 1):
         raw = client.chat(messages, run)
         try:
             frame = parse_loop_reply(raw)
         except LLMError as exc:
-            if repairs < MAX_REPAIR_ROUNDS:
+            if repairs < limits["max_repairs"]:
                 repairs += 1
                 run.event("loop_repair", round=round_no, repair_kind="parse",
                           reason=str(exc), attempt=repairs)
@@ -113,14 +140,16 @@ def run_loop(client, draft: str, facts: list[dict], run,
                 raise LLMError("call_tools 未带 tool_calls")
             results = []
             for call in calls:
-                if tool_budget <= 0:
+                if not isinstance(call, dict) or not isinstance(call.get("arguments", {}), dict):
+                    raise LLMError("工具调用必须是对象，arguments必须是对象")
+                allowed, tool_budget = _take_tool(client, tool_budget)
+                if not allowed:
                     results.append({"name": call.get("name"),
                                     "result": {"status": "error", "error": "工具调用预算已用尽"}})
                     continue
                 name = call.get("name")
                 args = call.get("arguments") or {}
                 result = dispatch(name, facts, args, document_texts=document_texts, draft=draft)
-                tool_budget -= 1
                 tools_used.append({"round": round_no, "name": name,
                                    "arguments": args, "status": result.get("status")})
                 tool_results.append({"round": round_no, "name": name,
@@ -140,7 +169,7 @@ def run_loop(client, draft: str, facts: list[dict], run,
         try:
             validate_schema(payload, schema())
         except LLMError as exc:
-            if repairs < MAX_REPAIR_ROUNDS:
+            if repairs < limits["max_repairs"]:
                 repairs += 1
                 run.event("loop_repair", round=round_no, repair_kind="submit",
                           reason=str(exc), attempt=repairs, items=len(items))
@@ -157,7 +186,7 @@ def run_loop(client, draft: str, facts: list[dict], run,
                 "rounds": round_no, "budget_left": tool_budget,
                 "mode": "json_multi_step"}
 
-    raise LLMError(f"工具循环超过 {MAX_ROUNDS} 轮仍未提交主张；请拆短草稿后重试")
+    raise LLMError(f"工具循环超过 {limits['max_rounds']} 轮仍未提交主张")
 
 
 def tool_summary(tools_used: list[dict]) -> str:
@@ -206,22 +235,24 @@ def run_loop_native(client, draft: str, facts: list[dict], run,
     """原生 tools/tool_calls 循环。tools_used/tool_results 由调用方持有。"""
     tools_used = tools_used if tools_used is not None else []
     tool_results = tool_results if tool_results is not None else []
-    tool_budget = MAX_TOOL_CALLS
+    limits = _limits(client)
+    tool_budget = limits["max_calls"]
     oai_tools = _openai_tools()
-    system = LOOP_SYSTEM.replace(
+    system = _system(client).replace(
         "每轮输出只能是下面两种 JSON 之一（不要 markdown 代码块）：",
         "你通过平台的 tools/tool_calls 调用工具；就绪后调用 submit_claims，不要输出散文。"
     )
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": json.dumps(
-            {"task": "parse_and_verify", "draft": draft, "sentences": sentences or []},
+            {"task": "parse_and_verify", "draft": draft, "sentences": sentences or [],
+             "document_context": getattr(client, "_document_context", {})},
             ensure_ascii=False)},
     ]
     run.event("agent_loop_start", protocol="native_tools",
-              max_rounds=MAX_ROUNDS, max_tools=MAX_TOOL_CALLS)
+              max_rounds=limits["max_rounds"], max_tools=limits["max_calls"])
 
-    for round_no in range(1, MAX_ROUNDS + 1):
+    for round_no in range(1, limits["max_rounds"] + 1):
         message = client.chat_tools(messages, oai_tools, run)
         messages.append({k: v for k, v in message.items() if k != "function_call"})
         tool_calls = message.get("tool_calls") or []
@@ -263,12 +294,14 @@ def run_loop_native(client, draft: str, facts: list[dict], run,
                         "tool_results": tool_results, "rounds": round_no,
                         "budget_left": tool_budget, "mode": "native_tool_calls"}
 
-            if tool_budget <= 0:
+            if not isinstance(args, dict):
+                raise LLMError("工具arguments必须是对象")
+            allowed, tool_budget = _take_tool(client, tool_budget)
+            if not allowed:
                 result = {"status": "error", "error": "工具调用预算已用尽"}
             else:
                 result = dispatch(name, facts, args,
                                   document_texts=document_texts, draft=draft)
-                tool_budget -= 1
                 tools_used.append({"round": round_no, "name": name,
                                    "arguments": args, "status": result.get("status")})
                 tool_results.append({"round": round_no, "name": name,
@@ -282,4 +315,4 @@ def run_loop_native(client, draft: str, facts: list[dict], run,
                 "content": json.dumps(result, ensure_ascii=False),
             })
 
-    raise LLMError(f"原生工具循环超过 {MAX_ROUNDS} 轮仍未 submit_claims")
+    raise LLMError(f"原生工具循环超过 {limits['max_rounds']} 轮仍未 submit_claims")

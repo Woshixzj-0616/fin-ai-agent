@@ -17,7 +17,7 @@ from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from finance import analyze
+from finance import analyze, evidence_issues
 from extract import extract_material
 from main import report_markdown
 from materials import ROOT, Run, register, sha256, write_json
@@ -191,7 +191,7 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
     write_json(run.output("webui_failures.json"), failures)
     analysis = analyze(facts, run)
     report = report_markdown(analysis, materials, None)
-    issues = [f for f in facts if f.get("issues")]
+    issues = [f for f in facts if evidence_issues(f)]
     checks = _check_draft(draft, facts, run) if draft and draft.strip() else None
     counts = {"match": 0, "mismatch": 0, "unverified": 0, "issue": len(issues)}
     for row in analysis["rows"]:
@@ -229,11 +229,12 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
             "page": f.get("page"), "page_image": f.get("page_image"),
             "value_bbox": f.get("value_bbox"), "label_bbox": f.get("label_bbox"),
             "scope": f.get("scope"), "adjustment": f.get("adjustment"),
-            "issues": f.get("issues") or [],
+            "issues": evidence_issues(f),
+            "source_origin": f.get("source_origin"),
         } for f in facts],
         "issues": [{
             "evidence_id": f["evidence_id"], "metric_name": f.get("metric_name"),
-            "issues": f.get("issues"),
+            "issues": evidence_issues(f),
         } for f in issues],
         "report_md": report,
         "failures": failures,
@@ -245,7 +246,7 @@ def run_pipeline(blob: bytes, code: str, name: str, year: int,
         LAST_FACTS.extend(facts)
         LAST_DOCUMENT_TEXTS.clear()
         LAST_DOCUMENT_TEXTS.update(doc_texts)
-    run.finish(status="ok" if not failures else "partial_failure",
+    run.finish(status="partial_failure" if failures or (checks and checks.get("execution_status") == "partial") else "ok",
                materials=len(materials), evidence_count=len(facts),
                failures=len(failures), draft_checked=bool(checks))
     from trace import build_trace
@@ -282,7 +283,10 @@ def _check_draft(draft: str, facts: list[dict], run) -> dict:
             client.stream = True
         bundle = check_text(tmp, facts, run, client, use_loop=True)
         tools_used = bundle.get("tools_used") or []
-        return {"status": "completed", "mode": bundle.get("mode"),
+        return {"status": "completed" if bundle.get("status") == "completed" else "failed",
+                "execution_status": bundle.get("status"), "reason": bundle.get("reason"),
+                "unfinished_sentence_ids": bundle.get("unfinished_sentence_ids", []),
+                "checkpoint_file": bundle.get("checkpoint_file"), "mode": bundle.get("mode"),
                 "counts": bundle.get("counts"), "checks": bundle.get("checks") or [],
                 "tools_used": len(tools_used),
                 "tool_names": [t.get("name") for t in tools_used],

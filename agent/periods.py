@@ -5,9 +5,14 @@ import calendar
 import re
 from datetime import date
 
-from finance import NON_AMOUNT_UNITS, convert, decimal, result, text, yoy
+from finance import (NON_AMOUNT_UNITS, convert, decimal, declared_basis_conflicts,
+                     evidence_issues, result, text, yoy)
 
-STOCK_METRICS = frozenset({"total_assets", "parent_equity", "book_value_per_share"})
+STOCK_METRICS = frozenset({"total_assets", "parent_equity", "book_value_per_share",
+                           "accounts_receivable", "receivables", "inventory", "total_liabilities",
+                           "cash_and_equivalents", "accounts_payable", "contract_assets"})
+ADDITIVE_METRICS = frozenset({"revenue", "total_revenue", "parent_net_profit",
+                             "adjusted_parent_net_profit", "operating_cash_flow", "revenue_after_deduction"})
 NON_ADDITIVE = STOCK_METRICS | frozenset({
     "basic_eps", "diluted_eps", "deducted_basic_eps", "weighted_roe", "deducted_weighted_roe"})
 
@@ -43,10 +48,11 @@ def dimensions(a: dict, b: dict) -> list[str]:
             reasons.append(f"{key} 未明确")
         elif a[key] != b[key]:
             reasons.append(f"{key} 不一致")
-    if a.get("issues") or b.get("issues"):
+    if evidence_issues(a) or evidence_issues(b):
         reasons.append("存在待复核字段")
     if a.get("adjustment") == "before" or b.get("adjustment") == "before":
         reasons.append("调整前数据不能直接参与比较")
+    reasons.extend(declared_basis_conflicts(a, b))
     return reasons
 
 
@@ -57,8 +63,11 @@ def amount(fact: dict):
 
 def derive_quarter(current: dict, previous_cumulative: dict | None = None) -> dict:
     """仅流量指标可拆差；EPS/ROE/资产余额不可相减后冒充单季。"""
-    if current.get("metric") in NON_ADDITIVE:
+    if (current.get("metric") in NON_ADDITIVE or current.get("period_attribute") == "instant"
+            or current.get("period_kind") == "instant"):
         return result("not_comparable", reason="该指标为存量或非可加指标，不能累计拆季")
+    if current.get("metric") not in ADDITIVE_METRICS:
+        return result("not_comparable", reason="该指标没有已登记的累计可加定义，不能推导单季")
     try:
         start, end = date.fromisoformat(current["period_start"]), date.fromisoformat(current["period_end"])
     except (KeyError, ValueError, TypeError):

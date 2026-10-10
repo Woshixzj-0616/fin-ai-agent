@@ -856,6 +856,16 @@ def _scanned_pdf_hint(document, texts: list[str]) -> str | None:
     return None
 
 
+def _with_origin(facts: list[dict], material: dict) -> list[dict]:
+    origin = {key: material.get(key) for key in (
+        "announcement_id", "local_import_id", "source_kind", "source_url", "disclosed_at",
+        "disclosure_precision", "retrieved_at", "version_policy", "needs_version_review",
+        "version_selection", "license_status")}
+    for fact in facts:
+        fact["source_origin"] = dict(origin)
+    return facts
+
+
 def extract_material(root, material: dict, run: Run) -> list[dict]:
     path = within(root, root / material["local_file"])
     blob = run.read(path)
@@ -870,7 +880,7 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
         identity = report_period("".join(texts[:10]), material["report_year"])
         if identity["report_kind"] in {"quarter", "half"}:
             from interim import extract_interim
-            return extract_interim(document, material, run)
+            return _with_origin(extract_interim(document, material, run), material)
         currency = document_currency(document, texts)
 
         # ── 通道 1：表格线网格（gold 口径） ──
@@ -954,4 +964,4 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
                   needs_review=sum(bool(f["issues"]) for f in facts))
         if missing_required:
             raise ValueError("主要指标不完整：" + ",".join(missing_required))
-        return facts
+        return _with_origin(facts, material)

@@ -10,7 +10,8 @@ from __future__ import annotations
 
 from decimal import Decimal, ROUND_HALF_UP, localcontext
 
-from finance import check_claim, compare_amount, convert, decimal, evidence_yoy, select_previous, text
+from finance import (check_claim, compare_amount, convert, decimal, evidence_issues,
+                     evidence_yoy, select_previous, text)
 from llm_check import COMPANIES, METRIC_NOTE, METRICS, UNITS, companies_from_facts, resolve_company
 
 TOOL_NAMES = (
@@ -171,7 +172,7 @@ def list_catalog(kind: str, facts: list[dict] | None = None) -> dict:
 
 def _fact_quality(f: dict) -> tuple:
     """择优排序：问题少 > 有 bbox > 页码靠前（摘要表） > id 稳定。"""
-    issues = f.get("issues") or []
+    issues = evidence_issues(f)
     hard = sum(1 for i in issues if i in {
         "conflicting_extraction_values", "unit_unknown", "scope_unknown", "value_conflict"})
     return (hard, len(issues), 0 if f.get("value_bbox") else 1,
@@ -183,7 +184,8 @@ def _fact_identity(f: dict) -> tuple:
     """同一数值/口径/调整列视为可合并重复（words+grid 同值双记等）。"""
     return (f.get("normalized_value") or f.get("value"),
             f.get("normalized_unit") or f.get("unit"),
-            f.get("scope"), f.get("adjustment"))
+            f.get("scope"), f.get("adjustment"), f.get("document_id"), f.get("source_sha256"),
+            f.get("period_start"), f.get("period_end"))
 
 
 def _pick_fact(matches: list[dict]) -> tuple[dict | None, list[dict]]:
@@ -193,6 +195,9 @@ def _pick_fact(matches: list[dict]) -> tuple[dict | None, list[dict]]:
     """
     if not matches:
         return None, []
+    if len(matches) > 1 and any(f.get("auto_usable") is False or f.get("review_reasons")
+                              or "second_path_unresolved" in evidence_issues(f) for f in matches):
+        return None, matches  # 同值重复不能洗掉明确复核限制。
     if len(matches) == 1:
         return matches[0], []
     # 先按身份分组：同值同口径只留质量问题最少的一条
@@ -265,7 +270,9 @@ def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
         "normalized_value": fact.get("normalized_value"),
         "page": fact.get("page"), "value_bbox": fact.get("value_bbox"),
         "scope": fact.get("scope"), "adjustment": fact.get("adjustment"),
-        "issues": fact.get("issues") or [],
+        "issues": evidence_issues(fact),
+        "auto_usable": fact.get("auto_usable"), "review_reasons": fact.get("review_reasons", []),
+        "second_path_check": fact.get("second_path_check"),
     }],
         **({"duplicate_evidence_ids": extra, "selection_note": "同值/同口径多条，已按质量问题择优"} if extra else {}),
     }

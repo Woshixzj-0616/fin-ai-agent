@@ -14,6 +14,8 @@ from pathlib import Path
 from finance import check_claim, decimal, text
 from materials import ROOT, sha256, write_json
 from extract import ADJUDICABLE, METRICS as _EXTRACT_METRICS
+from backend_runtime import (ExecutionBudget, ExecutionLimit, atomic_json, chunk_context,
+                             digest, load_config, plan_chunks, sentence_rows, validate_config)
 
 # 已知别名仅作软匹配辅助（方便「茅台」→贵州茅台），不是准入白名单；
 # 公司能否解析取决于本次已加载材料/证据里有没有它。
@@ -91,6 +93,11 @@ DEFAULT_TOLERANCE_PCT = 2.0
 
 class LLMError(ValueError):
     """只携带可安全写入日志的固定说明，不包含请求头或服务端原始错误。"""
+
+    def __init__(self, message, *, terminal=False, request_status=None):
+        super().__init__(message)
+        self.terminal = terminal
+        self.request_status = request_status
 
 
 def schema() -> dict:
@@ -217,7 +224,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class LLMClient:
     def __init__(self, base_url: str, model: str, key: str, mode="json_schema",
-                 *, stream: bool | None = None):
+                 *, stream: bool | None = None, config: dict | None = None):
         try:
             parts = urllib.parse.urlsplit(base_url)
         except ValueError:
@@ -237,15 +244,24 @@ class LLMClient:
         if stream is None:
             stream = os.environ.get("LLM_STREAM", "").lower() in {"1", "true", "yes", "on"}
         self.stream = bool(stream)
+        self.config = config if config is not None else load_config()
+        validate_config(self.config)
+        self._execution = None
+        self._checkpoint_commit = None
+        self._document_context = {}
+        self._observed_models = set()
         from llm_http import LLMHttp
-        self._http = LLMHttp(self.url, self.key)
+        settings = self.config["http"]
+        self._http = LLMHttp(self.url, self.key, timeout=settings["timeout_seconds"],
+                             max_retries=settings["max_retries"],
+                             request_deadline=settings["request_deadline_seconds"])
 
     @classmethod
-    def from_environment(cls, *, base_url=None, model=None, mode=None, ask_key=False):
+    def from_environment(cls, *, base_url=None, model=None, mode=None, ask_key=False, config=None):
         key = getpass.getpass("临时API密钥（不回显、不保存）：") if ask_key else os.environ.get("LLM_API_KEY", "")
         return cls(base_url or os.environ.get("LLM_BASE_URL", ""),
                    model or os.environ.get("LLM_MODEL", ""), key,
-                   mode or os.environ.get("LLM_FORMAT", "json_schema"))
+                   mode or os.environ.get("LLM_FORMAT", "json_schema"), config=config)
 
     def _guard_blob(self, blob: bytes) -> None:
         if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):
@@ -258,19 +274,51 @@ class LLMClient:
 
     def _request(self, payload: dict, run) -> dict:
         """带退避重试的统一请求；可选流式。"""
+        payload = {**payload, "max_tokens": self.config["http"]["max_output_tokens"]}
+        self._guard_blob(json.dumps(payload, ensure_ascii=False).encode("utf-8"))
+        execution = self._execution
+
+        def begin(body):
+            if execution is not None:
+                execution.before_attempt(body)
+                if self._checkpoint_commit:
+                    self._checkpoint_commit()
+
+        def finish(status, body, elapsed):
+            if execution is not None:
+                execution.after_attempt(status, body, elapsed)
+                if self._checkpoint_commit:
+                    self._checkpoint_commit()
+
         try:
+            options = {"on_retry": self._on_retry(run), "on_attempt": begin, "on_result": finish,
+                       "deadline": execution.deadline if execution is not None else None}
             if self.stream:
-                body = self._http.post_stream(payload, on_retry=self._on_retry(run))
+                body = self._http.post_stream(payload, **options)
             else:
-                body = self._http.post_json(payload, on_retry=self._on_retry(run))
+                body = self._http.post_json(payload, **options)
+        except ExecutionLimit as exc:
+            raise LLMError(str(exc), terminal=True) from None
         except Exception as exc:  # TransportError 等
-            message = str(exc)
-            # 服务端错误正文可能回显认证信息；不保存、不打印该正文。
-            if re.search(r"HTTP\s*\d{3}", message):
-                raise LLMError(f"{message}；请核实服务地址、模型权限和结构化输出模式") from None
-            raise LLMError("模型接口连接失败或超时；请核实网络后重试") from None
+            status = getattr(exc, "status", None)
+            message = (f"模型接口HTTP {status}；请核实服务地址、模型权限和输出模式"
+                       if type(status) is int else "模型接口连接失败、超时或运行预算已耗尽")
+            # 传输层已完成有限网络重试；不能再当格式错误重复走协议回退。
+            raise LLMError(message, terminal=True, request_status=status) from None
         # 密钥泄漏门控：序列化后检查
         self._guard_blob(json.dumps(body, ensure_ascii=False).encode("utf-8"))
+        returned = body.get("model") if isinstance(body.get("model"), str) else None
+        changed = bool(returned and self._observed_models and returned not in self._observed_models)
+        if returned:
+            self._observed_models.add(returned)
+        usage = body.get("usage") if isinstance(body.get("usage"), dict) else {}
+        run.event("llm_usage", requested_model=self.model, returned_model=returned,
+                  model_identity_changed=changed, requested_name_matches=returned == self.model if returned else None,
+                  provider_host=self.host,
+                  usage={k: v for k, v in usage.items() if k in {
+                      "prompt_tokens", "completion_tokens", "total_tokens"} and type(v) is int and v >= 0},
+                  immutable_weights_verified=False)
+        run.event("llm_raw_response", response=body)
         return body
 
     def extract(self, sentences: list[dict], run, facts: list[dict] | None = None) -> dict:
@@ -284,7 +332,8 @@ class LLMClient:
         payload = {"model": self.model, "stream": self.stream, "temperature": 0,
                    "response_format": response_format,
                    "messages": [{"role": "system", "content": system},
-                                {"role": "user", "content": json.dumps({"sentences": sentences}, ensure_ascii=False)}]}
+                                 {"role": "user", "content": json.dumps(
+                                     {"sentences": sentences, "document_context": self._document_context}, ensure_ascii=False)}]}
         run.event("llm_request", provider_host=self.host, model=self.model, response_format=self.mode,
                   sentence_count=len(sentences), stream=self.stream)
         body = self._request(payload, run)
@@ -351,12 +400,11 @@ class LLMClient:
 
 
 def split_draft(draft: str) -> list[dict]:
-    if not draft.strip() or len(draft) > MAX_DRAFT_CHARS:
-        raise LLMError("草稿为空或超过12000字，请提供较短的核查草稿")
-    lines = [line.strip() for line in re.split(r"(?<=[。！？；])|\r?\n+", draft) if line.strip()]
-    if len(lines) > 40:
-        raise LLMError("首版每次最多处理40句，请分段核查")
-    return [{"sentence_id": i, "text": line} for i, line in enumerate(lines, 1)]
+    try:
+        return [{"sentence_id": r["sentence_id"], "text": r["text"]}
+                for r in sentence_rows(draft, load_config())]
+    except ValueError as exc:
+        raise LLMError(str(exc)) from None
 
 
 def resolve_company(name, source: str, draft: str, facts: list[dict] | None = None) -> str | None:
@@ -679,92 +727,262 @@ def _tool_verdict_rows(tool_results: list[dict]) -> list[dict]:
     return rows
 
 
-def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
-               use_loop: bool = True) -> dict:
-    draft = run.read(path).decode("utf-8-sig")
-    if client.key in draft or SECRET_PATTERN.search(draft):
-        raise LLMError("草稿疑似包含凭证，已停止读取后续流程；请使用单独的纯草稿文件")
-    sentences = split_draft(draft)
-    run.event("draft_loaded", characters=len(draft), sha256=sha256(draft.encode("utf-8")), sentences=len(sentences))
+def _check_chunk(draft, sentences, facts, run, client, use_loop, tools_used, tool_results):
+    """单块仍使用 fin 原协议、门控与本地裁决。"""
     mode = "fallback_single_shot"
-    tools_used: list[dict] = []
-    tool_results: list[dict] = []
     if use_loop and hasattr(client, "chat"):
+        from agent_loop import run_loop, run_loop_native, tool_summary
         try:
-            from agent_loop import run_loop, run_loop_native, tool_summary
-            # 优先原生 tools（DeepSeek/OpenAI）；失败退回 JSON 多步协议
             loop_fn = run_loop_native if hasattr(client, "chat_tools") else run_loop
-            loop_out = loop_fn(client, draft, facts, run, sentences=sentences,
-                               tools_used=tools_used, tool_results=tool_results)
-            payload = loop_out["payload"]
-            tools_used = loop_out["tools_used"]
-            tool_results = loop_out.get("tool_results") or tool_results
-            mode = loop_out["mode"]
+            out = loop_fn(client, draft, facts, run, sentences=sentences,
+                          tools_used=tools_used, tool_results=tool_results)
+            payload, mode = out["payload"], out["mode"]
             run.event("tool_summary", tools=tool_summary(tools_used),
-                      rounds=loop_out.get("rounds"), budget_left=loop_out.get("budget_left"))
+                      rounds=out.get("rounds"), budget_left=out.get("budget_left"))
         except LLMError as exc:
-            # 若原生失败且尚未尝试 JSON 协议，再试一轮 JSON 多步
+            if exc.terminal:
+                raise
             if hasattr(client, "chat_tools") and not tools_used:
                 try:
-                    from agent_loop import run_loop, tool_summary
-                    loop_out = run_loop(client, draft, facts, run, sentences=sentences,
-                                        tools_used=tools_used, tool_results=tool_results)
-                    payload = loop_out["payload"]
-                    tools_used = loop_out["tools_used"]
-                    tool_results = loop_out.get("tool_results") or tool_results
-                    mode = loop_out["mode"]
-                    run.event("tool_summary", tools=tool_summary(tools_used),
-                              rounds=loop_out.get("rounds"),
-                              budget_left=loop_out.get("budget_left"))
-                except LLMError as exc2:
-                    preserved = sum(1 for t in tool_results
-                                    if t.get("name") in {"compare_claim", "compare_companies"})
-                    run.event("loop_fallback", reason=str(exc2),
-                              first_error=str(exc), preserved_tool_calls=len(tools_used),
-                              preserved_verdicts=preserved)
+                    out = run_loop(client, draft, facts, run, sentences=sentences,
+                                   tools_used=tools_used, tool_results=tool_results)
+                    payload, mode = out["payload"], out["mode"]
+                except LLMError as second:
+                    if second.terminal:
+                        raise
+                    run.event("loop_fallback", reason=str(second), first_error=str(exc),
+                              preserved_tool_calls=len(tools_used))
                     payload = client.extract(sentences, run, facts)
-                    mode = ("fallback_single_shot_tools_preserved" if tools_used
-                            else "fallback_single_shot")
+                    mode = "fallback_single_shot_tools_preserved" if tools_used else "fallback_single_shot"
             else:
-                preserved = sum(1 for t in tool_results
-                                if t.get("name") in {"compare_claim", "compare_companies"})
-                run.event("loop_fallback", reason=str(exc),
-                          preserved_tool_calls=len(tools_used),
-                          preserved_verdicts=preserved)
+                run.event("loop_fallback", reason=str(exc), preserved_tool_calls=len(tools_used))
                 payload = client.extract(sentences, run, facts)
-                mode = ("fallback_single_shot_tools_preserved" if tools_used
-                        else "fallback_single_shot")
+                mode = "fallback_single_shot_tools_preserved" if tools_used else "fallback_single_shot"
     else:
         payload = client.extract(sentences, run, facts)
     results = check_payload(payload, sentences, draft, facts)
-    # 循环里已裁决、单次拆解未覆盖的，补进结果（同一 evidence+status 不重复）
-    seen = {(tuple(r.get("evidence_ids") or []), r.get("status")) for r in results}
+    seen = {(tuple(row.get("evidence_ids") or []), row.get("status")) for row in results}
     for row in _tool_verdict_rows(tool_results):
         key = (tuple(row.get("evidence_ids") or []), row.get("status"))
         if key not in seen:
             results.append(row)
             seen.add(key)
     run.event("model_parse", sentences=sentences, parsed=payload)
-    from audit_checks import check_draft_supplements
-    results.extend(check_draft_supplements(draft, facts, root=run.root, run=run))
-    bundle = {"schema_version": 2, "run_id": run.id, "status": "completed",
-              "mode": mode, "model": client.model, "provider_host": client.host,
-              "response_format": client.mode,
-              "sentences": sentences, "parsed": payload, "checks": results,
-              "tools_used": tools_used,
-              "tool_results": tool_results,
-              "counts": dict(Counter(row["status"] for row in results)),
-              "tracks": dict(Counter(row.get("track") or "review" for row in results))}
-    run.output("checked_draft.txt").write_text(draft, encoding="utf-8")
-    write_json(run.output("text_checks.json"), bundle)
-    run.output("text_report.md").write_text(
-        render_report(results, model=client.model, run_id=run.id,
-                      tools_used=tools_used, mode=mode), encoding="utf-8")
-    for result in results:
-        run.event("claim_gate", claim_id=result["claim_id"], reason_code=result["reason_code"],
-                  reason=result.get("reason"), evidence_ids=result["evidence_ids"],
-                  normalized_claim=result.get("normalized_claim"))
-        run.event("text_claim_checked", claim_id=result["claim_id"], status=result["status"],
-                  reason_code=result["reason_code"], track=result.get("track"),
-                  evidence_ids=result["evidence_ids"])
-    return bundle
+    return results, payload, mode
+
+
+def _unfinished_rows(chunk, reason):
+    return [{"claim_id": f"S{sentence['sentence_id']}", "sentence_id": sentence["sentence_id"],
+             "original_sentence": sentence["text"], "status": "口径冲突／需人工复核",
+             "track": "review", "reason_code": "execution_incomplete", "reason": reason,
+             "evidence_ids": [], "evidence": [], "calculation": None,
+             "expected": None, "suggestion": None} for sentence in chunk["sentences"]]
+
+
+def _checkpoint_binding(draft, facts, run, client, config, use_loop):
+    import importlib.metadata
+    import platform
+    from materials import AGENT_DIR
+    sources = {}
+    for fact in facts:
+        relative = fact.get("source_file")
+        if not isinstance(relative, str):
+            continue
+        path = (run.root / relative).resolve()
+        if not path.is_relative_to(run.root.resolve()) or path.suffix.lower() != ".pdf":
+            sources[relative] = "unavailable_or_outside_root"
+        elif path.is_file():
+            sources[relative] = sha256(path.read_bytes())
+        else:
+            sources[relative] = "missing"
+    code = {p.name: sha256(p.read_bytes()) for p in sorted(AGENT_DIR.glob("*.py"))
+            if not p.name.startswith("test")}
+    requirements = AGENT_DIR.parent / "requirements.txt"
+    return {"schema_version": 1, "draft_sha256": sha256(draft.encode("utf-8")),
+            "evidence_sha256": digest(facts), "source_hashes": sources, "code_hashes": code,
+            "requirements_sha256": sha256(requirements.read_bytes()),
+            "versions": {"python": platform.python_version(),
+                         "pymupdf": importlib.metadata.version("pymupdf")},
+            "config": config, "requested_model": client.model, "provider_host": client.host,
+            "response_format": client.mode, "stream": getattr(client, "stream", False),
+            "use_loop": use_loop}
+
+
+def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
+               use_loop: bool = True, resume: bool = False, config: dict | None = None) -> dict:
+    import time
+    draft = run.read(path).decode("utf-8-sig")
+    if client.key in draft or SECRET_PATTERN.search(draft):
+        raise LLMError("草稿疑似包含凭证，已停止读取后续流程；请使用单独的纯草稿文件")
+    settings = json.loads(json.dumps(config or getattr(client, "config", None) or load_config()))
+    validate_config(settings)
+    try:
+        ledger = sentence_rows(draft, settings)
+    except ValueError as exc:
+        raise LLMError(str(exc), terminal=True) from None
+    sentences = [{"sentence_id": r["sentence_id"], "text": r["text"]} for r in ledger]
+    chunks = plan_chunks(draft, ledger, settings)
+    binding = _checkpoint_binding(draft, facts, run, client, settings, use_loop)
+    identity = digest(binding)
+    checkpoint = run.output(f"text_checkpoint_{identity[:24]}.json")
+    state = {"binding": binding, "binding_sha256": identity, "chunks": {}, "budget": {},
+             "observed_models": []}
+    if resume:
+        if not checkpoint.is_file():
+            raise LLMError("没有与输入、源码、证据、模型及配置匹配的检查点；拒绝自动新开请求", terminal=True)
+        if checkpoint.stat().st_size > 16 * 1024 * 1024:
+            raise LLMError("检查点超过16MiB，拒绝恢复", terminal=True)
+        saved = checkpoint.read_text(encoding="utf-8")
+        if client.key in saved or SECRET_PATTERN.search(saved):
+            raise LLMError("检查点疑似包含凭证，拒绝恢复", terminal=True)
+        candidate = json.loads(saved)
+        checksum = candidate.pop("payload_sha256", None)
+        if checksum != digest(candidate):
+            raise LLMError("检查点内容指纹不一致，拒绝恢复", terminal=True)
+        if candidate.get("binding") != binding or candidate.get("binding_sha256") != identity:
+            raise LLMError("检查点绑定不一致，不能续跑", terminal=True)
+        state = candidate
+        valid_chunks = {str(c["chunk_id"]): c for c in chunks}
+        for number, cached in state.get("chunks", {}).items():
+            expected = valid_chunks.get(number)
+            if (expected is None or cached.get("sentence_ids") != [s["sentence_id"] for s in expected["sentences"]]
+                    or cached.get("start") != expected["start"] or cached.get("end") != expected["end"]):
+                raise LLMError("检查点分块位置不一致，拒绝恢复", terminal=True)
+        run.event("llm_checkpoint_resumed", checkpoint=checkpoint.name, binding_sha256=identity)
+    execution = ExecutionBudget(settings, run, state.get("budget"))
+    original = {name: (hasattr(client, name), getattr(client, name, None))
+                for name in ("_execution", "_checkpoint_commit", "_document_context", "config",
+                             "_observed_models")}
+    transport = getattr(client, "_http", None)
+    previous_http = ({name: getattr(transport, name) for name in
+                      ("timeout", "max_retries", "request_deadline")} if transport is not None else {})
+    if transport is not None:
+        transport.timeout = settings["http"]["timeout_seconds"]
+        transport.max_retries = settings["http"]["max_retries"]
+        transport.request_deadline = settings["http"]["request_deadline_seconds"]
+
+    def save():
+        state["budget"] = execution.snapshot()
+        state["observed_models"] = sorted(getattr(client, "_observed_models", set()))
+        encoded = json.dumps(state, ensure_ascii=False)
+        if client.key in encoded or SECRET_PATTERN.search(encoded):
+            raise LLMError("检查点疑似包含凭证，拒绝保存", terminal=True)
+        atomic_json(checkpoint, {**state, "payload_sha256": digest(state)})
+
+    client._execution, client.config = execution, settings
+    client._observed_models = set(state.get("observed_models", []))
+    client._checkpoint_commit = save
+    all_results, all_tools, all_tool_results, modes = [], [], [], []
+    merged = {"items": [], "unclaimed_sentences": []}
+    summary, completed_sentences, stop_reason = [], [], None
+    run.event("draft_loaded", characters=len(draft), sha256=sha256(draft.encode("utf-8")),
+              sentences=len(sentences), chunks=len(chunks), config=settings)
+    try:
+        save()
+        for chunk in chunks:
+            number = str(chunk["chunk_id"])
+            cached = state["chunks"].get(number)
+            if resume and cached and cached.get("status") == "completed":
+                record = cached
+                run.event("llm_chunk_reused", chunk_id=chunk["chunk_id"],
+                          sentence_ids=[s["sentence_id"] for s in chunk["sentences"]])
+            else:
+                if cached:
+                    state.setdefault("history", []).append(cached)
+                used, tool_results = [], []
+                began = time.monotonic()
+                context = chunk_context(draft, chunk, companies_from_facts(facts) or COMPANIES)
+                client._document_context = context
+                context_text = "\n".join(str(context[k]) for k in
+                                         ("section_heading", "company_text", "period_text") if context.get(k))
+                local_draft = context_text + "\n" + chunk["text"] if context_text else chunk["text"]
+                try:
+                    execution.remaining_seconds()
+                    if stop_reason:
+                        raise LLMError(stop_reason, terminal=True)
+                    if chunk["oversized_sentence"]:
+                        raise LLMError("单句超过分块上限，保留原句并转人工处理，没有截断")
+                    run.event("llm_chunk_started", chunk_id=chunk["chunk_id"], context=context,
+                              start=chunk["start"], end=chunk["end"])
+                    results, payload, mode = _check_chunk(local_draft, chunk["sentences"], facts,
+                                                         run, client, use_loop, used, tool_results)
+                    from audit_checks import check_draft_supplements
+                    results.extend(check_draft_supplements(chunk["text"], facts, root=run.root, run=run))
+                    if len(chunks) > 1:
+                        for result in results:
+                            result["claim_id"] = f"B{chunk['chunk_id']}_{result['claim_id']}"
+                    record = {"status": "completed", "checks": results, "parsed": payload,
+                              "mode": mode, "tools_used": used, "tool_results": tool_results}
+                    run.event("llm_chunk_completed", chunk_id=chunk["chunk_id"], checks=len(results))
+                except (LLMError, ExecutionLimit) as exc:
+                    if getattr(exc, "request_status", None) in {400, 401, 403, 404, 422}:
+                        stop_reason = "接口参数或认证失败；后续分块未发请求，请修正配置后恢复"
+                    results = _unfinished_rows(chunk, str(exc))
+                    results.extend(_tool_verdict_rows(tool_results))
+                    if len(chunks) > 1:
+                        for result in results:
+                            result["claim_id"] = f"B{chunk['chunk_id']}_{result['claim_id']}"
+                    record = {"status": "failed", "checks": results,
+                              "parsed": {"items": [], "unclaimed_sentences": []},
+                              "mode": "incomplete", "reason": str(exc),
+                              "tools_used": used, "tool_results": tool_results}
+                    run.event("llm_chunk_failed", chunk_id=chunk["chunk_id"],
+                              reason=str(exc), preserved_verdicts=len(_tool_verdict_rows(tool_results)))
+                record.update(chunk_id=chunk["chunk_id"],
+                              sentence_ids=[s["sentence_id"] for s in chunk["sentences"]],
+                              start=chunk["start"], end=chunk["end"],
+                              elapsed_seconds=round(time.monotonic() - began, 4))
+                state["chunks"][number] = record
+                save()
+            all_results.extend(record["checks"])
+            all_tools.extend(record["tools_used"])
+            all_tool_results.extend(record["tool_results"])
+            modes.append(record["mode"])
+            merged["items"].extend(record["parsed"]["items"])
+            merged["unclaimed_sentences"].extend(record["parsed"]["unclaimed_sentences"])
+            if record["status"] == "completed":
+                completed_sentences.extend(record["sentence_ids"])
+            summary.append({key: record[key] for key in
+                            ("chunk_id", "status", "sentence_ids", "start", "end", "elapsed_seconds")})
+        unfinished = sorted(set(s["sentence_id"] for s in sentences) - set(completed_sentences))
+        mode = modes[0] if len(chunks) == 1 else "chunked"
+        bundle = {"schema_version": 2, "run_id": run.id,
+                  "status": "partial" if unfinished else "completed", "mode": mode,
+                  "model": client.model, "provider_host": client.host, "response_format": client.mode,
+                  "sentences": sentences, "sentence_ledger": ledger, "parsed": merged, "checks": all_results,
+                  "tools_used": all_tools, "tool_results": all_tool_results,
+                  "counts": dict(Counter(row["status"] for row in all_results)),
+                  "tracks": dict(Counter(row.get("track") or "review" for row in all_results)),
+                  "chunks": summary, "unfinished_sentence_ids": unfinished,
+                  "checkpoint_file": checkpoint.name, "binding_sha256": identity,
+                  "execution": execution.snapshot(), "observed_models": sorted(client._observed_models),
+                  "config": settings}
+        if unfinished:
+            bundle["reason"] = f"{len(unfinished)}句未完成模型核查，已保留结果和恢复检查点"
+        run.output("checked_draft.txt").write_text(draft, encoding="utf-8")
+        write_json(run.output("text_checks.json"), bundle)
+        rendered = render_report(all_results, model=client.model, run_id=run.id,
+                                 tools_used=all_tools, mode=mode)
+        if unfinished:
+            rendered = f"> 未完成：{len(unfinished)}句。检查点：{checkpoint.name}\n\n" + rendered
+        run.output("text_report.md").write_text(rendered, encoding="utf-8")
+        for result in all_results:
+            run.event("claim_gate", claim_id=result["claim_id"], reason_code=result["reason_code"],
+                      reason=result.get("reason"), evidence_ids=result["evidence_ids"],
+                      normalized_claim=result.get("normalized_claim"))
+            run.event("text_claim_checked", claim_id=result["claim_id"], status=result["status"],
+                      reason_code=result["reason_code"], track=result.get("track"),
+                      evidence_ids=result["evidence_ids"])
+        save()
+        run.event("document_execution_finished", status=bundle["status"],
+                  unfinished_sentence_ids=unfinished, execution=bundle["execution"])
+        return bundle
+    finally:
+        if transport is not None:
+            for name, value in previous_http.items():
+                setattr(transport, name, value)
+        for name, (existed, value) in original.items():
+            if existed:
+                setattr(client, name, value)
+            else:
+                delattr(client, name)

@@ -33,7 +33,12 @@ def _code_fingerprint() -> str:
 
 
 def cache_key(material: dict) -> str:
-    return f"{material.get('sha256', '')}_{_code_fingerprint()}_v{CACHE_VERSION}"
+    origin = {key: material.get(key) for key in (
+        "document_id", "company_code", "company_name", "report_year", "announcement_id", "local_import_id",
+        "disclosed_at", "disclosure_precision", "needs_version_review", "version_policy", "version_selection",
+        "source_kind", "source_url", "retrieved_at", "license_status")}
+    metadata_hash = sha256(json.dumps(origin, ensure_ascii=False, sort_keys=True).encode())[:16]
+    return f"{material.get('sha256', '')}_{metadata_hash}_{_code_fingerprint()}_v{CACHE_VERSION}"
 
 
 def cache_path(root: Path, material: dict) -> Path:

@@ -14,12 +14,14 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
+import zlib
 from datetime import date, datetime, timezone, timedelta
 from contextlib import ExitStack
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 
 import pymupdf
+from backend_runtime import load_config
 
 AGENT_DIR = Path(__file__).resolve().parent
 ROOT = AGENT_DIR.parent  # 仓库根目录：data/raw 年报与 agent 台账的公共根
@@ -73,7 +75,8 @@ class Run:
         # 已完成的旧日志在history.zip中；当前日志不再无限追加。
         (self.folder / "events.jsonl").write_text("", encoding="utf-8")
         self.command, self.files, self.events = command, set(), []
-        sources = sorted(AGENT_DIR.glob("*.py")) + [AGENT_DIR.parent / "requirements.txt"]
+        sources = sorted(AGENT_DIR.glob("*.py")) + [AGENT_DIR.parent / "requirements.txt",
+                                                  AGENT_DIR / "backend_config.json"]
         self.sources = {p.name: p.read_bytes() for p in sources if p.exists()}
         for path in sorted((AGENT_DIR.parent / "scripts").rglob("*.py")):
             relative = path.relative_to(AGENT_DIR.parent).as_posix()
@@ -217,12 +220,24 @@ def register(root: Path, blob: bytes, metadata: dict, run: Run, by_reference: bo
     """登记一份材料。by_reference=True 时不复制 PDF，直接引用 root 下已有文件（要求 metadata 带 local_file）。"""
     code = metadata["company_code"]
     year = int(metadata["report_year"])
-    announcement_id = str(metadata["announcement_id"])
-    if not re.fullmatch(r"\d{6}", code) or not re.fullmatch(r"\d+", announcement_id):
+    metadata = dict(metadata)
+    fingerprint = sha256(blob)
+    local = (str(metadata.get("source_url", "")).startswith(("webui://", "onsite://", "local://"))
+             or metadata.get("disclosure_date_status") == "onsite_unverified")
+    if local:
+        metadata.update(announcement_id=None, local_import_id=f"LOCAL-{fingerprint[:16]}",
+                        disclosed_at=None, disclosure_precision="unknown",
+                        disclosure_date_status="onsite_unverified", source_kind="local_import",
+                        retrieved_at=now(), retrieved_at_status="local_import_time")
+    announcement_id = metadata.get("announcement_id")
+    if not re.fullmatch(r"\d{6}", code) or (not local and not re.fullmatch(r"\d+", str(announcement_id))):
         raise ValueError("证券代码或公告ID格式不合法")
     checks = validate_pdf(blob, code, metadata["company_name"], year)
-    fingerprint = sha256(blob)
-    document_id = f"{code}_{year}_{announcement_id}_{fingerprint}"
+    document_id = f"{code}_{year}_{metadata['local_import_id'] if local else announcement_id}_{fingerprint}"
+    if not local and "disclosure_precision" not in metadata:
+        supplied = str(metadata.get("disclosed_at") or "")
+        metadata["disclosure_precision"] = ("date" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", supplied)
+                                            else "unknown")
     if by_reference:
         relative = Path(metadata["local_file"])
         path = within(root, root / relative)
@@ -259,7 +274,8 @@ def register(root: Path, blob: bytes, metadata: dict, run: Run, by_reference: bo
               by_reference=by_reference, sha256=fingerprint, source_url=record["source_url"])
     write_csv(root / DATA / "manifest.csv", load_materials(root), [
         "document_id", "company_code", "company_name", "report_year", "announcement_id",
-        "title", "disclosed_at", "disclosure_date_status", "source_url", "local_file",
+        "local_import_id", "title", "disclosed_at", "disclosure_precision", "disclosure_date_status",
+        "retrieved_at", "source_kind", "source_url", "local_file",
         "sha256", "size_bytes", "page_count", "version_policy", "needs_version_review",
         "first_ingested_at", "checked_at", "license_status",
     ])
@@ -334,61 +350,157 @@ ALLOWED_HOSTS = {"www.cninfo.com.cn", "static.cninfo.com.cn"}
 
 
 class SafeRedirect(urllib.request.HTTPRedirectHandler):
+    def __init__(self, before_redirect=None):
+        self.before_redirect = before_redirect
+
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         validate_url(newurl)
+        if self.before_redirect:
+            self.before_redirect(newurl)
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
 def validate_url(url: str) -> None:
     parts = urllib.parse.urlsplit(url)
-    if parts.scheme != "https" or parts.hostname not in ALLOWED_HOSTS or parts.username:
+    if (parts.scheme != "https" or parts.hostname not in ALLOWED_HOSTS
+            or parts.username or parts.password or parts.port not in {None, 443}):
         raise ValueError("只允许巨潮HTTPS地址")
 
 
 class Client:
-    def __init__(self, run: Run, proxy: str | None = None, timeout: int = 20):
-        self.run, self.timeout, self.sequence = run, timeout, 0
-        handlers = [SafeRedirect()]
+    def __init__(self, run: Run, proxy: str | None = None, timeout: int | None = None,
+                 *, config: dict | None = None):
+        from backend_runtime import validate_config
+        settings = config or load_config()
+        validate_config(settings)
+        self.limits = settings["sources"]
+        self.run, self.timeout, self.sequence = run, timeout or self.limits["timeout_seconds"], 0
+        self._task_end = time.monotonic() + self.limits["task_deadline_seconds"]
+        self._request_end, self._last_start = self._task_end, None
+        self._physical, self._redirects = 0, 0
+        handlers = [SafeRedirect(self._before_redirect)]
         if proxy:
             handlers.append(urllib.request.ProxyHandler({"https": proxy}))
         self.opener = urllib.request.build_opener(*handlers)
 
+    def _remaining(self):
+        remaining = min(self._task_end, self._request_end) - time.monotonic()
+        if remaining <= 0:
+            raise ValueError("来源获取时限耗尽")
+        return min(self.timeout, remaining)
+
+    def _before_attempt(self, url: str, *, redirect=False):
+        self._remaining()
+        if self._physical >= self.limits["max_http_attempts"]:
+            raise ValueError("来源物理请求预算耗尽")
+        interval = self.limits["min_interval_milliseconds"] / 1000
+        wait = max(0, interval - (time.monotonic() - self._last_start)) if self._last_start is not None else 0
+        if time.monotonic() + wait >= min(self._task_end, self._request_end):
+            raise ValueError("来源剩余时限不足以继续请求")
+        if wait:
+            time.sleep(wait)
+        self._physical += 1
+        self._last_start = time.monotonic()
+        self.run.event("http_physical_request", url=url, physical_attempt=self._physical,
+                       redirect=redirect, started_at=now())
+
+    def _before_redirect(self, url: str):
+        self._redirects += 1
+        if self._redirects > self.limits["max_redirects"]:
+            raise ValueError("来源重定向次数超过上限")
+        self._before_attempt(url, redirect=True)
+
+    def _read(self, response):
+        limit = min(MAX_BYTES, self.limits["max_bytes"])
+        encoding = (response.headers.get("Content-Encoding") or "").lower().strip()
+        if encoding not in {"", "identity", "gzip"}:
+            raise ValueError("来源返回未支持的内容编码")
+        decoder = zlib.decompressobj(16 + zlib.MAX_WBITS) if encoding == "gzip" else None
+        parts, size, compressed_size = [], 0, 0
+        reader = getattr(response, "read1", response.read)
+        while True:
+            remaining = self._remaining()
+            # urllib 的读取超时需要随绝对截止时间收紧；read1 避免等待填满缓冲区。
+            fp = getattr(response, "fp", None)
+            raw = getattr(fp, "raw", None)
+            socket = getattr(raw, "_sock", None)
+            if socket is not None:
+                socket.settimeout(remaining)
+            chunk = reader(65536)
+            self._remaining()
+            if not chunk:
+                break
+            compressed_size += len(chunk)
+            if compressed_size > limit:
+                raise ValueError("来源响应超过大小上限")
+            if decoder:
+                try:
+                    chunk = decoder.decompress(chunk, limit - size + 1)
+                except zlib.error:
+                    raise ValueError("来源gzip响应损坏") from None
+                if decoder.unconsumed_tail or decoder.unused_data:
+                    raise ValueError("来源gzip解码超限或含未处理尾部")
+            size += len(chunk)
+            if size > limit:
+                raise ValueError("来源响应超过大小上限")
+            parts.append(chunk)
+        if decoder and not decoder.eof:
+            raise ValueError("来源gzip响应未完整结束")
+        return b"".join(parts)
+
     def request(self, url: str, params: dict | None = None) -> bytes:
+        from llm_http import retry_after_seconds
         validate_url(url)
+        self._request_end = min(self._task_end, time.monotonic() + self.limits["request_deadline_seconds"])
         data = None if params is None else urllib.parse.urlencode(params).encode("utf-8")
-        for attempt in range(3):
+        for attempt in range(self.limits["max_attempts"]):
+            retry_after = None
+            self._redirects = 0
+            self._before_attempt(url)
+            began = time.monotonic()
+            self.run.event("http_request", url=url, params=params, attempt=attempt + 1)
             try:
-                self.run.event("http_request", url=url, params=params, attempt=attempt + 1)
                 request = urllib.request.Request(url, data=data, headers={
                     "User-Agent": "Mozilla/5.0", "Referer": BASE,
+                    "Accept-Encoding": "gzip",
                     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"})
-                with self.opener.open(request, timeout=self.timeout) as response:
+                with self.opener.open(request, timeout=self._remaining()) as response:
                     validate_url(response.geturl())
-                    blob = response.read(MAX_BYTES + 1)
-                    if len(blob) > MAX_BYTES:
-                        raise ValueError("响应超过100MB")
+                    blob = self._read(response)
                     self.run.event("http_response", url=response.geturl(), status=response.status,
-                                   sha256=sha256(blob), size_bytes=len(blob))
+                                   sha256=sha256(blob), size_bytes=len(blob),
+                                   elapsed_seconds=round(time.monotonic() - began, 4),
+                                   physical_attempts=self._physical)
                     return blob
             except urllib.error.HTTPError as exc:
-                self.run.event("http_error", error_type=type(exc).__name__, code=exc.code,
-                               attempt=attempt + 1)
-                if exc.code not in {408, 429, 500, 502, 503, 504} or attempt == 2:
-                    raise
-            except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
-                self.run.event("http_error", error_type=type(exc).__name__, attempt=attempt + 1)
-                if attempt == 2:
-                    raise
-            time.sleep(2 ** attempt)
-        raise RuntimeError("请求未完成")
+                status = exc.code
+                retry_after = retry_after_seconds(exc.headers.get("Retry-After") if exc.headers else None)
+                exc.close()
+                self.run.event("http_error", error_type=type(exc).__name__, code=status,
+                               attempt=attempt + 1, elapsed_seconds=round(time.monotonic() - began, 4))
+                if status not in {408, 429, 500, 502, 503, 504} or attempt == self.limits["max_attempts"] - 1:
+                    raise ValueError(f"来源接口HTTP {status}") from None
+            except (urllib.error.URLError, TimeoutError, ConnectionError, OSError) as exc:
+                self.run.event("http_error", error_type=type(exc).__name__, attempt=attempt + 1,
+                               elapsed_seconds=round(time.monotonic() - began, 4))
+                if attempt == self.limits["max_attempts"] - 1:
+                    raise ValueError("来源连接失败或超时，有限重试已用尽") from None
+            except ValueError as exc:
+                self.run.event("http_validation_failed", reason=str(exc), attempt=attempt + 1,
+                               elapsed_seconds=round(time.monotonic() - began, 4))
+                raise
+            wait = retry_after if retry_after is not None else 2 ** attempt
+            if time.monotonic() + wait >= min(self._task_end, self._request_end):
+                raise ValueError("来源剩余时限不足以重试")
+            time.sleep(wait)
+        raise ValueError("来源请求未完成")
 
     def post(self, path: str, params: dict):
         blob = self.request(BASE + path, params)
         self.sequence += 1
         snapshot = self.run.output(f"response_{self.sequence:03d}.json")
-        # 保存API原始响应；解析失败仍有可检查的证据。
         snapshot.write_bytes(blob)
-        return json.loads(blob.decode("utf-8"))
+        return json.loads(blob.decode("utf-8-sig"))
 
 
 def company(client: Client, code: str) -> dict:
@@ -396,14 +508,18 @@ def company(client: Client, code: str) -> dict:
     if not isinstance(response, list):
         raise ValueError("公司查询响应结构变化")
     for item in response:
+        if not isinstance(item, dict):
+            raise ValueError("公司查询响应结构变化")
         if item.get("code") == code:
+            if not isinstance(item.get("orgId"), str) or not item["orgId"]:
+                raise ValueError("公司查询缺少机构标识")
             return item
     raise ValueError("找不到该证券代码")
 
 
 def query_reports(client, code: str, org: str, year: int, as_of: date) -> list[dict]:
     column = "sse" if code.startswith("6") else "szse"
-    result, seen = [], set()
+    result, seen, identities = [], set(), {}
     for number in range(1, 201):
         response = client.post("/new/hisAnnouncement/query", {
             "pageNum": number, "pageSize": 50, "column": column, "tabName": "fulltext",
@@ -417,7 +533,16 @@ def query_reports(client, code: str, org: str, year: int, as_of: date) -> list[d
             raise ValueError("公告列表格式变化")
         added = 0
         for item in items:
+            if (not isinstance(item, dict) or not re.fullmatch(r"\d+", str(item.get("announcementId", "")))
+                    or not isinstance(item.get("announcementTitle"), str)
+                    or not isinstance(item.get("adjunctUrl"), str)
+                    or type(item.get("announcementTime")) not in {int, float}):
+                raise ValueError("公告关键字段缺失或类型变化")
             ident = str(item["announcementId"])
+            signature = tuple(item.get(key) for key in ("announcementTitle", "announcementTime", "adjunctUrl", "secCode"))
+            if ident in identities and identities[ident] != signature:
+                raise ValueError("同一公告ID出现不同元数据，拒绝静默去重")
+            identities[ident] = signature
             if ident not in seen:
                 if item.get("secCode", code) != code:
                     raise ValueError("接口返回了其他公司的公告")
@@ -476,19 +601,35 @@ def fetch(root: Path, run: Run, code: str, year: int, policy: str,
     candidates = query_reports(client, code, identity["orgId"], year, as_of)
     write_json(run.output("candidates.json"), candidates)
     selected, review = select_report(candidates, year, policy, as_of)
+    selection = {
+        "policy": policy, "as_of": as_of.isoformat(), "report_year": year,
+        "selected_announcement_id": str(selected["announcementId"]),
+        "candidate_ids": [str(item["announcementId"]) for item in candidates],
+        "candidates_sha256": sha256(json.dumps(candidates, ensure_ascii=False, sort_keys=True).encode()),
+        "query_completeness": "complete", "needs_version_review": review,
+        "selection_kind": "first_full_text_candidate" if policy == "first" else "latest_full_text_candidate",
+        "effective_version_confirmed": False,
+        "limitation": "按fin策略选择全文候选；未解析更正/撤回关系，不等于确认最新有效版本",
+    }
+    write_json(run.output("version_selection.json"), selection)
     url = urllib.parse.urljoin(STATIC, selected["adjunctUrl"])
     if url.startswith("http://static.cninfo.com.cn/"):
         url = "https://" + url[len("http://"):]
     validate_url(url)
     blob = client.request(url)
+    disclosed = datetime.fromtimestamp(selected["announcementTime"] / 1000, TZ)
+    date_only = disclosed.time().replace(tzinfo=None) == datetime.min.time()
     return register(root, blob, {
         "company_code": code, "company_name": identity.get("zwjc") or identity.get("name") or selected["secName"],
         "report_year": year, "announcement_id": str(selected["announcementId"]),
         "title": re.sub(r"<[^>]+>", "", selected["announcementTitle"]),
         "source_url": url, "source_site": "巨潮资讯网",
-        "disclosed_at": datetime.fromtimestamp(selected["announcementTime"] / 1000, TZ).isoformat(),
+        "disclosed_at": disclosed.date().isoformat() if date_only else disclosed.isoformat(),
+        "disclosure_precision": "date" if date_only else "datetime_seconds",
+        "disclosure_precision_note": "当地零点时间戳按日期级记录，不补造发布时间",
         "disclosure_date_status": "api_timestamp_Asia_Shanghai",
         "version_policy": policy, "needs_version_review": review,
         "as_of": as_of.isoformat(), "retrieved_at": now(),
+        "source_kind": "official_disclosure", "version_selection": selection,
         "license_status": "公开披露材料；使用及再分发条款待核实，非默认开放许可",
     }, run)

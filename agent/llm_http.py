@@ -1,26 +1,23 @@
-"""LLM HTTP 层：httpx + 退避重试 + 可选流式。
+"""LLM HTTP层：有限重试、逐次留证、绝对时限和有界流式响应。
 
-设计
-----
-- 只暴露 post_json / post_stream；凭证只进 Authorization，永不进日志/异常正文
-- 重试：429/502/503/504/超时/连接错误，指数退避；4xx 业务错误不重试
-- 流式：OpenAI 兼容 SSE，聚合成完整 message（含 tool_calls 增量）
-- 无 httpx 时退回 urllib（功能等价，无流式）
+保留 fin 的 post_json/post_stream 契约；凭证不进入日志或异常正文。
 """
 from __future__ import annotations
 
 import json
+import codecs
 import random
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
-from typing import Any, Callable
+from email.utils import parsedate_to_datetime
+from datetime import datetime, timezone
+from typing import Callable
 
 try:
     import httpx
-except ImportError:  # pragma: no cover — 可选依赖
-    httpx = None  # type: ignore
+except ImportError:  # pragma: no cover
+    httpx = None
 
 RETRY_STATUS = {429, 502, 503, 504}
 MAX_BODY = 2 * 1024 * 1024
@@ -29,238 +26,280 @@ MAX_RETRIES = 3
 
 
 class TransportError(Exception):
-    """网络/HTTP 失败（已重试）。不携带响应正文，避免回显密钥。"""
-
-    def __init__(self, message: str, status: int | None = None, retries: int = 0):
+    def __init__(self, message: str, status: int | None = None, retries: int = 0,
+                 *, retryable: bool | None = None):
         super().__init__(message)
-        self.status = status
-        self.retries = retries
+        self.status, self.retries = status, retries
+        self.retryable = (status is None or status in RETRY_STATUS) if retryable is None else retryable
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
 
 
 def _backoff(attempt: int) -> float:
-    """0.5s, 1s, 2s … + 抖动，避免打爆服务商。"""
-    return min(8.0, 0.5 * (2 ** attempt)) + random.uniform(0, 0.25)
+    return min(8.0, 0.5 * 2 ** attempt) + random.uniform(0, 0.25)
+
+
+def retry_after_seconds(value: str | None) -> float | None:
+    if not value:
+        return None
+    try:
+        seconds = float(value)
+        if not 0 <= seconds < float("inf"):
+            return None
+    except (ValueError, TypeError):
+        try:
+            when = parsedate_to_datetime(value)
+            if when.tzinfo is None:
+                when = when.replace(tzinfo=timezone.utc)
+            seconds = max(0, (when - datetime.now(timezone.utc)).total_seconds())
+        except (ValueError, TypeError, OverflowError):
+            return None
+    return min(30.0, seconds)
 
 
 class LLMHttp:
-    def __init__(self, url: str, key: str, *,
-                 timeout: float = DEFAULT_TIMEOUT, max_retries: int = MAX_RETRIES):
+    def __init__(self, url: str, key: str, *, timeout: float = DEFAULT_TIMEOUT,
+                 max_retries: int = MAX_RETRIES, request_deadline: float = 240):
         if not url.lower().startswith("https://"):
-            raise TransportError("LLM 仅接受 HTTPS 接口")
-        self.url = url
-        self.key = key
-        self.timeout = timeout
-        self.max_retries = max_retries
+            raise TransportError("LLM仅接受HTTPS接口", retryable=False)
+        self.url, self.key = url, key
+        self.timeout, self.max_retries = timeout, max_retries
+        self.request_deadline = request_deadline
         self._client = httpx.Client(timeout=timeout, follow_redirects=False) if httpx else None
+        self._opener = urllib.request.build_opener(_NoRedirect())
+        self._deadline, self._retry_after = None, None
+        self._on_delta = None
 
-    def close(self) -> None:
+    def close(self):
         if self._client is not None:
             self._client.close()
 
-    # ── 内部：一次请求 ──────────────────────────────────────
+    def _remaining(self):
+        remaining = self.timeout if self._deadline is None else self._deadline - time.monotonic()
+        if remaining <= 0:
+            raise TransportError("模型请求总时限已用尽", retryable=False)
+        return min(self.timeout, remaining)
+
+    def _headers(self):
+        return {"Authorization": "Bearer " + self.key, "Content-Type": "application/json"}
 
     def _post_once_json(self, payload: dict) -> tuple[int, bytes]:
-        body = json.dumps(payload).encode("utf-8")
-        headers = {"Authorization": "Bearer " + self.key, "Content-Type": "application/json"}
+        data = json.dumps(payload).encode("utf-8")
         if self._client is not None:
-            resp = self._client.post(self.url, content=body, headers=headers)
-            if resp.status_code in {301, 302, 303, 307, 308}:
-                raise TransportError("模型接口发生重定向，请核实 Base URL；密钥未转发",
-                                     status=resp.status_code)
-            content = resp.content or b""
-            if len(content) > MAX_BODY:
-                raise TransportError("模型响应超过2MiB限制", status=resp.status_code)
-            return resp.status_code, content
-        req = urllib.request.Request(self.url, data=body, headers=headers)
-        try:
-            with urllib.request.urlopen(req, timeout=self.timeout) as response:
-                content = response.read(MAX_BODY + 1)
-                if len(content) > MAX_BODY:
-                    raise TransportError("模型响应超过2MiB限制")
-                return response.status, content
-        except urllib.error.HTTPError as exc:
-            if exc.code in {301, 302, 303, 307, 308}:
-                raise TransportError("模型接口发生重定向，请核实 Base URL；密钥未转发",
-                                     status=exc.code) from None
-            # 不读取正文，防止回显鉴权信息
-            return exc.code, b""
-        except urllib.error.URLError as exc:
-            raise TransportError(f"模型接口连接失败或超时：{type(exc).__name__}") from None
-
-    def post_json(self, payload: dict, *,
-                  on_retry: Callable[[int, int | None, float], None] | None = None) -> dict:
-        """POST + 退避重试，返回解析后的 JSON body。"""
-        last_status: int | None = None
-        retries = 0
-        for attempt in range(self.max_retries + 1):
             try:
-                status, content = self._post_once_json(payload)
-            except TransportError as exc:
-                last_status = exc.status
-                if attempt >= self.max_retries:
-                    raise TransportError(str(exc), status=exc.status, retries=retries) from None
-                retries += 1
-                wait = _backoff(attempt)
-                if on_retry:
-                    on_retry(retries, last_status, wait)
-                time.sleep(wait)
-                continue
-
-            if status == 200:
-                try:
-                    return json.loads(content)
-                except ValueError as exc:
-                    raise TransportError("模型响应不是 JSON", status=200, retries=retries) from exc
-
-            if status in RETRY_STATUS and attempt < self.max_retries:
-                retries += 1
-                wait = _backoff(attempt)
-                if on_retry:
-                    on_retry(retries, status, wait)
-                time.sleep(wait)
-                last_status = status
-                continue
-
-            raise TransportError(f"模型接口HTTP {status}", status=status, retries=retries)
-
-        raise TransportError(f"模型接口HTTP {last_status}", status=last_status, retries=retries)
-
-    # ── 流式 SSE ───────────────────────────────────────────
+                with self._client.stream("POST", self.url, content=data, headers=self._headers(),
+                                         timeout=self._remaining()) as response:
+                    self._retry_after = response.headers.get("Retry-After")
+                    if response.status_code != 200:
+                        return response.status_code, b""
+                    parts, size = [], 0
+                    for chunk in response.iter_bytes():
+                        self._remaining()
+                        size += len(chunk)
+                        if size > MAX_BODY:
+                            raise TransportError("模型响应超过2MiB限制", status=200, retryable=False)
+                        parts.append(chunk)
+                    return response.status_code, b"".join(parts)
+            except (httpx.TimeoutException, httpx.TransportError) as exc:
+                raise TransportError("模型接口连接失败或超时：" + type(exc).__name__) from None
+        request = urllib.request.Request(self.url, data=data, headers=self._headers())
+        try:
+            with self._opener.open(request, timeout=self._remaining()) as response:
+                self._retry_after = response.headers.get("Retry-After")
+                parts, size = [], 0
+                read = getattr(response, "read1", response.read)
+                while True:
+                    self._remaining()
+                    chunk = read(min(65536, MAX_BODY + 1 - size))
+                    if not chunk:
+                        break
+                    parts.append(chunk)
+                    size += len(chunk)
+                    if size > MAX_BODY:
+                        raise TransportError("模型响应超过2MiB限制", status=200, retryable=False)
+                return response.status, b"".join(parts)
+        except urllib.error.HTTPError as exc:
+            self._retry_after = exc.headers.get("Retry-After") if exc.headers else None
+            code = exc.code
+            exc.close()
+            return code, b""
+        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError) as exc:
+            raise TransportError("模型接口连接失败或超时：" + type(exc).__name__) from None
 
     def _accumulate_sse(self, lines: list[str]) -> dict:
-        """把 OpenAI 流式增量聚成完整 message。"""
-        content_parts: list[str] = []
-        tool_map: dict[int, dict] = {}
-        finish_reason = None
-        usage: dict = {}
+        content, tools, usage = [], {}, {}
+        finish, model, completed = None, None, False
         for raw in lines:
             line = raw.strip()
             if not line.startswith("data:"):
                 continue
             data = line[5:].strip()
             if data == "[DONE]":
+                completed = True
                 break
             try:
                 chunk = json.loads(data)
             except ValueError:
-                continue
-            if chunk.get("usage"):
+                raise TransportError("模型流式数据不是合法JSON", status=200, retryable=False) from None
+            if not isinstance(chunk, dict) or chunk.get("error"):
+                raise TransportError("模型流式返回错误协议帧", status=200, retryable=False)
+            if isinstance(chunk.get("model"), str):
+                if model is not None and model != chunk["model"]:
+                    raise TransportError("同一流式请求内模型身份发生变化", status=200, retryable=False)
+                model = chunk["model"]
+            if isinstance(chunk.get("usage"), dict):
                 usage = chunk["usage"]
             for choice in chunk.get("choices") or []:
                 if choice.get("finish_reason"):
-                    finish_reason = choice["finish_reason"]
+                    finish = choice["finish_reason"]
                 delta = choice.get("delta") or {}
                 if delta.get("content"):
-                    content_parts.append(delta["content"])
-                for tc in delta.get("tool_calls") or []:
-                    idx = tc.get("index", 0)
-                    slot = tool_map.setdefault(idx, {
-                        "id": tc.get("id") or f"call_{idx}",
-                        "type": "function",
-                        "function": {"name": "", "arguments": ""},
-                    })
-                    if tc.get("id"):
-                        slot["id"] = tc["id"]
-                    fn = tc.get("function") or {}
+                    content.append(delta["content"])
+                if delta.get("refusal"):
+                    raise TransportError("模型拒绝了本次请求", status=200, retryable=False)
+                for call in delta.get("tool_calls") or []:
+                    index = call.get("index", 0)
+                    slot = tools.setdefault(index, {"id": call.get("id") or f"call_{index}",
+                                                   "type": "function",
+                                                   "function": {"name": "", "arguments": ""}})
+                    if call.get("id"):
+                        slot["id"] = call["id"]
+                    fn = call.get("function") or {}
                     if fn.get("name"):
                         slot["function"]["name"] = fn["name"]
                     if fn.get("arguments"):
                         slot["function"]["arguments"] += fn["arguments"]
-        message: dict[str, Any] = {"role": "assistant", "content": "".join(content_parts) or None}
-        if tool_map:
-            message["tool_calls"] = [tool_map[i] for i in sorted(tool_map)]
-        return {"choices": [{"finish_reason": finish_reason or "stop", "message": message}],
-                "usage": usage}
+        if not completed and finish is None:
+            raise TransportError("模型流式响应中断，未收到结束标记", status=200, retryable=False)
+        message = {"role": "assistant", "content": "".join(content) or None}
+        if tools:
+            message["tool_calls"] = [tools[index] for index in sorted(tools)]
+        return {"choices": [{"finish_reason": finish, "message": message}],
+                "usage": usage, "model": model}
 
-    def post_stream(self, payload: dict, *,
-                    on_delta: Callable[[str], None] | None = None,
-                    on_retry: Callable[[int, int | None, float], None] | None = None) -> dict:
-        """SSE 流式调用，返回与 post_json 同构的聚合 body。"""
-        if httpx is None or self._client is None:
-            # urllib 路径不支持流式，退回非流式
-            body = dict(payload)
-            body["stream"] = False
-            return self.post_json(body, on_retry=on_retry)
+    def _post_once_stream(self, payload: dict) -> tuple[int, dict | None]:
+        data = json.dumps(payload).encode("utf-8")
+        headers = {**self._headers(), "Accept": "text/event-stream"}
+        try:
+            with self._client.stream("POST", self.url, content=data, headers=headers,
+                                     timeout=self._remaining()) as response:
+                self._retry_after = response.headers.get("Retry-After")
+                if response.status_code != 200:
+                    return response.status_code, None
+                lines, size, pending = [], 0, ""
+                decoder = codecs.getincrementaldecoder("utf-8")()
+                for piece in response.iter_bytes():
+                    self._remaining()
+                    size += len(piece)
+                    if size > MAX_BODY:
+                        raise TransportError("模型流式响应超过2MiB限制", status=200, retryable=False)
+                    try:
+                        pending += decoder.decode(piece)
+                    except UnicodeError:
+                        raise TransportError("模型流式编码无效", status=200, retryable=False) from None
+                    while "\n" in pending:
+                        line, pending = pending.split("\n", 1)
+                        line = line.rstrip("\r")
+                        if self._on_delta and line.startswith("data:") and line[5:].strip() != "[DONE]":
+                            try:
+                                chunk = json.loads(line[5:].strip())
+                                for choice in chunk.get("choices") or []:
+                                    delta = (choice.get("delta") or {}).get("content")
+                                    if delta:
+                                        self._on_delta(delta)
+                            except (ValueError, AttributeError):
+                                pass  # 完整聚合时按严格协议校验。
+                        lines.append(line)
+                        if line.strip() == "data: [DONE]":
+                            return 200, self._accumulate_sse(lines)
+                try:
+                    pending += decoder.decode(b"", final=True)
+                except UnicodeError:
+                    raise TransportError("模型流式编码未完整结束", status=200, retryable=False) from None
+                if pending.strip():
+                    lines.append(pending)
+                return 200, self._accumulate_sse(lines)
+        except (httpx.TimeoutException, httpx.TransportError) as exc:
+            raise TransportError("模型接口连接失败或超时：" + type(exc).__name__) from None
 
-        body = dict(payload)
-        body["stream"] = True
-        last_status: int | None = None
+    def _request(self, payload, stream, on_retry, on_attempt, on_result, deadline):
+        self._deadline = min(time.monotonic() + self.request_deadline,
+                             deadline if deadline is not None else float("inf"))
         retries = 0
         for attempt in range(self.max_retries + 1):
-            data = json.dumps(body).encode("utf-8")
-            headers = {"Authorization": "Bearer " + self.key,
-                       "Content-Type": "application/json",
-                       "Accept": "text/event-stream"}
+            self._remaining()
+            self._retry_after = None
+            if on_attempt:
+                on_attempt(payload)
+            started, status, body = time.monotonic(), None, None
+            error = None
             try:
-                with self._client.stream("POST", self.url, content=data, headers=headers) as resp:
-                    if resp.status_code in {301, 302, 303, 307, 308}:
-                        raise TransportError("模型接口发生重定向，请核实 Base URL；密钥未转发",
-                                             status=resp.status_code)
-                    if resp.status_code != 200:
-                        # 排空但不记录正文
+                if stream:
+                    status, body = self._post_once_stream(payload)
+                else:
+                    status, content = self._post_once_json(payload)
+                    if status == 200:
                         try:
-                            resp.read()
-                        except Exception:  # noqa: BLE001
-                            pass
-                        if resp.status_code in RETRY_STATUS and attempt < self.max_retries:
-                            retries += 1
-                            wait = _backoff(attempt)
-                            if on_retry:
-                                on_retry(retries, resp.status_code, wait)
-                            time.sleep(wait)
-                            last_status = resp.status_code
-                            continue
-                        raise TransportError(f"模型接口HTTP {resp.status_code}",
-                                             status=resp.status_code, retries=retries)
-                    lines: list[str] = []
-                    for line in resp.iter_lines():
-                        if line.startswith("data:"):
-                            piece = line[5:].strip()
-                            if piece and piece != "[DONE]" and on_delta:
-                                try:
-                                    chunk = json.loads(piece)
-                                    for choice in chunk.get("choices") or []:
-                                        delta = (choice.get("delta") or {}).get("content")
-                                        if delta:
-                                            on_delta(delta)
-                                except ValueError:
-                                    pass
-                        lines.append(line)
-                    return self._accumulate_sse(lines)
-            except (httpx.TimeoutException, httpx.TransportError) as exc:
-                last_status = None
-                if attempt >= self.max_retries:
-                    raise TransportError(f"模型接口连接失败或超时：{type(exc).__name__}",
-                                         retries=retries) from None
-                retries += 1
-                wait = _backoff(attempt)
-                if on_retry:
-                    on_retry(retries, last_status, wait)
-                time.sleep(wait)
-                continue
+                            body = json.loads(content)
+                        except (ValueError, TypeError):
+                            raise TransportError("模型响应不是JSON", status=200, retryable=False) from None
+                self._remaining()
+                if status != 200:
+                    message = ("模型接口发生重定向，密钥未转发；请核实Base URL"
+                               if status in {301, 302, 303, 307, 308} else f"模型接口HTTP {status}")
+                    raise TransportError(message, status=status)
+                if not isinstance(body, dict):
+                    raise TransportError("模型响应不是JSON对象", status=200, retryable=False)
+                return body
             except TransportError as exc:
-                if exc.status in RETRY_STATUS and attempt < self.max_retries:
-                    retries += 1
-                    wait = _backoff(attempt)
-                    if on_retry:
-                        on_retry(retries, exc.status, wait)
-                    time.sleep(wait)
-                    continue
-                raise TransportError(str(exc), status=exc.status, retries=retries) from None
+                error, status = exc, exc.status
+            finally:
+                if on_result:
+                    on_result(status, body, time.monotonic() - started)
+            if not error.retryable or attempt >= self.max_retries:
+                raise TransportError(str(error), status=error.status, retries=retries,
+                                     retryable=error.retryable) from None
+            wait = retry_after_seconds(self._retry_after)
+            wait = _backoff(attempt) if wait is None else wait
+            if time.monotonic() + wait >= self._deadline:
+                raise TransportError("模型请求剩余时限不足以重试", status=status,
+                                     retries=retries, retryable=False)
+            retries += 1
+            if on_retry:
+                on_retry(retries, status, wait)
+            time.sleep(wait)
+        raise TransportError("模型请求未完成", retryable=False)
 
-        raise TransportError(f"模型接口HTTP {last_status}", status=last_status, retries=retries)
+    def post_json(self, payload: dict, *, on_retry: Callable | None = None,
+                  on_attempt: Callable | None = None, on_result: Callable | None = None,
+                  deadline: float | None = None) -> dict:
+        return self._request(payload, False, on_retry, on_attempt, on_result, deadline)
+
+    def post_stream(self, payload: dict, *, on_delta: Callable | None = None,
+                    on_retry: Callable | None = None, on_attempt: Callable | None = None,
+                    on_result: Callable | None = None, deadline: float | None = None) -> dict:
+        body = dict(payload)
+        if self._client is None:
+            body["stream"] = False
+            body.pop("stream_options", None)
+            return self.post_json(body, on_retry=on_retry, on_attempt=on_attempt,
+                                  on_result=on_result, deadline=deadline)
+        body.update(stream=True, stream_options={"include_usage": True})
+        self._on_delta = on_delta
+        return self._request(body, True, on_retry, on_attempt, on_result, deadline)
 
 
 def parse_chat_body(body: dict) -> dict:
-    """校验 chat/completions 并返回 message。不解析自由文本里的 JSON。"""
     try:
         choice = body["choices"][0]
         message = choice.get("message") or {}
     except (KeyError, IndexError, TypeError) as exc:
-        raise ValueError("模型响应不是 chat/completions 协议") from exc
+        raise ValueError("模型响应不是chat/completions协议") from exc
     if message.get("refusal"):
         raise ValueError("模型拒绝了本次请求")
     return {"message": message, "finish_reason": choice.get("finish_reason"),
             "usage": {k: v for k, v in (body.get("usage") or {}).items()
-                      if k in {"prompt_tokens", "completion_tokens", "total_tokens"}
-                      and type(v) is int}}
+                      if k in {"prompt_tokens", "completion_tokens", "total_tokens"} and type(v) is int}}
