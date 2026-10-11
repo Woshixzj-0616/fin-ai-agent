@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "checks": [
+    {
+      "id": "R1",
+      "name": "敏感扫描器正样本必须红",
+      "injection": "临时文本放入运行时拼出的 OpenAI 风格密钥",
+      "expected": "正常样本 0，正样本非 0，且不回显密钥",
+      "observed": "normal=0, injected=1, secret_echo=False, rule_echo=True",
+      "pass": true
+    },
+    {
+      "id": "R2",
+      "name": "脱敏门移除必须红",
+      "injection": "将 events/run_manager 的 redact_value 临时替换为恒等函数",
+      "expected": "正常落盘无密钥；移除后 event JSONL 或 run.json 出现密钥",
+      "observed": "normal_hit=False, injected_hit=True",
+      "pass": true
+    },
+    {
+      "id": "R3",
+      "name": "安全头移除必须红",
+      "injection": "临时禁用 webui_http._send_security_headers",
+      "expected": "/app/ 正常有 CSP；禁用后 CSP 缺失",
+      "observed": "normal_csp=True, injected_csp=False, statuses=200/200",
+      "pass": true
+    },
+    {
+      "id": "R4",
+      "name": "上传总量门移除必须红",
+      "injection": "临时把对比材料上限改为 5、总量上限改为 81，并保留验证桩",
+      "expected": "正常 5 份被拒；移除数量/总量门后不再被拒",
+      "observed": "normal_code=INVALID_UPLOAD, injected_rejected=False, injected_error=accepted",
+      "pass": true
+    },
+    {
+      "id": "R5",
+      "name": "代理欺骗必须红",
+      "injection": "未配置代理时临时直接采用 X-Forwarded-For 作为客户端 IP",
+      "expected": "正常第 11 次 429；注入后伪造不同 XFF 可绕过 429",
+      "observed": "normal_has_429=True, injected_has_429=False",
+      "pass": true
+    },
+    {
+      "id": "R6",
+      "name": "旧 API 删除必须红",
+      "injection": "临时从 Handler.do_POST 拦截并移除 /api/search",
+      "expected": "正常 200；移除后 404",
+      "observed": "normal=200, injected=404",
+      "pass": true
+    },
+    {
+      "id": "R7",
+      "name": "旧页面迁移丢内容必须红",
+      "injection": "临时把旧 PAGE 中的 /api/ask 替换为 /api/removed",
+      "expected": "正常响应含 /api/ask；注入响应缺失",
+      "observed": "normal_has_ask=True, injected_has_ask=False",
+      "pass": true
+    },
+    {
+      "id": "R8",
+      "name": "webui.py 重新塞回实现必须红",
+      "injection": "临时构造 301 行的 agent/webui.py 并运行结构审查",
+      "expected": "真实仓库 0 违规；注入文件触发 300 行门",
+      "observed": "real_violations=0, injected_over_limit=True",
+      "pass": true
+    },
+    {
+      "id": "R9",
+      "name": "归档漏 Web 资产必须红",
+      "injection": "临时把 Run.sources 扫描根指向没有 web/legacy/index.html 的假仓库",
+      "expected": "真实归档含旧页面；注入归档缺失",
+      "observed": "normal_has_asset=True, injected_has_asset=False",
+      "pass": true
+    },
+    {
+      "id": "R10",
+      "name": "兼容清单隐藏调用方必须红",
+      "injection": "把 /api/analyze 从 keep 改成 retired，但保留已有调用方",
+      "expected": "正常清单不违反退役门；注入行违反 `retired => callers=[]`",
+      "observed": "normal_violation=False, injected_violation=True, callers=['web/legacy/index.html', 'agent/test_competition.py']",
+      "pass": true
+    },
+    {
+      "id": "R11",
+      "name": "文档坏链必须红",
+      "injection": "临时 Markdown 写入不存在的本地链接 missing.md",
+      "expected": "正常文档 0；坏链文档非 0 且报本地链接不存在",
+      "observed": "normal=0, injected=1, missing_link_error=True",
+      "pass": true
+    }
+  ],
+  "ok": true
+}

@@ -661,11 +661,15 @@ class FrontendSearchAndTraceTests(unittest.TestCase):
         self.assertIn("traceEventBadges", js)
 
     def test_webui_search_api_and_card(self):
-        html = (ROOT / "agent" / "webui.py").read_text(encoding="utf-8")
+        html = (ROOT / "web" / "legacy" / "index.html").read_text(encoding="utf-8")
+        server = (
+            (ROOT / "agent" / "webui_http.py").read_text(encoding="utf-8")
+            + (ROOT / "agent" / "webui_pipeline.py").read_text(encoding="utf-8")
+        )
         self.assertIn("/api/search", html)
         self.assertIn('id="search-card"', html)
         self.assertIn("searchRun", html)
-        self.assertIn("LAST_DOCUMENT_TEXTS", html)
+        self.assertIn("LAST_DOCUMENT_TEXTS", server)
 
     def test_search_json_returns_hits(self):
         import webui

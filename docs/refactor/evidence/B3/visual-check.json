@@ -1,0 +1,103 @@
+{
+  "console_errors": [],
+  "request_failures": [],
+  "bad_responses": [],
+  "desktop": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "scrollHeight": 1369,
+    "minLeft": 0,
+    "maxRight": 1440,
+    "sidebar": {
+      "left": 0,
+      "right": 288,
+      "width": 288,
+      "visibility": "visible"
+    },
+    "toggleVisible": false,
+    "status": "等待任务",
+    "stageText": "01任务准备校验输入与运行身份02文档解析提取页码与原文证据03指标核查计算并执行本地裁决04报告整理汇总结构化结论",
+    "traceText": "执行轨迹工具与裁决执行轨迹尚未产生分析开始后，这里会按顺序展示真实事件。",
+    "resultsText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。"
+  },
+  "mobile_closed": {
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "scrollWidth": 390,
+    "scrollHeight": 2064,
+    "minLeft": 0,
+    "maxRight": 390,
+    "sidebar": {
+      "left": -346.79998779296875,
+      "right": -6.79998779296875,
+      "width": 340,
+      "visibility": "hidden"
+    },
+    "toggleVisible": true,
+    "status": "等待任务",
+    "stageText": "01任务准备校验输入与运行身份02文档解析提取页码与原文证据03指标核查计算并执行本地裁决04报告整理汇总结构化结论",
+    "traceText": "执行轨迹工具与裁决执行轨迹尚未产生分析开始后，这里会按顺序展示真实事件。",
+    "resultsText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。"
+  },
+  "mobile_open": {
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "scrollWidth": 390,
+    "scrollHeight": 2064,
+    "minLeft": 0,
+    "maxRight": 390,
+    "sidebar": {
+      "left": 0,
+      "right": 340,
+      "width": 340,
+      "visibility": "visible"
+    },
+    "toggleVisible": true,
+    "status": "等待任务",
+    "stageText": "01任务准备校验输入与运行身份02文档解析提取页码与原文证据03指标核查计算并执行本地裁决04报告整理汇总结构化结论",
+    "traceText": "执行轨迹工具与裁决执行轨迹尚未产生分析开始后，这里会按顺序展示真实事件。",
+    "resultsText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。",
+    "expanded": "true",
+    "bodyState": "true"
+  },
+  "mobile_closed_again": {
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "scrollWidth": 390,
+    "scrollHeight": 2064,
+    "minLeft": 0,
+    "maxRight": 390,
+    "sidebar": {
+      "left": -346.79998779296875,
+      "right": -6.79998779296875,
+      "width": 340,
+      "visibility": "hidden"
+    },
+    "toggleVisible": true,
+    "status": "等待任务",
+    "stageText": "01任务准备校验输入与运行身份02文档解析提取页码与原文证据03指标核查计算并执行本地裁决04报告整理汇总结构化结论",
+    "traceText": "执行轨迹工具与裁决执行轨迹尚未产生分析开始后，这里会按顺序展示真实事件。",
+    "resultsText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。",
+    "expanded": "false"
+  },
+  "responsive_failure_injection": {
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "scrollWidth": 390,
+    "scrollHeight": 3339,
+    "minLeft": 0,
+    "maxRight": 390,
+    "sidebar": {
+      "left": 0,
+      "right": 288,
+      "width": 288,
+      "visibility": "visible"
+    },
+    "toggleVisible": false,
+    "status": "等待任务",
+    "stageText": "01任务准备校验输入与运行身份02文档解析提取页码与原文证据03指标核查计算并执行本地裁决04报告整理汇总结构化结论",
+    "traceText": "执行轨迹工具与裁决执行轨迹尚未产生分析开始后，这里会按顺序展示真实事件。",
+    "resultsText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。"
+  }
+}

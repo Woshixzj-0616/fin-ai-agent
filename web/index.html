@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="/app/favicon.svg" type="image/svg+xml">
+  <title>金融投研智能体 · 工作台</title>
+  <link rel="stylesheet" href="/app/css/tokens.css">
+  <link rel="stylesheet" href="/app/css/layout.css">
+  <link rel="stylesheet" href="/app/css/components.css">
+  <link rel="stylesheet" href="/app/css/responsive.css">
+</head>
+<body data-sidebar-open="false">
+  <main class="app-shell" data-app="fin-workbench">
+    <aside class="run-sidebar" id="run-sidebar" aria-label="运行列表">
+      <header class="sidebar-brand">
+        <div>
+          <p class="eyebrow">证据链工作台</p>
+          <h1>金融投研</h1>
+        </div>
+      </header>
+
+      <section class="sidebar-section" aria-labelledby="run-list-heading">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">当前会话</p>
+            <h2 id="run-list-heading">运行记录</h2>
+          </div>
+          <button class="button button-quiet" type="button" disabled>新建</button>
+        </div>
+        <div class="run-list" id="run-list" aria-live="polite">
+          <div class="empty-state empty-state-compact">
+            <strong>尚无运行</strong>
+            <span>建立核查任务后会显示在这里。</span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="sidebar-footer">
+        <span class="status-dot status-dot-idle" aria-hidden="true"></span>
+        <span class="sidebar-status-label">等待任务</span>
+      </footer>
+    </aside>
+
+    <section class="workspace" id="workspace" aria-label="投研核查工作台">
+      <header class="workspace-header">
+        <button
+          class="button button-quiet sidebar-toggle"
+          id="run-sidebar-toggle"
+          type="button"
+          aria-controls="run-sidebar"
+          aria-expanded="false"
+          aria-label="展开运行列表"
+        >运行</button>
+        <div class="workspace-title">
+          <p class="eyebrow">可核验 · 可追溯 · 可复现</p>
+          <h2>投研核查工作台</h2>
+        </div>
+        <div class="workspace-status">
+          <div class="status-region" id="status-region" role="status" data-status="idle">等待任务</div>
+          <div class="error-region" id="error-region" role="alert" hidden></div>
+        </div>
+      </header>
+
+      <div class="workspace-scroll">
+        <section class="panel task-panel" aria-labelledby="task-heading">
+          <header class="panel-header">
+            <div>
+              <p class="section-kicker">任务输入</p>
+              <h3 id="task-heading">年报核查</h3>
+            </div>
+            <span class="badge badge-neutral">本地处理</span>
+          </header>
+          <form class="task-form" id="task-form">
+            <div class="form-grid command-grid">
+              <label class="field field-span">
+                <span>任务类型</span>
+                <select id="task-command" name="command">
+                  <option value="financial">年报核查</option>
+                  <option value="announcement">公告字段抽取</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-grid" id="financial-fields">
+              <label class="field">
+                <span>证券代码</span>
+                <input type="text" name="code" inputmode="numeric" autocomplete="off" placeholder="例如 600519">
+              </label>
+              <label class="field">
+                <span>报告年度</span>
+                <input type="text" name="year" inputmode="numeric" autocomplete="off" placeholder="例如 2024">
+              </label>
+              <label class="field field-span">
+                <span>公司名称</span>
+                <input type="text" name="name" autocomplete="off" placeholder="例如 贵州茅台">
+              </label>
+              <label class="field field-span file-field">
+                <span>年报 PDF</span>
+                <input type="file" name="pdf" accept="application/pdf,.pdf">
+              </label>
+              <label class="field field-span file-field">
+                <span>比较材料（最多 4 份）</span>
+                <input id="comparison-pdfs" type="file" name="comparison_pdf" accept="application/pdf,.pdf" multiple>
+              </label>
+              <label class="field field-span">
+                <span>待核查草稿（可选）</span>
+                <textarea id="draft-text" name="draft" rows="4" placeholder="粘贴需要核查的研报草稿"></textarea>
+              </label>
+            </div>
+            <div class="form-grid" id="announcement-fields" hidden>
+              <label class="field field-span">
+                <span>公告事件类型</span>
+                <select name="event_type">
+                  <option value="auto">自动识别</option>
+                  <option value="dividend">分红</option>
+                  <option value="share_change">股本变动</option>
+                </select>
+              </label>
+              <label class="field checkbox-field">
+                <input id="ocr-toggle" type="checkbox" name="ocr">
+                <span>扫描件 OCR</span>
+              </label>
+            </div>
+            <div class="form-actions">
+              <p class="form-note">尚未开始分析。</p>
+              <div class="form-actions-buttons">
+                <button class="button button-quiet" id="cancel-run" type="button" disabled>取消运行</button>
+                <button class="button button-primary" id="task-submit" type="submit">开始核查</button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel stage-panel" aria-labelledby="stage-heading">
+          <header class="panel-header">
+            <div>
+              <p class="section-kicker">任务阶段</p>
+              <h3 id="stage-heading">分析进度</h3>
+            </div>
+          </header>
+          <div id="stage-view"></div>
+        </section>
+
+        <div class="workspace-grid">
+          <section class="panel trace-panel" id="trace-view" aria-labelledby="trace-heading">
+            <header class="panel-header">
+              <div>
+                <p class="section-kicker">执行轨迹</p>
+                <h3 id="trace-heading">工具与裁决</h3>
+              </div>
+            </header>
+            <div class="empty-state">
+              <strong>执行轨迹尚未产生</strong>
+              <span>分析开始后，这里会按顺序展示真实事件。</span>
+            </div>
+          </section>
+
+          <section class="panel results-panel" id="results-view" aria-labelledby="results-heading">
+            <header class="panel-header">
+              <div>
+                <p class="section-kicker">核查结果</p>
+                <h3 id="results-heading">证据与结论</h3>
+              </div>
+            </header>
+            <div class="empty-state">
+              <strong>尚无核查结果</strong>
+              <span>结果将在运行完成后显示。</span>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel ask-panel" id="ask-view" aria-labelledby="ask-heading">
+          <header class="panel-header">
+            <div>
+              <p class="section-kicker">受限追问</p>
+              <h3 id="ask-heading">基于当前证据</h3>
+            </div>
+          </header>
+          <div class="ask-controls">
+            <form class="ask-form" id="ask-form">
+              <label class="field">
+                <span>追问当前证据</span>
+                <input id="ask-input" type="text" name="question" autocomplete="off" placeholder="例如：营业收入同比是多少？">
+              </label>
+              <button class="button button-primary" type="submit">追问</button>
+            </form>
+            <form class="search-form" id="search-form">
+              <label class="field">
+                <span>检索当前页文本</span>
+                <input id="search-input" type="search" name="query" autocomplete="off" placeholder="例如：研发投入">
+              </label>
+              <button class="button" type="submit">检索</button>
+            </form>
+          </div>
+          <div id="ask-content"></div>
+        </section>
+      </div>
+    </section>
+
+    <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="关闭运行列表" tabindex="-1"></button>
+  </main>
+
+  <dialog class="evidence-dialog" id="evidence-dialog" aria-labelledby="evidence-title">
+    <header class="evidence-dialog-header">
+      <div>
+        <p class="section-kicker">原文证据</p>
+        <h3 id="evidence-title">页图定位</h3>
+      </div>
+      <button class="button button-quiet" id="evidence-close" type="button">关闭</button>
+    </header>
+    <div class="evidence-stage" id="evidence-stage">
+      <img id="evidence-image" alt="证据所在年报页">
+      <div class="evidence-boxes" id="evidence-boxes"></div>
+    </div>
+    <p class="evidence-caption" id="evidence-caption"></p>
+  </dialog>
+
+  <script type="module" src="/app/js/main.js"></script>
+</body>
+</html>

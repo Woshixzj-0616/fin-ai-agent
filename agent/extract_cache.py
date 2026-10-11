@@ -29,6 +29,9 @@ def _code_fingerprint() -> str:
         p = here / name
         if p.exists():
             parts.append(p.read_bytes())
+    for p in sorted((here / "extraction").glob("*.py")):
+        if p.exists():
+            parts.append(p.read_bytes())
     return sha256(b"".join(parts))[:16]
 
 
@@ -155,7 +158,6 @@ def extract_many(root: Path, materials: list[dict], run: Run, *,
     facts: list[dict] = []
     failures: list[dict] = []
     hit = miss = 0
-    results: list[tuple] = []
 
     def _collect(material, got, from_cache, err, events=None):
         nonlocal hit, miss
@@ -179,14 +181,12 @@ def extract_many(root: Path, materials: list[dict], run: Run, *,
             raise RuntimeError("use-thread")
         with ProcessPoolExecutor(max_workers=max_workers) as pool:
             futs = [pool.submit(_worker_extract, str(root), m, use_cache) for m in materials]
-            done = 0
-            for fut in as_completed(futs):
+            for done, fut in enumerate(as_completed(futs), 1):
                 material, got, from_cache, err = fut.result()
-                done += 1
                 _collect(material, got, from_cache, err)
                 if progress:
                     progress(done, len(materials), material, from_cache, err)
-    except Exception:
+    except Exception:  # noqa: BLE001 - pool failures deliberately fall back to threads
         used_pool = "thread"
         lock = threading.Lock()
 
@@ -200,10 +200,8 @@ def extract_many(root: Path, materials: list[dict], run: Run, *,
 
         with ThreadPoolExecutor(max_workers=max_workers) as pool:
             futs = [pool.submit(_one, m) for m in materials]
-            done = 0
-            for fut in as_completed(futs):
+            for done, fut in enumerate(as_completed(futs), 1):
                 material, got, from_cache, err, events = fut.result()
-                done += 1
                 _collect(material, got, from_cache, err, events)
                 if progress:
                     progress(done, len(materials), material, from_cache, err)

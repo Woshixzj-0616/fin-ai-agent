@@ -12,9 +12,11 @@ python3 -B agent/webui.py
 python3 -B -m unittest discover -s agent -p 'test*.py'
 ```
 
+B7 质量门可从仓库根执行：`python -B scripts/check_sensitive.py`、`python -B scripts/check_docs.py`、`python -B scripts/review_structure.py`、`python -B scripts/b7_release_smoke.py`。旧 `/`、`/trace.js` 和五个 `/api/*` 入口继续保留；新工作台在 `/app/`。发布回退可直接运行 `python -B agent/webui_app.py`，旧命令 `python -B agent/webui.py` 仍可用。
+
 模型草稿核查：先配置 `LLM_BASE_URL`、`LLM_MODEL`，通过 `--ask-key` 隐藏输入临时密钥，或只在进程环境设置 `LLM_API_KEY`。执行 `python3 -B agent/main.py check-text --file 草稿.txt --ask-key`。未经配置时程序不会假称进行了模型调用。
 
-`main → materials → extract/interim/announcements → finance/periods/financial_signals → llm_check/audit_checks` 是主要阅读顺序。`tools` 和 `agent_loop` 提供受限 JSON 工具循环；`trace` 将真实事件转成可读执行记录；`webui` 提供上传入口。
+`main → materials → extraction/interim/announcements → finance/periods/financial_signals → audit` 是主要阅读顺序。`extraction/` 是年度抽取实现源，`extract.py` 仅保留旧导入兼容门面；`audit/` 是 Schema、模型客户端、核查、报告和补充审计实现源，`audit/tools/` 是工具规格、调度和事件实现源；`llm_check.py`、`tools.py`、`audit_checks.py` 和 `agent_loop.py` 仅保留旧导入兼容门面。`trace` 将真实事件转成可读执行记录；`webui` 提供上传入口。
 
 Python 支持 3.11+，PyMuPDF 锁定 1.28.2。测试使用内置中文字形，不依赖 Windows 字体路径。本工程没有 `run.ps1`；不要使用旧 `new/` 目录的运行说明。
 

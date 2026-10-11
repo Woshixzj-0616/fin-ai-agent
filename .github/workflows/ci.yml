@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Scan sensitive information
+        run: python -B scripts/check_sensitive.py
+      - name: Check documentation
+        run: python -B scripts/check_docs.py
+      - name: Review structure
+        run: python -B scripts/review_structure.py
+      - name: Compile Python
+        run: python -B -m compileall -q agent scripts
+      - name: Run tests
+        run: python -B -m unittest discover -s agent -p 'test*.py'

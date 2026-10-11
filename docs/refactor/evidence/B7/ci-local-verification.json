@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-11",
+  "environment": {
+    "kind": "clean-venv",
+    "path": "D:\\codex\\tmp\\fin-ai-b7-venv",
+    "python": "D:\\codex\\tmp\\fin-ai-b7-venv\\Scripts\\python.exe",
+    "dependencies": [
+      "pymupdf==1.28.2",
+      "httpx==0.28.1"
+    ]
+  },
+  "commands": [
+    {
+      "command": "python -B scripts/check_sensitive.py",
+      "exit_code": 0,
+      "result": "扫描文本文件通过，无敏感信息命中"
+    },
+    {
+      "command": "python -B scripts/check_docs.py",
+      "exit_code": 0,
+      "result": "57 个 Markdown 文件通过"
+    },
+    {
+      "command": "python -B scripts/review_structure.py",
+      "exit_code": 0,
+      "result": "0 项违规，1 项体量警告，webui.py 108 行"
+    },
+    {
+      "command": "python -B -m compileall -q agent scripts",
+      "exit_code": 0,
+      "result": "通过"
+    },
+    {
+      "command": "python -B -m unittest discover -s agent -p 'test*.py'",
+      "exit_code": 0,
+      "result": "Ran 287 tests，OK (skipped=1)"
+    },
+    {
+      "command": "python -B scripts/b7_release_smoke.py",
+      "exit_code": 0,
+      "result": "app、legacy_page、runs_api、legacy_search_api 全部通过"
+    },
+    {
+      "command": "python -B scripts/b7_reverse_checks.py",
+      "exit_code": 0,
+      "result": "R1-R11 全部 PASS"
+    }
+  ],
+  "github_actions": {
+    "status": "pending_user_authorization",
+    "reason": "未获 commit/push 授权，无法取得远端 workflow 运行 URL"
+  }
+}

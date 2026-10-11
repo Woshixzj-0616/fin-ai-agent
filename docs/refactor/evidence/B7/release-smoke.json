@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-11T23:46:51+08:00",
+  "command": [
+    "D:\\codex\\tmp\\fin-ai-b7-venv\\Scripts\\python.exe",
+    "-B",
+    "D:\\Desktop\\金融人工智能\\agent\\webui_app.py",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "52055"
+  ],
+  "checks": {
+    "app": {
+      "path": "/app/",
+      "status": 200,
+      "ok": true,
+      "content_type": "text/html; charset=utf-8"
+    },
+    "legacy_page": {
+      "path": "/",
+      "status": 200,
+      "ok": true,
+      "content_type": "text/html; charset=utf-8"
+    },
+    "runs_api": {
+      "path": "/api/runs",
+      "status": 200,
+      "ok": true,
+      "content_type": "application/json; charset=utf-8"
+    },
+    "legacy_search_api": {
+      "path": "/api/search",
+      "status": 200,
+      "ok": true,
+      "content_type": "application/json; charset=utf-8"
+    }
+  },
+  "server_stdout": "",
+  "server_stderr": "",
+  "ok": true
+}

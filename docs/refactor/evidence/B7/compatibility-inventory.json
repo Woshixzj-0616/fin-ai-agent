@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-11",
+  "policy": "默认保留旧入口；只有调用方清零、迁移记录完整、用户明确批准且可单独回滚时才允许退役。",
+  "entries": [
+    {
+      "id": "http.prefill",
+      "kind": "http",
+      "entry": "POST /api/prefill",
+      "callers": [
+        "web/legacy/index.html"
+      ],
+      "status": "keep",
+      "evidence": [
+        "web/legacy/index.html 自动识别流程调用 /api/prefill",
+        "agent/test.py 覆盖旧页面关键接口字符串"
+      ],
+      "retirement_gate": "迁移旧页面自动识别后再评估；本批不退役"
+    },
+    {
+      "id": "http.analyze",
+      "kind": "http",
+      "entry": "POST /api/analyze",
+      "callers": [
+        "web/legacy/index.html",
+        "agent/test_competition.py"
+      ],
+      "status": "keep",
+      "evidence": [
+        "web/legacy/index.html 同步分析流程调用 /api/analyze",
+        "agent/test_competition.py 保留旧流水线兼容断言"
+      ],
+      "retirement_gate": "旧页面和旧测试迁移后再评估；本批不退役"
+    },
+    {
+      "id": "http.announcement",
+      "kind": "http",
+      "entry": "POST /api/announcement",
+      "callers": [
+        "web/legacy/index.html"
+      ],
+      "status": "keep",
+      "evidence": [
+        "web/legacy/index.html 公告上传流程调用 /api/announcement"
+      ],
+      "retirement_gate": "旧页面公告流程迁移后再评估；本批不退役"
+    },
+    {
+      "id": "http.ask",
+      "kind": "http",
+      "entry": "POST /api/ask",
+      "callers": [
+        "web/legacy/index.html",
+        "agent/test.py"
+      ],
+      "status": "keep",
+      "evidence": [
+        "web/legacy/index.html 受限问答调用 /api/ask",
+        "agent/test.py test_webui_page_has_qa_bar 覆盖 /api/ask"
+      ],
+      "retirement_gate": "旧问答迁移后再评估；本批不退役"
+    },
+    {
+      "id": "http.search",
+      "kind": "http",
+      "entry": "POST /api/search",
+      "callers": [
+        "web/legacy/index.html",
+        "agent/test_competition.py"
+      ],
+      "status": "keep",
+      "evidence": [
+        "web/legacy/index.html 语义检索调用 /api/search",
+        "agent/test_competition.py test_webui_search_api_and_card 覆盖 /api/search"
+      ],
+      "retirement_gate": "旧检索迁移后再评估；本批不退役"
+    },
+    {
+      "id": "static.root",
+      "kind": "static",
+      "entry": "GET /",
+      "callers": [
+        "agent/test_web_assets.py",
+        "docs/运行说明.md"
+      ],
+      "status": "keep",
+      "evidence": [
+        "agent/test_web_assets.py 校验 / 返回迁移后的 PAGE",
+        "docs/运行说明.md 仍将 / 作为旧兼容入口"
+      ],
+      "retirement_gate": "用户确认不再需要旧页面后再评估；本批不退役"
+    },
+    {
+      "id": "static.index",
+      "kind": "static",
+      "entry": "GET /index.html",
+      "callers": [
+        "agent/test_web_assets.py"
+      ],
+      "status": "keep",
+      "evidence": [
+        "agent/test_web_assets.py 校验 /index.html 与 PAGE 字节一致"
+      ],
+      "retirement_gate": "用户确认不再需要旧页面后再评估；本批不退役"
+    },
+    {
+      "id": "static.trace",
+      "kind": "static",
+      "entry": "GET /trace.js",
+      "callers": [
+        "web/legacy/index.html",
+        "agent/test_web_assets.py",
+        "agent/test_competition.py"
+      ],
+      "status": "keep",
+      "evidence": [
+        "web/legacy/index.html 引用 /trace.js",
+        "agent/test_web_assets.py 与 agent/test_competition.py 校验轨迹脚本"
+      ],
+      "retirement_gate": "旧页面轨迹组件迁移后再评估；本批不退役"
+    },
+    {
+      "id": "python.webui_facade",
+      "kind": "python",
+      "entry": "from webui import PAGE, Handler, run_pipeline, run_announcement_pipeline",
+      "callers": [
+        "agent/test.py",
+        "agent/test_competition.py",
+        "agent/test_web_assets.py",
+        "agent/test_b4.py",
+        "agent/api/routes.py",
+        "agent/main.py"
+      ],
+      "status": "keep",
+      "evidence": [
+        "agent/api/routes.py 延迟导入 webui.run_pipeline",
+        "多个旧测试和 CLI 调用方保留 webui 顶层导入"
+      ],
+      "retirement_gate": "所有调用方迁到 webui_pipeline/webui_http 后再评估；本批不退役"
+    },
+    {
+      "id": "launcher.webui_script",
+      "kind": "launcher",
+      "entry": "python -B agent/webui.py",
+      "callers": [
+        "README.md",
+        "agent/README.md",
+        "docs/运行说明.md"
+      ],
+      "status": "keep",
+      "evidence": [
+        "README.md 与 docs/运行说明.md 保留旧启动命令",
+        "agent/webui.py 继续委托 webui_app.main"
+      ],
+      "retirement_gate": "文档和用户启动习惯迁移后再评估；本批不退役"
+    },
+    {
+      "id": "launcher.webui_app",
+      "kind": "launcher",
+      "entry": "python -B agent/webui_app.py",
+      "callers": [
+        "scripts/b7_release_smoke.py"
+      ],
+      "status": "keep",
+      "evidence": [
+        "B7 新增直接回退启动入口",
+        "发布冒烟脚本启动 webui_app.py 并检查同一 Handler"
+      ],
+      "retirement_gate": "作为回退入口长期保留，除非用户明确撤销回退要求"
+    }
+  ]
+}

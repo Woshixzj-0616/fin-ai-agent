@@ -1,0 +1,22 @@
+{
+  "by_company_year": {
+    "000858_2023": 45,
+    "000858_2024": 29,
+    "000858_2025": 29,
+    "600519_2023": 47,
+    "600519_2024": 35,
+    "600519_2025": 35,
+    "600887_2023": 35,
+    "600887_2024": 35,
+    "600887_2025": 35
+  },
+  "by_method": {
+    "grid_cells_and_geometric_headers": 208,
+    "income_statement_total_revenue": 18,
+    "words_geometry": 99
+  },
+  "fact_count": 325,
+  "fixed_documents": 9,
+  "sha256": "3c0865dc5df3096bd44da3f341fa668243edf70c3123cb42e4e948a0300db367",
+  "source": "D:\\Desktop\\金融人工智能\\results\\evidence.json"
+}

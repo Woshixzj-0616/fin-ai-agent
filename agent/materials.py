@@ -73,11 +73,25 @@ class Run:
         # 已完成的旧日志在history.zip中；当前日志不再无限追加。
         (self.folder / "events.jsonl").write_text("", encoding="utf-8")
         self.command, self.files, self.events = command, set(), []
-        sources = sorted(AGENT_DIR.glob("*.py")) + [AGENT_DIR.parent / "requirements.txt"]
-        self.sources = {p.name: p.read_bytes() for p in sources if p.exists()}
+        self._event_sink = None
+        self.sources = {}
+        for path in sorted(AGENT_DIR.rglob("*.py")):
+            key = path.name if path.parent == AGENT_DIR else path.relative_to(AGENT_DIR).as_posix()
+            self.sources[key] = path.read_bytes()
+        requirements = AGENT_DIR.parent / "requirements.txt"
+        if requirements.exists():
+            self.sources[requirements.name] = requirements.read_bytes()
         for path in sorted((AGENT_DIR.parent / "scripts").rglob("*.py")):
             relative = path.relative_to(AGENT_DIR.parent).as_posix()
             self.sources[relative.replace("/", "__")] = path.read_bytes()
+        for path in sorted((AGENT_DIR.parent / "web").rglob("*")):
+            if path.is_file():
+                relative = path.relative_to(AGENT_DIR.parent).as_posix()
+                self.sources[relative] = path.read_bytes()
+        for relative in (".github/workflows/ci.yml",):
+            path = AGENT_DIR.parent / relative
+            if path.exists():
+                self.sources[relative] = path.read_bytes()
         for relative in ("scripts/site_build.py", "scripts/setup_ocr.py", "docs/app.js", "docs/trace.js", "docs/index.html", "docs/style.css"):
             path = AGENT_DIR.parent / relative
             if path.exists():
@@ -92,6 +106,9 @@ class Run:
         })
         self.event("run_started", command=command)
 
+    def set_event_sink(self, sink) -> None:
+        """可选事件镜像钩子；默认关闭，不改变旧运行格式。"""
+        self._event_sink = sink
     def output(self, name: str) -> Path:
         if not name or name in {".", ".."} or any(c in name for c in "/\\:"):
             raise ValueError("结果文件必须直接放在results目录，不能嵌套目录")
@@ -99,8 +116,10 @@ class Run:
         return self.folder / name
 
     def event(self, kind: str, **data) -> None:
-        entry = json.dumps({"time": now(), "run_id": self.id, "event": kind, **data},
-                           ensure_ascii=False) + "\n"
+        record = {"time": now(), "run_id": self.id, "event": kind, **data}
+        if self._event_sink is not None:
+            self._event_sink(dict(record))
+        entry = json.dumps(record, ensure_ascii=False) + "\n"
         self.events.append(entry)
         with (self.folder / "events.jsonl").open("a", encoding="utf-8") as stream:
             stream.write(entry)
