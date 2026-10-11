@@ -1,10 +1,11 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-11",
+  "generated_at": "2026-10-12",
   "environment": {
     "kind": "clean-venv",
     "path": "D:\\codex\\tmp\\fin-ai-b7-venv",
     "python": "D:\\codex\\tmp\\fin-ai-b7-venv\\Scripts\\python.exe",
+    "python_version": "3.14.6",
     "dependencies": [
       "pymupdf==1.28.2",
       "httpx==0.28.1"
@@ -14,12 +15,12 @@
     {
       "command": "python -B scripts/check_sensitive.py",
       "exit_code": 0,
-      "result": "扫描文本文件通过，无敏感信息命中"
+      "result": "扫描 170 个文本文件通过，无敏感信息命中"
     },
     {
       "command": "python -B scripts/check_docs.py",
       "exit_code": 0,
-      "result": "57 个 Markdown 文件通过"
+      "result": "59 个 Markdown 文件通过"
     },
     {
       "command": "python -B scripts/review_structure.py",
@@ -34,7 +35,7 @@
     {
       "command": "python -B -m unittest discover -s agent -p 'test*.py'",
       "exit_code": 0,
-      "result": "Ran 287 tests，OK (skipped=1)"
+      "result": "Ran 322 tests，OK (skipped=1)"
     },
     {
       "command": "python -B scripts/b7_release_smoke.py",
@@ -48,7 +49,28 @@
     }
   ],
   "github_actions": {
-    "status": "pending_user_authorization",
-    "reason": "未获 commit/push 授权，无法取得远端 workflow 运行 URL"
+    "status": "completed",
+    "conclusion": "success",
+    "workflow": "CI",
+    "run_id": 38154092186,
+    "url": "https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186",
+    "head_sha": "84c3f42e383b45a105c10712bc613adf620ac59a",
+    "event": "push",
+    "jobs": [
+      {
+        "name": "test (3.11)",
+        "job_id": 114513355827,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186/job/114513355827"
+      },
+      {
+        "name": "test (3.12)",
+        "job_id": 114513355690,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186/job/114513355690"
+      }
+    ]
   }
 }

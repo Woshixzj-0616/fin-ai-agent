@@ -2,7 +2,7 @@
 
 > 日期：2026-10-11
 > 依赖：B6 已收工；当前工作树作为 B7 基线，B7 不改 B1-B6 的裁决、抽取、运行、SSE、Web API 和前端业务契约。
-> 状态：**本地实现完成，待远端 CI 授权**；范围内生产代码、专项测试、干净环境等价验收和 R1-R11 已完成；GitHub Actions 因未 commit/push 尚未取得外部运行记录。
+> 状态：**已完成并于 2026-10-12 正式收工**；范围内生产代码、专项测试、干净环境等价验收和 R1-R11 已完成；GitHub Actions 运行 `38154092186` 在 Python 3.11/3.12 双矩阵通过。
 > 时间口径：总方案原建议 B5-B7 赛后执行；用户在 2026-10-11 明确提前推进。B7 即使提前，也必须按“安全门 -> CI -> 兼容清单 -> 结构收敛 -> 发布冒烟”分阶段落地，不能一次改完。
 > CI 外部门：本地只能在干净虚拟环境做等价验证；GitHub Actions 运行记录需要用户明确批准 commit/push 后才能取得。没有该批准时，不得把“工作流文件已写好”冒充“CI 已在干净环境通过”。
 
@@ -454,14 +454,14 @@ D:\codex\tmp\fin-ai-b7-venv\Scripts\python.exe -B -m unittest discover -s agent 
 | CI 与质量脚本 | 已完成 | workflow 与四类脚本在干净 venv 等价命令全通过 |
 | 兼容 inventory | 已完成 | 11 项旧入口全部保留并登记调用方/证据/退役门 |
 | 发布与回滚冒烟 | 已完成 | `/app/`、`/`、`/api/runs`、`/api/search` 与 `webui_app.py` 回退入口通过 |
-| 干净环境与全量 | 已完成 | `D:\codex\tmp\fin-ai-b7-venv`；287 条通过、1 条 skipped、编译通过 |
-| 远端 CI | 待外部授权 | 无用户批准 commit/push 时保持未验证 |
+| 干净环境与全量 | 已完成 | `D:\codex\tmp\fin-ai-b7-venv`；合并远端升级后 322 条通过、1 条 skipped、编译通过 |
+| 远端 CI | 已完成 | [CI #38154092186](https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186)；3.11 与 3.12 均 success |
 
 ## 十、收工结账模板
 
 | 原目标 | 状态 | 证据 |
 | --- | --- | --- |
-| CI 执行测试、编译、文档和敏感扫描 | 未达标 | 干净 venv 本地等价命令通过；GitHub Actions URL 待 commit/push 授权 |
+| CI 执行测试、编译、文档和敏感扫描 | 达标 | [GitHub Actions #38154092186](https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186) 在 Python 3.11/3.12 双矩阵通过；本地干净 venv 同套命令通过 |
 | 代理、限流、上传、会话和取消边界有回归 | 达标 | B7 专项 15 条；R4、R5 |
 | 旧入口调用方清零或有明确保留记录 | 达标 | 11 项全部 keep；`B7-兼容清单.md`、inventory、R10 |
 | `agent/webui.py <=300` 且旧入口兼容 | 达标 | 108 行；对象身份、旧页面/API；R6-R8 |
@@ -470,6 +470,6 @@ D:\codex\tmp\fin-ai-b7-venv\Scripts\python.exe -B -m unittest discover -s agent 
 | 文件体量与依赖方向有审查规则 | 达标 | `structure-review.json`，违规 0，1 条体量警告 |
 | 发布与回滚演练 | 达标 | `release-smoke.json`，四条入口 200，`webui_app.py` 直接启动 |
 
-独立信源：缺失；本地干净 venv、unittest、发布冒烟和 R1-R11 均属项目自证。GitHub Actions 是待取得的外部执行证据。
-待拍板：B7 实施完成后若要 commit/push 以取得远端 CI 证据，必须单独获得用户批准；未批准时不得自行标 CI 达标。
-下一批开工门：B7 无下一批；先由用户拍板是否 commit/push 取得远端 CI。远端矩阵通过前不得把 B7 标为收工；不能用“本地全绿”代替全局完成度判断。
+独立信源：GitHub Actions [run 38154092186](https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186)，提交 `84c3f42e383b45a105c10712bc613adf620ac59a`；Python 3.11 job `114513355827` 与 3.12 job `114513355690` 均为 completed/success。
+待拍板：B7 无新增事项。Actions 仅提示 `actions/checkout@v4`、`actions/setup-python@v5` 的 Node 20 弃用预警和 `ubuntu-latest` 后续迁移提示，不影响本次结果。
+下一批开工门：B7 正式收工，B0-B7 重构批次已完成；后续产品工作回到项目既定优先级，不再沿用 B7 待授权门。
