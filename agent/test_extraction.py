@@ -21,6 +21,20 @@ BASELINE_SUMMARY = EVIDENCE / "baseline-summary.json"
 FIXED_CODES = {"600519", "000858", "600887"}
 FIXED_YEARS = {2023, 2024, 2025}
 
+SOURCE_ORIGIN_KEYS = {
+    "announcement_id",
+    "local_import_id",
+    "source_kind",
+    "source_url",
+    "disclosed_at",
+    "disclosure_precision",
+    "retrieved_at",
+    "version_policy",
+    "needs_version_review",
+    "version_selection",
+    "license_status",
+}
+
 CONTRACT = {
     "extraction.catalog": (
         "METRICS",
@@ -67,6 +81,10 @@ def canonical_bytes(facts: list[dict]) -> bytes:
         sort_keys=True,
         separators=(",", ":"),
     ).encode("utf-8")
+
+
+def without_source_origin(facts: list[dict]) -> list[dict]:
+    return [{key: value for key, value in fact.items() if key != "source_origin"} for fact in facts]
 
 
 class ModuleContractTests(unittest.TestCase):
@@ -202,9 +220,12 @@ class RealExtractionEquivalenceTests(unittest.TestCase):
     def test_fixed_nine_reports_are_compared_to_frozen_snapshot(self):
         self.assertEqual(len(self.materials), 9)
         self.assertEqual(self.failures, [])
-        actual = canonical_bytes(self.facts)
-        self.assertEqual(hashlib.sha256(actual).hexdigest(), self.baseline_hash)
-        self.assertEqual(json.loads(actual.decode("utf-8")), self.baseline)
+        self.assertEqual(len(self.facts), len(self.baseline))
+        legacy_actual = canonical_bytes(without_source_origin(self.facts))
+        self.assertEqual(hashlib.sha256(legacy_actual).hexdigest(), self.baseline_hash)
+        self.assertEqual(json.loads(legacy_actual.decode("utf-8")), self.baseline)
+        for fact in self.facts:
+            self.assertEqual(set(fact["source_origin"]), SOURCE_ORIGIN_KEYS)
 
     def test_channel_coverage_matches_baseline(self):
         methods = Counter(item["extraction_method"] for item in self.facts)

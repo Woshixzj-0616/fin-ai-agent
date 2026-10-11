@@ -15,6 +15,7 @@ import re
 from llm_check import COMPANIES, METRICS
 from tools import compute_yoy, find_evidence
 from periods import end_date
+from finance import evidence_issues
 
 # 问题类型：value=查数 yoy=同比 issues=异常 overview=概览
 KINDS = ("value", "yoy", "issues", "overview")
@@ -252,7 +253,7 @@ def _answer_value(intent: dict, facts: list[dict], draft: str = "") -> dict:
             f"证据不足：未找到 {year} 年「{METRICS.get(metric, [metric])[0]}」的唯一期间证据，请明确全年、半年或季度及口径。",
             intent)
     fact = next(f for f in facts if f["evidence_id"] == out["items"][0]["evidence_id"])
-    if fact.get("issues"):
+    if evidence_issues(fact):
         return _no_evidence("证据含待复核标记，不能直接作为确定数值作答。", intent)
     cite = _cite(fact)
     name = cite["metric_name"]
@@ -304,13 +305,13 @@ def _answer_yoy(intent: dict, facts: list[dict], draft: str = "") -> dict:
 
 
 def _answer_issues(intent: dict, facts: list[dict]) -> dict:
-    flagged = [f for f in facts if f.get("issues")]
+    flagged = [f for f in facts if evidence_issues(f)]
     label = _company_label(facts)
     if not flagged:
         return _ok(f"{label}：已加载证据未带问题标记（issues 为空），不代表业务无风险，仅表示抽取层干净。", [], intent)
     cites = [_cite(f) for f in flagged[:20]]
-    lines = [f"· {c['metric_name']}（{c['period_year']}）：{'；'.join(str(x) for x in next(f['issues'] for f in flagged if f['evidence_id'] == c['evidence_id']))}"
-             for c in cites]
+    lines = [f"· {c['metric_name']}（{c['period_year']}）：{'；'.join(evidence_issues(f))}"
+             for c, f in zip(cites, flagged[:20])]
     answer = f"{label}：抽取层标记 {len(flagged)} 条待复核：\n" + "\n".join(lines)
     return _ok(answer, cites, intent, flagged_count=len(flagged))
 
@@ -321,7 +322,7 @@ def _answer_overview(intent: dict, facts: list[dict]) -> dict:
     # 每公司、期间、指标、来源和口径分别展示；不合并全年与季报。
     picked: dict[tuple, dict] = {}
     for f in facts:
-        if f.get("adjustment") == "before":
+        if f.get("adjustment") == "before" or evidence_issues(f):
             continue
         key = (f.get("company_code"), f.get("metric"), f.get("period_start"), f.get("period_end"),
                f.get("scope"), f.get("document_id"))
@@ -329,13 +330,16 @@ def _answer_overview(intent: dict, facts: list[dict]) -> dict:
         if cur is None or (f.get("period_year") or 0) > (cur.get("period_year") or 0):
             picked[key] = f
     if not picked:
-        return _no_evidence("证据均带 before 调整标记，无法汇总。", intent)
+        return _no_evidence("证据均带调整前或待复核标记，无法作为可靠数值汇总。", intent)
     cites = [_cite(f) for f in picked.values()]
     lines = [f"· {c['metric_name']}（{c['period_label']}）：{c.get('value')} {c.get('unit') or ''}"
              for c in cites]
     label = _company_label(facts)
     answer = f"{label}：本次共 {len(facts)} 条证据，指标概览：\n" + "\n".join(lines)
-    return _ok(answer, cites, intent, total_facts=len(facts))
+    flagged_count = sum(bool(evidence_issues(f)) for f in facts)
+    if flagged_count:
+        answer += f"\n另有 {flagged_count} 条待复核证据，未列入数值概览。"
+    return _ok(answer, cites, intent, total_facts=len(facts), flagged_count=flagged_count)
 
 
 def answer(question: str, facts: list[dict], *, client=None, run=None,

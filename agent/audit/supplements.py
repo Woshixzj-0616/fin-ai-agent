@@ -11,6 +11,7 @@ from audit.grounding import split_draft
 from audit.schema import SECRET_PATTERN
 from extract import ALIASES
 from finance import compare_number, decimal, ratio, text
+from finance import evidence_issues
 from materials import sha256, within
 
 
@@ -63,7 +64,7 @@ def check_valuation(claim: dict, facts: list[dict]) -> dict:
             out.update(status="证据不足", reason_code="valuation_denominator_missing", reason=f"未找到唯一 {metric} 年度证据")
             return out
         f = candidates[0]
-        if f.get("issues") or f.get("unit") != "元/股" or numerator.get("unit") != "元/股":
+        if evidence_issues(f) or f.get("unit") != "元/股" or numerator.get("unit") != "元/股":
             out.update(reason_code="valuation_unit_or_evidence", reason="价格/EPS/每股净资产单位或证据状态不符合可比要求")
             return out
         if not f.get("period_end") or date.fromisoformat(f["period_end"]) > as_of:
@@ -150,7 +151,7 @@ def check_reference(claim: dict, facts: list[dict], *, root: Path, run=None) -> 
             return out
         quote = re.sub(r"\s+", "", claim.get("source_quote") or "")
         metric = claim.get("metric")
-        matching = [f for f in candidates if f.get("page") == page.number+1 and not f.get("issues")]
+        matching = [f for f in candidates if f.get("page") == page.number+1 and not evidence_issues(f)]
         if quote:
             supported = quote in cited_text
         elif metric and claim.get("value") is not None and claim.get("unit"):

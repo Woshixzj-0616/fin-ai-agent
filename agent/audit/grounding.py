@@ -5,15 +5,15 @@ import re
 
 from audit.prompt import MAX_DRAFT_CHARS
 from audit.schema import COMPANIES, LLMError
+from backend_runtime import load_config, sentence_rows
 
 
 def split_draft(draft: str) -> list[dict]:
-    if not draft.strip() or len(draft) > MAX_DRAFT_CHARS:
-        raise LLMError("草稿为空或超过12000字，请提供较短的核查草稿")
-    lines = [line.strip() for line in re.split(r"(?<=[。！？；])|\r?\n+", draft) if line.strip()]
-    if len(lines) > 40:
-        raise LLMError("首版每次最多处理40句，请分段核查")
-    return [{"sentence_id": i, "text": line} for i, line in enumerate(lines, 1)]
+    try:
+        return [{"sentence_id": row["sentence_id"], "text": row["text"]}
+                for row in sentence_rows(draft, load_config())]
+    except ValueError as exc:
+        raise LLMError(str(exc)) from None
 
 
 def resolve_company(name, source: str, draft: str, facts: list[dict] | None = None) -> str | None:

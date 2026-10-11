@@ -1,7 +1,7 @@
 """可复算的财务观察与原因分析框架；不将信号当作因果或造假结论。"""
 from __future__ import annotations
 
-from finance import decimal, ratio, text
+from finance import decimal, evidence_issues, ratio, text
 
 
 def extended_signals(facts: list[dict], rows: list[dict]) -> list[dict]:
@@ -11,7 +11,7 @@ def extended_signals(facts: list[dict], rows: list[dict]) -> list[dict]:
             groups.setdefault((f["document_id"], f.get("period_start"), f.get("period_end")), {}).setdefault(f["metric"], []).append(f)
     row_index = {r["evidence_id"]: r for r in rows}
     for (doc, start, end), options in groups.items():
-        m = {k: v[0] for k, v in options.items() if len(v) == 1 and not v[0].get("issues")}
+        m = {k: v[0] for k, v in options.items() if len(v) == 1 and not evidence_issues(v[0])}
         p, a, c = (m.get(k) for k in ("parent_net_profit", "adjusted_parent_net_profit", "operating_cash_flow"))
         if p and a and (p.get("scope"), p.get("currency")) == (a.get("scope"), a.get("currency")):
             pv, av = decimal(p.get("normalized_value")), decimal(a.get("normalized_value"))
@@ -50,14 +50,14 @@ def extended_signals(facts: list[dict], rows: list[dict]) -> list[dict]:
                         "interpretation": "已知事实只支持收入和利润变化。毛利率、费用率及回款原因缺少明细时列为待补证据，不自动作因果归因。"})
     # 相邻年报列示的同一历史期间可能因重述或报表口径变化而不同。
     for old in facts:
-        if old.get("period_year") != old.get("report_year") or old.get("adjustment") == "before" or old.get("issues"):
+        if old.get("period_year") != old.get("report_year") or old.get("adjustment") == "before" or evidence_issues(old):
             continue
         candidates = [f for f in facts if f.get("company_code") == old.get("company_code")
                       and f.get("metric") == old.get("metric") and f.get("period_year") == old.get("period_year")
                       and f.get("report_year") == old.get("report_year") + 1 and f.get("adjustment") != "before"
                       and f.get("scope") == old.get("scope") and f.get("currency") == old.get("currency")
                       and f.get("period_start") == old.get("period_start") and f.get("period_end") == old.get("period_end")
-                      and not f.get("issues")]
+                      and not evidence_issues(f)]
         if len(candidates) == 1:
             new = candidates[0]
             a, b = decimal(old.get("normalized_value")), decimal(new.get("normalized_value"))

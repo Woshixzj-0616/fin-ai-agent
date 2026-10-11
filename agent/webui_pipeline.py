@@ -9,12 +9,12 @@ from pathlib import Path
 
 try:
     from extract import extract_material
-    from finance import analyze
+    from finance import analyze, evidence_issues
     from main import report_markdown
     from materials import ROOT, Run, register, sha256, write_json
 except ModuleNotFoundError:
     from agent.extract import extract_material
-    from agent.finance import analyze
+    from agent.finance import analyze, evidence_issues
     from agent.main import report_markdown
     from agent.materials import ROOT, Run, register, sha256, write_json
 
@@ -215,7 +215,7 @@ def run_pipeline(
     write_json(run.output("webui_failures.json"), failures)
     analysis = analyze(facts, run)
     report = report_markdown(analysis, materials, None)
-    issues = [fact for fact in facts if fact.get("issues")]
+    issues = [fact for fact in facts if evidence_issues(fact)]
     checks = _check_draft(draft, facts, run) if draft and draft.strip() else None
     counts = {"match": 0, "mismatch": 0, "unverified": 0, "issue": len(issues)}
     for row in analysis["rows"]:
@@ -270,7 +270,8 @@ def run_pipeline(
                 "label_bbox": fact.get("label_bbox"),
                 "scope": fact.get("scope"),
                 "adjustment": fact.get("adjustment"),
-                "issues": fact.get("issues") or [],
+                "issues": evidence_issues(fact),
+                "source_origin": fact.get("source_origin"),
             }
             for fact in facts
         ],
@@ -278,7 +279,7 @@ def run_pipeline(
             {
                 "evidence_id": fact["evidence_id"],
                 "metric_name": fact.get("metric_name"),
-                "issues": fact.get("issues"),
+                "issues": evidence_issues(fact),
             }
             for fact in issues
         ],
@@ -294,7 +295,8 @@ def run_pipeline(
             LAST_DOCUMENT_TEXTS.clear()
             LAST_DOCUMENT_TEXTS.update(doc_texts)
     run.finish(
-        status="ok" if not failures else "partial_failure",
+        status=("partial_failure" if failures or
+                (checks and checks.get("execution_status") == "partial") else "ok"),
         materials=len(materials),
         evidence_count=len(facts),
         failures=len(failures),
@@ -361,7 +363,11 @@ def _check_draft(draft: str, facts: list[dict], run) -> dict:
         bundle = check_text(temporary, facts, run, client, use_loop=True)
         tools_used = bundle.get("tools_used") or []
         return {
-            "status": "completed",
+            "status": "completed" if bundle.get("status") == "completed" else "failed",
+            "execution_status": bundle.get("status"),
+            "reason": bundle.get("reason"),
+            "unfinished_sentence_ids": bundle.get("unfinished_sentence_ids", []),
+            "checkpoint_file": bundle.get("checkpoint_file"),
             "mode": bundle.get("mode"),
             "counts": bundle.get("counts"),
             "checks": bundle.get("checks") or [],

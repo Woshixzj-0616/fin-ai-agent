@@ -22,6 +22,40 @@ def scope_agnostic(metric, unit=None) -> bool:
     return unit in NON_AMOUNT_UNITS or metric in SCOPE_AGNOSTIC_METRICS
 
 
+def evidence_issues(fact: dict) -> list[str]:
+    """把扩展证据的复核标记映射到 fin 的 issues；缺少新增字段的旧证据兼容。"""
+    original = fact.get("issues") or []
+    reasons = list(original) if isinstance(original, list) else ["issues_invalid"]
+    if "auto_usable" in fact:
+        if fact["auto_usable"] is False:
+            reasons.append("auto_usable_false")
+        elif fact["auto_usable"] is not True:
+            reasons.append("auto_usable_invalid")
+    review = fact.get("review_reasons")
+    if review:
+        if not isinstance(review, list):
+            reasons.append("review_reasons_invalid")
+        else:
+            reasons.extend("review:" + str(reason) for reason in review)
+    second = fact.get("second_path_check")
+    if second is not None:
+        if not isinstance(second, dict):
+            reasons.append("second_path_check_invalid")
+        elif second.get("status") not in {"match", "matched", "verified", "pass", "ok"}:
+            reasons.append("second_path_unresolved")
+    return list(dict.fromkeys(str(reason) for reason in reasons))
+
+
+def declared_basis_conflicts(a: dict, b: dict) -> list[str]:
+    """保留 fin 既有可比性条件，新增元数据存在明确冲突时拒算。"""
+    reasons = []
+    for key in ("accounting_policy_version", "consolidation_basis", "restatement_version"):
+        left, right = a.get(key), b.get(key)
+        if left is not None and right is not None and left != right:
+            reasons.append(f"{key} 不一致")
+    return reasons
+
+
 def decimal(value) -> Decimal | None:
     if value is None or value == "":
         return None
@@ -238,8 +272,9 @@ def comparable(current: dict, previous: dict) -> list[str]:
         reasons.append("比较期间不是相邻两年")
     if previous.get("adjustment") == "before":
         reasons.append("基期为调整前，尚未确认可比性")
-    if current.get("issues") or previous.get("issues"):
+    if evidence_issues(current) or evidence_issues(previous):
         reasons.append("证据存在待复核字段，不能用于确认同比")
+    reasons.extend(declared_basis_conflicts(current, previous))
     return reasons
 
 
@@ -279,6 +314,7 @@ def select_previous(facts: list[dict], current: dict) -> dict | None:
 
 
 def analyze(facts: list[dict], run) -> dict:
+    facts = [{**fact, "issues": evidence_issues(fact)} for fact in facts]
     current = [f for f in facts if f["period_year"] == f["report_year"]]
     rows, groups = [], {}
     for fact in current:
@@ -431,8 +467,8 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
         if not claim.get(field) or fact.get(field) in {None, "", "unknown"} or claim[field] != fact[field]:
             output.update(status="口径冲突／需人工复核", reason=f"{field} 不明确或不一致")
             return output
-    if fact["issues"]:
-        output["reason"] = "证据存在待复核字段：" + ",".join(fact["issues"])
+    if evidence_issues(fact):
+        output["reason"] = "证据存在待复核字段：" + ",".join(evidence_issues(fact))
         return output
     if claim["kind"] == "amount":
         operator = claim.get("operator") or "eq"

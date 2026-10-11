@@ -79,6 +79,11 @@ DEFAULT_TOLERANCE_PCT = 2.0
 class LLMError(ValueError):
     """只携带可安全写入日志的固定说明，不包含请求头或服务端原始错误。"""
 
+    def __init__(self, message, *, terminal=False, request_status=None):
+        super().__init__(message)
+        self.terminal = terminal
+        self.request_status = request_status
+
 
 def schema() -> dict:
     nullable_string = {"type": ["string", "null"]}

@@ -1,0 +1,32 @@
+{
+  "http": {
+    "timeout_seconds": 60,
+    "request_deadline_seconds": 240,
+    "max_retries": 3,
+    "max_output_tokens": 8192
+  },
+  "document": {
+    "deadline_seconds": 600,
+    "max_characters": 240000,
+    "max_sentences": 2000,
+    "chunk_characters": 12000,
+    "chunk_sentences": 40,
+    "max_http_attempts": 40,
+    "token_budget": 500000
+  },
+  "sources": {
+    "timeout_seconds": 20,
+    "request_deadline_seconds": 60,
+    "task_deadline_seconds": 600,
+    "max_attempts": 3,
+    "max_http_attempts": 120,
+    "min_interval_milliseconds": 1000,
+    "max_redirects": 5,
+    "max_bytes": 104857600
+  },
+  "tools": {
+    "max_rounds": 5,
+    "max_calls": 30,
+    "max_repairs": 2
+  }
+}

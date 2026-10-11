@@ -16,8 +16,9 @@ import pymupdf
 from materials import (ROOT, TZ, Run, fetch, import_legacy, load_materials, register,
                        sha256, verify_registry, write_csv, write_json)
 from extract import extract_material
-from finance import analyze, check_claim, decimal
+from finance import analyze, check_claim, decimal, evidence_issues
 from llm_check import LLMClient, LLMError, check_text
+from backend_runtime import load_config
 
 def extract_selected(root: Path, run: Run, code=None, year=None, render=False, report_kind=None):
     """code/year 既可传单值（CLI），也可传集合（测试批量圈定）。"""
@@ -196,6 +197,8 @@ def parser() -> argparse.ArgumentParser:
     checker.add_argument("--model", help="模型名；也可设置LLM_MODEL")
     checker.add_argument("--format", choices=["json_schema", "json_object"], help="默认读取LLM_FORMAT，否则使用json_schema")
     checker.add_argument("--ask-key", action="store_true", help="交互输入临时密钥，不回显、不保存；否则读取LLM_API_KEY")
+    checker.add_argument("--config", type=Path, help="后端运行配置；默认agent/backend_config.json")
+    checker.add_argument("--resume", action="store_true", help="复用绑定一致的已完成分块，仅重试未完成部分")
     checker.add_argument("--no-loop", action="store_true",
                          help="跳过 JSON 多步工具循环，只用单次拆解（回退模式）")
     announcement = commands.add_parser("announcement", help="质押/中标/股权变动公告结构化抽取")
@@ -218,8 +221,9 @@ def main() -> int:
     if args.command == "check-text":
         try:
             client = LLMClient.from_environment(base_url=args.base_url, model=args.model,
-                                                mode=args.format, ask_key=args.ask_key)
-        except LLMError as exc:
+                                                mode=args.format, ask_key=args.ask_key,
+                                                config=load_config(args.config))
+        except (OSError, ValueError) as exc:
             print(f"配置未就绪：{exc}")
             return 1
         # 不将环境变量或认证信息序列化到run.json。
@@ -319,12 +323,15 @@ def main() -> int:
         if args.command == "check-text":
             if failures:
                 raise LLMError("材料抽取不完整，本次未调用模型；请先检查failures.json")
-            bundle = check_text(args.file, facts, run, client, use_loop=not args.no_loop)
-            run.finish(status="ok", materials=len(materials), evidence_count=len(facts),
+            bundle = check_text(args.file, facts, run, client, use_loop=not args.no_loop, resume=args.resume)
+            incomplete = bundle["status"] != "completed"
+            run.finish(status="partial_failure" if incomplete else "ok", materials=len(materials), evidence_count=len(facts),
                        checks=len(bundle["checks"]), counts=bundle["counts"],
                        mode=bundle.get("mode"), tools_used=len(bundle.get("tools_used") or []))
-            print(f"已完成 {len(bundle['checks'])} 项草稿核查（{bundle.get('mode')}）；报告：{run.folder / 'text_report.md'}")
-            return 0
+            print(f"{'部分完成' if incomplete else '已完成'} {len(bundle['checks'])} 项草稿核查（{bundle.get('mode')}）；报告：{run.folder / 'text_report.md'}")
+            if incomplete:
+                print(bundle["reason"] + "；使用相同配置加 --resume 恢复")
+            return int(incomplete)
         if args.command == "check-gold":
             gold_path = ROOT / "data" / "agent" / "samples.json"
             gold = json.loads(run.read(gold_path).decode("utf-8"))["reference_gold"]
@@ -350,7 +357,7 @@ def main() -> int:
         if args.command == "live":
             analysis = analyze(facts, run)
             write_json(run.output("analysis.json"), analysis)
-            issues = [f for f in facts if f.get("issues")]
+            issues = [f for f in facts if evidence_issues(f)]
             report = report_markdown(analysis, materials, None)
             report += "\n\n## 现场运行摘要\n\n"
             report += f"- 材料 {len(materials)} 份；证据 **{len(facts)}** 条；待复核字段 {len(issues)} 条。\n"
@@ -360,8 +367,8 @@ def main() -> int:
             print(f"现场报告：{run.folder / 'live_report.md'}（证据 {len(facts)} 条，待复核 {len(issues)}）")
         run.finish(status="partial_failure" if failures else "ok",
                    materials=len(materials), evidence_count=len(facts), failures=len(failures),
-                   records_needing_review=sum(bool(f["issues"]) for f in facts))
-        print(f"证据 {len(facts)} 条；失败 {len(failures)} 份；待复核字段 {sum(bool(f['issues']) for f in facts)} 条")
+                   records_needing_review=sum(bool(evidence_issues(f)) for f in facts))
+        print(f"证据 {len(facts)} 条；失败 {len(failures)} 份；待复核字段 {sum(bool(evidence_issues(f)) for f in facts)} 条")
         return int(bool(failures))
     except Exception as exc:
         message = str(exc)

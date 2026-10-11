@@ -1,0 +1,211 @@
+{
+  "created_at": "2026-10-09T20:09:59+08:00",
+  "project_root": "D:\\Desktop\\fin-ai-agent-main",
+  "scope": "fin backend only; fin standards retained",
+  "backup": {
+    "archive": "logs/backend_before_20261009_184215.zip",
+    "sha256": "ac43d60894da4d5ddd612594b3ba0a99b7c1c7b785197eea94d4603dd8893c1e",
+    "manifest": "logs/backend_before_20261009_184215.json"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "PyMuPDF": "1.28.2",
+    "httpx": "0.28.1",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "validation": {
+    "baseline_tests": 189,
+    "added_tests": 35,
+    "tests_run": 224,
+    "passed": 223,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "elapsed_seconds": 91.247,
+    "skipped_cases": [
+      [
+        "test_configured_ocr_scanned_labels_are_reviewed (test_competition.AnnouncementRegressionTests.test_configured_ocr_scanned_labels_are_reviewed)",
+        "可选 OCR 语言数据未配置；先运行 scripts/setup_ocr.py"
+      ]
+    ],
+    "log": "logs/backend_final_full_20261009_184215.txt",
+    "log_sha256": "befa0b640950a9c729710da5cff22299e8c5fed357eb0c05503a994933a03b4e",
+    "cli_help_log": "logs/backend_cli_help_20261009_184215.txt"
+  },
+  "frontend": {
+    "assets": {
+      "docs/app.js": {
+        "before": "d1dae1538216ac71491cf6004924e86dc98e7a7cc03fa39dc07c30d43201bc0c",
+        "after": "d1dae1538216ac71491cf6004924e86dc98e7a7cc03fa39dc07c30d43201bc0c",
+        "unchanged": true
+      },
+      "docs/index.html": {
+        "before": "37bf2bf18cf8dead1e1248107ea5aeeea9fbfa172dab410354f78d7c04e2cf42",
+        "after": "37bf2bf18cf8dead1e1248107ea5aeeea9fbfa172dab410354f78d7c04e2cf42",
+        "unchanged": true
+      },
+      "docs/style.css": {
+        "before": "bfd0043a35f8d940dd1e7688b6ab811c854baaba22c3565053fa8b67d8a42921",
+        "after": "bfd0043a35f8d940dd1e7688b6ab811c854baaba22c3565053fa8b67d8a42921",
+        "unchanged": true
+      },
+      "docs/trace.js": {
+        "before": "8c7d59809da885e7c96101b48cbd77743be02d0d884f6ba62e87cec28e4dd547",
+        "after": "8c7d59809da885e7c96101b48cbd77743be02d0d884f6ba62e87cec28e4dd547",
+        "unchanged": true
+      }
+    },
+    "webui_PAGE_unchanged": true,
+    "PAGE_sha256": "a5884eb09bbf8a49563f7623db62c6b3d0a69ba0c514cc40e1da3e724b043233",
+    "webui_modified_backend_functions": [
+      "_check_draft",
+      "run_pipeline"
+    ]
+  },
+  "standards": {
+    "requirements_unchanged": true,
+    "requirements_sha256": "da5b0fea7f3f0fdcfbdea7804cfb53393c564abc20ea8759e71e33ba2d7bcd99",
+    "approx_default_pct": 2,
+    "approx_max_pct": 5,
+    "business_tool_schema_changed": false,
+    "existing_test_modules_unchanged": true,
+    "unchanged_original_functions": {
+      "tool_specs": true,
+      "yoy": true,
+      "ratio": true,
+      "percentage_points": true,
+      "_tolerance": true,
+      "compare_number": true,
+      "compare_amount": true
+    }
+  },
+  "changed_files": {
+    "agent/agent_loop.py": {
+      "before": "33fd1cff0ffa85f7ce6f81149772495c39830bf4ab1bf31f0d92f07dd33d85d7",
+      "after": "20d05b512e48656dfbdaf239223d52de7f3cf4da097b1f88cdb64f063e526225"
+    },
+    "agent/audit_checks.py": {
+      "before": "da6ff8ebd6861e444cf21c3b9e9766eb8c785a09a3caaac7aabbc68f59da9f77",
+      "after": "a3170bfb618a102befbad278ddf55027913f3ba12aa76f8b23203d563e0de15d"
+    },
+    "agent/extract.py": {
+      "before": "9e02d1eb19cbdc4d18906e8fd8c3c0ae9b7d6043b854779d56cb605681294e71",
+      "after": "eb11f0ee6b450ae4818e5ff7eae39a6abc9edf0c5a86b3e56f669ccbfdc2a2c7"
+    },
+    "agent/extract_cache.py": {
+      "before": "e8bfdf7c9a582cf7c3c22fb27ea0087f1e32ebf620f7fdca83de62047bfdc454",
+      "after": "f3c87bfe911782078544e5f4f623d3a93db3624ce9ff5834aebdb600b901d408"
+    },
+    "agent/finance.py": {
+      "before": "5c99cef67b1e0103dc2897d4aa3c84b68701d70f05150b3b8db658a79a3a3a2e",
+      "after": "cb2c584a54b0eb8e6b78b4c99ff5d20dbf058a225bc9ebf8ad20420c8557b698"
+    },
+    "agent/financial_signals.py": {
+      "before": "4766568d3b4a074ac107e06e7eb90df089c8f8b45619f1c05cc0d45b5deef429",
+      "after": "f8d3617cb9321b7c50086259634b0b209caacc72563c0efa092caf3392f4c965"
+    },
+    "agent/llm_check.py": {
+      "before": "87bb07adcb3d22ff8a10d5be8092fb4316944e9769161446573fb640e97ff7db",
+      "after": "a95d65f98762d2d81504a1a1b1b292e30deb5e9c3449d25f1c262991acb3f04c"
+    },
+    "agent/llm_http.py": {
+      "before": "11798d6cb890a3e27d73b35e38ee1e0ede42d96f0ec83fd60daa36aa7cf3f85b",
+      "after": "4d9fc3bc74c8f1d00779cc9a5936f6900c8b14d85bca0be6b9ef0ced01990311"
+    },
+    "agent/main.py": {
+      "before": "d18863942b85eea5d32329c7e2d0eea809f0d0d607a1caac3f895bac73952c61",
+      "after": "5b61053cd3ea3d64b4dd52026abdaf72e12e9c1e4e99b2be6b4e2a76f655008b"
+    },
+    "agent/materials.py": {
+      "before": "02de0401296c1970d1591604e7260ccf2beab9c2726f601e8cb2d2c3ca0235ac",
+      "after": "d975b06b4956bcb739f8a854e336f6796711e8071dec39a39fd51db9fcef7aa2"
+    },
+    "agent/periods.py": {
+      "before": "28c52243d1b7ceeb9049c0fe6345f40754db725aa57af2f22bc53a2de24f4a2e",
+      "after": "55046da2fa08140c86d5181e25a24f3ef092f2465c1242c77762a0858b06b454"
+    },
+    "agent/qa.py": {
+      "before": "fb8eee583b356d026aae279a219c0975b65c00c41b4cbe22619adedb01a74c67",
+      "after": "0317012aa1f5afcfe38aea468ea38798dd1c1a783542a574d23fc622b07c4964"
+    },
+    "agent/tools.py": {
+      "before": "1c8f8785e1fd8a2a3d28d9761009dcc2abb8d997ead61ded3d29035ddd9f7746",
+      "after": "d5cee450f95883ce00f22e1a23ac485c0da15016164a07b0933af1affe966026"
+    },
+    "agent/webui.py": {
+      "before": "2b6eb4192b62a207d4a4d86d81ad6115256a6c19603a606fb41c2da984101eca",
+      "after": "3173a59534388e43fb4589f52f392efda08cfef6e41a34f5c56acec6b8f2ebd2"
+    },
+    "docs/运行说明.md": {
+      "before": "44710a8f9229b47908a442b04aa885d46e2e6a8e3a9c464a68761a939c639d0f",
+      "after": "104cfbe5cc22ba5480ff52d53a7186e17fa5a694b154a2c0b02f6f7781cfcb5a"
+    },
+    "README.md": {
+      "before": "f5d37a7d65884cb17775e78cadc488539ac766dc099eda0882679a7249d9baa5",
+      "after": "4c0ece4e2f7738fd01638fccb9bf8ea0b3173fb3e007c5d4c5dbc23e93edb743"
+    }
+  },
+  "added_files": [
+    "agent/backend_runtime.py",
+    "agent/test_backend.py",
+    "agent/backend_config.json",
+    "docs/后端升级说明.md"
+  ],
+  "source_hashes": {
+    "agent/agent_loop.py": "20d05b512e48656dfbdaf239223d52de7f3cf4da097b1f88cdb64f063e526225",
+    "agent/announcements.py": "842755631c19a0d480ebc887c8b3c97748d66b7592c4284ca76e0eb54bc7492a",
+    "agent/audit_checks.py": "a3170bfb618a102befbad278ddf55027913f3ba12aa76f8b23203d563e0de15d",
+    "agent/backend_runtime.py": "094d1d070bba7cc0690d81465fb745a702b34cb3e6cb13c0fb9da63b3a4f70c5",
+    "agent/extract.py": "eb11f0ee6b450ae4818e5ff7eae39a6abc9edf0c5a86b3e56f669ccbfdc2a2c7",
+    "agent/extract_cache.py": "f3c87bfe911782078544e5f4f623d3a93db3624ce9ff5834aebdb600b901d408",
+    "agent/finance.py": "cb2c584a54b0eb8e6b78b4c99ff5d20dbf058a225bc9ebf8ad20420c8557b698",
+    "agent/financial_signals.py": "f8d3617cb9321b7c50086259634b0b209caacc72563c0efa092caf3392f4c965",
+    "agent/interim.py": "1f6dc511886ee56828d0cb65e4187d6c14d43cadf810b53fd2ceca2adb17e4b5",
+    "agent/llm_check.py": "a95d65f98762d2d81504a1a1b1b292e30deb5e9c3449d25f1c262991acb3f04c",
+    "agent/llm_http.py": "4d9fc3bc74c8f1d00779cc9a5936f6900c8b14d85bca0be6b9ef0ced01990311",
+    "agent/main.py": "5b61053cd3ea3d64b4dd52026abdaf72e12e9c1e4e99b2be6b4e2a76f655008b",
+    "agent/materials.py": "d975b06b4956bcb739f8a854e336f6796711e8071dec39a39fd51db9fcef7aa2",
+    "agent/mcp_server.py": "4c72d73439b803a49298940831471c7a05960d867c3765da7212c8723b21c153",
+    "agent/periods.py": "55046da2fa08140c86d5181e25a24f3ef092f2465c1242c77762a0858b06b454",
+    "agent/qa.py": "0317012aa1f5afcfe38aea468ea38798dd1c1a783542a574d23fc622b07c4964",
+    "agent/retrieval.py": "199420224c14a414f08e0d3ff26e5643995ac9677aaefa3fa011a24303d132d2",
+    "agent/test.py": "e38ea186b2dfb5030ca69f41aa753d28f7534504a07dacdf408c5d4fc15f40e1",
+    "agent/test_backend.py": "ed56ea2f675542e69ed72e98c269c6013de8dc85ba244e83697ac35503aa4afb",
+    "agent/test_competition.py": "5e6dac8cd9b006b3745f9ce1e686fadc39c53998371ef1fd07e4a0b3dd3ba437",
+    "agent/test_skill_mcp.py": "838b79760087c90bd4dd1da0959be72c7bd46801e7be0111e4fdbcc6b009770d",
+    "agent/tools.py": "d5cee450f95883ce00f22e1a23ac485c0da15016164a07b0933af1affe966026",
+    "agent/trace.py": "c1041fb75e499aa2c18c819a5dc39b6737b23cd7429f9fb3088f5e8c519d722e",
+    "agent/webui.py": "3173a59534388e43fb4589f52f392efda08cfef6e41a34f5c56acec6b8f2ebd2",
+    "agent/words.py": "4d3bd32b1e4135e1528d897a18d9370335f885dffe850d38d74140ae153c5d43"
+  },
+  "config_sha256": "849fdc14dca9cd2ed0399058849864a6eba0fbb40a38e333f398e74a0180acf5",
+  "credential_scan": {
+    "status": "PASS",
+    "files_checked": 30,
+    "backup_entries_checked": 34,
+    "pattern": "sk- followed by >=20 key characters",
+    "hits": 0,
+    "scope": "changed/added files, upgrade logs and pre-upgrade archive; not a claim of scanning all user files"
+  },
+  "external_validation": {
+    "live_llm_requests": 0,
+    "live_source_http_requests": 0,
+    "dependency_installation_excluded": true,
+    "network_error_tests": "injected local transport, no external calls"
+  },
+  "limits": [
+    "Optional OCR language data was unavailable; one original OCR test skipped.",
+    "No live provider connectivity or model accuracy claim.",
+    "No independent fact-source or latest-effective correction graph verification.",
+    "No new human approval/signatures or migration of new evaluation answers."
+  ],
+  "git": {
+    "repository_present": false,
+    "action": "no Git initialization, commit, push or remote change"
+  },
+  "documentation_hashes": {
+    "README.md": "4c0ece4e2f7738fd01638fccb9bf8ea0b3173fb3e007c5d4c5dbc23e93edb743",
+    "docs/运行说明.md": "104cfbe5cc22ba5480ff52d53a7186e17fa5a694b154a2c0b02f6f7781cfcb5a",
+    "docs/后端升级说明.md": "c695097e4c1cf701d44b26d9680e6b79db6241cd9e4d3fa9fad7ea0347f66e2c"
+  }
+}
