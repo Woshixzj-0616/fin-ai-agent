@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
+import tempfile
 import threading
 import uuid
 from collections.abc import Callable
@@ -41,6 +43,29 @@ class RunCancelled(RunStateError):
     pass
 
 
+MAX_RESTORED_STATE_BYTES = 1024 * 1024
+MAX_RESULT_BYTES = 32 * 1024 * 1024
+
+
+def _atomic_write(path: Path, text: str) -> None:
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                         prefix=path.name + ".", suffix=".tmp",
+                                         delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(text)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None and temporary.exists():
+            try:
+                temporary.unlink()
+            except OSError:
+                pass
+
+
 def _event_safe(value: Any) -> Any:
     try:
         json.dumps(value, ensure_ascii=False)
@@ -64,6 +89,7 @@ class RunContext:
         session_id: str,
         command: str,
         parameters: dict[str, Any] | None = None,
+        restored: dict[str, Any] | None = None,
     ):
         self._bus = bus
         self.root = Path(root).resolve()
@@ -83,7 +109,31 @@ class RunContext:
         self._error: str | None = None
         self._error_type: str | None = None
         self._lock = threading.RLock()
-        self._write_state()
+        if restored is None:
+            self._write_state()
+        else:
+            self._restore_state(restored)
+
+    def _restore_state(self, restored: dict[str, Any]) -> None:
+        """从 run.json/result.json 恢复上下文；不重写磁盘状态，也不新增事件。"""
+        self.created_at = str(restored.get("created_at") or self.created_at)
+        self.started_at = restored.get("started_at")
+        self.finished_at = restored.get("finished_at")
+        self._cancel_reason = str(restored.get("cancel_reason") or "") or None
+        self._error = str(restored.get("error") or "") or None
+        self._error_type = str(restored.get("error_type") or "") or None
+        try:
+            self._status = RunStatus(str(restored.get("status") or RunStatus.FAILED.value))
+        except ValueError:
+            self._status = RunStatus.FAILED
+        if isinstance(restored.get("parameters"), dict):
+            self.parameters = dict(restored["parameters"])
+        result_path = self.folder / "result.json"
+        if result_path.is_file() and result_path.stat().st_size <= MAX_RESULT_BYTES:
+            try:
+                self._result = json.loads(result_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                self._result = None
 
     @property
     def status(self) -> RunStatus:
@@ -176,6 +226,7 @@ class RunContext:
             if "result" in summary:
                 self._result = summary["result"]
             self._write_state()
+            self._write_result()
         self.event(
             "run_finished",
             phase="run",
@@ -215,6 +266,19 @@ class RunContext:
         with self._lock:
             self._result = result
             self._write_state()
+            self._write_result()
+
+    def _write_result(self) -> None:
+        """结果落盘供服务重启后读取；过大或不可序列化时明确不写。"""
+        if self._result is None:
+            return
+        try:
+            encoded = json.dumps(redact_value(self._result), ensure_ascii=False)
+        except (TypeError, ValueError):
+            return
+        if len(encoded.encode("utf-8")) > MAX_RESULT_BYTES:
+            return
+        _atomic_write(self.folder / "result.json", encoded + "\n")
 
     def _record_error(self, exc: Exception) -> None:
         with self._lock:
@@ -262,9 +326,13 @@ class RunContext:
 
 
 class RunManager:
-    def __init__(self, root: Path, *, max_workers: int = 4):
+    def __init__(self, root: Path, *, max_workers: int = 4, restore: bool = True,
+                 shutdown_timeout: float = 2.0):
         if max_workers < 1:
             raise ValueError("max_workers 必须大于 0")
+        if shutdown_timeout < 0:
+            raise ValueError("shutdown_timeout 不能为负")
+        self.shutdown_timeout = float(shutdown_timeout)
         self.root = Path(root).resolve()
         self.storage_root = self.root / "results" / "runs"
         self.bus = EventBus(self.storage_root)
@@ -275,6 +343,60 @@ class RunManager:
         self._lock = threading.RLock()
         self._executor = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="fin-agent-run")
         self._closed = False
+        self.restored: list[str] = []
+        if restore:
+            self.restore()
+
+    def restore(self) -> list[str]:
+        """服务重启后从磁盘恢复历史运行；未结束的运行明确标记为未完成。
+
+        会话隔离不变：恢复的运行仍绑定 run.json 里的 session_id，只能被同一会话看到。
+        """
+        if not self.storage_root.is_dir():
+            return []
+        for folder in sorted(self.storage_root.iterdir()):
+            state_path = folder / "run.json"
+            if not folder.is_dir() or not state_path.is_file():
+                continue
+            try:
+                if state_path.stat().st_size > MAX_RESTORED_STATE_BYTES:
+                    continue
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            if not isinstance(state, dict):
+                continue
+            run_id = state.get("run_id") or folder.name
+            session_id = state.get("session_id")
+            if run_id != folder.name or not isinstance(session_id, str) or not session_id.strip():
+                continue
+            with self._lock:
+                if run_id in self._runs:
+                    continue
+            try:
+                status = RunStatus(str(state.get("status") or RunStatus.FAILED.value))
+            except ValueError:
+                status = RunStatus.FAILED
+            context = RunContext(bus=self.bus, root=self.root, run_id=run_id,
+                                 session_id=session_id,
+                                 command=str(state.get("command") or "restored"),
+                                 parameters=state.get("parameters") if isinstance(state.get("parameters"), dict) else {},
+                                 restored={**state, "status": status.value})
+            if status not in TERMINAL_STATUSES:
+                # 中断运行不伪装成功：写终态标记并留事件，历史仍可查。
+                context._status = RunStatus.FAILED
+                context._error_type = "InterruptedByRestart"
+                context._error = "服务重启时该运行尚未结束，已标记为未完成"
+                context.finished_at = context.finished_at or timestamp_now()
+                context._write_state()
+                context.event("run_interrupted", phase="run", actor="runtime",
+                              title="运行被重启中断", status="failed",
+                              summary=context._error, payload={"previous_status": state.get("status")})
+            self.sessions.ensure(session_id)
+            with self._lock:
+                self._runs[run_id] = context
+            self.restored.append(run_id)
+        return self.restored
 
     def create_run(
         self,
@@ -429,8 +551,19 @@ class RunManager:
             self._closed = True
             timers = list(self._timers.values())
             self._timers.clear()
+            futures = list(self._futures.values())
         for timer in timers:
             timer.cancel()
+        # 有限等待在途运行写完 run.json/result.json，避免调用方随后清理目录时踩到写文件。
+        for future in futures:
+            if future.done():
+                continue
+            try:
+                future.result(timeout=self.shutdown_timeout)
+            except FutureTimeout:
+                break
+            except BaseException:  # 取消或运行失败都不该阻塞关闭
+                continue
         self._executor.shutdown(wait=False, cancel_futures=True)
         self.bus.close()
 
@@ -471,4 +604,3 @@ class LegacyRunAdapter:
             return
         self.attached = False
         self.legacy_run.set_event_sink(None)
-import json

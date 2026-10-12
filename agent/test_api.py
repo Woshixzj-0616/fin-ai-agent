@@ -300,6 +300,35 @@ class ApiApplicationTests(unittest.TestCase):
         self.assertEqual(context.status.value, "succeeded")
 
 
+    def test_runtime_bridge_maps_announcement_end_states(self):
+        for legacy_status, expected in (("completed", "succeeded"), ("no_fields", "partial_failed")):
+            with self.subTest(status=legacy_status):
+                context = self.manager.create_run("session-a", "announcement", {})
+                context.start()
+                bridge = RuntimeRunBridge(context)
+                bridge.finish(status=legacy_status, event_count=0)
+                self.assertEqual(context.status.value, expected)
+                self.assertEqual(json.loads(bridge.events[-1])["status"], legacy_status)
+
+    def test_real_announcement_workflow_retains_results(self):
+        # 使用当前默认工作流和真实 PDF，覆盖抽取到 API 终态的桥接。
+        application = ApiApplication(self.root, manager=self.manager)
+        fixture_root = Path(__file__).resolve().parents[1] / "data" / "demo" / "real"
+        for filename in ("fosun_2025_pledge.pdf", "suitang_2025_winning.pdf"):
+            with self.subTest(pdf=filename):
+                created = application.create_run("session-a", "announcement",
+                                                 {"event_type": "auto"},
+                                                 (fixture_root / filename).read_bytes())
+                self.manager.wait(created["run_id"], timeout=10)
+                result = application.get_run("session-a", created["run_id"], include_result=True)
+                self.assertEqual(result["status"], "succeeded")
+                self.assertEqual(result["result"]["announcement"]["status"], "completed")
+                self.assertTrue(result["result"]["evidence"])
+                self.assertTrue(result["result"]["report_md"])
+                self.assertEqual(self.manager.bus.replay(created["run_id"])[-1].event_type,
+                                 "run_finished")
+
+
 class ApiHttpTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

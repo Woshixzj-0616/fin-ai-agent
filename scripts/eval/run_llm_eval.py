@@ -1,11 +1,16 @@
-"""E5c · 模型拆句准确率评测。
+"""E5c · 模型拆句准确率评测（统一走当前 check_text）。
 
 评什么
 ------
-1. **字段级**：公司/年度/指标/数值/单位/运算符/claim_type 与金标是否一致
-2. **句覆盖**：该拆的句有没有拆出来
-3. **端到端**：经本地裁决后，最终对错是否与金标一致
-4. **对照**：单次 extract vs JSON 多步工具循环（同一批句）
+1. **端到端**：草稿经当前完整核查流程（分块、门控、预算、恢复）后的原子陈述结果；
+2. **原子陈述**：逐条记录判定、弃答、漏拆、超时、失败与模型轨，未判定不算通过；
+3. **字段级**：模型解析出的公司/年度/指标/数值/单位/运算符与金标是否一致；
+4. **对照**：单次 extract vs JSON 多步工具循环（同一批句）。
+
+约定
+----
+- 参考答案只交给评分程序；草稿、提示词与客户端都看不到金标字段。
+- --output-dir 指定报告与运行记录目录；默认生成独立临时目录并保留，不覆盖版本库历史。
 
 用法（仓库根）：
   set LLM_BASE_URL=...  set LLM_MODEL=...  set LLM_API_KEY=...
@@ -18,17 +23,26 @@
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import sys
+import tempfile
 from pathlib import Path
 
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "agent"))
 
-from llm_check import LLMClient, LLMError, check_one_claim, check_payload, schema, split_draft  # noqa: E402
-from materials import ROOT as AGENT_ROOT, Run, write_json  # noqa: E402
+from audit.grounding import split_draft  # noqa: E402
+from eval_harness import (  # noqa: E402
+    ReplayClient,
+    align_rows,
+    run_full_flow,
+    score_atomic,
+)
+from llm_check import LLMClient, LLMError, schema, validate_schema  # noqa: E402
+from materials import Run, write_json  # noqa: E402
 from main import extract_selected  # noqa: E402
 
 GOLD_PATH = ROOT / "data" / "eval" / "semantic_gold.json"
@@ -70,10 +84,24 @@ def pick_provider(picked: dict) -> tuple[str, str, str]:
 
 
 def gold_items_for(sentence: dict, idx: int) -> list[dict]:
-    """把金标句上的字段填成协议 item（用于精确解析对照与 dry-run）。"""
+    """把金标句上的字段填成协议 item（用于 dry-run 自检的固定协议样例）。"""
+    if "atoms" in sentence:
+        items = []
+        inherited = {key: value for key, value in sentence.items() if key not in {"atoms", "text", "id"}}
+        for atom_index, atom in enumerate(sentence["atoms"], 1):
+            built = gold_items_for({**inherited, **atom}, idx)
+            for item in built:
+                item["claim_id"] = f"G{idx}_{atom_index}"
+            items.extend(built)
+        return items
     if sentence.get("gold") in {"qualitative", "ambiguous_metric"} and not sentence.get("value"):
         return []
     company = sentence.get("company_name", "贵州茅台")
+    metric = sentence.get("metric", "revenue")
+    # 归母类指标的口径是 parent_shareholders；自检样例按协议正确声明，避免把口径冲突当模型错误。
+    scope = sentence.get("scope") or ("parent_shareholders"
+                                      if metric in {"parent_net_profit", "adjusted_parent_net_profit"}
+                                      else "consolidated")
     item = {
         "claim_id": f"G{idx}",
         "sentence_id": idx,
@@ -84,8 +112,8 @@ def gold_items_for(sentence: dict, idx: int) -> list[dict]:
         "period_year": sentence.get("period_year"),
         "period_kind": "annual",
         "metric_text": sentence.get("metric_text", "营业收入"),
-        "metric": sentence.get("metric", "revenue"),
-        "scope": sentence.get("scope", "consolidated"),
+        "metric": metric,
+        "scope": scope,
         "kind": sentence.get("kind", "amount"),
         "value": sentence.get("value"),
         "unit": sentence.get("unit"),
@@ -100,6 +128,29 @@ def gold_items_for(sentence: dict, idx: int) -> list[dict]:
         "verification_action": sentence.get("verification_action", "compare_amount"),
     }
     return [item]
+
+
+def expect_for_sentence(sentence: dict) -> dict:
+    """金标句 → 评分期望；只有评分程序读这个函数。"""
+    gold = sentence.get("gold")
+    if gold == "should_judge":
+        return {"kind": "judge", "error": bool(sentence.get("gold_error"))}
+    if gold == "forecast_mark_only":
+        return {"kind": "reason_code", "code": "forecast_marked_only"}
+    return {"kind": "nonverdict"}
+
+
+def statements_for(gold: dict) -> list[dict]:
+    """按草稿句号对齐的原子陈述（含期望）；不进入草稿或提示词。"""
+    statements = []
+    for index, sentence in enumerate(gold["sentences"], 1):
+        atoms = sentence.get("atoms", [sentence])
+        inherited = {key: value for key, value in sentence.items() if key not in {"atoms", "text", "id"}}
+        for atom in atoms:
+            gold_atom = {**inherited, **atom}
+            statements.append({"id": atom.get("id"), "sentence_id": index,
+                               "quote": atom["text"], "expect": expect_for_sentence(gold_atom)})
+    return statements
 
 
 def score_fields(pred: dict, gold: dict) -> dict:
@@ -122,184 +173,140 @@ def score_fields(pred: dict, gold: dict) -> dict:
     return hits
 
 
-class StubClient:
-    """dry-run / 自检：按脚本模式返回金标或扰动解析。"""
+def field_rows(bundle: dict, gold: dict) -> dict:
+    """所有金标原子与解析项一对一对齐；多余预测按零分计入字段均准。"""
+    preds = ((bundle.get("parsed") or {}).get("items") or [])
+    gold_items, identities, empty = [], [], []
+    for index, sentence in enumerate(gold["sentences"], 1):
+        items = gold_items_for(sentence, index)
+        if not items:
+            empty.append((index, sentence.get("id")))
+        for atom_index, item in enumerate(items):
+            gold_items.append(item)
+            atoms = sentence.get("atoms") or [sentence]
+            identities.append(atoms[atom_index].get("id"))
+    aligned, extras = align_rows(preds, gold_items)
+    rows = []
+    for ident, item, pred in zip(identities, gold_items, aligned):
+        hits = score_fields(pred, item) if pred is not None else {}
+        fields = hits.get("_fields") or list(FIELDS)
+        rows.append({"id": ident, "sentence_id": item["sentence_id"],
+                     "quote": item["quote"], "extracted": pred is not None,
+                     "items": int(pred is not None),
+                     "field_acc": sum(bool(hits.get(f)) for f in fields) / len(fields),
+                     "exact": bool(hits.get("all")), "note": None if pred is not None else "漏拆/无法唯一对齐"})
+    for sid, ident in empty:
+        unexpected = any(pred.get("sentence_id") == sid for pred in preds)
+        rows.append({"id": ident, "sentence_id": sid, "extracted": False, "items": 0,
+                     "field_acc": 0.0 if unexpected else 1.0, "exact": not unexpected,
+                     "note": "金标无主张"})
+    denominator = len(rows) + len(extras)
+    return {"rows": rows, "extra_predictions": len(extras), "extras": extras,
+            "field_avg": round(sum(row["field_acc"] for row in rows) / denominator, 4) if denominator else 0,
+            "exact_match": sum(bool(row["exact"]) for row in rows),
+            "extracted": sum(bool(row["extracted"]) for row in rows), "total": len(rows)}
 
-    model, host, key, mode = "stub-gold", "local", "dry-run", "json_object"
 
-    def __init__(self, mode="gold"):
-        self.mode_name = mode
-
-    def extract(self, sentences, run):
-        items, unused = [], []
-        for i, s in enumerate(sentences, 1):
-            payload_items = gold_items_for({"text": s["text"], **{}}, i)
-            # dry-run 用全量金标文件映射
-            unused.append(i)
-        return {"items": [], "unclaimed_sentences": [s["sentence_id"] for s in sentences]}
-
-    def chat(self, messages, run):
-        return json.dumps({"action": "submit_claims", "items": [], "unclaimed_sentences": []},
-                          ensure_ascii=False)
-
-
-def dry_run_score(gold: dict, facts: list[dict]) -> dict:
-    """评测机自检：金标解析 vs 故意扰动，应得到 ~100% vs 明显下降。"""
-    def batch(mutate=None):
-        rows = []
-        for i, sent in enumerate(gold["sentences"], 1):
-            items = gold_items_for(sent, i)
-            if not items:
-                rows.append({"id": sent["id"], "field_acc": 1.0, "all": True, "e2e_ok": True,
-                             "skip": True})
-                continue
-            item = json.loads(json.dumps(items[0]))
-            if mutate:
-                item = mutate(item)
-            result = check_one_claim(item, facts, sent["text"], sent["text"], sent["id"])
-            gold_items = gold_items_for(sent, i)[0]
-            hits = score_fields(item, gold_items)
-            if sent["gold"] == "should_judge":
-                want = "确认错误" if sent.get("gold_error") else "证据支持"
-                e2e_ok = result.get("status") == want
-            elif sent["gold"] == "forecast_mark_only":
-                e2e_ok = result.get("reason_code") == "forecast_marked_only"
-            else:
-                e2e_ok = result.get("status") in {"模型判断", "口径冲突／需人工复核"}
-            n_fields = hits.get("_fields") or list(FIELDS)
-            n_ok = sum(1 for f in n_fields if hits.get(f))
-            rows.append({"id": sent["id"], "field_acc": n_ok / len(n_fields), "all": hits["all"],
-                         "e2e_ok": e2e_ok, "reason": result.get("reason_code")})
-        return rows
-
-    def mutate(item):
-        item = json.loads(json.dumps(item))
-        item["value"] = "9999"
-        item["metric"] = "revenue" if item["metric"] != "revenue" else "parent_net_profit"
-        item["operator"] = "exceed"
-        return item
-
-    gold_rows, bad_rows = batch(None), batch(mutate)
-
-    def summarize(rows):
-        used = [r for r in rows if not r.get("skip")]
-        field = sum(r["field_acc"] for r in used) / len(used) if used else 0
-        exact = sum(1 for r in used if r["all"])
-        e2e = sum(1 for r in used if r["e2e_ok"])
-        return {"field_avg": round(field, 4), "exact_match": exact, "e2e_ok": e2e,
-                "total": len(used)}
-
-    return {"name": "E5c-dryrun 评测机自检",
-            "perfect_parse": summarize(gold_rows),
-            "perturbed_parse": summarize(bad_rows),
-            "note": "不测真模型；验证打分逻辑：完美解析应≈100%，扰动应明显下降"}
+def rehearsal_score(gold: dict, facts: list[dict], *, mutate=None) -> dict:
+    """自检：金标协议样例 / 扰动样例各跑一次完整 check_text，验证评测机与流程接线。"""
+    draft = "\n".join(sentence["text"] for sentence in gold["sentences"])
+    sentences = split_draft(draft)
+    items = []
+    for index, sentence in enumerate(sentences, 1):
+        built = gold_items_for({"text": sentence["text"],
+                                **gold["sentences"][index - 1]}, index)
+        if not built:
+            continue
+        for item in built:
+            items.append(mutate(item) if mutate else item)
+    with tempfile.TemporaryDirectory(prefix="e5c_rehearsal_") as temp:
+        run = Run(Path(temp), "e5c_rehearsal", {})
+        bundle = run_full_flow(draft, facts, run, ReplayClient(items=items), use_loop=False)
+    scored = score_atomic(bundle, statements_for(gold))
+    fields = field_rows(bundle, gold)
+    return {"bundle_status": bundle.get("status"), "chunks": len(bundle.get("chunks") or []),
+            "atomic": scored["summary"], "rows": scored["rows"],
+            "fields": {key: fields[key] for key in ("field_avg", "exact_match", "extracted", "total", "extra_predictions")}}
 
 
 def live_score(client, gold: dict, facts: list[dict], run, *, use_loop: bool) -> dict:
-    draft = "\n".join(s["text"] for s in gold["sentences"])
-    sentences = split_draft(draft)
-    if use_loop and hasattr(client, "chat"):
-        try:
-            from agent_loop import run_loop
-            out = run_loop(client, draft, facts, run, sentences=sentences)
-            payload, mode = out["payload"], out["mode"]
-            tools_used = out.get("tools_used") or []
-        except LLMError as exc:
-            run.event("loop_fallback", reason=str(exc))
-            payload, mode, tools_used = client.extract(sentences, run), "fallback_single_shot", []
-    else:
-        payload, mode, tools_used = client.extract(sentences, run), "single_shot", []
-
-    validate_ok = True
+    """真模型：草稿交给当前 check_text；金标只用于评分。"""
+    draft = "\n".join(sentence["text"] for sentence in gold["sentences"])
     try:
-        from llm_check import validate_schema
-        validate_schema(payload, schema())
-    except LLMError:
-        validate_ok = False
-
-    # 按 sentence_id 对齐金标
-    gold_by_id = {i: s for i, s in enumerate(gold["sentences"], 1)}
-    pred_by_sid = {}
-    for item in payload.get("items") or []:
-        pred_by_sid.setdefault(item.get("sentence_id"), []).append(item)
-
-    rows = []
-    for sid, sent in gold_by_id.items():
-        preds = pred_by_sid.get(sid) or []
-        gitems = gold_items_for(sent, sid)
-        if not gitems and not preds:
-            rows.append({"id": sent["id"], "extracted": False, "field_acc": 1.0,
-                         "exact": True, "e2e_ok": True, "note": "金标即无主张"})
-            continue
-        if not preds:
-            rows.append({"id": sent["id"], "extracted": False, "field_acc": 0.0,
-                         "exact": False, "e2e_ok": False, "note": "漏拆"})
-            continue
-        pred, gitem = preds[0], gitems[0] if gitems else {}
-        hits = score_fields(pred, gitem) if gitem else {"all": False, "_fields": list(FIELDS)}
-        result = check_one_claim(pred, facts, sent["text"], draft, sent["id"])
-        if sent["gold"] == "should_judge":
-            want = "确认错误" if sent.get("gold_error") else "证据支持"
-            e2e_ok = result.get("status") == want
-        elif sent["gold"] == "forecast_mark_only":
-            e2e_ok = result.get("reason_code") == "forecast_marked_only"
-        else:
-            e2e_ok = result.get("status") in {"模型判断", "口径冲突／需人工复核", "证据不足"}
-        n_fields = hits.get("_fields") or list(FIELDS)
-        n_ok = sum(1 for f in n_fields if hits.get(f))
-        rows.append({"id": sent["id"], "extracted": True, "field_acc": n_ok / len(n_fields),
-                     "exact": hits.get("all"), "e2e_ok": e2e_ok,
-                     "status": result.get("status"), "reason": result.get("reason_code")})
-
-    used = rows
-    field = sum(r["field_acc"] for r in used) / len(used) if used else 0
-    return {
-        "name": f"E5c live（{mode}）",
-        "mode": mode, "schema_valid": validate_ok,
-        "tools_used": tools_used,
-        "field_avg": round(field, 4),
-        "exact_match": sum(1 for r in used if r.get("exact")),
-        "extracted": sum(1 for r in used if r.get("extracted")),
-        "e2e_ok": sum(1 for r in used if r.get("e2e_ok")),
-        "total": len(used),
-        "rows": rows,
-    }
+        bundle = run_full_flow(draft, facts, run, client, use_loop=use_loop)
+    except LLMError as exc:
+        bundle = {"status": "failed", "reason": str(exc), "checks": [],
+                  "unfinished_sentence_ids": list(range(1, len(gold["sentences"]) + 1)),
+                  "sentences": [{"sentence_id": i} for i in range(1, len(gold["sentences"]) + 1)]}
+    scored = score_atomic(bundle, statements_for(gold))
+    fields = field_rows(bundle, gold)
+    tools_used = bundle.get("tools_used") or []
+    return {"name": f"E5c live（{bundle.get('mode') or 'failed'}）",
+            "mode": bundle.get("mode"), "bundle_status": bundle.get("status"),
+            "binding_sha256": bundle.get("binding_sha256"),
+            "checkpoint_file": bundle.get("checkpoint_file"),
+            "reason": bundle.get("reason"), "chunks": len(bundle.get("chunks") or []),
+            "failed_chunks": len(bundle.get("failed_chunks") or []),
+            "schema_valid": all(row["outcome"] != "failed" for row in scored["rows"]) and bool(bundle.get("checks")),
+            "tools_used": tools_used,
+            "atomic": scored["summary"], "rows": scored["rows"],
+            "fields": {key: fields[key] for key in ("field_avg", "exact_match", "extracted", "total", "extra_predictions")},
+            "field_rows": fields["rows"]}
 
 
-def main() -> int:
-    args = sys.argv[1:]
-    dry = "--dry-run" in args
-    from_travel = "--from-travel-env" in args
-    use_loop = "--no-loop" not in args
-
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="原子陈述端到端评测")
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--from-travel-env", action="store_true")
+    parser.add_argument("--no-loop", action="store_true")
+    parser.add_argument("--output-dir", type=Path)
+    args = parser.parse_args(argv)
+    dry, from_travel, use_loop = args.dry_run, args.from_travel_env, not args.no_loop
+    out = args.output_dir.resolve() if args.output_dir else Path(tempfile.mkdtemp(prefix="fin_e5c_eval_"))
+    out.mkdir(parents=True, exist_ok=True)
     gold = json.loads(GOLD_PATH.read_text(encoding="utf-8"))
-    run = Run(AGENT_ROOT, "run_llm_eval", {"dry_run": dry, "from_travel": from_travel,
+
+    run = Run(out, "run_llm_eval", {"dry_run": dry, "from_travel": from_travel,
                                            "use_loop": use_loop})
-    print(f"运行记录：{run.folder}", flush=True)
+    print(f"输出目录：{out}；运行记录：{run.folder}", flush=True)
     facts = []
     for code, year in (("600519", 2024), ("000858", 2023)):
-        _m, got, _f = extract_selected(AGENT_ROOT, run, code, year, False)
+        _m, got, _f = extract_selected(ROOT, run, code, year, False)
         facts.extend(got)
 
-    report = ["# E5c · 模型拆句准确率", "",
+    report = ["# E5c · 模型拆句准确率（统一走 check_text）", "",
               f"- 金标句 **{len(gold['sentences'])}** 条；证据 **{len(facts)}** 条。",
-              f"- 字段集合：{', '.join(FIELDS)}", ""]
+              f"- 字段集合：{', '.join(FIELDS)}",
+              "- 评分口径：逐条原子陈述；漏拆、超时、弃答与失败单独计数，不计入正确。", ""]
 
     if dry:
-        result = dry_run_score(gold, facts)
-        write_json(run.output("e5c_dryrun.json"), result)
-        p, b = result["perfect_parse"], result["perturbed_parse"]
+        def mutate(item):
+            item = json.loads(json.dumps(item))
+            item["value"] = "9999"
+            item["metric"] = "revenue" if item["metric"] != "revenue" else "parent_net_profit"
+            item["operator"] = "exceed"
+            return item
+
+        perfect = rehearsal_score(gold, facts)
+        perturbed = rehearsal_score(gold, facts, mutate=mutate)
+        result = {"name": "E5c-dryrun 评测机自检", "perfect_parse": perfect,
+                  "perturbed_parse": perturbed,
+                  "note": "不测真模型；验证完整流程与打分：完美解析应≈100%，扰动应明显下降"}
+        write_json(out / "e5c_dryrun.json", result)
         report += ["## 评测机自检（--dry-run）", "",
-                   "| 解析质量 | 字段均准 | 全字段正确 | 端到端对 |",
-                   "|---|---|---|---|",
-                   f"| 金标解析 | {p['field_avg']:.2%} | {p['exact_match']}/{p['total']} | {p['e2e_ok']}/{p['total']} |",
-                   f"| 扰动解析 | {b['field_avg']:.2%} | {b['exact_match']}/{b['total']} | {b['e2e_ok']}/{b['total']} |",
-                   "",
-                   result["note"], ""]
-        out = ROOT / "results" / "eval"
-        out.mkdir(parents=True, exist_ok=True)
+                   "| 解析质量 | 判定对/应判 | 弃答 | 漏拆 | 失败 | 字段均准 | 全字段正确 |",
+                   "|---|---|---|---|---|---|---|"]
+        for label, item in (("金标解析", perfect), ("扰动解析", perturbed)):
+            atomic = item["atomic"]
+            report.append(f"| {label} | {atomic['correct']}/{atomic['expected_judge']} "
+                          f"| {atomic['abstain']} | {atomic['omitted']} | "
+                          f"{atomic['failed'] + atomic['timeout']} "
+                          f"| {item['fields']['field_avg']:.2%} "
+                          f"| {item['fields']['exact_match']}/{item['fields']['total']} |")
+        report += ["", result["note"], ""]
         (out / "e5c_report.md").write_text("\n".join(report), encoding="utf-8")
-        print(f"dry-run 完美 {p['field_avg']:.2%} vs 扰动 {b['field_avg']:.2%}")
+        print(f"dry-run 判定 {perfect['atomic']['correct']}/{perfect['atomic']['expected_judge']} "
+              f"vs 扰动 {perturbed['atomic']['correct']}/{perturbed['atomic']['expected_judge']}")
         print(f"报告 {out / 'e5c_report.md'}")
         run.finish(status="ok", mode="dry_run")
         return 0
@@ -314,34 +321,42 @@ def main() -> int:
     client = LLMClient(base, model, key, "json_object")
     live = live_score(client, gold, facts, run, use_loop=use_loop)
     tag = {"json_multi_step": "loop", "fallback_single_shot": "single_fallback",
-           "single_shot": "single"}.get(live.get("mode"), "single")
-    write_json(run.output(f"e5c_live_{tag}.json"), live)
-
-    report += [f"## 真模型（{live['mode']}）", "",
-               f"- 模型：`{model}` @ `{client.host}`",
-               f"- Schema 校验：{'通过' if live['schema_valid'] else '失败'}",
-               f"- 工具调用：{len(live.get('tools_used') or [])} 次",
-               "",
-               "| 维度 | 结果 |",
-               "|---|---|",
-               f"| 字段均准 | **{live['field_avg']:.2%}** |",
-               f"| 全字段完全一致 | **{live['exact_match']}/{live['total']}** |",
-               f"| 成功拆出 | **{live['extracted']}/{live['total']}** |",
-               f"| 端到端判定对 | **{live['e2e_ok']}/{live['total']}** |",
-               "", "### 逐句", "",
-               "| ID | 拆出 | 字段准 | 完全一致 | 端到端 | 状态 |", "|---|---|---|---|---|---|"]
-    for r in live["rows"]:
-        report.append(f"| {r['id']} | {'✓' if r.get('extracted') else '✗'} | "
-                      f"{r.get('field_acc', 0):.0%} | {'✓' if r.get('exact') else '✗'} | "
-                      f"{'✓' if r.get('e2e_ok') else '✗'} | {r.get('status') or r.get('note') or '—'} |")
-
-    out = ROOT / "results" / "eval"
-    out.mkdir(parents=True, exist_ok=True)
+           "fallback_single_shot_tools_preserved": "single_fallback",
+           "native_tool_calls": "native", "single_shot": "single"}.get(live.get("mode"), "single")
+    write_json(out / f"e5c_live_{tag}.json", live)
+    atomic = live["atomic"]
+    report += [f"## 真模型（{live.get('mode') or 'failed'}）", "",
+               f"- 模型：{model} @ {client.host}",
+               f"- 核查流程状态：{live.get('bundle_status')}"
+               f"（分块 {live.get('chunks')}，失败分块 {live.get('failed_chunks')}）",
+               f"- 工具调用：{len(live.get('tools_used') or [])} 次；"
+               f"用量：{atomic.get('tokens_charged')} 计费 token、"
+               f"尝试 {atomic.get('attempts')} 次、耗时 {atomic.get('active_seconds')} 秒",
+               "", "| 维度 | 结果 |", "|---|---|",
+               f"| 判定正确 | **{atomic['correct']}/{atomic['judged']}**"
+               f"（已判定正确率 {atomic['accuracy']}） |",
+               f"| 应判覆盖 | **{atomic['correct']}/{atomic['expected_judge']}**"
+               f"（正确覆盖 {atomic['correct_coverage']}） |",
+               f"| 合理弃答 | **{atomic['abstain_expected']}/{atomic['abstain']}** |",
+               f"| 漏拆 | **{atomic['omitted']}** |",
+               f"| 超时 / 失败 | **{atomic['timeout']} / {atomic['failed']}** |",
+               f"| 字段均准 | **{live['fields']['field_avg']:.2%}** |",
+               f"| 全字段完全一致 | **{live['fields']['exact_match']}/{live['fields']['total']}** |",
+               f"| 成功拆出 | **{live['fields']['extracted']}/{live['fields']['total']}** |",
+               "", "### 逐条原子陈述", "",
+               "| ID | 结局 | 状态 | 金标 | 证据 | ✓ |", "|---|---|---|---|---|---|"]
+    for row in live["rows"]:
+        report.append(f"| {row['id']} | {row['outcome']} | {row.get('status') or '—'} "
+                      f"| {row['expect'].get('status') or row['expect'].get('kind')} "
+                      f"| {'✓' if row['evidence_ids'] else '—'} "
+                      f"| {'✓' if row['ok'] else ('✗' if row['ok'] is False else '—')} |")
+    report += ["", "口径：功能评测与真实模型结果分开；单次运行不能当作业务准确率，"
+                   "至少三次重复运行后再报告稳定性。", ""]
     (out / f"e5c_report_{tag}.md").write_text("\n".join(report), encoding="utf-8")
-    run.finish(status="ok", mode=live["mode"], field_avg=live["field_avg"],
-               exact=live["exact_match"], e2e=live["e2e_ok"], total=live["total"])
-    print(f"E5c 字段均准 {live['field_avg']:.2%} · 完全一致 {live['exact_match']}/{live['total']} · "
-          f"端到端 {live['e2e_ok']}/{live['total']}")
+    run.finish(status="ok", mode=live.get("mode"), correct=atomic["correct"],
+               judged=atomic["judged"], total=atomic["total"])
+    print(f"E5c 判定 {atomic['correct']}/{atomic['judged']} · "
+          f"漏拆 {atomic['omitted']} · 弃答 {atomic['abstain']} · 失败 {atomic['failed']}")
     print(f"报告 {out / f'e5c_report_{tag}.md'}")
     return 0
 

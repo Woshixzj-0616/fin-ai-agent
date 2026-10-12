@@ -205,7 +205,9 @@ class RuntimeRunBridge:
     def finish(self, *, snapshot_prefix=None, status: str = "succeeded", **summary: Any) -> bool:
         safe_summary = _safe_value(dict(summary))
         payload = _safe_value({"status": status, **safe_summary})
-        finished = self.context.finish(RunStatus.coerce(status), result=safe_summary)
+        # 公告抽取沿用 completed/no_fields，运行接口使用统一终态。
+        runtime_status = {"completed": "succeeded", "no_fields": "partial_failed"}.get(status, status)
+        finished = self.context.finish(RunStatus.coerce(runtime_status), result=safe_summary)
         self._append(
             "run_finished",
             payload,

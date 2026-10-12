@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-12T00:08:45+08:00",
+  "generated_at": "2026-10-12T19:55:52+08:00",
   "command": [
-    "D:\\python\\python.exe",
+    "D:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
     "-B",
-    "D:\\Desktop\\金融人工智能\\agent\\webui_app.py",
+    "D:\\Desktop\\fin-ai-agent\\agent\\webui_app.py",
     "--host",
     "127.0.0.1",
     "--port",
-    "58196"
+    "62701"
   ],
   "checks": {
     "app": {

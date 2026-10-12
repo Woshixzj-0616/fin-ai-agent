@@ -1,204 +1,702 @@
 {
-  "rows": [
+  "summary": {
+    "samples": 2,
+    "source": "离线固定协议样例（回放），非真实模型请求",
+    "total": 18,
+    "judged": 13,
+    "correct": 13,
+    "wrong": 0,
+    "abstain": 0,
+    "abstain_expected": 0,
+    "omitted": 0,
+    "timeout": 0,
+    "failed": 0,
+    "model_track": 5,
+    "expected_judge": 13,
+    "citation": 13,
+    "precision": 1.0,
+    "recall": 1.0
+  },
+  "samples": [
     {
+      "total": 9,
+      "judged": 7,
+      "correct": 7,
+      "wrong": 0,
+      "abstain": 0,
+      "abstain_expected": 0,
+      "abstain_avoidable": 0,
+      "omitted": 0,
+      "timeout": 0,
+      "failed": 0,
+      "model_track": 2,
+      "expected_judge": 7,
+      "citation": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "false_positive_rate": 0.0,
+      "coverage": 0.7778,
+      "completion": "completed",
+      "unfinished_sentences": 0,
+      "failed_chunks": 0,
+      "attempts": 0,
+      "tokens_charged": 0,
+      "tool_calls": 0,
+      "active_seconds": 0.0143,
       "sample": "S1",
-      "id": "S1-C1",
-      "quote": "2024 年贵州茅台营业收入为 1,708.99 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
+      "mode": "fallback_single_shot",
+      "chunks": 1
     },
     {
-      "sample": "S1",
-      "id": "S1-C2",
-      "quote": "同比增长 15.71%",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S1",
-      "id": "S1-C3",
-      "quote": "归母净利润录得 862.28 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S1",
-      "id": "S1-C4",
-      "quote": "扣非归母净利润约 862.41 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S1",
-      "id": "S1-C5",
-      "quote": "公司营业总收入为 1,741.44 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S1",
-      "id": "S1-C6",
-      "quote": "经营活动产生的现金流量净额为 924.64 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S1",
-      "id": "S1-C7",
-      "quote": "基本每股收益 68.64 元/股",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S1",
-      "id": "S1-C8",
-      "quote": "我们预计 2025 年公司营业收入有望维持双位数增长，归母净利润或接近 950 ",
-      "gold": "模型判断",
-      "status": "模型判断",
-      "track": "model",
-      "reason": "forecast_marked_only",
-      "evidence": false,
-      "ok": true
-    },
-    {
-      "sample": "S1",
-      "id": "S1-C9",
-      "quote": "公司 ROE 仍处于行业前列",
-      "gold": "模型判断",
-      "status": "模型判断",
-      "track": "model",
-      "reason": "qualitative_statement",
-      "evidence": false,
-      "ok": true
-    },
-    {
+      "total": 9,
+      "judged": 6,
+      "correct": 6,
+      "wrong": 0,
+      "abstain": 0,
+      "abstain_expected": 0,
+      "abstain_avoidable": 0,
+      "omitted": 0,
+      "timeout": 0,
+      "failed": 0,
+      "model_track": 3,
+      "expected_judge": 6,
+      "citation": 6,
+      "precision": 1.0,
+      "recall": 1.0,
+      "false_positive_rate": 0.0,
+      "coverage": 0.6667,
+      "completion": "completed",
+      "unfinished_sentences": 0,
+      "failed_chunks": 0,
+      "attempts": 0,
+      "tokens_charged": 0,
+      "tool_calls": 0,
+      "active_seconds": 0.0122,
       "sample": "S2",
-      "id": "S2-C1",
-      "quote": "2024 年实现营业收入约 4,071.50 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C2",
-      "quote": "同比增长 9.44%",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C3",
-      "quote": "归母净利润为 385.37 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C4",
-      "quote": "公司经营现金流净额 605.12 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C5",
-      "quote": "我们认为公司治理与数字化投入将持续摊薄费用率",
-      "gold": "模型判断",
-      "status": "模型判断",
-      "track": "model",
-      "reason": "qualitative_statement",
-      "evidence": false,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C6",
-      "quote": "2023 年归母净利润为 1,466.02 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C7",
-      "quote": "营业收入 3,391.23 亿元",
-      "gold": "证据支持",
-      "status": "证据支持",
-      "track": "deterministic",
-      "reason": "deterministic_check",
-      "evidence": true,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C8",
-      "quote": "财富管理中收有望于 2025 年企稳",
-      "gold": "模型判断",
-      "status": "模型判断",
-      "track": "model",
-      "reason": "forecast_marked_only",
-      "evidence": false,
-      "ok": true
-    },
-    {
-      "sample": "S2",
-      "id": "S2-C9",
-      "quote": "美的集团 2024 年营业收入高于招商银行 2023 年营业收入",
-      "gold": "模型判断",
-      "status": "模型判断",
-      "track": "model",
-      "reason": "cross_company_comparison",
-      "evidence": false,
-      "ok": true
+      "mode": "fallback_single_shot",
+      "chunks": 1
     }
   ],
-  "hit": 18,
-  "total": 18
+  "rows": [
+    {
+      "id": "S1-C1",
+      "sample": "S1",
+      "sentence_id": 1,
+      "quote": "2024 年贵州茅台营业收入为 1,708.99 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "80d5d67d35796958172e2d9f"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 12,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S1-C2",
+      "sample": "S1",
+      "sentence_id": 1,
+      "quote": "同比增长 15.71%",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "80d5d67d35796958172e2d9f"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 12,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S1-C3",
+      "sample": "S1",
+      "sentence_id": 2,
+      "quote": "归母净利润录得 862.28 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "2be69095a86bcc7a3ed837df"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "inherited_paragraph",
+          "matched": "贵州茅台",
+          "position": 12,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "preceding_sentence",
+          "matched_text": "2024",
+          "reference_text": "公司层面看，2024 年贵州茅台营业收入为 1,708.99 亿元，同比增长 15.71%，基本符合市场预期。"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S1-C4",
+      "sample": "S1",
+      "sentence_id": 2,
+      "quote": "扣非归母净利润约 862.41 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "2be69095a86bcc7a3ed837df"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "inherited_paragraph",
+          "matched": "贵州茅台",
+          "position": 12,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "preceding_sentence",
+          "matched_text": "2024",
+          "reference_text": "公司层面看，2024 年贵州茅台营业收入为 1,708.99 亿元，同比增长 15.71%，基本符合市场预期。"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S1-C5",
+      "sample": "S1",
+      "sentence_id": 3,
+      "quote": "公司营业总收入为 1,741.44 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "76005cbee571f03305659334"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "inherited_paragraph",
+          "matched": "贵州茅台",
+          "position": 12,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "preceding_sentence",
+          "matched_text": "2024",
+          "reference_text": "公司层面看，2024 年贵州茅台营业收入为 1,708.99 亿元，同比增长 15.71%，基本符合市场预期。"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S1-C6",
+      "sample": "S1",
+      "sentence_id": 4,
+      "quote": "经营活动产生的现金流量净额为 924.64 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "30c34ea1e187279a83a7a0ca"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "inherited_paragraph",
+          "matched": "贵州茅台",
+          "position": 12,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "preceding_sentence",
+          "matched_text": "2024",
+          "reference_text": "公司层面看，2024 年贵州茅台营业收入为 1,708.99 亿元，同比增长 15.71%，基本符合市场预期。"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S1-C7",
+      "sample": "S1",
+      "sentence_id": 4,
+      "quote": "基本每股收益 68.64 元/股",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "30c34ea1e187279a83a7a0ca"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "inherited_paragraph",
+          "matched": "贵州茅台",
+          "position": 12,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "preceding_sentence",
+          "matched_text": "2024",
+          "reference_text": "公司层面看，2024 年贵州茅台营业收入为 1,708.99 亿元，同比增长 15.71%，基本符合市场预期。"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S1-C8",
+      "sample": "S1",
+      "sentence_id": 5,
+      "quote": "我们预计 2025 年公司营业收入有望维持双位数增长，归母净利润或接近 950 亿元",
+      "expect": {
+        "kind": "model_track"
+      },
+      "outcome": "model_track",
+      "status": "模型判断",
+      "track": "model",
+      "reason_code": "forecast_marked_only",
+      "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+      "evidence_ids": [],
+      "grounding": {
+        "company": null,
+        "period": null
+      },
+      "ok": true,
+      "gold": "模型判断"
+    },
+    {
+      "id": "S1-C9",
+      "sample": "S1",
+      "sentence_id": 6,
+      "quote": "公司 ROE 仍处于行业前列",
+      "expect": {
+        "kind": "model_track"
+      },
+      "outcome": "model_track",
+      "status": "模型判断",
+      "track": "model",
+      "reason_code": "qualitative_statement",
+      "reason": "定性陈述：本阶段不做数值裁决，解释见 plain_claim",
+      "evidence_ids": [],
+      "grounding": {
+        "company": null,
+        "period": null
+      },
+      "ok": true,
+      "gold": "模型判断"
+    },
+    {
+      "id": "S2-C1",
+      "sample": "S2",
+      "sentence_id": 1,
+      "quote": "2024 年实现营业收入约 4,071.50 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "在陈述运算符与容差下与原文证据一致",
+      "evidence_ids": [
+        "b344a74070063d07b2b95934"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "000333",
+          "sentence_codes": [
+            "000333"
+          ],
+          "ignored_mentions": [],
+          "code": "000333",
+          "basis": "sentence_company",
+          "matched": "美的集团",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S2-C2",
+      "sample": "S2",
+      "sentence_id": 1,
+      "quote": "同比增长 9.44%",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "在陈述运算符与容差下与原文证据一致",
+      "evidence_ids": [
+        "b344a74070063d07b2b95934"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "000333",
+          "sentence_codes": [
+            "000333"
+          ],
+          "ignored_mentions": [],
+          "code": "000333",
+          "basis": "sentence_company",
+          "matched": "美的集团",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S2-C3",
+      "sample": "S2",
+      "sentence_id": 1,
+      "quote": "归母净利润为 385.37 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "在陈述运算符与容差下与原文证据一致",
+      "evidence_ids": [
+        "b344a74070063d07b2b95934"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "000333",
+          "sentence_codes": [
+            "000333"
+          ],
+          "ignored_mentions": [],
+          "code": "000333",
+          "basis": "sentence_company",
+          "matched": "美的集团",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S2-C4",
+      "sample": "S2",
+      "sentence_id": 2,
+      "quote": "公司经营现金流净额 605.12 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "c1ed789526df84ecef45d941"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "000333",
+          "sentence_codes": [],
+          "ignored_mentions": [],
+          "code": "000333",
+          "basis": "inherited_context",
+          "matched": "美的集团",
+          "position": null,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "located_in": "preceding_sentence",
+          "matched_text": "2024",
+          "reference_text": "美的集团 2024 年实现营业收入约 4,071.50 亿元，同比增长 9.44%，其中归母净利润为 385.37 亿元。"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S2-C5",
+      "sample": "S2",
+      "sentence_id": 3,
+      "quote": "我们认为公司治理与数字化投入将持续摊薄费用率",
+      "expect": {
+        "kind": "model_track"
+      },
+      "outcome": "model_track",
+      "status": "模型判断",
+      "track": "model",
+      "reason_code": "qualitative_statement",
+      "reason": "定性陈述：本阶段不做数值裁决，解释见 plain_claim",
+      "evidence_ids": [],
+      "grounding": {
+        "company": null,
+        "period": null
+      },
+      "ok": true,
+      "gold": "模型判断"
+    },
+    {
+      "id": "S2-C6",
+      "sample": "S2",
+      "sentence_id": 4,
+      "quote": "2023 年归母净利润为 1,466.02 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "7209f1326971fad0f567f218"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600036",
+          "sentence_codes": [
+            "600036"
+          ],
+          "ignored_mentions": [],
+          "code": "600036",
+          "basis": "sentence_company",
+          "matched": "招商银行",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2023,
+          "located_in": "quote",
+          "matched_text": "2023"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S2-C7",
+      "sample": "S2",
+      "sentence_id": 4,
+      "quote": "营业收入 3,391.23 亿元",
+      "expect": {
+        "kind": "status",
+        "status": "证据支持"
+      },
+      "outcome": "judged",
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "7209f1326971fad0f567f218"
+      ],
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600036",
+          "sentence_codes": [
+            "600036"
+          ],
+          "ignored_mentions": [],
+          "code": "600036",
+          "basis": "sentence_company",
+          "matched": "招商银行",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2023,
+          "located_in": "quote",
+          "matched_text": "2023"
+        }
+      },
+      "ok": true,
+      "gold": "证据支持"
+    },
+    {
+      "id": "S2-C8",
+      "sample": "S2",
+      "sentence_id": 5,
+      "quote": "财富管理中收有望于 2025 年企稳",
+      "expect": {
+        "kind": "model_track"
+      },
+      "outcome": "model_track",
+      "status": "模型判断",
+      "track": "model",
+      "reason_code": "forecast_marked_only",
+      "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+      "evidence_ids": [],
+      "grounding": {
+        "company": null,
+        "period": null
+      },
+      "ok": true,
+      "gold": "模型判断"
+    },
+    {
+      "id": "S2-C9",
+      "sample": "S2",
+      "sentence_id": 7,
+      "quote": "美的集团 2024 年营业收入高于招商银行 2023 年营业收入",
+      "expect": {
+        "kind": "model_track"
+      },
+      "outcome": "model_track",
+      "status": "模型判断",
+      "track": "model",
+      "reason_code": "cross_company_comparison",
+      "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+      "evidence_ids": [],
+      "grounding": {
+        "company": null,
+        "period": null
+      },
+      "ok": true,
+      "gold": "模型判断"
+    }
+  ],
+  "note": "离线固定协议样例；不是真实模型准确率"
 }

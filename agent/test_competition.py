@@ -732,13 +732,21 @@ class RealCompetitionMaterialTests(unittest.TestCase):
                 f = next(f for f in self.facts if f["document_id"] == doc and f["metric"] == metric and f["period_year"] == 2025)
                 self.assertEqual((f["value"], f["page"]), (value, page))
 
-    def test_real_half_minus_q1_and_all_source_ids(self):
+    def test_real_half_minus_q1_blocked_without_cross_report_basis(self):
+        """Q1 与半年报是两份材料；没有政策/合并边界/重述依据时不得默认可比。"""
         analysis = analyze(self.facts, Run(self.root, "qoq-real", {}))
-        q2 = next(r for r in analysis["qoq_rows"] if r["metric"] == "revenue" and r["period_end"] == "2025-06-30")
-        self.assertEqual(q2["derivation"]["value"], "38788396531.06")
-        self.assertEqual(q2["qoq"]["status"], "ok")
-        self.assertAlmostEqual(float(q2["qoq"]["value"]), -23.34454145, places=5)
-        self.assertEqual(len(q2["evidence_ids"]), 2)
+        blocked = next(item for item in analysis["blocked_derivations"]
+                       if item["metric"] == "revenue" and item["period_end"] == "2025-06-30")
+        self.assertEqual(blocked["status"], "not_comparable")
+        self.assertEqual(blocked["attempted_value"], "38788396531.06")
+        self.assertTrue(blocked["operands"]["current_ytd"], blocked)
+        self.assertEqual(blocked["comparability"]["status"], "unknown")
+        self.assertEqual(blocked["comparability"]["gaps"],
+                         ["accounting_policy_version", "consolidation_basis", "restatement_version"])
+        self.assertEqual(len(blocked["evidence_ids"]), 2)
+        self.assertFalse(any(row["metric"] == "revenue" and row["period_end"] == "2025-06-30"
+                             for row in analysis["qoq_rows"]))
+        self.assertFalse(any(row["qoq"]["status"] == "ok" for row in analysis["qoq_rows"]))
 
     def test_real_pledge_and_prose_bid_with_estimate(self):
         pledge = extract_announcement((ROOT / "data/demo/real/fosun_2025_pledge.pdf").read_bytes(), "pledge")["events"]
@@ -756,7 +764,12 @@ class RealCompetitionMaterialTests(unittest.TestCase):
                            comparison_blobs=[(directory / "moutai_2025_q1.pdf").read_bytes()])
         self.assertTrue(out["ok"])
         self.assertEqual(len(out["materials"]), 2)
-        self.assertTrue(any(r["qoq"]["status"] == "ok" for r in out["qoq_rows"]))
+        # 两份材料之间没有声明的可比性依据：派生被阻断，但操作数与来源保留在结果里。
+        self.assertEqual([r for r in out["qoq_rows"] if r["qoq"]["status"] == "ok"], [])
+        self.assertTrue(out["qoq_blocked"])
+        blocked = next(item for item in out["qoq_blocked"] if item["metric"] == "revenue")
+        self.assertEqual(blocked["attempted_value"], "38788396531.06")
+        self.assertEqual(len(blocked["evidence_ids"]), 2)
         self.assertEqual(out["trace"][-1]["event"], "run_finished")
         self.assertTrue(all(e["page_image"] for e in out["evidence"]))
         import re

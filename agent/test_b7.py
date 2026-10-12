@@ -361,11 +361,16 @@ class B7WebCompatibilityTests(unittest.TestCase):
         self.assertIs(webui.Handler, webui_http.Handler)
         self.assertIs(webui.run_pipeline, webui_pipeline.run_pipeline)
         self.assertIs(webui.run_announcement_pipeline, webui_pipeline.run_announcement_pipeline)
+        # 页面按原始字节解码（保留 CRLF）；后端加载与测试必须同一口径。
         self.assertEqual(
             webui.PAGE,
-            (ROOT / "web" / "legacy" / "index.html").read_text(encoding="utf-8"),
+            (ROOT / "web" / "legacy" / "index.html").read_bytes().decode("utf-8"),
         )
         self.assertEqual(webui.PAGE, webui_page.PAGE)
+        self.assertEqual(webui.PAGE, webui_page.read_page_text())
+        raw_bytes = (ROOT / "web" / "legacy" / "index.html").read_bytes()
+        self.assertEqual(webui.PAGE.count("\r\n"), raw_bytes.count(b"\r\n"))
+        self.assertEqual(webui.PAGE.count("\n"), raw_bytes.count(b"\n"))
 
         source = (ROOT / "agent" / "webui.py").read_text(encoding="utf-8")
         tree = ast.parse(source)

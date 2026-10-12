@@ -39,11 +39,19 @@ def emit_tool_complete(run, *, round_no: int, call_id: str, protocol: str, tool:
 
 def execute_tool_call(*, run, round_no: int, call_id: str, protocol: str, tool: str,
                       arguments: dict, facts: list[dict], document_texts: dict | None,
-                      draft: str, budget_before: int) -> tuple[dict, bool]:
+                      draft: str, budget_before: int, execution=None,
+                      checkpoint_commit=None) -> tuple[dict, bool]:
     """执行一次业务工具，并保证开始/完成事件成对。
 
     返回 ``(result, consumed)``。预算耗尽也发完整事件，但不登记为实际调用。
     """
+    if budget_before > 0 and execution is not None:
+        if execution.before_tool():
+            # 执行失败也消耗一次尝试；即时保存，重启/续跑不重置整篇限额。
+            if checkpoint_commit is not None:
+                checkpoint_commit()
+        else:
+            budget_before = 0
     emit_tool_start(
         run,
         round_no=round_no,

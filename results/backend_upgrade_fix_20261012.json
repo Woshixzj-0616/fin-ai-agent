@@ -1,0 +1,213 @@
+{
+  "probe_date": "2026-10-12",
+  "project_root": "D:\\Desktop\\fin-ai-agent",
+  "probes": {
+    "direction_without_number": {
+      "status": "证据支持",
+      "track": "deterministic",
+      "reason_code": "direction_supported"
+    },
+    "qualitative_cause": {
+      "status": "模型判断",
+      "reason_code": "qualitative_statement"
+    },
+    "company_name_from_other_paragraph": {
+      "status": "证据支持",
+      "evidence_ids": [
+        "wly"
+      ],
+      "bound_company": "000858",
+      "basis": "sentence_company",
+      "model_company_conflict": true
+    },
+    "quarter_with_unknown_policy_and_scope_metadata": {
+      "status": "not_comparable",
+      "attempted_value": "150",
+      "operands": {
+        "current_ytd": "250",
+        "previous_ytd": "100"
+      },
+      "comparability": "unknown",
+      "gaps": [
+        "accounting_policy_version",
+        "consolidation_basis",
+        "restatement_version"
+      ]
+    },
+    "quarter_with_declared_basis": {
+      "status": "ok",
+      "value": "150"
+    },
+    "tool_same_year_quarter_and_half": {
+      "legacy_call": "ambiguous",
+      "by_report_kind": "h1",
+      "by_document_id": "q1"
+    },
+    "tool_half_amount_with_one_correct_fact": {
+      "verdict": "evidence_supported",
+      "period_kind": "half",
+      "period_end": "2025-06-30"
+    },
+    "natural_language_cross_company_comparison": {
+      "status": "证据支持",
+      "evidence_ids": [
+        "mt",
+        "wly"
+      ],
+      "reason_code": "cross_company_comparison",
+      "exception": null
+    },
+    "cross_company_tool_control_with_operator": {
+      "verdict": "evidence_supported",
+      "evidence_ids": [
+        "mt",
+        "wly"
+      ]
+    },
+    "manager_restart_existing_completed_run": {
+      "state_on_disk": true,
+      "visible_after_restart": true,
+      "status": "succeeded",
+      "result": {
+        "ok": true
+      },
+      "list_count_after_restart": 1
+    },
+    "full_check_text_cross_company_failure": {
+      "status": "partial",
+      "completed_chunk_count": 1,
+      "failed_chunk_count": 1,
+      "final_text_checks_written": true,
+      "final_text_report_written": true,
+      "unfinished_sentence_ids": [
+        2
+      ]
+    }
+  },
+  "live_model_requests": 0,
+  "validation": {
+    "python": "3.13.7",
+    "pymupdf": "1.28.2",
+    "httpx": "0.28.1",
+    "command": "python -B -m unittest discover -s agent -p test*.py",
+    "tests_run": 359,
+    "passed": 358,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "skipped_reason": "可选 OCR 语言数据未配置",
+    "elapsed_seconds": 36.161,
+    "baseline_before_fix": {
+      "tests_run": 322,
+      "passed": 320,
+      "failures": 1,
+      "failing_test": "test_b7.B7WebCompatibilityTests.test_webui_is_a_thin_compatibility_facade",
+      "cause": "webui_page.py 用 newline='' 保留 CRLF，测试用 read_text 转为 LF"
+    },
+    "live_model_requests": 0,
+    "external_data_api_requests": 0,
+    "limitation": "功能回归与离线固定协议评测；不是真实模型盲测或业务准确率。"
+  },
+  "frontend_sha256": {
+    "docs/app.js": "d0a603fbf0d19bbe85acc09936c2e2e92b956b76e43bd72b3213cf6e62acfd09",
+    "docs/index.html": "645d528892da771cde9a56e15e56a1a94259f6e0b7c8fd8445b9d5803f2191d4",
+    "docs/style.css": "616e54acf2d193757b66c68eb2982f879edd2a8f430a971b9ab8286d01712d5f",
+    "docs/trace.js": "070dce9c3319c9ed3ddb67730a1fbc48d3ca452510d5cc7c0d1404372d03e642",
+    "web/css/components.css": "9b8b2bee95efe8ab324ad68e15de82d88dac9c401454856d739b81ca3fa8a378",
+    "web/css/layout.css": "d4c21c38046d980ef74a0ce35055f073e9fc49bd7a9051ea0ff61480efe4dd66",
+    "web/css/responsive.css": "f9d751238d2e3f1aeba8d934b874595822445961e8ffbd9f5f0121b95b97b980",
+    "web/css/tokens.css": "07099821fdb3cda073563114dd1101ef56171050b1f32423860cb2af10cf3cf5",
+    "web/favicon.svg": "1dbf0898d265039fc643d899e6a122b4148628de50ee34c60741e0815c0c1379",
+    "web/index.html": "659434cb6baffcd685a76372bbcec459a245b19b499cd9c7f3431d058a352a1e",
+    "web/js/api.js": "3d173df7fb30906cfa94cc483729bfb63f5093e5be463814b80f22a3fff6a10a",
+    "web/js/main.js": "4133d433aca0bff265b5b85f23a15d4347dfad07cfc61453aecbf73bbe5308d6",
+    "web/js/run-state.js": "9b8ccfea85c14d2c34ecdce349d2c46a78a2894e2b06375ee23c0b4112850f20",
+    "web/js/stream.js": "81822e453f8a7a5cd2a43c7c0fa537624deeaf965ccb476f456259827fa6a448",
+    "web/js/views/ask.js": "e6f5457dc9619b03528004788044a2626c6aa6334034641ce678017b26497b5b",
+    "web/js/views/results.js": "515a276ec021845447404a26bb8ace0cb6744b3ef3dbdb561961dd867a65b625",
+    "web/js/views/task.js": "e21ed57db47ec539f4b3c0f0456baa4b7652395cbc9e8631cf3bbbf999efdec1",
+    "web/js/views/trace.js": "9d6f8854f4d60db9439b187cd04bdf928041f139b2a9e495cb8f28c7474b9e0e",
+    "web/legacy/index.html": "3ba22810fa800765998f732a6d9d08ccdb63110e9e0da66db48c1662ed488788"
+  },
+  "frontend_unchanged_vs_review": true,
+  "changed_source_sha256": {
+    "agent/audit/claim_check.py": "9cbb6069efae206c52ccb526620c7b95799c13069ccf7c823044f0e6f2b9f25e",
+    "agent/audit/grounding.py": "2b7e00fbcccdea7ff03064ad942c484b31c39d838c81fae5c7cf2ec46d30518f",
+    "agent/audit/service.py": "de2df6c098605f28c718d00385e5a814a9ad70fb1eb9907c34192d384bc5dc6f",
+    "agent/audit/tools/compare.py": "e9e4742288966e055d3217b3fde7a116aad22b946ee64fc79c2691f5a2610c9f",
+    "agent/audit/tools/compute.py": "1ede3f236014836c69a3256d89d1a4d34be2f4e8ad7bf213393b378ff771da61",
+    "agent/audit/tools/evidence.py": "2aa65ff6a06b99945aecf893f0d32ea8628cc084e77fce4c1041ba3d41b0bca4",
+    "agent/audit/tools/search.py": "0854c485f151949faa39db0652dcd4c81230ad66bf4976c3dcdc3760ac28a980",
+    "agent/audit/tools/specs.py": "07953d1c956b2b12b730ce87b100a93498e77ba4e583d7bdcfcd439b4afc028f",
+    "agent/api/routes.py": "811bd709680a91d569d0beb040a57732b09116adfccdf3d93701e01b240c8821",
+    "agent/finance.py": "7db0e85135380accebbf78c8d79f3a676096a4ef038789c2869dda53e559be60",
+    "agent/periods.py": "ce5c59ce4c758e2410a1facba6ca4abe5be90175f5366d003c6a418d1472bdd2",
+    "agent/runtime/run_manager.py": "f3446bc41e880e9b85aa5d77d13288b849bd947033b9a6939397a5809bca73cf",
+    "agent/webui_http.py": "c04430b13669efdb7ad57a7ceaffcacdedd69f8d67d9355ebc0bb2d1684ee54a",
+    "agent/webui_page.py": "ed71e04e36df2791e40741227130ab031fd4083c14d64a0ed29f09b185f4dd55",
+    "agent/webui_pipeline.py": "8d6613d3ed32129f40685fdbf10f5e56ab3c91bb3cb0ff6696f3b0c25cca02ce",
+    "agent/tools.py": "63014f5b0f5546d747d15399ef5e1dcf87c9ecc9ef5a0cd4962d84b79885fc77",
+    "agent/eval_harness.py": "2b23142aecda64712a38defc5c451a8ecc665c95a6a6a0600429bc6d36fc84ab",
+    "agent/test_upgrade.py": "21d568b86380527270aa38ebcda7402e18a4fb2628e4a4a0fe09abf7694f4c6c",
+    "agent/test_b7.py": "acce7d857420be91f565fb062e795a55a7e80db2e94708ed0b988750876fd577",
+    "agent/test_competition.py": "e59d56d43ad2c29674a1ac42b76669ecec83a9da1d79674fa90856bed8be6b85",
+    "scripts/eval/run_report_eval.py": "5083f58eb7ff58fe601d49ab2894b834f4401e3fe81cf881fe4af92a78909841",
+    "scripts/eval/run_llm_eval.py": "065d2307b7c0ce4a238fcda947ca546b4ac6bc4d91fcf7ff79a9c0f5686fb4d6"
+  },
+  "evaluation": {
+    "report_eval": {
+      "mode": "离线固定协议样例回放，走完整 check_text",
+      "samples": 2,
+      "source": "离线固定协议样例（回放），非真实模型请求",
+      "total": 18,
+      "judged": 13,
+      "correct": 13,
+      "wrong": 0,
+      "abstain": 0,
+      "abstain_expected": 0,
+      "omitted": 0,
+      "timeout": 0,
+      "failed": 0,
+      "model_track": 5,
+      "expected_judge": 13,
+      "citation": 13,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "e5c_dryrun": {
+      "perfect": "8/8 判定对（0 弃答、0 漏拆、0 失败）",
+      "perturbed": "0/8 判定对",
+      "note": "自检评测机与流程接线；不测真模型"
+    },
+    "live_model": "未执行（本机无模型凭证）"
+  },
+  "new_regression_tests": {
+    "file": "agent/test_upgrade.py",
+    "count": 37,
+    "topics": [
+      "跨公司比较方向与主体冲突",
+      "分块失败保留与不伪装成功",
+      "句内主体/段落/上文绑定",
+      "精确期间、报告类型、材料 ID 与正文身份（含 API 检索）",
+      "无数字方向核查",
+      "跨报告可比性三态与被阻断尝试",
+      "服务重启恢复与会话隔离",
+      "评测原子评分与答案隔离"
+    ]
+  },
+  "quality_gates": {
+    "check_sensitive": "通过（173 个文本文件）",
+    "check_docs": "通过（61 个 Markdown 文件）",
+    "review_structure": "通过（1 项体量警告，webui.py 108 行）",
+    "compileall": "通过",
+    "b7_release_smoke": "通过",
+    "b7_reverse_checks": "R1–R11 全部 PASS"
+  },
+  "record_scope": "上一轮 DSH 交付记录；源码指纹和探针代表返修前版本，不代表本次最终版本",
+  "delivery_paths": {
+    "description": "docs/后端升级修复说明-20261012.md",
+    "machine_record": "results/backend_upgrade_fix_20261012.json",
+    "repair_description": "docs/验收返修说明-20261012.md",
+    "repair_record": "results/backend_acceptance_repair_20261012.json"
+  }
+}

@@ -10,5 +10,12 @@ from audit.tools.evidence import (
 )
 from audit.tools.compute import _norm_value, _one_fact, compute_trend, compute_yoy
 from audit.tools.compare import compare_claim, compare_companies
-from audit.tools.search import search_text
+from audit.tools.search import (
+    document_index,
+    document_key,
+    parse_document_key,
+    run_documents,
+    search_run_text,
+    search_text,
+)
 from audit.tools.dispatch import dispatch

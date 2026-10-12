@@ -80,35 +80,68 @@ def _pick_fact(matches: list[dict]) -> tuple[dict | None, list[dict]]:
     return None, collapsed
 
 
+def period_filters(report_kind=None, period_start=None, period_end=None,
+                   document_id=None) -> dict:
+    """精确期间/报告类型/材料 ID；只保留显式给出的条件，旧调用不受影响。"""
+    filters = {}
+    if report_kind not in (None, "", "unknown"):
+        filters["period_kind"] = report_kind
+    if period_start:
+        filters["period_start"] = period_start
+    if period_end:
+        filters["period_end"] = period_end
+    if document_id:
+        filters["document_id"] = document_id
+    return filters
+
+
+def _narrow(items: list[dict], filters: dict) -> list[dict]:
+    for key, value in filters.items():
+        items = [f for f in items if f.get(key) == value]
+    return items
+
+
+def _identity(item: dict) -> dict:
+    return {key: item.get(key) for key in (
+        "evidence_id", "company_code", "company_name", "metric", "period_year", "report_year",
+        "period_kind", "period_start", "period_end", "duration_months", "document_id",
+        "source_file", "source_sha256", "value", "unit", "normalized_value", "normalized_unit",
+        "page", "value_bbox", "scope", "adjustment")}
+
+
 def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
                   period_year: int, source_report_year: int | None = None,
-                  draft: str = "") -> dict:
+                  draft: str = "", report_kind: str | None = None,
+                  period_start: str | None = None, period_end: str | None = None,
+                  document_id: str | None = None) -> dict:
     code = resolve_company(company_name_or_code, company_name_or_code, draft or company_name_or_code, facts)
     if not code:
         return _err("公司无法对应到本次已加载材料", company=company_name_or_code)
     if metric not in METRICS:
         return _err("指标不在目录", metric=metric)
     report_year = int(source_report_year or period_year)
-    matches = [f for f in facts
-               if f.get("company_code") == code and f.get("metric") == metric
-               and f.get("period_year") == int(period_year)
-               and f.get("report_year") == report_year
-               and f.get("adjustment") != "before"]
+    filters = period_filters(report_kind, period_start, period_end, document_id)
+
+    def base(strict_report_year: bool) -> list[dict]:
+        return [f for f in facts
+                if f.get("company_code") == code and f.get("metric") == metric
+                and f.get("period_year") == int(period_year)
+                and (not strict_report_year or f.get("report_year") == report_year)
+                and f.get("adjustment") != "before"]
+
+    matches = _narrow(base(True), filters)
     if matches:
         probe, _ = _pick_fact(matches)
         if probe is not None and evidence_issues(probe):
-            wider = [f for f in facts
-                     if f.get("company_code") == code and f.get("metric") == metric
-                     and f.get("period_year") == int(period_year)
-                     and f.get("adjustment") != "before"]
+            wider = _narrow(base(False), filters)
             wide_best, _ = _pick_fact(wider)
             if wide_best is not None and not evidence_issues(wide_best):
                 matches = wider
     else:
-        matches = [f for f in facts
-                   if f.get("company_code") == code and f.get("metric") == metric
-                   and f.get("period_year") == int(period_year)
-                   and f.get("adjustment") != "before"]
+        matches = _narrow(base(False), filters)
+    if not matches and filters:
+        return {"status": "empty", "count": 0, "items": [], "filters": filters,
+                "hint": "该精确期间/报告类型/材料 ID 没有匹配证据；不要改用其他期间或版本"}
     if not matches:
         return {"status": "empty", "count": 0, "items": [],
                 "hint": "无该组合证据；不要猜测数值"}
@@ -120,19 +153,11 @@ def find_evidence(facts: list[dict], *, company_name_or_code: str, metric: str,
     extra = []
     if len(matches) > 1:
         extra = [f["evidence_id"] for f in matches if f["evidence_id"] != fact["evidence_id"]]
-    return {"status": "ok", "count": 1, "items": [{
-        "evidence_id": fact["evidence_id"],
-        "company_code": fact["company_code"],
-        "metric": fact["metric"],
-        "period_year": fact["period_year"],
-        "report_year": fact["report_year"],
-        "value": fact.get("value"), "unit": fact.get("unit"),
-        "normalized_value": fact.get("normalized_value"),
-        "page": fact.get("page"), "value_bbox": fact.get("value_bbox"),
-        "scope": fact.get("scope"), "adjustment": fact.get("adjustment"),
-        "issues": evidence_issues(fact),
-        "auto_usable": fact.get("auto_usable"), "review_reasons": fact.get("review_reasons", []),
-        "second_path_check": fact.get("second_path_check"),
-    }],
+    identity = _identity(fact)
+    identity.update(issues=evidence_issues(fact), auto_usable=fact.get("auto_usable"),
+                    review_reasons=fact.get("review_reasons", []),
+                    second_path_check=fact.get("second_path_check"))
+    return {"status": "ok", "count": 1, "items": [identity],
+        **({"filters": filters} if filters else {}),
         **({"duplicate_evidence_ids": extra, "selection_note": "同值/同口径多条，已按质量问题择优"} if extra else {}),
     }

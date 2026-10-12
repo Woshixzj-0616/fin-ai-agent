@@ -518,19 +518,9 @@ class Handler(BaseHTTPRequestHandler):
                 },
             )
             return
-        from tools import search_text
+        from tools import search_run_text
 
-        key = next(iter(docs))
-        code, _, year = key.rpartition("_")
-        out = search_text(
-            facts_snapshot,
-            docs,
-            company_name_or_code=code or "贵州茅台",
-            source_report_year=int(year or 2024),
-            query=query,
-            top_k=top_k,
-        )
-        out["document_key"] = key
+        out = search_run_text(facts_snapshot, docs, query=query, top_k=top_k)
         out["note"] = out.get("note") or "检索命中为相关段落，不能单独作为数值裁决依据"
         _json(self, 200, out)
 

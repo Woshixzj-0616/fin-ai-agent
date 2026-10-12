@@ -13,13 +13,13 @@ try:
     from runtime import RunContext, RunManager, RunNotVisible
     from runtime.events import TERMINAL_STATUSES
     from runtime.redaction import redact_value
-    from tools import search_text
+    from tools import search_run_text
 except ModuleNotFoundError:
     from agent.qa import answer as qa_answer
     from agent.runtime import RunContext, RunManager, RunNotVisible
     from agent.runtime.events import TERMINAL_STATUSES
     from agent.runtime.redaction import redact_value
-    from agent.tools import search_text
+    from agent.tools import search_run_text
 
 from .runtime_bridge import RuntimeRunBridge
 from .security import validate_pdf_upload
@@ -254,17 +254,7 @@ class ApiApplication:
                 "hits": [],
                 "hint": "本次运行没有可检索的页文本",
             }
-        key = next(iter(docs))
-        code, _, year = key.rpartition("_")
-        result = search_text(
-            facts,
-            docs,
-            company_name_or_code=code,
-            source_report_year=int(year),
-            query=query,
-            top_k=top_k,
-        )
-        result["document_key"] = key
+        result = search_run_text(facts, docs, query=query, top_k=top_k)
         result["note"] = result.get("note") or "检索命中为相关段落，不能单独作为数值裁决依据"
         return result
 

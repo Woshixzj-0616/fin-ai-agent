@@ -1,6 +1,7 @@
 """旧 Web 页面和兼容流水线实现源。"""
 from __future__ import annotations
 
+import json
 import os
 import re
 import threading
@@ -8,11 +9,13 @@ from datetime import datetime
 from pathlib import Path
 
 try:
+    from audit.tools.search import document_key
     from extract import extract_material
     from finance import analyze, evidence_issues
     from main import report_markdown
     from materials import ROOT, Run, register, sha256, write_json
 except ModuleNotFoundError:
+    from agent.audit.tools.search import document_key
     from agent.extract import extract_material
     from agent.finance import analyze, evidence_issues
     from agent.main import report_markdown
@@ -197,7 +200,9 @@ def run_pipeline(
         fact["source_file"] = str((work / fact["source_file"]).relative_to(base))
     doc_texts: dict[str, list[str]] = {}
     for material in materials:
-        key = f"{material['company_code']}_{material['report_year']}"
+        # 正文按材料身份索引：同年季报/半年报/年报各自独立，不再互相覆盖。
+        key = document_key(material["company_code"], material["report_year"],
+                           material["document_id"])
         try:
             import pymupdf as _pm
 
@@ -250,6 +255,7 @@ def run_pipeline(
         ],
         "signals": analysis["signals"],
         "qoq_rows": analysis.get("qoq_rows", []),
+        "qoq_blocked": analysis.get("blocked_derivations", []),
         "basis": analysis["basis"],
         "limits": analysis["limits"],
         "counts": counts,
@@ -377,7 +383,30 @@ def _check_draft(draft: str, facts: list[dict], run) -> dict:
             "provider_host": getattr(client, "host", None),
         }
     except Exception as exc:
-        return {"status": "failed", "reason": str(exc), "checks": []}
+        salvaged = _salvage_checks(run)
+        payload = {"status": "failed", "reason": str(exc),
+                   "checks": salvaged.get("checks") or []}
+        if salvaged:
+            payload.update(
+                execution_status=salvaged.get("status") or "partial",
+                unfinished_sentence_ids=salvaged.get("unfinished_sentence_ids", []),
+                checkpoint_file=salvaged.get("checkpoint_file"),
+                mode=salvaged.get("mode"),
+                counts=salvaged.get("counts"),
+            )
+        return payload
+
+
+def _salvage_checks(run) -> dict:
+    """核查中途失败时读回本次运行已写出的检查点结果，不把已完成分块丢掉。"""
+    try:
+        path = run.output("text_checks.json")
+        if not path.is_file():
+            return {}
+        saved = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return saved if isinstance(saved, dict) else {}
 
 
 def run_announcement_pipeline(

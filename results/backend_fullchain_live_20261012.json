@@ -1,0 +1,6031 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-12",
+  "project_root": "D:\\Desktop\\fin-ai-agent",
+  "scratch": "C:\\Users\\admin\\AppData\\Local\\Packages\\sandbox.{83a3fb45-5f0f-4983-9830-6f4b47a32ad1}\\AC\\Temp\\fin_fullchain_20261012_r3uc0vmg",
+  "head": "ca806e43972e4e78baf5cf197457349f53767a7e",
+  "status": "primary_pipeline_passed_with_documented_semantic_and_eval_limits",
+  "source_changes_this_turn": [
+    {
+      "path": "agent/test_api.py",
+      "before": "cd18316aac8df2848f176a4af11b74c07ab9fd5e0056ce203e73bcf410de6ba7",
+      "after": "e911134bc61e74649a200d49c16333a36a26f503e91655eec6e9f07cc1914d7b"
+    },
+    {
+      "path": "agent/test_loop_limits.py",
+      "before": null,
+      "after": "b5ed23f4172d787d447701716401e0a3f377ac1dd5435f25fa8775321895d6e0"
+    },
+    {
+      "path": "agent/api/runtime_bridge.py",
+      "before": "114ea9884cc9105039f981e08206f14c4460cda0684f0afdb4a2ab088cc18b2e",
+      "after": "3942d98408bc60ef9985606f32be2db6aa4d61b52932f08184ceaecd7c2aa179"
+    },
+    {
+      "path": "agent/audit/loop.py",
+      "before": "5278a8961f0cc8d10baafb783bf677b78423fc7e052b3f943b6b1e2d396f8392",
+      "after": "42941d67a6df4d24779826bf32ab8513d88ae356420dc791d48a8f781b922dbe"
+    },
+    {
+      "path": "agent/audit/tools/events.py",
+      "before": "54129d51cec04ceb0fbbb5f735ed6961a65f9556d4a7cc0acb9afd15e71eb77b",
+      "after": "fc66d63ad89671fe58d25019c31f17b68feb506f99a6d8edd84ef45b8d988d3b"
+    }
+  ],
+  "frontend_sha256": {
+    "docs/app.js": "d0a603fbf0d19bbe85acc09936c2e2e92b956b76e43bd72b3213cf6e62acfd09",
+    "docs/index.html": "645d528892da771cde9a56e15e56a1a94259f6e0b7c8fd8445b9d5803f2191d4",
+    "docs/style.css": "616e54acf2d193757b66c68eb2982f879edd2a8f430a971b9ab8286d01712d5f",
+    "docs/trace.js": "070dce9c3319c9ed3ddb67730a1fbc48d3ca452510d5cc7c0d1404372d03e642",
+    "web/css/components.css": "9b8b2bee95efe8ab324ad68e15de82d88dac9c401454856d739b81ca3fa8a378",
+    "web/css/layout.css": "d4c21c38046d980ef74a0ce35055f073e9fc49bd7a9051ea0ff61480efe4dd66",
+    "web/css/responsive.css": "f9d751238d2e3f1aeba8d934b874595822445961e8ffbd9f5f0121b95b97b980",
+    "web/css/tokens.css": "07099821fdb3cda073563114dd1101ef56171050b1f32423860cb2af10cf3cf5",
+    "web/favicon.svg": "1dbf0898d265039fc643d899e6a122b4148628de50ee34c60741e0815c0c1379",
+    "web/index.html": "659434cb6baffcd685a76372bbcec459a245b19b499cd9c7f3431d058a352a1e",
+    "web/js/api.js": "3d173df7fb30906cfa94cc483729bfb63f5093e5be463814b80f22a3fff6a10a",
+    "web/js/main.js": "4133d433aca0bff265b5b85f23a15d4347dfad07cfc61453aecbf73bbe5308d6",
+    "web/js/run-state.js": "9b8ccfea85c14d2c34ecdce349d2c46a78a2894e2b06375ee23c0b4112850f20",
+    "web/js/stream.js": "81822e453f8a7a5cd2a43c7c0fa537624deeaf965ccb476f456259827fa6a448",
+    "web/js/views/ask.js": "e6f5457dc9619b03528004788044a2626c6aa6334034641ce678017b26497b5b",
+    "web/js/views/results.js": "515a276ec021845447404a26bb8ace0cb6744b3ef3dbdb561961dd867a65b625",
+    "web/js/views/task.js": "e21ed57db47ec539f4b3c0f0456baa4b7652395cbc9e8631cf3bbbf999efdec1",
+    "web/js/views/trace.js": "9d6f8854f4d60db9439b187cd04bdf928041f139b2a9e495cb8f28c7474b9e0e",
+    "web/legacy/index.html": "3ba22810fa800765998f732a6d9d08ccdb63110e9e0da66db48c1662ed488788"
+  },
+  "frontend_matches_review": true,
+  "historic_output_sha256": {
+    "docs/refactor/evidence/B7/release-smoke.json": "d6d2e236b3676009fb3ba62bfe047c19861875564e7eb3dcb15eb363a2feb51e",
+    "results/eval/e5c_report.md": "3567a05ed80e69e05191bebd9be4537b339d683a911a99c2a5e7178fed72c82a",
+    "results/eval/report_eval.json": "753b6f0caba4c98331a388581590b14485a163de055dcd560052bf9eeb6a7641",
+    "results/eval/report_eval_report.md": "e2cf0e1b2afc0d63f2092511ef759bcdf8431bded262764c72bb72fe87ab0588"
+  },
+  "historic_outputs_unchanged": true,
+  "new_project_files": [
+    "agent/test_loop_limits.py",
+    "docs/全链路实测记录-20261012.md",
+    "results/backend_fullchain_live_20261012.json"
+  ],
+  "operational_cases": [
+    {
+      "name": "static_frontend",
+      "passed": true,
+      "assets": {
+        "/app/css/tokens.css": 200,
+        "/app/css/layout.css": 200,
+        "/app/css/components.css": 200,
+        "/app/css/responsive.css": 200,
+        "/app/js/main.js": 200
+      },
+      "source_bytes_match": true
+    },
+    {
+      "name": "annual",
+      "passed": true,
+      "status": "succeeded",
+      "facts": 35,
+      "qoq_rows": 0,
+      "qoq_blocked": 0,
+      "event_rows": 0,
+      "check_mode": "local_supplemental",
+      "result_keys": [
+        "ok",
+        "run_id",
+        "document_id",
+        "materials",
+        "rows",
+        "signals",
+        "qoq_rows",
+        "qoq_blocked",
+        "basis",
+        "limits",
+        "counts",
+        "evidence",
+        "issues",
+        "report_md",
+        "failures",
+        "checks",
+        "trace"
+      ]
+    },
+    {
+      "name": "annual_sse",
+      "passed": true,
+      "events": 49,
+      "errors": []
+    },
+    {
+      "name": "sse_resume",
+      "passed": true,
+      "events": 24
+    },
+    {
+      "name": "evidence_image",
+      "passed": true,
+      "dimensions": [
+        953,
+        1348
+      ]
+    },
+    {
+      "name": "qa_citations",
+      "passed": true,
+      "answer": "贵州茅台2024-01-01至2024-12-31 营业收入为 170899152276.34 元，口径：合并（PDF 第 5 页）。",
+      "evidence_ids": [
+        "90b9e57bf6b244be21e84176"
+      ]
+    },
+    {
+      "name": "qa_company_gate",
+      "passed": true,
+      "status": "wrong_company"
+    },
+    {
+      "name": "search",
+      "passed": true,
+      "hits": 3
+    },
+    {
+      "name": "session_isolation",
+      "passed": true,
+      "http": 404
+    },
+    {
+      "name": "restart_recovery",
+      "passed": true,
+      "restored_status": "succeeded"
+    },
+    {
+      "name": "interim",
+      "passed": true,
+      "status": "succeeded",
+      "facts": 40,
+      "qoq_rows": 4,
+      "qoq_blocked": 4,
+      "event_rows": 0,
+      "check_mode": null,
+      "result_keys": [
+        "ok",
+        "run_id",
+        "document_id",
+        "materials",
+        "rows",
+        "signals",
+        "qoq_rows",
+        "qoq_blocked",
+        "basis",
+        "limits",
+        "counts",
+        "evidence",
+        "issues",
+        "report_md",
+        "failures",
+        "trace"
+      ]
+    },
+    {
+      "name": "interim_sse",
+      "passed": true,
+      "events": 95,
+      "errors": []
+    },
+    {
+      "name": "pledge",
+      "passed": true,
+      "run_status": "succeeded",
+      "facts": 5,
+      "announcement_status": "completed",
+      "retested_after_fix": true
+    },
+    {
+      "name": "pledge_sse",
+      "passed": true,
+      "events": 5,
+      "errors": []
+    },
+    {
+      "name": "winning",
+      "passed": true,
+      "run_status": "succeeded",
+      "facts": 5,
+      "announcement_status": "completed",
+      "retested_after_fix": true
+    },
+    {
+      "name": "winning_sse",
+      "passed": true,
+      "events": 5,
+      "errors": []
+    },
+    {
+      "name": "wuliangye",
+      "passed": true,
+      "status": "succeeded",
+      "facts": 45,
+      "qoq_rows": 0,
+      "qoq_blocked": 0,
+      "event_rows": 0,
+      "check_mode": null,
+      "result_keys": [
+        "ok",
+        "run_id",
+        "document_id",
+        "materials",
+        "rows",
+        "signals",
+        "qoq_rows",
+        "qoq_blocked",
+        "basis",
+        "limits",
+        "counts",
+        "evidence",
+        "issues",
+        "report_md",
+        "failures",
+        "trace"
+      ]
+    },
+    {
+      "name": "wuliangye_sse",
+      "passed": true,
+      "events": 56,
+      "errors": []
+    },
+    {
+      "name": "real_annual",
+      "passed": true,
+      "run_status": "succeeded",
+      "check_status": "completed",
+      "reason": null,
+      "facts": 35,
+      "mode": "native_tool_calls",
+      "checks": [
+        {
+          "sentence_id": 1,
+          "quote": null,
+          "status": "证据支持",
+          "reason_code": "deterministic_check",
+          "reason": "在陈述运算符与容差下与原文证据一致",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176"
+          ],
+          "track": "deterministic"
+        },
+        {
+          "sentence_id": 2,
+          "quote": null,
+          "status": "确认错误",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176"
+          ],
+          "track": "deterministic"
+        },
+        {
+          "sentence_id": 3,
+          "quote": null,
+          "status": "证据支持",
+          "reason_code": "deterministic_check",
+          "reason": "在陈述运算符与容差下与原文证据一致",
+          "evidence_ids": [
+            "9069bd51512aeff0eead7874"
+          ],
+          "track": "deterministic"
+        },
+        {
+          "sentence_id": 4,
+          "quote": null,
+          "status": "证据支持",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176",
+            "d3fe304c4c3a83041491c5b2"
+          ],
+          "track": "deterministic"
+        },
+        {
+          "sentence_id": 5,
+          "quote": null,
+          "status": "证据支持",
+          "reason_code": "direction_supported",
+          "reason": "可比期间计算方向为「增长」，与陈述一致",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176",
+            "d3fe304c4c3a83041491c5b2"
+          ],
+          "track": "deterministic"
+        },
+        {
+          "sentence_id": 6,
+          "quote": null,
+          "status": "模型判断",
+          "reason_code": "forecast_marked_only",
+          "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+          "evidence_ids": [],
+          "track": "model"
+        }
+      ],
+      "stats": {
+        "events": {
+          "run_created": 1,
+          "run_started": 1,
+          "material_registered": 1,
+          "file_read": 2,
+          "extraction_channel": 3,
+          "extraction_dedup": 18,
+          "extraction_completed": 1,
+          "calculation": 22,
+          "draft_loaded": 1,
+          "llm_chunk_started": 1,
+          "agent_loop_start": 1,
+          "llm_chat_tools": 3,
+          "llm_attempt_started": 3,
+          "llm_attempt_finished": 3,
+          "llm_usage": 3,
+          "llm_raw_response": 3,
+          "llm_response_tools": 3,
+          "agent_tool_start": 9,
+          "agent_tool": 9,
+          "agent_loop_round": 1,
+          "agent_loop_submit": 1,
+          "tool_summary": 1,
+          "model_parse": 1,
+          "llm_chunk_completed": 1,
+          "claim_gate": 6,
+          "text_claim_checked": 6,
+          "document_execution_finished": 1,
+          "run_finished": 1
+        },
+        "completed_requests": 3,
+        "total_tokens": 18994,
+        "returned_models": [
+          "deepseek-flash"
+        ]
+      }
+    },
+    {
+      "name": "real_sse",
+      "passed": true,
+      "events": 107,
+      "errors": []
+    },
+    {
+      "name": "real_sse_resume",
+      "passed": true,
+      "events": 53
+    },
+    {
+      "name": "real_qa_intent",
+      "passed": true,
+      "status": "ok",
+      "intent": {
+        "metric": "total_revenue",
+        "period_year": 2024,
+        "kind": "value",
+        "source": "llm",
+        "company_code": "600519"
+      },
+      "answer": "贵州茅台2024-01-01至2024-12-31 营业总收入为 174144069958.25 元，口径：合并（PDF 第 63 页）。",
+      "evidence_ids": [
+        "ac67a33bceb715a65131d358"
+      ]
+    },
+    {
+      "name": "raw_evidence_resume",
+      "passed": true,
+      "first_status": "partial",
+      "resumed_status": "completed",
+      "finished_resume_status": "completed",
+      "requested_sentences": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          2
+        ]
+      ],
+      "preserved_unchanged": true,
+      "stats": {
+        "events": {
+          "run_started": 1,
+          "file_read": 3,
+          "draft_loaded": 3,
+          "llm_chunk_started": 3,
+          "llm_request": 2,
+          "llm_attempt_started": 2,
+          "llm_attempt_finished": 2,
+          "llm_usage": 2,
+          "llm_raw_response": 2,
+          "llm_response": 2,
+          "model_parse": 2,
+          "llm_chunk_completed": 2,
+          "llm_chunk_failed": 1,
+          "claim_gate": 6,
+          "text_claim_checked": 6,
+          "document_execution_finished": 3,
+          "llm_checkpoint_resumed": 2,
+          "llm_chunk_reused": 3
+        },
+        "completed_requests": 2,
+        "total_tokens": 4749,
+        "returned_models": [
+          "deepseek-flash"
+        ]
+      },
+      "checks": [
+        {
+          "sentence_id": 1,
+          "status": "口径冲突／需人工复核",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176"
+          ]
+        },
+        {
+          "sentence_id": 2,
+          "status": "证据支持",
+          "evidence_ids": [
+            "9069bd51512aeff0eead7874"
+          ]
+        }
+      ]
+    }
+  ],
+  "operational_totals": {
+    "total": 23,
+    "passed": 23
+  },
+  "final_repeats": {
+    "date": "2026-10-12",
+    "scope": "three fixed-input full-flow real model runs plus real recovery",
+    "cases": [
+      {
+        "name": "raw_evidence_resume",
+        "passed": true,
+        "first_status": "partial",
+        "resumed_status": "completed",
+        "finished_resume_status": "completed",
+        "requested_sentences": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            2
+          ]
+        ],
+        "preserved_unchanged": true,
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 3,
+            "draft_loaded": 3,
+            "llm_chunk_started": 3,
+            "llm_request": 2,
+            "llm_attempt_started": 2,
+            "llm_attempt_finished": 2,
+            "llm_usage": 2,
+            "llm_raw_response": 2,
+            "llm_response": 2,
+            "model_parse": 2,
+            "llm_chunk_completed": 2,
+            "llm_chunk_failed": 1,
+            "claim_gate": 6,
+            "text_claim_checked": 6,
+            "document_execution_finished": 3,
+            "llm_checkpoint_resumed": 2,
+            "llm_chunk_reused": 3
+          },
+          "completed_requests": 2,
+          "total_tokens": 4749,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        },
+        "checks": [
+          {
+            "sentence_id": 1,
+            "status": "口径冲突／需人工复核",
+            "evidence_ids": [
+              "90b9e57bf6b244be21e84176"
+            ]
+          },
+          {
+            "sentence_id": 2,
+            "status": "证据支持",
+            "evidence_ids": [
+              "9069bd51512aeff0eead7874"
+            ]
+          }
+        ]
+      }
+    ],
+    "repeats": [
+      {
+        "repeat": 1,
+        "status": "completed",
+        "mode": "native_tool_calls",
+        "score": {
+          "summary": {
+            "total": 12,
+            "judged": 8,
+            "correct": 8,
+            "wrong": 0,
+            "abstain": 0,
+            "abstain_expected": 0,
+            "abstain_avoidable": 0,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 4,
+            "expected_judge": 8,
+            "citation": 8,
+            "tp": 3,
+            "fp": 0,
+            "tn": 5,
+            "fn": 0,
+            "extra_predictions": 0,
+            "accuracy": 1.0,
+            "error_rate": 0.0,
+            "correct_coverage": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "false_positive_rate": 0.0,
+            "coverage": 0.6667,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 3,
+            "tokens_charged": 26090,
+            "tool_calls": 14,
+            "active_seconds": 13.969
+          },
+          "rows": [
+            {
+              "id": "R01",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "可比口径下陈述值与证据或计算结果不同",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R02",
+              "sample": null,
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "expect": {
+                "kind": "reason_code",
+                "code": "forecast_marked_only"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "forecast_marked_only",
+              "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R03",
+              "sample": null,
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "在陈述运算符与容差下与原文证据一致",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R04",
+              "sample": null,
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "陈述运算符「exceed」不成立，或超出约定容差",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R05",
+              "sample": null,
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "在陈述运算符与容差下与原文证据一致",
+              "evidence_ids": [
+                "9069bd51512aeff0eead7874"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R06",
+              "sample": null,
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R07",
+              "sample": null,
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "62888adf854202860337a5c1"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R08",
+              "sample": null,
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R09",
+              "sample": null,
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176",
+                "d3fe304c4c3a83041491c5b2"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R10",
+              "sample": null,
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "ac67a33bceb715a65131d358"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R11",
+              "sample": null,
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R12",
+              "sample": null,
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "可比口径下陈述值与证据或计算结果不同",
+              "evidence_ids": [
+                "4de6b555479eb5c8d72a3c5f"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "000858",
+                  "sentence_codes": [
+                    "000858"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "000858",
+                  "basis": "sentence_company",
+                  "matched": "五粮液",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2023,
+                  "model_year": 2023,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2023"
+                }
+              },
+              "ok": true
+            }
+          ],
+          "extra_predictions": [],
+          "note": "逐条原子一对一评分；重复/多余预测单列；未判定不计正确。accuracy 为已判定正确率；precision/recall/FPR 以确认错误为正类，仅覆盖已判定二分类项，未判定影响 correct_coverage/coverage。"
+        },
+        "fields": {
+          "rows": [
+            {
+              "id": "R01",
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R02",
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R03",
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R04",
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R05",
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R07",
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R09",
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 0.875,
+              "exact": false,
+              "note": null
+            },
+            {
+              "id": "R10",
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R12",
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R06",
+              "sentence_id": 6,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R08",
+              "sentence_id": 8,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R11",
+              "sentence_id": 11,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            }
+          ],
+          "extra_predictions": 3,
+          "extras": [
+            {
+              "claim_id": "c6",
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "经营质量",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "剔除投资收益后公司经营质量明显改善。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c8",
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "净利润",
+              "metric": "parent_net_profit",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "公司净利润创新高。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c11",
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "估值",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "认为公司估值处于历史低位。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            }
+          ],
+          "field_avg": 0.5917,
+          "exact_match": 8,
+          "extracted": 9,
+          "total": 12
+        },
+        "execution": {
+          "attempts": [
+            {
+              "attempt": 1,
+              "started_at": "2026-10-12T14:02:43.570466+00:00",
+              "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+              "reserved_tokens": 21785,
+              "tokens": 4186,
+              "status": 200,
+              "elapsed_seconds": 1.875
+            },
+            {
+              "attempt": 2,
+              "started_at": "2026-10-12T14:02:45.483454+00:00",
+              "request_sha256": "91c1aa0c35c6af8c33f786d9614f56f0b0f44118cc23571df0c599e7718f6ec1",
+              "reserved_tokens": 32568,
+              "tokens": 8194,
+              "status": 200,
+              "elapsed_seconds": 3.719
+            },
+            {
+              "attempt": 3,
+              "started_at": "2026-10-12T14:02:49.258357+00:00",
+              "request_sha256": "bacaa66e6d4d083993f7cb0632b6869ae3681d0c817d538852f4623822f75301",
+              "reserved_tokens": 44146,
+              "tokens": 13710,
+              "status": 200,
+              "elapsed_seconds": 8.266
+            }
+          ],
+          "tool_calls": 14,
+          "tokens_charged": 26090,
+          "known_tokens": 26090,
+          "unknown_attempts": 0,
+          "active_seconds": 13.969,
+          "token_accounting": "已返回用量按实际值；未知尝试保留请求UTF-8字节数+输出上限预占"
+        },
+        "binding_sha256": "25be357170e454c5fe8051c8678ecb85e3129842a90a629245d974714d6f3b93",
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 1,
+            "draft_loaded": 1,
+            "llm_chunk_started": 1,
+            "agent_loop_start": 1,
+            "llm_chat_tools": 3,
+            "llm_attempt_started": 3,
+            "llm_attempt_finished": 3,
+            "llm_usage": 3,
+            "llm_raw_response": 3,
+            "llm_response_tools": 3,
+            "agent_tool_start": 14,
+            "agent_tool": 14,
+            "agent_loop_round": 1,
+            "agent_loop_submit": 1,
+            "tool_summary": 1,
+            "model_parse": 1,
+            "llm_chunk_completed": 1,
+            "claim_gate": 12,
+            "text_claim_checked": 12,
+            "document_execution_finished": 1
+          },
+          "completed_requests": 3,
+          "total_tokens": 26090,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        },
+        "tool_accounting_matches_events": true
+      },
+      {
+        "repeat": 2,
+        "status": "completed",
+        "mode": "native_tool_calls",
+        "score": {
+          "summary": {
+            "total": 12,
+            "judged": 8,
+            "correct": 8,
+            "wrong": 0,
+            "abstain": 0,
+            "abstain_expected": 0,
+            "abstain_avoidable": 0,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 4,
+            "expected_judge": 8,
+            "citation": 8,
+            "tp": 3,
+            "fp": 0,
+            "tn": 5,
+            "fn": 0,
+            "extra_predictions": 0,
+            "accuracy": 1.0,
+            "error_rate": 0.0,
+            "correct_coverage": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "false_positive_rate": 0.0,
+            "coverage": 0.6667,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 3,
+            "tokens_charged": 26087,
+            "tool_calls": 14,
+            "active_seconds": 14.656
+          },
+          "rows": [
+            {
+              "id": "R01",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "可比口径下陈述值与证据或计算结果不同",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R02",
+              "sample": null,
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "expect": {
+                "kind": "reason_code",
+                "code": "forecast_marked_only"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "forecast_marked_only",
+              "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R03",
+              "sample": null,
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "在陈述运算符与容差下与原文证据一致",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R04",
+              "sample": null,
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "陈述运算符「exceed」不成立，或超出约定容差",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R05",
+              "sample": null,
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "在陈述运算符与容差下与原文证据一致",
+              "evidence_ids": [
+                "9069bd51512aeff0eead7874"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R06",
+              "sample": null,
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R07",
+              "sample": null,
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "62888adf854202860337a5c1"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R08",
+              "sample": null,
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R09",
+              "sample": null,
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176",
+                "d3fe304c4c3a83041491c5b2"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R10",
+              "sample": null,
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "ac67a33bceb715a65131d358"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R11",
+              "sample": null,
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R12",
+              "sample": null,
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "可比口径下陈述值与证据或计算结果不同",
+              "evidence_ids": [
+                "4de6b555479eb5c8d72a3c5f"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "000858",
+                  "sentence_codes": [
+                    "000858"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "000858",
+                  "basis": "sentence_company",
+                  "matched": "五粮液",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2023,
+                  "model_year": 2023,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2023"
+                }
+              },
+              "ok": true
+            }
+          ],
+          "extra_predictions": [],
+          "note": "逐条原子一对一评分；重复/多余预测单列；未判定不计正确。accuracy 为已判定正确率；precision/recall/FPR 以确认错误为正类，仅覆盖已判定二分类项，未判定影响 correct_coverage/coverage。"
+        },
+        "fields": {
+          "rows": [
+            {
+              "id": "R01",
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R02",
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R03",
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R04",
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R05",
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R07",
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R09",
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 0.875,
+              "exact": false,
+              "note": null
+            },
+            {
+              "id": "R10",
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R12",
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R06",
+              "sentence_id": 6,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R08",
+              "sentence_id": 8,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R11",
+              "sentence_id": 11,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            }
+          ],
+          "extra_predictions": 3,
+          "extras": [
+            {
+              "claim_id": "c6",
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "经营质量",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "剔除投资收益后公司经营质量明显改善。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c8",
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "净利润",
+              "metric": "parent_net_profit",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "公司净利润创新高。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c11",
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "估值",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "认为公司估值处于历史低位。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            }
+          ],
+          "field_avg": 0.5917,
+          "exact_match": 8,
+          "extracted": 9,
+          "total": 12
+        },
+        "execution": {
+          "attempts": [
+            {
+              "attempt": 1,
+              "started_at": "2026-10-12T14:02:57.970773+00:00",
+              "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+              "reserved_tokens": 21785,
+              "tokens": 4186,
+              "status": 200,
+              "elapsed_seconds": 1.953
+            },
+            {
+              "attempt": 2,
+              "started_at": "2026-10-12T14:02:59.972090+00:00",
+              "request_sha256": "cafd85b144a92a8fe2cedc51304b4fad10d5066edb66f4a1860e9e0f1511b23d",
+              "reserved_tokens": 32568,
+              "tokens": 8194,
+              "status": 200,
+              "elapsed_seconds": 4.406
+            },
+            {
+              "attempt": 3,
+              "started_at": "2026-10-12T14:03:04.424523+00:00",
+              "request_sha256": "cc8755f510ada844cb5b50a0f97c2880b4064b9738f0b56c12a11f165c35b722",
+              "reserved_tokens": 44146,
+              "tokens": 13707,
+              "status": 200,
+              "elapsed_seconds": 8.172
+            }
+          ],
+          "tool_calls": 14,
+          "tokens_charged": 26087,
+          "known_tokens": 26087,
+          "unknown_attempts": 0,
+          "active_seconds": 14.656,
+          "token_accounting": "已返回用量按实际值；未知尝试保留请求UTF-8字节数+输出上限预占"
+        },
+        "binding_sha256": "25be357170e454c5fe8051c8678ecb85e3129842a90a629245d974714d6f3b93",
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 1,
+            "draft_loaded": 1,
+            "llm_chunk_started": 1,
+            "agent_loop_start": 1,
+            "llm_chat_tools": 3,
+            "llm_attempt_started": 3,
+            "llm_attempt_finished": 3,
+            "llm_usage": 3,
+            "llm_raw_response": 3,
+            "llm_response_tools": 3,
+            "agent_tool_start": 14,
+            "agent_tool": 14,
+            "agent_loop_round": 1,
+            "agent_loop_submit": 1,
+            "tool_summary": 1,
+            "model_parse": 1,
+            "llm_chunk_completed": 1,
+            "claim_gate": 12,
+            "text_claim_checked": 12,
+            "document_execution_finished": 1
+          },
+          "completed_requests": 3,
+          "total_tokens": 26087,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        },
+        "tool_accounting_matches_events": true
+      },
+      {
+        "repeat": 3,
+        "status": "completed",
+        "mode": "native_tool_calls",
+        "score": {
+          "summary": {
+            "total": 12,
+            "judged": 8,
+            "correct": 8,
+            "wrong": 0,
+            "abstain": 0,
+            "abstain_expected": 0,
+            "abstain_avoidable": 0,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 4,
+            "expected_judge": 8,
+            "citation": 8,
+            "tp": 3,
+            "fp": 0,
+            "tn": 5,
+            "fn": 0,
+            "extra_predictions": 0,
+            "accuracy": 1.0,
+            "error_rate": 0.0,
+            "correct_coverage": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "false_positive_rate": 0.0,
+            "coverage": 0.6667,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 3,
+            "tokens_charged": 26087,
+            "tool_calls": 14,
+            "active_seconds": 13.39
+          },
+          "rows": [
+            {
+              "id": "R01",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "可比口径下陈述值与证据或计算结果不同",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R02",
+              "sample": null,
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "expect": {
+                "kind": "reason_code",
+                "code": "forecast_marked_only"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "forecast_marked_only",
+              "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R03",
+              "sample": null,
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "在陈述运算符与容差下与原文证据一致",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R04",
+              "sample": null,
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "陈述运算符「exceed」不成立，或超出约定容差",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R05",
+              "sample": null,
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "在陈述运算符与容差下与原文证据一致",
+              "evidence_ids": [
+                "9069bd51512aeff0eead7874"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R06",
+              "sample": null,
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R07",
+              "sample": null,
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "62888adf854202860337a5c1"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R08",
+              "sample": null,
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R09",
+              "sample": null,
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "90b9e57bf6b244be21e84176",
+                "d3fe304c4c3a83041491c5b2"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R10",
+              "sample": null,
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "单位、口径和陈述精度下与原文证据一致",
+              "evidence_ids": [
+                "ac67a33bceb715a65131d358"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "600519",
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "600519",
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": true
+            },
+            {
+              "id": "R11",
+              "sample": null,
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R12",
+              "sample": null,
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "确认错误",
+              "track": "deterministic",
+              "reason_code": "deterministic_check",
+              "reason": "可比口径下陈述值与证据或计算结果不同",
+              "evidence_ids": [
+                "4de6b555479eb5c8d72a3c5f"
+              ],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": "000858",
+                  "sentence_codes": [
+                    "000858"
+                  ],
+                  "ignored_mentions": [],
+                  "code": "000858",
+                  "basis": "sentence_company",
+                  "matched": "五粮液",
+                  "position": 6,
+                  "note": null
+                },
+                "period": {
+                  "year": 2023,
+                  "model_year": 2023,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2023"
+                }
+              },
+              "ok": true
+            }
+          ],
+          "extra_predictions": [],
+          "note": "逐条原子一对一评分；重复/多余预测单列；未判定不计正确。accuracy 为已判定正确率；precision/recall/FPR 以确认错误为正类，仅覆盖已判定二分类项，未判定影响 correct_coverage/coverage。"
+        },
+        "fields": {
+          "rows": [
+            {
+              "id": "R01",
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R02",
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R03",
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R04",
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R05",
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R07",
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R09",
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 0.875,
+              "exact": false,
+              "note": null
+            },
+            {
+              "id": "R10",
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R12",
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R06",
+              "sentence_id": 6,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R08",
+              "sentence_id": 8,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R11",
+              "sentence_id": 11,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            }
+          ],
+          "extra_predictions": 3,
+          "extras": [
+            {
+              "claim_id": "c6",
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "经营质量",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "剔除投资收益后公司经营质量明显改善。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c8",
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "净利润",
+              "metric": "parent_net_profit",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "公司净利润创新高。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c11",
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "估值",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "认为公司估值处于历史低位。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            }
+          ],
+          "field_avg": 0.5917,
+          "exact_match": 8,
+          "extracted": 9,
+          "total": 12
+        },
+        "execution": {
+          "attempts": [
+            {
+              "attempt": 1,
+              "started_at": "2026-10-12T14:03:13.382068+00:00",
+              "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+              "reserved_tokens": 21785,
+              "tokens": 4186,
+              "status": 200,
+              "elapsed_seconds": 1.61
+            },
+            {
+              "attempt": 2,
+              "started_at": "2026-10-12T14:03:15.018608+00:00",
+              "request_sha256": "e09abaa0660b7cb3fe6bb2f0a05620fe75650f26c798337a877eb09126d6a998",
+              "reserved_tokens": 32568,
+              "tokens": 8194,
+              "status": 200,
+              "elapsed_seconds": 3.813
+            },
+            {
+              "attempt": 3,
+              "started_at": "2026-10-12T14:03:18.865220+00:00",
+              "request_sha256": "8502893e403b75399299ab3e386033e3fb078370b0f0d930d8f42364288485c2",
+              "reserved_tokens": 44146,
+              "tokens": 13707,
+              "status": 200,
+              "elapsed_seconds": 7.859
+            }
+          ],
+          "tool_calls": 14,
+          "tokens_charged": 26087,
+          "known_tokens": 26087,
+          "unknown_attempts": 0,
+          "active_seconds": 13.39,
+          "token_accounting": "已返回用量按实际值；未知尝试保留请求UTF-8字节数+输出上限预占"
+        },
+        "binding_sha256": "25be357170e454c5fe8051c8678ecb85e3129842a90a629245d974714d6f3b93",
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 1,
+            "draft_loaded": 1,
+            "llm_chunk_started": 1,
+            "agent_loop_start": 1,
+            "llm_chat_tools": 3,
+            "llm_attempt_started": 3,
+            "llm_attempt_finished": 3,
+            "llm_usage": 3,
+            "llm_raw_response": 3,
+            "llm_response_tools": 3,
+            "agent_tool_start": 14,
+            "agent_tool": 14,
+            "agent_loop_round": 1,
+            "agent_loop_submit": 1,
+            "tool_summary": 1,
+            "model_parse": 1,
+            "llm_chunk_completed": 1,
+            "claim_gate": 12,
+            "text_claim_checked": 12,
+            "document_execution_finished": 1
+          },
+          "completed_requests": 3,
+          "total_tokens": 26087,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        },
+        "tool_accounting_matches_events": true
+      }
+    ],
+    "issues": [],
+    "mock_model_responses": 0,
+    "reference_only_in_scorer": true,
+    "model": "deepseek-chat",
+    "provider": "api.deepseek.com",
+    "excluded_runs": {
+      "path": "C:\\Users\\admin\\AppData\\Local\\Packages\\sandbox.{83a3fb45-5f0f-4983-9830-6f4b47a32ad1}\\AC\\Temp\\fin_fullchain_20261012_r3uc0vmg\\live",
+      "reason": "first harness used display evidence missing company identity; not valid model-quality samples",
+      "retained_for_cost_and_audit": true
+    },
+    "frozen_inputs": {
+      "draft_sha256": "1dd30a4a2b2aa8891628fd112ef64fc3f4837a14d3525f0523b8b85b76613aba",
+      "facts_sha256": "366fd82632e8b1dd6dea98f38a605e3dd2139ab422008cc348f09da67f8e3c71",
+      "config_sha256": "89e8249b1d14860108615e89d343ab9eddb90a4eb7f99d58b9198e1ee7fa5415",
+      "facts": 80,
+      "sentences": 12,
+      "source_pdf_sha256": {
+        "results\\runs\\20261012_214633_a84ecff3\\work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+        "results\\runs\\20261012_214647_b9cf2779\\work\\data\\agent\\000858_2023_LOCAL-1aab0efbe751c145_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566.pdf": "1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566"
+      }
+    },
+    "preservation": {
+      "frontend_and_historical_outputs_unchanged": true,
+      "source_unchanged_during_tests": true,
+      "head_unchanged": true
+    },
+    "credential_leak_files": [],
+    "repeat_consistency": {
+      "identical_verdicts": true,
+      "identical_statuses": true
+    },
+    "tool_accounting_consistent": true,
+    "previous_corrected_runs": {
+      "path": "C:\\Users\\admin\\AppData\\Local\\Packages\\sandbox.{83a3fb45-5f0f-4983-9830-6f4b47a32ad1}\\AC\\Temp\\fin_fullchain_20261012_r3uc0vmg\\live_corrected",
+      "note": "valid numeric repeats before the tool limit/accounting fix; retained as history"
+    }
+  },
+  "real_api_test": {
+    "date": "2026-10-12",
+    "mode": "real remote LLM and actual local HTTP/PDF pipeline",
+    "authorized_destination": "https://api.deepseek.com/v1",
+    "authorization": "user explicitly approved endpoint and public test payload scope",
+    "requested_model": "deepseek-chat",
+    "format": "json_object",
+    "stream": true,
+    "mock_model_responses": 0,
+    "cases": [
+      {
+        "name": "real_annual",
+        "passed": true,
+        "run_status": "succeeded",
+        "check_status": "completed",
+        "reason": null,
+        "facts": 35,
+        "mode": "native_tool_calls",
+        "checks": [
+          {
+            "sentence_id": 1,
+            "quote": null,
+            "status": "证据支持",
+            "reason_code": "deterministic_check",
+            "reason": "在陈述运算符与容差下与原文证据一致",
+            "evidence_ids": [
+              "90b9e57bf6b244be21e84176"
+            ],
+            "track": "deterministic"
+          },
+          {
+            "sentence_id": 2,
+            "quote": null,
+            "status": "确认错误",
+            "reason_code": "deterministic_check",
+            "reason": "可比口径下陈述值与证据或计算结果不同",
+            "evidence_ids": [
+              "90b9e57bf6b244be21e84176"
+            ],
+            "track": "deterministic"
+          },
+          {
+            "sentence_id": 3,
+            "quote": null,
+            "status": "证据支持",
+            "reason_code": "deterministic_check",
+            "reason": "在陈述运算符与容差下与原文证据一致",
+            "evidence_ids": [
+              "9069bd51512aeff0eead7874"
+            ],
+            "track": "deterministic"
+          },
+          {
+            "sentence_id": 4,
+            "quote": null,
+            "status": "证据支持",
+            "reason_code": "deterministic_check",
+            "reason": "单位、口径和陈述精度下与原文证据一致",
+            "evidence_ids": [
+              "90b9e57bf6b244be21e84176",
+              "d3fe304c4c3a83041491c5b2"
+            ],
+            "track": "deterministic"
+          },
+          {
+            "sentence_id": 5,
+            "quote": null,
+            "status": "证据支持",
+            "reason_code": "direction_supported",
+            "reason": "可比期间计算方向为「增长」，与陈述一致",
+            "evidence_ids": [
+              "90b9e57bf6b244be21e84176",
+              "d3fe304c4c3a83041491c5b2"
+            ],
+            "track": "deterministic"
+          },
+          {
+            "sentence_id": 6,
+            "quote": null,
+            "status": "模型判断",
+            "reason_code": "forecast_marked_only",
+            "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+            "evidence_ids": [],
+            "track": "model"
+          }
+        ],
+        "stats": {
+          "events": {
+            "run_created": 1,
+            "run_started": 1,
+            "material_registered": 1,
+            "file_read": 2,
+            "extraction_channel": 3,
+            "extraction_dedup": 18,
+            "extraction_completed": 1,
+            "calculation": 22,
+            "draft_loaded": 1,
+            "llm_chunk_started": 1,
+            "agent_loop_start": 1,
+            "llm_chat_tools": 3,
+            "llm_attempt_started": 3,
+            "llm_attempt_finished": 3,
+            "llm_usage": 3,
+            "llm_raw_response": 3,
+            "llm_response_tools": 3,
+            "agent_tool_start": 9,
+            "agent_tool": 9,
+            "agent_loop_round": 1,
+            "agent_loop_submit": 1,
+            "tool_summary": 1,
+            "model_parse": 1,
+            "llm_chunk_completed": 1,
+            "claim_gate": 6,
+            "text_claim_checked": 6,
+            "document_execution_finished": 1,
+            "run_finished": 1
+          },
+          "completed_requests": 3,
+          "total_tokens": 18994,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        }
+      },
+      {
+        "name": "real_sse",
+        "passed": true,
+        "events": 107,
+        "errors": []
+      },
+      {
+        "name": "real_sse_resume",
+        "passed": true,
+        "events": 53
+      },
+      {
+        "name": "real_qa_intent",
+        "passed": true,
+        "status": "ok",
+        "intent": {
+          "metric": "total_revenue",
+          "period_year": 2024,
+          "kind": "value",
+          "source": "llm",
+          "company_code": "600519"
+        },
+        "answer": "贵州茅台2024-01-01至2024-12-31 营业总收入为 174144069958.25 元，口径：合并（PDF 第 63 页）。",
+        "evidence_ids": [
+          "ac67a33bceb715a65131d358"
+        ]
+      },
+      {
+        "name": "pledge",
+        "passed": true,
+        "run_status": "succeeded",
+        "facts": 5,
+        "announcement_status": "completed"
+      },
+      {
+        "name": "winning",
+        "passed": true,
+        "run_status": "succeeded",
+        "facts": 5,
+        "announcement_status": "completed"
+      },
+      {
+        "name": "second_company",
+        "passed": true,
+        "run_status": "succeeded",
+        "facts": 45,
+        "announcement_status": null
+      },
+      {
+        "name": "real_resume",
+        "passed": true,
+        "partial_status": "partial",
+        "resumed_status": "completed",
+        "final_status": "completed",
+        "request_sentence_ids": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            2
+          ]
+        ],
+        "preserved_unchanged": true,
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 3,
+            "draft_loaded": 3,
+            "llm_chunk_started": 3,
+            "llm_request": 2,
+            "llm_attempt_started": 2,
+            "llm_attempt_finished": 2,
+            "llm_usage": 2,
+            "llm_raw_response": 2,
+            "llm_response": 2,
+            "model_parse": 2,
+            "llm_chunk_completed": 2,
+            "llm_chunk_failed": 1,
+            "claim_gate": 6,
+            "text_claim_checked": 6,
+            "document_execution_finished": 3,
+            "llm_checkpoint_resumed": 2,
+            "llm_chunk_reused": 3
+          },
+          "completed_requests": 2,
+          "total_tokens": 5216,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        }
+      },
+      {
+        "name": "real_restart",
+        "passed": true,
+        "status": "succeeded"
+      }
+    ],
+    "repeats": [
+      {
+        "repeat": 1,
+        "status": "completed",
+        "mode": "native_tool_calls",
+        "score": {
+          "summary": {
+            "total": 12,
+            "judged": 0,
+            "correct": 0,
+            "wrong": 0,
+            "abstain": 8,
+            "abstain_expected": 0,
+            "abstain_avoidable": 8,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 4,
+            "expected_judge": 8,
+            "citation": 0,
+            "tp": 0,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0,
+            "extra_predictions": 0,
+            "accuracy": null,
+            "error_rate": null,
+            "correct_coverage": 0.0,
+            "precision": null,
+            "recall": null,
+            "false_positive_rate": null,
+            "coverage": 0.6667,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 5,
+            "tokens_charged": 47199,
+            "tool_calls": 0,
+            "active_seconds": 20.359
+          },
+          "rows": [
+            {
+              "id": "R01",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R02",
+              "sample": null,
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "expect": {
+                "kind": "reason_code",
+                "code": "forecast_marked_only"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "forecast_marked_only",
+              "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R03",
+              "sample": null,
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R04",
+              "sample": null,
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R05",
+              "sample": null,
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R06",
+              "sample": null,
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R07",
+              "sample": null,
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R08",
+              "sample": null,
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R09",
+              "sample": null,
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R10",
+              "sample": null,
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R11",
+              "sample": null,
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R12",
+              "sample": null,
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "000858"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "五粮液",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2023,
+                  "model_year": 2023,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2023"
+                }
+              },
+              "ok": false
+            }
+          ],
+          "extra_predictions": [],
+          "note": "逐条原子一对一评分；重复/多余预测单列；未判定不计正确。accuracy 为已判定正确率；precision/recall/FPR 以确认错误为正类，仅覆盖已判定二分类项，未判定影响 correct_coverage/coverage。"
+        },
+        "fields": {
+          "rows": [
+            {
+              "id": "R01",
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R02",
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R03",
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R04",
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R05",
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R07",
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R09",
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 0.875,
+              "exact": false,
+              "note": null
+            },
+            {
+              "id": "R10",
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R12",
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R06",
+              "sentence_id": 6,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R08",
+              "sentence_id": 8,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R11",
+              "sentence_id": 11,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            }
+          ],
+          "extra_predictions": 3,
+          "extras": [
+            {
+              "claim_id": "c6",
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": null,
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "经营质量",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "剔除投资收益后公司经营质量明显改善。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c8",
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": null,
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "净利润",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "公司净利润创新高。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            },
+            {
+              "claim_id": "c11",
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": null,
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "估值",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "unknown",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "认为公司估值处于历史低位。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            }
+          ],
+          "field_avg": 0.5917,
+          "exact_match": 8,
+          "extracted": 9,
+          "total": 12
+        },
+        "execution": {
+          "attempts": [
+            {
+              "attempt": 1,
+              "started_at": "2026-10-12T13:46:51.301816+00:00",
+              "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+              "reserved_tokens": 21785,
+              "tokens": null,
+              "status": null,
+              "elapsed_seconds": 5.032
+            },
+            {
+              "attempt": 2,
+              "started_at": "2026-10-12T13:46:57.006355+00:00",
+              "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+              "reserved_tokens": 21785,
+              "tokens": 4215,
+              "status": 200,
+              "elapsed_seconds": 1.75
+            },
+            {
+              "attempt": 3,
+              "started_at": "2026-10-12T13:46:58.766477+00:00",
+              "request_sha256": "1687839ab68332c5f90fd92c4c5df6c319881aa10f768b3bb6f8f57e990dd4ed",
+              "reserved_tokens": 29156,
+              "tokens": 5775,
+              "status": 200,
+              "elapsed_seconds": 1.719
+            },
+            {
+              "attempt": 4,
+              "started_at": "2026-10-12T13:47:00.501626+00:00",
+              "request_sha256": "bdbc7fc76957ad3a507d30b8d7516214565ad5d400b1903297b7607bac7f5bfc",
+              "reserved_tokens": 31279,
+              "tokens": 6335,
+              "status": 200,
+              "elapsed_seconds": 2.547
+            },
+            {
+              "attempt": 5,
+              "started_at": "2026-10-12T13:47:03.073186+00:00",
+              "request_sha256": "3e16d3b0143eb1b3142a4bf2febc8b2f7ae4bdd62b0c4a7c3e5587d78be6985b",
+              "reserved_tokens": 33179,
+              "tokens": 9089,
+              "status": 200,
+              "elapsed_seconds": 8.562
+            }
+          ],
+          "tool_calls": 0,
+          "tokens_charged": 47199,
+          "known_tokens": 25414,
+          "unknown_attempts": 1,
+          "active_seconds": 20.359,
+          "token_accounting": "已返回用量按实际值；未知尝试保留请求UTF-8字节数+输出上限预占"
+        },
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 1,
+            "draft_loaded": 1,
+            "llm_chunk_started": 1,
+            "agent_loop_start": 1,
+            "llm_chat_tools": 4,
+            "llm_attempt_started": 5,
+            "llm_attempt_finished": 5,
+            "llm_retry": 1,
+            "llm_usage": 4,
+            "llm_raw_response": 4,
+            "llm_response_tools": 4,
+            "agent_tool_start": 15,
+            "agent_tool": 15,
+            "agent_loop_round": 1,
+            "agent_loop_submit": 1,
+            "tool_summary": 1,
+            "model_parse": 1,
+            "llm_chunk_completed": 1,
+            "claim_gate": 12,
+            "text_claim_checked": 12,
+            "document_execution_finished": 1
+          },
+          "completed_requests": 4,
+          "total_tokens": 25414,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        },
+        "binding_sha256": "a3eeed5eb765c76d3ab6fc83f2741b1167079ccf7006b83df366b688926ca058"
+      },
+      {
+        "repeat": 2,
+        "status": "completed",
+        "mode": "fallback_single_shot_tools_preserved",
+        "score": {
+          "summary": {
+            "total": 12,
+            "judged": 0,
+            "correct": 0,
+            "wrong": 0,
+            "abstain": 8,
+            "abstain_expected": 0,
+            "abstain_avoidable": 8,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 4,
+            "expected_judge": 8,
+            "citation": 0,
+            "tp": 0,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0,
+            "extra_predictions": 0,
+            "accuracy": null,
+            "error_rate": null,
+            "correct_coverage": 0.0,
+            "precision": null,
+            "recall": null,
+            "false_positive_rate": null,
+            "coverage": 0.6667,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 6,
+            "tokens_charged": 33617,
+            "tool_calls": 0,
+            "active_seconds": 19.938
+          },
+          "rows": [
+            {
+              "id": "R01",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R02",
+              "sample": null,
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "expect": {
+                "kind": "reason_code",
+                "code": "forecast_marked_only"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "forecast_marked_only",
+              "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R03",
+              "sample": null,
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R04",
+              "sample": null,
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R05",
+              "sample": null,
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R06",
+              "sample": null,
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "qualitative_statement",
+              "reason": "定性陈述：本阶段不做数值裁决，解释见 plain_claim",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R07",
+              "sample": null,
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R08",
+              "sample": null,
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "qualitative_statement",
+              "reason": "定性陈述：本阶段不做数值裁决，解释见 plain_claim",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R09",
+              "sample": null,
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R10",
+              "sample": null,
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R11",
+              "sample": null,
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "cross_company_comparison",
+              "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R12",
+              "sample": null,
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "000858"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "五粮液",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2023,
+                  "model_year": 2023,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2023"
+                }
+              },
+              "ok": false
+            }
+          ],
+          "extra_predictions": [],
+          "note": "逐条原子一对一评分；重复/多余预测单列；未判定不计正确。accuracy 为已判定正确率；precision/recall/FPR 以确认错误为正类，仅覆盖已判定二分类项，未判定影响 correct_coverage/coverage。"
+        },
+        "fields": {
+          "rows": [
+            {
+              "id": "R01",
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R02",
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 0.6666666666666666,
+              "exact": false,
+              "note": null
+            },
+            {
+              "id": "R03",
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R04",
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R05",
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R07",
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R09",
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 0.875,
+              "exact": false,
+              "note": null
+            },
+            {
+              "id": "R10",
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R12",
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R06",
+              "sentence_id": 6,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R08",
+              "sentence_id": 8,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R11",
+              "sentence_id": 11,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            }
+          ],
+          "extra_predictions": 3,
+          "extras": [
+            {
+              "claim_id": "c6",
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": null,
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "经营质量",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unknown",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "剔除投资收益后，公司经营质量明显改善。",
+              "is_forecast": false,
+              "ambiguity": "metric",
+              "verification_action": "needs_review"
+            },
+            {
+              "claim_id": "c8",
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": null,
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "净利润",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unknown",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "公司净利润创新高。",
+              "is_forecast": false,
+              "ambiguity": "metric",
+              "verification_action": "needs_review"
+            },
+            {
+              "claim_id": "c11",
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": null,
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "估值",
+              "metric": "unsupported",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "down",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "我们认为公司估值处于历史低位。",
+              "is_forecast": false,
+              "ambiguity": "none",
+              "verification_action": "mark_out_of_scope"
+            }
+          ],
+          "field_avg": 0.5694,
+          "exact_match": 7,
+          "extracted": 9,
+          "total": 12
+        },
+        "execution": {
+          "attempts": [
+            {
+              "attempt": 1,
+              "started_at": "2026-10-12T13:47:11.858860+00:00",
+              "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+              "reserved_tokens": 21785,
+              "tokens": 4186,
+              "status": 200,
+              "elapsed_seconds": 1.719
+            },
+            {
+              "attempt": 2,
+              "started_at": "2026-10-12T13:47:13.577226+00:00",
+              "request_sha256": "9dfa2c48190866f5c3a3940f478dce3d4023122fd93631dcb7f989df0af68cfe",
+              "reserved_tokens": 27552,
+              "tokens": 5117,
+              "status": 200,
+              "elapsed_seconds": 4.125
+            },
+            {
+              "attempt": 3,
+              "started_at": "2026-10-12T13:47:17.710457+00:00",
+              "request_sha256": "23685fc9f2c52c9c5da23b2dd5bc62c6ba791a65f7780534cf6eb3cbd9a06b44",
+              "reserved_tokens": 29244,
+              "tokens": 5800,
+              "status": 200,
+              "elapsed_seconds": 1.921
+            },
+            {
+              "attempt": 4,
+              "started_at": "2026-10-12T13:47:19.640880+00:00",
+              "request_sha256": "7f2ecb32687c6478b8069ff9401f2fe8984de01b64970d9ec99d086c7819b371",
+              "reserved_tokens": 31391,
+              "tokens": 6211,
+              "status": 200,
+              "elapsed_seconds": 1.406
+            },
+            {
+              "attempt": 5,
+              "started_at": "2026-10-12T13:47:21.064569+00:00",
+              "request_sha256": "db2104a11daaac0f3b73bb9fde775cde493f03b5c8eb329dbb341dca619f4daa",
+              "reserved_tokens": 32630,
+              "tokens": 6803,
+              "status": 200,
+              "elapsed_seconds": 2.344
+            },
+            {
+              "attempt": 6,
+              "started_at": "2026-10-12T13:47:23.420810+00:00",
+              "request_sha256": "62b1be44a93479e6dad572be086a4a3c342a59e52d0f968d7bf23e109d393fe0",
+              "reserved_tokens": 19552,
+              "tokens": 5500,
+              "status": 200,
+              "elapsed_seconds": 8.344
+            }
+          ],
+          "tool_calls": 0,
+          "tokens_charged": 33617,
+          "known_tokens": 33617,
+          "unknown_attempts": 0,
+          "active_seconds": 19.938,
+          "token_accounting": "已返回用量按实际值；未知尝试保留请求UTF-8字节数+输出上限预占"
+        },
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 1,
+            "draft_loaded": 1,
+            "llm_chunk_started": 1,
+            "agent_loop_start": 1,
+            "llm_chat_tools": 5,
+            "llm_attempt_started": 6,
+            "llm_attempt_finished": 6,
+            "llm_usage": 6,
+            "llm_raw_response": 6,
+            "llm_response_tools": 5,
+            "agent_tool_start": 17,
+            "agent_tool": 17,
+            "loop_fallback": 1,
+            "llm_request": 1,
+            "llm_response": 1,
+            "model_parse": 1,
+            "llm_chunk_completed": 1,
+            "claim_gate": 12,
+            "text_claim_checked": 12,
+            "document_execution_finished": 1
+          },
+          "completed_requests": 6,
+          "total_tokens": 33617,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        },
+        "binding_sha256": "a3eeed5eb765c76d3ab6fc83f2741b1167079ccf7006b83df366b688926ca058"
+      },
+      {
+        "repeat": 3,
+        "status": "completed",
+        "mode": "native_tool_calls",
+        "score": {
+          "summary": {
+            "total": 12,
+            "judged": 0,
+            "correct": 0,
+            "wrong": 0,
+            "abstain": 8,
+            "abstain_expected": 0,
+            "abstain_avoidable": 8,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 4,
+            "expected_judge": 8,
+            "citation": 0,
+            "tp": 0,
+            "fp": 0,
+            "tn": 0,
+            "fn": 0,
+            "extra_predictions": 0,
+            "accuracy": null,
+            "error_rate": null,
+            "correct_coverage": 0.0,
+            "precision": null,
+            "recall": null,
+            "false_positive_rate": null,
+            "coverage": 0.6667,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 5,
+            "tokens_charged": 30222,
+            "tool_calls": 0,
+            "active_seconds": 14.265
+          },
+          "rows": [
+            {
+              "id": "R01",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R02",
+              "sample": null,
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "expect": {
+                "kind": "reason_code",
+                "code": "forecast_marked_only"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "forecast_marked_only",
+              "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R03",
+              "sample": null,
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R04",
+              "sample": null,
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R05",
+              "sample": null,
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R06",
+              "sample": null,
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "qualitative_statement",
+              "reason": "定性陈述：本阶段不做数值裁决，解释见 plain_claim",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R07",
+              "sample": null,
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R08",
+              "sample": null,
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "qualitative_statement",
+              "reason": "定性陈述：本阶段不做数值裁决，解释见 plain_claim",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R09",
+              "sample": null,
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R10",
+              "sample": null,
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "600519"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "贵州茅台",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2024,
+                  "model_year": 2024,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "ok": false
+            },
+            {
+              "id": "R11",
+              "sample": null,
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "expect": {
+                "kind": "nonverdict"
+              },
+              "outcome": "model_track",
+              "status": "模型判断",
+              "track": "model",
+              "reason_code": "qualitative_statement",
+              "reason": "定性陈述：本阶段不做数值裁决，解释见 plain_claim",
+              "evidence_ids": [],
+              "grounding": {
+                "company": null,
+                "period": null
+              },
+              "ok": true
+            },
+            {
+              "id": "R12",
+              "sample": null,
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "abstain",
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "unresolved_company",
+              "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "conflict": false,
+                  "model_code": null,
+                  "sentence_codes": [
+                    "000858"
+                  ],
+                  "ignored_mentions": [],
+                  "code": null,
+                  "basis": "sentence_company",
+                  "matched": "五粮液",
+                  "position": 6,
+                  "note": "句内公司不在本次已加载材料中"
+                },
+                "period": {
+                  "year": 2023,
+                  "model_year": 2023,
+                  "conflict": false,
+                  "located_in": "quote",
+                  "matched_text": "2023"
+                }
+              },
+              "ok": false
+            }
+          ],
+          "extra_predictions": [],
+          "note": "逐条原子一对一评分；重复/多余预测单列；未判定不计正确。accuracy 为已判定正确率；precision/recall/FPR 以确认错误为正类，仅覆盖已判定二分类项，未判定影响 correct_coverage/coverage。"
+        },
+        "fields": {
+          "rows": [
+            {
+              "id": "R01",
+              "sentence_id": 1,
+              "quote": "2024年，贵州茅台营业收入为1500.00亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R02",
+              "sentence_id": 2,
+              "quote": "我们预计公司2025年营业收入有望达到约1900亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R03",
+              "sentence_id": 3,
+              "quote": "2024年，贵州茅台营业收入约为1709亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R04",
+              "sentence_id": 4,
+              "quote": "2024年，贵州茅台营业收入超过1800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R05",
+              "sentence_id": 5,
+              "quote": "2024年，贵州茅台归母净利润不低于800亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R07",
+              "sentence_id": 7,
+              "quote": "2024年，贵州茅台扣非归母净利润为862.41亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R09",
+              "sentence_id": 9,
+              "quote": "2024年，贵州茅台营业收入同比增长15.71%。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 0.875,
+              "exact": false,
+              "note": null
+            },
+            {
+              "id": "R10",
+              "sentence_id": 10,
+              "quote": "2024年，贵州茅台营业总收入为1741.44亿元，与营业收入口径不同。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R12",
+              "sentence_id": 12,
+              "quote": "2023年，五粮液归母净利润为999.99亿元。",
+              "extracted": true,
+              "items": 1,
+              "field_acc": 1.0,
+              "exact": true,
+              "note": null
+            },
+            {
+              "id": "R06",
+              "sentence_id": 6,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R08",
+              "sentence_id": 8,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            },
+            {
+              "id": "R11",
+              "sentence_id": 11,
+              "extracted": false,
+              "items": 0,
+              "field_acc": 0.0,
+              "exact": false,
+              "note": "金标无主张"
+            }
+          ],
+          "extra_predictions": 3,
+          "extras": [
+            {
+              "claim_id": "c6",
+              "sentence_id": 6,
+              "quote": "剔除投资收益后，公司经营质量明显改善。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "经营质量",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "剔除投资收益后公司经营质量明显改善。",
+              "is_forecast": false,
+              "ambiguity": "metric",
+              "verification_action": "needs_review"
+            },
+            {
+              "claim_id": "c8",
+              "sentence_id": 8,
+              "quote": "公司净利润创新高。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "净利润",
+              "metric": "parent_net_profit",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "up",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "公司净利润创新高。",
+              "is_forecast": false,
+              "ambiguity": "period",
+              "verification_action": "needs_review"
+            },
+            {
+              "claim_id": "c11",
+              "sentence_id": 11,
+              "quote": "我们认为公司估值处于历史低位。",
+              "context_quote": null,
+              "claim_type": "qualitative",
+              "company_name": "贵州茅台",
+              "company_b": null,
+              "comparison_operator": null,
+              "period_year": null,
+              "period_kind": "unknown",
+              "metric_text": "估值",
+              "metric": "unknown",
+              "scope": "unknown",
+              "kind": "unsupported",
+              "value": null,
+              "unit": null,
+              "operator": "none",
+              "tolerance_pct": null,
+              "direction": "down",
+              "currency": "unknown",
+              "qualifier": "unknown",
+              "plain_claim": "认为公司估值处于历史低位。",
+              "is_forecast": false,
+              "ambiguity": "metric",
+              "verification_action": "needs_review"
+            }
+          ],
+          "field_avg": 0.5917,
+          "exact_match": 8,
+          "extracted": 9,
+          "total": 12
+        },
+        "execution": {
+          "attempts": [
+            {
+              "attempt": 1,
+              "started_at": "2026-10-12T13:47:32.006596+00:00",
+              "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+              "reserved_tokens": 21785,
+              "tokens": 4186,
+              "status": 200,
+              "elapsed_seconds": 1.875
+            },
+            {
+              "attempt": 2,
+              "started_at": "2026-10-12T13:47:33.892054+00:00",
+              "request_sha256": "8c733ba8cc3329b621086e4b045271688a8d32f1864b1f5bc262d518bf442364",
+              "reserved_tokens": 27552,
+              "tokens": 5117,
+              "status": 200,
+              "elapsed_seconds": 0.609
+            },
+            {
+              "attempt": 3,
+              "started_at": "2026-10-12T13:47:34.521542+00:00",
+              "request_sha256": "e6613944018088a31e1c013551ffac028d9c8b5e5a31d9d19e97ca4f4573b49f",
+              "reserved_tokens": 29244,
+              "tokens": 5798,
+              "status": 200,
+              "elapsed_seconds": 1.609
+            },
+            {
+              "attempt": 4,
+              "started_at": "2026-10-12T13:47:36.138568+00:00",
+              "request_sha256": "6b92dc9aca98ec27b7ab8a4305f171d464707d4230660122de4b003d8b6d5b4e",
+              "reserved_tokens": 31381,
+              "tokens": 6207,
+              "status": 200,
+              "elapsed_seconds": 1.594
+            },
+            {
+              "attempt": 5,
+              "started_at": "2026-10-12T13:47:37.747415+00:00",
+              "request_sha256": "248d9f974e546a1216391303b0073d41f7cc2b6498119bf3876c528706b39299",
+              "reserved_tokens": 32610,
+              "tokens": 8914,
+              "status": 200,
+              "elapsed_seconds": 8.5
+            }
+          ],
+          "tool_calls": 0,
+          "tokens_charged": 30222,
+          "known_tokens": 30222,
+          "unknown_attempts": 0,
+          "active_seconds": 14.265,
+          "token_accounting": "已返回用量按实际值；未知尝试保留请求UTF-8字节数+输出上限预占"
+        },
+        "stats": {
+          "events": {
+            "run_started": 1,
+            "file_read": 1,
+            "draft_loaded": 1,
+            "llm_chunk_started": 1,
+            "agent_loop_start": 1,
+            "llm_chat_tools": 5,
+            "llm_attempt_started": 5,
+            "llm_attempt_finished": 5,
+            "llm_usage": 5,
+            "llm_raw_response": 5,
+            "llm_response_tools": 5,
+            "agent_tool_start": 14,
+            "agent_tool": 14,
+            "agent_loop_round": 1,
+            "agent_loop_submit": 1,
+            "tool_summary": 1,
+            "model_parse": 1,
+            "llm_chunk_completed": 1,
+            "claim_gate": 12,
+            "text_claim_checked": 12,
+            "document_execution_finished": 1
+          },
+          "completed_requests": 5,
+          "total_tokens": 30222,
+          "returned_models": [
+            "deepseek-flash"
+          ]
+        },
+        "binding_sha256": "a3eeed5eb765c76d3ab6fc83f2741b1167079ccf7006b83df366b688926ca058"
+      }
+    ],
+    "issues": [],
+    "frozen_inputs": {
+      "draft_sha256": "1dd30a4a2b2aa8891628fd112ef64fc3f4837a14d3525f0523b8b85b76613aba",
+      "facts_sha256": "6f556a22b4e8fd2fcbdb2aadf6d33992cf81de5ea888620b1bc822fe0f8cdca4",
+      "config_sha256": "89e8249b1d14860108615e89d343ab9eddb90a4eb7f99d58b9198e1ee7fa5415",
+      "facts": 80,
+      "sentences": 12,
+      "reference_only_in_scorer": true
+    },
+    "api_stats": {
+      "events": {
+        "run_created": 4,
+        "run_started": 4,
+        "material_registered": 2,
+        "file_read": 5,
+        "extraction_channel": 6,
+        "extraction_dedup": 45,
+        "extraction_completed": 2,
+        "calculation": 42,
+        "draft_loaded": 1,
+        "llm_chunk_started": 1,
+        "agent_loop_start": 1,
+        "llm_chat_tools": 3,
+        "llm_attempt_started": 3,
+        "llm_attempt_finished": 3,
+        "llm_usage": 4,
+        "llm_raw_response": 4,
+        "llm_response_tools": 3,
+        "agent_tool_start": 9,
+        "agent_tool": 9,
+        "agent_loop_round": 1,
+        "agent_loop_submit": 1,
+        "tool_summary": 1,
+        "model_parse": 1,
+        "llm_chunk_completed": 1,
+        "claim_gate": 6,
+        "text_claim_checked": 6,
+        "document_execution_finished": 1,
+        "run_finished": 4,
+        "llm_chat": 1,
+        "event_extracted": 2
+      },
+      "completed_requests": 4,
+      "total_tokens": 19239,
+      "returned_models": [
+        "deepseek-flash"
+      ]
+    },
+    "api_runs": {
+      "runs": [
+        {
+          "run_id": "20261012_214633_a84ecff3",
+          "command": "financial",
+          "status": "succeeded",
+          "current_phase": "model",
+          "created_at": "2026-10-12T21:46:33.636+08:00",
+          "started_at": "2026-10-12T21:46:33.637+08:00",
+          "finished_at": "2026-10-12T21:46:44.483+08:00",
+          "cancel_reason": "",
+          "error": "",
+          "result_summary": {
+            "available": true,
+            "ok": true,
+            "counts": {
+              "match": 9,
+              "mismatch": 0,
+              "unverified": 3,
+              "issue": 0
+            },
+            "evidence_count": 35,
+            "failure_count": 0
+          },
+          "events_url": "/api/runs/20261012_214633_a84ecff3/events",
+          "input_summary": {
+            "code": "600519",
+            "name": "贵州茅台",
+            "year": 2024,
+            "draft_present": true,
+            "draft_length": 140
+          }
+        },
+        {
+          "run_id": "20261012_214646_216aba0f",
+          "command": "announcement",
+          "status": "succeeded",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:46:46.379+08:00",
+          "started_at": "2026-10-12T21:46:46.381+08:00",
+          "finished_at": "2026-10-12T21:46:46.620+08:00",
+          "cancel_reason": "",
+          "error": "",
+          "result_summary": {
+            "available": true,
+            "ok": true,
+            "counts": {
+              "events": 1,
+              "required_missing": 0,
+              "conflicts": 0
+            },
+            "evidence_count": 5,
+            "failure_count": 0
+          },
+          "events_url": "/api/runs/20261012_214646_216aba0f/events",
+          "input_summary": {
+            "event_type": "auto",
+            "ocr": false
+          }
+        },
+        {
+          "run_id": "20261012_214647_b7009c82",
+          "command": "announcement",
+          "status": "succeeded",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:46:47.005+08:00",
+          "started_at": "2026-10-12T21:46:47.007+08:00",
+          "finished_at": "2026-10-12T21:46:47.115+08:00",
+          "cancel_reason": "",
+          "error": "",
+          "result_summary": {
+            "available": true,
+            "ok": true,
+            "counts": {
+              "events": 1,
+              "required_missing": 0,
+              "conflicts": 0
+            },
+            "evidence_count": 5,
+            "failure_count": 0
+          },
+          "events_url": "/api/runs/20261012_214647_b7009c82/events",
+          "input_summary": {
+            "event_type": "auto",
+            "ocr": false
+          }
+        },
+        {
+          "run_id": "20261012_214647_b9cf2779",
+          "command": "financial",
+          "status": "succeeded",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:46:47.690+08:00",
+          "started_at": "2026-10-12T21:46:47.692+08:00",
+          "finished_at": "2026-10-12T21:46:50.521+08:00",
+          "cancel_reason": "",
+          "error": "",
+          "result_summary": {
+            "available": true,
+            "ok": true,
+            "counts": {
+              "match": 8,
+              "mismatch": 0,
+              "unverified": 2,
+              "issue": 0
+            },
+            "evidence_count": 45,
+            "failure_count": 0
+          },
+          "events_url": "/api/runs/20261012_214647_b9cf2779/events",
+          "input_summary": {
+            "code": "000858",
+            "name": "五粮液",
+            "year": 2023
+          }
+        }
+      ]
+    },
+    "preservation": {
+      "frontend_and_historical_outputs_unchanged": true,
+      "source_unchanged_during_model_tests": true,
+      "head_unchanged": true,
+      "frontend_files": 19
+    },
+    "credential_leak_files": [],
+    "totals": {
+      "total": 9,
+      "passed": 9
+    }
+  },
+  "pre_fix_local_test": {
+    "date": "2026-10-12",
+    "mode": "local API full chain; no external LLM calls",
+    "cases": [
+      {
+        "name": "static_frontend",
+        "passed": true,
+        "assets": {
+          "/app/css/tokens.css": 200,
+          "/app/css/layout.css": 200,
+          "/app/css/components.css": 200,
+          "/app/css/responsive.css": 200,
+          "/app/js/main.js": 200
+        },
+        "source_bytes_match": true
+      },
+      {
+        "name": "annual",
+        "passed": true,
+        "status": "succeeded",
+        "facts": 35,
+        "qoq_rows": 0,
+        "qoq_blocked": 0,
+        "event_rows": 0,
+        "check_mode": "local_supplemental",
+        "result_keys": [
+          "ok",
+          "run_id",
+          "document_id",
+          "materials",
+          "rows",
+          "signals",
+          "qoq_rows",
+          "qoq_blocked",
+          "basis",
+          "limits",
+          "counts",
+          "evidence",
+          "issues",
+          "report_md",
+          "failures",
+          "checks",
+          "trace"
+        ]
+      },
+      {
+        "name": "annual_sse",
+        "passed": true,
+        "events": 49,
+        "errors": []
+      },
+      {
+        "name": "sse_resume",
+        "passed": true,
+        "events": 24
+      },
+      {
+        "name": "evidence_image",
+        "passed": true,
+        "dimensions": [
+          953,
+          1348
+        ]
+      },
+      {
+        "name": "qa_citations",
+        "passed": true,
+        "answer": "贵州茅台2024-01-01至2024-12-31 营业收入为 170899152276.34 元，口径：合并（PDF 第 5 页）。",
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176"
+        ]
+      },
+      {
+        "name": "qa_company_gate",
+        "passed": true,
+        "status": "wrong_company"
+      },
+      {
+        "name": "search",
+        "passed": true,
+        "hits": 3
+      },
+      {
+        "name": "session_isolation",
+        "passed": true,
+        "http": 404
+      },
+      {
+        "name": "restart_recovery",
+        "passed": true,
+        "restored_status": "succeeded"
+      },
+      {
+        "name": "interim",
+        "passed": true,
+        "status": "succeeded",
+        "facts": 40,
+        "qoq_rows": 4,
+        "qoq_blocked": 4,
+        "event_rows": 0,
+        "check_mode": null,
+        "result_keys": [
+          "ok",
+          "run_id",
+          "document_id",
+          "materials",
+          "rows",
+          "signals",
+          "qoq_rows",
+          "qoq_blocked",
+          "basis",
+          "limits",
+          "counts",
+          "evidence",
+          "issues",
+          "report_md",
+          "failures",
+          "trace"
+        ]
+      },
+      {
+        "name": "interim_sse",
+        "passed": true,
+        "events": 95,
+        "errors": []
+      },
+      {
+        "name": "pledge",
+        "passed": false,
+        "status": "failed",
+        "facts": 0,
+        "qoq_rows": 0,
+        "qoq_blocked": 0,
+        "event_rows": 0,
+        "check_mode": null,
+        "result_keys": []
+      },
+      {
+        "name": "pledge_sse",
+        "passed": true,
+        "events": 5,
+        "errors": []
+      },
+      {
+        "name": "winning",
+        "passed": false,
+        "status": "failed",
+        "facts": 0,
+        "qoq_rows": 0,
+        "qoq_blocked": 0,
+        "event_rows": 0,
+        "check_mode": null,
+        "result_keys": []
+      },
+      {
+        "name": "winning_sse",
+        "passed": true,
+        "events": 5,
+        "errors": []
+      },
+      {
+        "name": "wuliangye",
+        "passed": true,
+        "status": "succeeded",
+        "facts": 45,
+        "qoq_rows": 0,
+        "qoq_blocked": 0,
+        "event_rows": 0,
+        "check_mode": null,
+        "result_keys": [
+          "ok",
+          "run_id",
+          "document_id",
+          "materials",
+          "rows",
+          "signals",
+          "qoq_rows",
+          "qoq_blocked",
+          "basis",
+          "limits",
+          "counts",
+          "evidence",
+          "issues",
+          "report_md",
+          "failures",
+          "trace"
+        ]
+      },
+      {
+        "name": "wuliangye_sse",
+        "passed": true,
+        "events": 56,
+        "errors": []
+      }
+    ],
+    "runs": [
+      {
+        "label": "annual",
+        "run_id": "20261012_214057_c913a525",
+        "status": "succeeded"
+      },
+      {
+        "label": "interim",
+        "run_id": "20261012_214102_7f77f8d3",
+        "status": "succeeded"
+      },
+      {
+        "label": "pledge",
+        "run_id": "20261012_214104_528be532",
+        "status": "failed"
+      },
+      {
+        "label": "winning",
+        "run_id": "20261012_214105_a65b1008",
+        "status": "failed"
+      },
+      {
+        "label": "wuliangye",
+        "run_id": "20261012_214106_06f17ce2",
+        "status": "succeeded"
+      }
+    ],
+    "visible_runs": {
+      "runs": [
+        {
+          "run_id": "20261012_214057_c913a525",
+          "command": "financial",
+          "status": "succeeded",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:40:57.966+08:00",
+          "started_at": "2026-10-12T21:40:57.968+08:00",
+          "finished_at": "2026-10-12T21:40:59.850+08:00",
+          "cancel_reason": "",
+          "error": "",
+          "result_summary": {
+            "available": true,
+            "ok": true,
+            "counts": {
+              "match": 9,
+              "mismatch": 0,
+              "unverified": 3,
+              "issue": 0
+            },
+            "evidence_count": 35,
+            "failure_count": 0
+          },
+          "events_url": "/api/runs/20261012_214057_c913a525/events",
+          "input_summary": {
+            "code": "600519",
+            "name": "贵州茅台",
+            "year": 2024,
+            "draft_present": true,
+            "draft_length": 72
+          }
+        },
+        {
+          "run_id": "20261012_214102_7f77f8d3",
+          "command": "financial",
+          "status": "succeeded",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:41:02.242+08:00",
+          "started_at": "2026-10-12T21:41:02.244+08:00",
+          "finished_at": "2026-10-12T21:41:03.988+08:00",
+          "cancel_reason": "",
+          "error": "",
+          "result_summary": {
+            "available": true,
+            "ok": true,
+            "counts": {
+              "match": 0,
+              "mismatch": 0,
+              "unverified": 20,
+              "issue": 0
+            },
+            "evidence_count": 40,
+            "failure_count": 0
+          },
+          "events_url": "/api/runs/20261012_214102_7f77f8d3/events",
+          "input_summary": {
+            "code": "600519",
+            "name": "贵州茅台",
+            "year": 2025
+          }
+        },
+        {
+          "run_id": "20261012_214104_528be532",
+          "command": "announcement",
+          "status": "failed",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:41:04.838+08:00",
+          "started_at": "2026-10-12T21:41:04.840+08:00",
+          "finished_at": "2026-10-12T21:41:05.111+08:00",
+          "cancel_reason": "",
+          "error": "未知运行状态：completed",
+          "result_summary": {
+            "available": false
+          },
+          "events_url": "/api/runs/20261012_214104_528be532/events",
+          "input_summary": {
+            "event_type": "auto",
+            "ocr": false
+          }
+        },
+        {
+          "run_id": "20261012_214105_a65b1008",
+          "command": "announcement",
+          "status": "failed",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:41:05.368+08:00",
+          "started_at": "2026-10-12T21:41:05.370+08:00",
+          "finished_at": "2026-10-12T21:41:05.495+08:00",
+          "cancel_reason": "",
+          "error": "未知运行状态：completed",
+          "result_summary": {
+            "available": false
+          },
+          "events_url": "/api/runs/20261012_214105_a65b1008/events",
+          "input_summary": {
+            "event_type": "auto",
+            "ocr": false
+          }
+        },
+        {
+          "run_id": "20261012_214106_06f17ce2",
+          "command": "financial",
+          "status": "succeeded",
+          "current_phase": "run",
+          "created_at": "2026-10-12T21:41:06.009+08:00",
+          "started_at": "2026-10-12T21:41:06.011+08:00",
+          "finished_at": "2026-10-12T21:41:09.581+08:00",
+          "cancel_reason": "",
+          "error": "",
+          "result_summary": {
+            "available": true,
+            "ok": true,
+            "counts": {
+              "match": 8,
+              "mismatch": 0,
+              "unverified": 2,
+              "issue": 0
+            },
+            "evidence_count": 45,
+            "failure_count": 0
+          },
+          "events_url": "/api/runs/20261012_214106_06f17ce2/events",
+          "input_summary": {
+            "code": "000858",
+            "name": "五粮液",
+            "year": 2023
+          }
+        }
+      ]
+    },
+    "preservation": {
+      "frontend_and_historic_outputs_unchanged": true,
+      "source_unchanged": true,
+      "head_unchanged": true,
+      "frontend_files": 19
+    },
+    "totals": {
+      "total": 18,
+      "passed": 16
+    }
+  },
+  "real_request_and_credential_proof": {
+    "scan_entries": 1774,
+    "credential_hits": [],
+    "counts": {
+      "initial_including_excluded": {
+        "tokens": 113708,
+        "physical_attempts": 22,
+        "completed_responses": 21
+      },
+      "corrected_before_budget_fix": {
+        "tokens": 110122,
+        "physical_attempts": 13,
+        "completed_responses": 13
+      },
+      "final": {
+        "tokens": 83013,
+        "physical_attempts": 11,
+        "completed_responses": 11
+      }
+    },
+    "total_tokens": 306843,
+    "final_field_scores": [
+      {
+        "repeat": 1,
+        "field_avg": 0.5917,
+        "exact_match": 8,
+        "extra_predictions": 3
+      },
+      {
+        "repeat": 2,
+        "field_avg": 0.5917,
+        "exact_match": 8,
+        "extra_predictions": 3
+      },
+      {
+        "repeat": 3,
+        "field_avg": 0.5917,
+        "exact_match": 8,
+        "extra_predictions": 3
+      }
+    ],
+    "consistency": {
+      "identical_verdicts": true,
+      "identical_statuses": true
+    },
+    "tool_accounting_consistent": true,
+    "completed_responses": 45,
+    "physical_request_attempts": 46,
+    "attempts_without_usable_response": [
+      {
+        "group": "live",
+        "repeat": 1,
+        "attempt": 1,
+        "started_at": "2026-10-12T13:46:51.301816+00:00",
+        "request_sha256": "324539fa8fbf29af3f21774fdc02c81ba93c39b06ae51dfaf56536d2eeea1fec",
+        "reserved_tokens": 21785,
+        "tokens": null,
+        "status": null,
+        "elapsed_seconds": 5.032
+      }
+    ]
+  },
+  "regression": {
+    "tests_run": 416,
+    "passed": 415,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "elapsed_seconds": 24.235,
+    "failure_details": [],
+    "skip_details": [
+      {
+        "test": "test_configured_ocr_scanned_labels_are_reviewed (test_competition.AnnouncementRegressionTests.test_configured_ocr_scanned_labels_are_reviewed)",
+        "reason": "可选 OCR 语言数据未配置；先运行 scripts/setup_ocr.py"
+      }
+    ]
+  },
+  "quality_gates": [
+    {
+      "check": "scripts/check_sensitive.py",
+      "exit_code": 0
+    },
+    {
+      "check": "scripts/review_structure.py",
+      "exit_code": 0
+    },
+    {
+      "check": "scripts/b7_release_smoke.py",
+      "exit_code": 0
+    },
+    {
+      "check": "scripts/b7_reverse_checks.py",
+      "exit_code": 0
+    }
+  ],
+  "structure": {
+    "schema_version": 1,
+    "generated_at": "2026-10-12",
+    "violations": [],
+    "warnings": [
+      {
+        "path": "agent/test.py",
+        "lines": 1286,
+        "bytes": 70628,
+        "warning": "超过 1200 行或 80KiB；只审查不直接失败"
+      }
+    ],
+    "webui": {
+      "path": "agent/webui.py",
+      "lines": 108,
+      "limit": 300,
+      "ok": true
+    }
+  },
+  "release_smoke": {
+    "schema_version": 1,
+    "generated_at": "2026-10-12T22:03:52+08:00",
+    "command": [
+      "C:\\Users\\admin\\AppData\\Local\\Temp\\fin-backend-py312-1282\\Scripts\\python.exe",
+      "-B",
+      "D:\\Desktop\\fin-ai-agent\\agent\\webui_app.py",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "52863"
+    ],
+    "checks": {
+      "app": {
+        "path": "/app/",
+        "status": 200,
+        "ok": true,
+        "content_type": "text/html; charset=utf-8"
+      },
+      "legacy_page": {
+        "path": "/",
+        "status": 200,
+        "ok": true,
+        "content_type": "text/html; charset=utf-8"
+      },
+      "runs_api": {
+        "path": "/api/runs",
+        "status": 200,
+        "ok": true,
+        "content_type": "application/json; charset=utf-8"
+      },
+      "legacy_search_api": {
+        "path": "/api/search",
+        "status": 200,
+        "ok": true,
+        "content_type": "application/json; charset=utf-8"
+      }
+    },
+    "server_stdout": "",
+    "server_stderr": "",
+    "ok": true
+  },
+  "reverse_checks": {
+    "schema_version": 1,
+    "checks": [
+      {
+        "id": "R1",
+        "name": "敏感扫描器正样本必须红",
+        "injection": "临时文本放入运行时拼出的 OpenAI 风格密钥",
+        "expected": "正常样本 0，正样本非 0，且不回显密钥",
+        "observed": "normal=0, injected=1, secret_echo=False, rule_echo=True",
+        "pass": true
+      },
+      {
+        "id": "R2",
+        "name": "脱敏门移除必须红",
+        "injection": "将 events/run_manager 的 redact_value 临时替换为恒等函数",
+        "expected": "正常落盘无密钥；移除后 event JSONL 或 run.json 出现密钥",
+        "observed": "normal_hit=False, injected_hit=True",
+        "pass": true
+      },
+      {
+        "id": "R3",
+        "name": "安全头移除必须红",
+        "injection": "临时禁用 webui_http._send_security_headers",
+        "expected": "/app/ 正常有 CSP；禁用后 CSP 缺失",
+        "observed": "normal_csp=True, injected_csp=False, statuses=200/200",
+        "pass": true
+      },
+      {
+        "id": "R4",
+        "name": "上传总量门移除必须红",
+        "injection": "临时把对比材料上限改为 5、总量上限改为 81，并保留验证桩",
+        "expected": "正常 5 份被拒；移除数量/总量门后不再被拒",
+        "observed": "normal_code=INVALID_UPLOAD, injected_rejected=False, injected_error=accepted",
+        "pass": true
+      },
+      {
+        "id": "R5",
+        "name": "代理欺骗必须红",
+        "injection": "未配置代理时临时直接采用 X-Forwarded-For 作为客户端 IP",
+        "expected": "正常第 11 次 429；注入后伪造不同 XFF 可绕过 429",
+        "observed": "normal_has_429=True, injected_has_429=False",
+        "pass": true
+      },
+      {
+        "id": "R6",
+        "name": "旧 API 删除必须红",
+        "injection": "临时从 Handler.do_POST 拦截并移除 /api/search",
+        "expected": "正常 200；移除后 404",
+        "observed": "normal=200, injected=404",
+        "pass": true
+      },
+      {
+        "id": "R7",
+        "name": "旧页面迁移丢内容必须红",
+        "injection": "临时把旧 PAGE 中的 /api/ask 替换为 /api/removed",
+        "expected": "正常响应含 /api/ask；注入响应缺失",
+        "observed": "normal_has_ask=True, injected_has_ask=False",
+        "pass": true
+      },
+      {
+        "id": "R8",
+        "name": "webui.py 重新塞回实现必须红",
+        "injection": "临时构造 301 行的 agent/webui.py 并运行结构审查",
+        "expected": "真实仓库 0 违规；注入文件触发 300 行门",
+        "observed": "real_violations=0, injected_over_limit=True",
+        "pass": true
+      },
+      {
+        "id": "R9",
+        "name": "归档漏 Web 资产必须红",
+        "injection": "临时把 Run.sources 扫描根指向没有 web/legacy/index.html 的假仓库",
+        "expected": "真实归档含旧页面；注入归档缺失",
+        "observed": "normal_has_asset=True, injected_has_asset=False",
+        "pass": true
+      },
+      {
+        "id": "R10",
+        "name": "兼容清单隐藏调用方必须红",
+        "injection": "把 /api/analyze 从 keep 改成 retired，但保留已有调用方",
+        "expected": "正常清单不违反退役门；注入行违反 `retired => callers=[]`",
+        "observed": "normal_violation=False, injected_violation=True, callers=['web/legacy/index.html', 'agent/test_competition.py']",
+        "pass": true
+      },
+      {
+        "id": "R11",
+        "name": "文档坏链必须红",
+        "injection": "临时 Markdown 写入不存在的本地链接 missing.md",
+        "expected": "正常文档 0；坏链文档非 0 且报本地链接不存在",
+        "observed": "normal=0, injected=1, missing_link_error=True",
+        "pass": true
+      }
+    ],
+    "ok": true
+  },
+  "compilation": {
+    "files": 97,
+    "passed": true
+  },
+  "failed_tool_accounting_probe": {
+    "passed": true,
+    "tool_calls": 1,
+    "checkpoint_tool_calls": 1
+  },
+  "limitations": [
+    "single-shot parsing can leave scope unknown and request review",
+    "vague QA metric selection not independently scored",
+    "qualitative/complex relationships remain model track",
+    "cross-report footnote comparability extraction incomplete",
+    "field reference defaults and qualitative protocol scoring need calibration",
+    "optional OCR language data unavailable; no new independent human-signed blind corpus"
+  ],
+  "delivery_gates": [
+    {
+      "check": "scripts/check_docs.py",
+      "exit_code": 0,
+      "stdout": "文档检查通过：64 个 Markdown 文件\n",
+      "stderr": ""
+    },
+    {
+      "check": "scripts/check_sensitive.py",
+      "exit_code": 0,
+      "stdout": "敏感信息扫描通过：扫描 179 个文本文件\n",
+      "stderr": ""
+    },
+    {
+      "check": "git diff --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: in the working copy of 'agent/api/runtime_bridge.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'agent/audit/loop.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'agent/audit/tools/events.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'agent/audit/tools/search.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'agent/test_api.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'agent/webui_page.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/运行说明.md', LF will be replaced by CRLF the next time Git touches it\n"
+    }
+  ]
+}

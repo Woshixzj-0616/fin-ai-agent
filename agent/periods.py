@@ -5,8 +5,8 @@ import calendar
 import re
 from datetime import date
 
-from finance import (NON_AMOUNT_UNITS, convert, decimal, declared_basis_conflicts,
-                     evidence_issues, result, text, yoy)
+from finance import (BASIS_KEYS, NON_AMOUNT_UNITS, convert, decimal, declared_basis_conflicts,
+                     declared_basis_states, evidence_issues, result, text, yoy)
 
 STOCK_METRICS = frozenset({"total_assets", "parent_equity", "book_value_per_share",
                            "accounts_receivable", "receivables", "inventory", "total_liabilities",
@@ -39,7 +39,23 @@ def end_date(year: int, month: int) -> str:
     return date(year, month, calendar.monthrange(year, month)[1]).isoformat()
 
 
-def dimensions(a: dict, b: dict) -> list[str]:
+
+def period_bounds(fact: dict, *, allow_legacy_annual: bool = False):
+    """读取明确起止；兼容旧年度表中明确的年度 + 12个月，不推断半年/单季。"""
+    start, end = fact.get("period_start"), fact.get("period_end")
+    if (allow_legacy_annual and not start and not end and fact.get("period_kind") == "annual"
+            and fact.get("duration_months") == 12 and fact.get("period_year") is not None):
+        year = int(fact["period_year"])
+        start, end = f"{year}-01-01", f"{year}-12-31"
+    try:
+        first, last = date.fromisoformat(start), date.fromisoformat(end)
+        if first > last:
+            return None
+        return first.isoformat(), last.isoformat()
+    except (ValueError, TypeError):
+        return None
+
+def dimension_reasons(a: dict, b: dict) -> list[str]:
     reasons = []
     for key in ("company_code", "metric", "currency", "scope"):
         if key == "scope" and a.get("unit") in NON_AMOUNT_UNITS and b.get("unit") in NON_AMOUNT_UNITS:
@@ -52,8 +68,46 @@ def dimensions(a: dict, b: dict) -> list[str]:
         reasons.append("存在待复核字段")
     if a.get("adjustment") == "before" or b.get("adjustment") == "before":
         reasons.append("调整前数据不能直接参与比较")
-    reasons.extend(declared_basis_conflicts(a, b))
     return reasons
+
+
+def dimensions(a: dict, b: dict) -> list[str]:
+    """兼容旧接口：维度问题 + 已声明的依据冲突。"""
+    return [*dimension_reasons(a, b), *declared_basis_conflicts(a, b)]
+
+
+def same_disclosure(a: dict, b: dict) -> bool:
+    """同一份材料的同一个比较表：属于披露表内部算术，不要求跨报告依据。"""
+    group = a.get("comparison_group")
+    if not group or group != b.get("comparison_group"):
+        return False
+    # 分组标签不是材料身份；两侧声明身份时还必须属于同一份材料。
+    for key in ("document_id", "source_sha256", "source_file"):
+        if a.get(key) and b.get(key) and a[key] != b[key]:
+            return False
+    return True
+
+
+def comparability(a: dict, b: dict) -> dict:
+    """跨报告可比性三态：satisfied / conflict / unknown。
+
+    - satisfied：同一披露比较表内部算术，或政策、合并边界、重述版本都已声明且一致；
+    - conflict：已声明的依据明确冲突；
+    - unknown：跨报告且缺少依据声明——未知不等于一致，派生结果不得当成功。
+    """
+    reasons = dimension_reasons(a, b)
+    internal = same_disclosure(a, b)
+    states = declared_basis_states(a, b)
+    if internal:
+        # 同一披露比较表的内部算术不要求跨报告依据；已声明的明确冲突仍然生效。
+        states = {key: ("conflict" if state == "conflict" else "satisfied")
+                  for key, state in states.items()}
+    conflicts = [key for key, state in states.items() if state == "conflict"]
+    gaps = [key for key, state in states.items() if state == "unknown"]
+    status = "conflict" if conflicts else ("unknown" if gaps else "satisfied")
+    reasons.extend(f"{key} 不一致" for key in conflicts)
+    return {"status": status, "internal": internal, "dimensions": states,
+            "conflicts": conflicts, "gaps": gaps, "reasons": reasons}
 
 
 def amount(fact: dict):
@@ -77,7 +131,7 @@ def derive_quarter(current: dict, previous_cumulative: dict | None = None) -> di
     if end.month == 3:
         reasons = dimensions(current, current)
         if reasons:
-            return result("not_comparable", reasons=reasons)
+            return result("not_comparable", reasons=reasons, comparability=comparability(current, current))
         if amount(current) is None:
             return result("missing", reason="一季度累计值缺失")
         return result("ok", amount(current), unit="元", period_start=start.isoformat(),
@@ -85,19 +139,33 @@ def derive_quarter(current: dict, previous_cumulative: dict | None = None) -> di
                       formula="Q1 = year_to_date_Q1")
     if previous_cumulative is None:
         return result("missing", reason="缺少上一季度累计数，无法得到单季值")
-    reasons = dimensions(current, previous_cumulative)
-    if (previous_cumulative.get("period_start") != start.isoformat() or
-            previous_cumulative.get("period_end") != end_date(end.year, end.month - 3)):
-        reasons.append("累计期间不相邻或跨年度")
-    if reasons:
-        return result("not_comparable", reasons=reasons)
     a, b = amount(current), amount(previous_cumulative)
     if a is None or b is None:
         return result("missing", reason="累计数缺失")
+    compare = comparability(current, previous_cumulative)
+    reasons = list(compare["reasons"])
+    if (previous_cumulative.get("period_start") != start.isoformat() or
+            previous_cumulative.get("period_end") != end_date(end.year, end.month - 3)):
+        reasons.append("累计期间不相邻或跨年度")
+    operands = {"current_ytd": text(a), "previous_ytd": text(b)}
+    evidence_ids = [current["evidence_id"], previous_cumulative["evidence_id"]]
+    if reasons:
+        return result("not_comparable", reasons=reasons, comparability=compare,
+                      operands=operands, evidence_ids=evidence_ids,
+                      period_start=date(end.year, end.month - 2, 1).isoformat(),
+                      period_end=end.isoformat(),
+                      formula="quarter = current_ytd - previous_ytd")
+    if compare["status"] == "unknown":
+        # 跨报告派生缺少政策、合并边界或调整依据：保留操作数和被阻断的尝试，但不给出单季值。
+        return result("not_comparable", reason="跨报告可比性依据未知，未按同一口径处理",
+                      reasons=[f"{key} 未声明" for key in compare["gaps"]],
+                      comparability=compare, operands=operands, evidence_ids=evidence_ids,
+                      period_start=date(end.year, end.month - 2, 1).isoformat(),
+                      period_end=end.isoformat(),
+                      attempted_value=text(a - b), formula="quarter = current_ytd - previous_ytd")
     return result("ok", a - b, unit="元", formula="quarter = current_ytd - previous_ytd",
                   period_start=date(end.year, end.month - 2, 1).isoformat(), period_end=end.isoformat(),
-                  operands={"current_ytd": text(a), "previous_ytd": text(b)},
-                  evidence_ids=[current["evidence_id"], previous_cumulative["evidence_id"]])
+                  operands=operands, evidence_ids=evidence_ids, comparability=compare)
 
 
 def growth(current: dict, previous: dict | None, kind: str = "yoy") -> dict:
@@ -105,7 +173,8 @@ def growth(current: dict, previous: dict | None, kind: str = "yoy") -> dict:
         return result("not_comparable", reason="增长类型必须为 yoy 或 qoq")
     if previous is None:
         return result("missing", reason="缺少唯一可比期间数据")
-    reasons = dimensions(current, previous)
+    compare = comparability(current, previous)
+    reasons = list(compare["reasons"])
     try:
         a0, a1 = (date.fromisoformat(current[k]) for k in ("period_start", "period_end"))
         b0, b1 = (date.fromisoformat(previous[k]) for k in ("period_start", "period_end"))
@@ -125,10 +194,16 @@ def growth(current: dict, previous: dict | None, kind: str = "yoy") -> dict:
     except (KeyError, ValueError, TypeError):
         reasons.append("期间起止未明确")
     if reasons:
-        return result("not_comparable", reasons=reasons)
+        return result("not_comparable", reasons=reasons, comparability=compare)
+    if compare["status"] == "unknown":
+        return result("not_comparable", reason="跨报告可比性依据未知，未按同一口径处理",
+                      reasons=[f"{key} 未声明" for key in compare["gaps"]],
+                      comparability=compare,
+                      evidence_ids=[current.get("evidence_id"), previous.get("evidence_id")])
     try:
         out = yoy(amount(current), amount(previous))
     except ValueError as exc:
         return result("not_comparable", reasons=[str(exc)])
-    out.update(growth_kind=kind, evidence_ids=[current["evidence_id"], previous["evidence_id"]])
+    out.update(growth_kind=kind, evidence_ids=[current["evidence_id"], previous["evidence_id"]],
+               comparability=compare)
     return out

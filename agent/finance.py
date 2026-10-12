@@ -46,14 +46,30 @@ def evidence_issues(fact: dict) -> list[str]:
     return list(dict.fromkeys(str(reason) for reason in reasons))
 
 
+BASIS_KEYS = ("accounting_policy_version", "consolidation_basis", "restatement_version")
+
+
+def declared_basis_states(a: dict, b: dict) -> dict:
+    """跨报告依据逐维度三态：satisfied 双方声明且一致；conflict 明确冲突；unknown 缺声明。
+
+    未知不等于一致：不能靠默认“政策未变”让缺少依据的跨报告派生过关。
+    """
+    states = {}
+    for key in BASIS_KEYS:
+        left, right = a.get(key), b.get(key)
+        if left is None or right is None or left in UNKNOWN or right in UNKNOWN:
+            states[key] = "unknown"
+        elif left != right:
+            states[key] = "conflict"
+        else:
+            states[key] = "satisfied"
+    return states
+
+
 def declared_basis_conflicts(a: dict, b: dict) -> list[str]:
     """保留 fin 既有可比性条件，新增元数据存在明确冲突时拒算。"""
-    reasons = []
-    for key in ("accounting_policy_version", "consolidation_basis", "restatement_version"):
-        left, right = a.get(key), b.get(key)
-        if left is not None and right is not None and left != right:
-            reasons.append(f"{key} 不一致")
-    return reasons
+    return [f"{key} 不一致" for key, state in declared_basis_states(a, b).items()
+            if state == "conflict"]
 
 
 def decimal(value) -> Decimal | None:
@@ -274,8 +290,12 @@ def comparable(current: dict, previous: dict) -> list[str]:
         reasons.append("基期为调整前，尚未确认可比性")
     if evidence_issues(current) or evidence_issues(previous):
         reasons.append("证据存在待复核字段，不能用于确认同比")
+    from periods import comparability
+    basis = comparability(current, previous)
     reasons.extend(declared_basis_conflicts(current, previous))
-    return reasons
+    if basis["status"] == "unknown":
+        reasons.extend(f"{key} 未声明" for key in basis["gaps"])
+    return list(dict.fromkeys(reasons))
 
 
 def evidence_yoy(current: dict, previous: dict | None) -> dict:
@@ -392,7 +412,7 @@ def analyze(facts: list[dict], run) -> dict:
         run.event("calculation", operation="financial_signal", **signal)
     signals.extend(additions)
     from periods import derive_quarter, growth, NON_ADDITIVE
-    quarter_facts = []
+    quarter_facts, blocked_derivations = [], []
     for fact in current:
         if fact.get("metric") in NON_ADDITIVE:
             continue
@@ -408,6 +428,21 @@ def analyze(facts: list[dict], run) -> dict:
                 quarter_facts.append({**fact, **{k: derived[k] for k in ("period_start", "period_end")},
                                       "duration_months": 3, "period_kind": "quarter", "value": derived["value"],
                                       "unit": "元", "normalized_value": derived["value"], "derivation": derived})
+            elif derived.get("status") == "not_comparable" and derived.get("attempted_value") is not None:
+                # 被阻断的跨报告派生照样留档：操作数、来源和被阻断的尝试都不丢。
+                blocked_derivations.append({
+                    "company_code": fact.get("company_code"), "metric": fact.get("metric"),
+                    "period_start": derived.get("period_start") or fact.get("period_start"),
+                    "period_end": derived.get("period_end") or fact.get("period_end"),
+                    "current_evidence_id": fact.get("evidence_id"),
+                    "previous_evidence_id": (candidates[0].get("evidence_id") if len(candidates) == 1 else None),
+                    "status": derived.get("status"), "reason": derived.get("reason"),
+                    "reasons": derived.get("reasons"), "operands": derived.get("operands"),
+                    "attempted_value": derived.get("attempted_value"),
+                    "comparability": derived.get("comparability"),
+                    "evidence_ids": derived.get("evidence_ids", []),
+                    "epistemic_type": "事实",
+                })
             run.event("calculation", operation="derive_quarter", evidence_ids=derived.get("evidence_ids", []), calculation=derived)
     qoq_rows = []
     # 同一单季在不同报告/派生通道重复出现时，等值才合流；冲突不任取一份。
@@ -438,6 +473,7 @@ def analyze(facts: list[dict], run) -> dict:
         run.event("calculation", operation="quarter_qoq", **qoq_rows[-1])
     return {"rows": rows, "signals": signals,
             "qoq_rows": qoq_rows,
+            "blocked_derivations": blocked_derivations,
             "basis": "使用明确的报告期间和比较值；同比要求上年同期间，环比要求相邻单季，调整后列优先。",
             "limits": "结论相对于所选原始文件；未自动认定其为截至今日最新有效披露版本。"}
 
@@ -452,6 +488,13 @@ def check_claim(claim: dict, facts: list[dict]) -> dict:
                and f["adjustment"] != "before"
                and (not claim.get("period_start") or f.get("period_start") == claim["period_start"])
                and (not claim.get("period_end") or f.get("period_end") == claim["period_end"])]
+    # 精确报告类型/材料 ID 只收窄候选；旧证据缺这些字段时仍按公司+期间匹配。
+    for field in ("report_kind", "document_id"):
+        wanted = claim.get(field)
+        if wanted:
+            narrowed = [f for f in matches if f.get(field) == wanted]
+            if narrowed:
+                matches = narrowed
     if len(matches) > 1 and claim.get("period_kind") not in {None, "", "unknown"}:
         matches = [f for f in matches if f.get("period_kind") == claim["period_kind"]]
     if len(matches) != 1:
