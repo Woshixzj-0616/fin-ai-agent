@@ -169,8 +169,8 @@ def derive_quarter(current: dict, previous_cumulative: dict | None = None) -> di
 
 
 def growth(current: dict, previous: dict | None, kind: str = "yoy") -> dict:
-    if kind not in {"yoy", "qoq"}:
-        return result("not_comparable", reason="增长类型必须为 yoy 或 qoq")
+    if kind not in {"yoy", "qoq", "year_end"}:
+        return result("not_comparable", reason="增长类型必须为 yoy、qoq 或 year_end")
     if previous is None:
         return result("missing", reason="缺少唯一可比期间数据")
     compare = comparability(current, previous)
@@ -181,8 +181,13 @@ def growth(current: dict, previous: dict | None, kind: str = "yoy") -> dict:
         if current.get("metric") in STOCK_METRICS:
             if kind == "qoq":
                 reasons.append("时点余额不按单季流量环比计算")
+            elif kind == "year_end":
+                if a0 != a1 or b0 != b1 or b1 != date(a1.year - 1, 12, 31):
+                    reasons.append("较上年末变化必须使用上年12月31日余额")
             elif (a1.year - b1.year, a1.month, a1.day) != (1, b1.month, b1.day):
                 reasons.append("余额同比需为上年相同日期")
+        elif kind == "year_end":
+            reasons.append("较上年末变化只适用于时点余额")
         elif kind == "yoy":
             if (a0.year - b0.year, a1.year - b1.year, a0.month, a0.day, a1.month, a1.day) != (
                     1, 1, b0.month, b0.day, b1.month, b1.day):

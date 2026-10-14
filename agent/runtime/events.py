@@ -54,9 +54,15 @@ def phase_for_event(event_type: str) -> str:
     """把历史事件名映射到前端稳定阶段。"""
     if event_type.startswith("run_"):
         return "run"
+    if event_type == "source_snapshot":
+        return "identity"
+    if event_type == "pipeline_completed":
+        return "report"
+    if event_type == "event_extracted":
+        return "extraction"
     if event_type.startswith(("pdf.", "identity")):
         return "identity"
-    if event_type.startswith(("extract", "file_read")):
+    if event_type.startswith(("extract", "file_read", "period_header_carry")):
         return "extraction"
     if event_type.startswith("material_registered"):
         return "extraction"

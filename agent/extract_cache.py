@@ -10,11 +10,12 @@ from __future__ import annotations
 
 import json
 import os
+import tempfile
 import threading
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from materials import Run, sha256, write_json
+from materials import Run, sha256, within
 
 CACHE_VERSION = 2
 _CACHE_DIRNAME = "data/cache/extract"
@@ -37,7 +38,7 @@ def _code_fingerprint() -> str:
 
 def cache_key(material: dict) -> str:
     origin = {key: material.get(key) for key in (
-        "document_id", "company_code", "company_name", "report_year", "announcement_id", "local_import_id",
+        "document_id", "local_file", "company_code", "company_name", "report_year", "announcement_id", "local_import_id",
         "disclosed_at", "disclosure_precision", "needs_version_review", "version_policy", "version_selection",
         "source_kind", "source_url", "retrieved_at", "license_status")}
     metadata_hash = sha256(json.dumps(origin, ensure_ascii=False, sort_keys=True).encode())[:16]
@@ -56,22 +57,33 @@ def load_cache(root: Path, material: dict) -> list[dict] | None:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
-    if payload.get("cache_key") != cache_key(material):
+    if not isinstance(payload, dict) or payload.get("cache_key") != cache_key(material):
         return None
     facts = payload.get("facts")
-    return facts if isinstance(facts, list) else None
+    return facts if isinstance(facts, list) and all(isinstance(fact, dict) for fact in facts) else None
 
 
 def save_cache(root: Path, material: dict, facts: list[dict]) -> Path:
     path = cache_path(root, material)
     path.parent.mkdir(parents=True, exist_ok=True)
-    write_json(path, {
+    payload = {
         "cache_key": cache_key(material),
         "document_id": material.get("document_id"),
         "sha256": material.get("sha256"),
         "fact_count": len(facts),
         "facts": facts,
-    })
+    }
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                         prefix=path.name + ".", suffix=".tmp", delete=False) as stream:
+            temporary = Path(stream.name)
+            json.dump(payload, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
     return path
 
 
@@ -103,6 +115,13 @@ class _RunProxy:
 def extract_material_cached(root: Path, material: dict, run: Run | _RunProxy | None = None,
                             use_cache: bool = True) -> tuple[list[dict], bool]:
     """返回 (facts, from_cache)。"""
+    path = within(root, root / material["local_file"])
+    blob = path.read_bytes()
+    actual_sha256 = sha256(blob)
+    if run is not None:
+        run.event("file_read", path=str(path), sha256=actual_sha256, size_bytes=len(blob))
+    if actual_sha256 != material.get("sha256"):
+        raise ValueError("提取前指纹复核失败；缓存不能替代原始文件核验")
     if use_cache:
         cached = load_cache(root, material)
         if cached is not None:
@@ -119,7 +138,8 @@ def extract_material_cached(root: Path, material: dict, run: Run | _RunProxy | N
             self._outer = outer
 
         def read(self, p):
-            return Path(p).read_bytes()
+            selected = within(root, Path(p))
+            return blob if selected == path else selected.read_bytes()
 
         def event(self, kind, **data):
             if self._outer is not None:
@@ -128,10 +148,6 @@ def extract_material_cached(root: Path, material: dict, run: Run | _RunProxy | N
         def output(self, name):
             return self._outer.output(name)
 
-    path = root / material["local_file"]
-    if run is not None:
-        run.event("file_read", path=str(path.resolve()),
-                  sha256=material.get("sha256"), size_bytes=material.get("size_bytes"))
     facts = extract_material(root, material, _Inner(run))
     if use_cache and facts:
         save_cache(root, material, facts)

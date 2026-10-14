@@ -29,6 +29,7 @@ def _markdown_files(root: Path, paths: list[Path]) -> list[Path]:
             for path in candidates
             if path.is_file()
             and not any(part in SKIP_PARTS for part in path.parts)
+            and (bool(paths) or not path.resolve().is_relative_to(root / "results" / "runs"))
         }
     )
 

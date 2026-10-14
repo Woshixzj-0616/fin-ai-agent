@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import re
 from collections.abc import Callable
 from pathlib import Path
@@ -12,17 +13,18 @@ try:
     from qa import answer as qa_answer
     from runtime import RunContext, RunManager, RunNotVisible
     from runtime.events import TERMINAL_STATUSES
-    from runtime.redaction import redact_value
+    from runtime.redaction import SECRET_PATTERNS, redact_result, redact_value
     from tools import search_run_text
 except ModuleNotFoundError:
     from agent.qa import answer as qa_answer
     from agent.runtime import RunContext, RunManager, RunNotVisible
     from agent.runtime.events import TERMINAL_STATUSES
-    from agent.runtime.redaction import redact_value
+    from agent.runtime.redaction import SECRET_PATTERNS, redact_result, redact_value
     from agent.tools import search_run_text
 
 from .runtime_bridge import RuntimeRunBridge
 from .security import validate_pdf_upload
+from .artifacts import build_explanation, build_reproduction_bundle, capture_sources
 
 
 PAGE_IMAGE_RE = re.compile(r"^\d{6}_\d{4}_[0-9a-f]{8}_p\d+\.png$")
@@ -80,6 +82,28 @@ class ApiApplication:
     ) -> dict:
         if command not in {"financial", "announcement"}:
             raise ApiError(400, "UNSUPPORTED_COMMAND", "不支持的任务类型")
+        parameters = dict(parameters)
+        draft = parameters.get("draft")
+        if isinstance(draft, str):
+            try:
+                from backend_runtime import load_config
+            except ModuleNotFoundError:
+                from agent.backend_runtime import load_config
+            if len(draft) > load_config()["document"]["max_characters"]:
+                raise ApiError(400, "DRAFT_TOO_LARGE", "草稿超过当前配置的整篇字符上限")
+            configured_key = os.environ.get("LLM_API_KEY", "")
+            if ((configured_key and configured_key in draft)
+                    or any(pattern.search(draft) for _, pattern in SECRET_PATTERNS)):
+                raise ApiError(400, "SENSITIVE_INPUT", "草稿疑似包含凭证，请移除后重新提交")
+        if command == "announcement":
+            try:
+                from announcements import SCHEMAS
+            except ModuleNotFoundError:
+                from agent.announcements import SCHEMAS
+            event_type = str(parameters.get("event_type") or "auto").strip()
+            if event_type not in {"auto", *SCHEMAS}:
+                raise ApiError(400, "INVALID_EVENT_TYPE", "请选择自动识别、股份质押、中标或股权变动")
+            parameters["event_type"] = event_type
         comparison_pdfs = list(comparison_pdfs or [])
         if len(comparison_pdfs) > MAX_COMPARISON_PDFS:
             raise ApiError(400, "INVALID_UPLOAD", "比较材料最多 4 份")
@@ -123,6 +147,7 @@ class ApiApplication:
                 pdf,
                 comparison_pdfs,
             )
+        capture_sources(context)
         return self._default_workflow(
             context,
             bridge,
@@ -197,6 +222,29 @@ class ApiApplication:
         if not path.is_file():
             raise ApiError(404, "IMAGE_NOT_FOUND", "页图不存在或无权访问")
         return path
+
+    def export_run(self, session_id: str, run_id: str, kind: str) -> tuple[str, str, bytes]:
+        context = self._completed_run(session_id, run_id)
+        result = context.snapshot()["result"]
+        if not isinstance(result, dict):
+            raise ApiError(409, "RUN_RESULT_NOT_READY", "本次运行没有完整结果可导出")
+        if kind == "result.json":
+            blob = (json.dumps(redact_result(result), ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+            return f"{run_id}_result.json", "application/json; charset=utf-8", blob
+        if kind == "report.md":
+            if not result.get("report_md"):
+                raise ApiError(409, "RUN_RESULT_NOT_READY", "本次运行没有报告可导出")
+            return f"{run_id}_report.md", "text/markdown; charset=utf-8", result["report_md"].encode("utf-8")
+        if kind == "reproduction.zip":
+            try:
+                blob = build_reproduction_bundle(context, self.manager.bus.replay(context.id))
+            except ValueError as exc:
+                raise ApiError(413, "EXPORT_TOO_LARGE", str(exc)) from exc
+            return f"{run_id}_reproduction.zip", "application/zip", blob
+        if kind == "explanation.json":
+            blob = (json.dumps(build_explanation(context, self.manager.bus.replay(context.id)), ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+            return f"{run_id}_explanation.json", "application/json; charset=utf-8", blob
+        raise ApiError(404, "EXPORT_NOT_FOUND", "导出文件不存在")
 
     def subscribe_events(self, session_id: str, run_id: str, *, after_seq: int = 0):
         context = self._visible_run(session_id, run_id)
@@ -283,10 +331,10 @@ class ApiApplication:
             raise ApiError(500, "RUN_RESULT_INVALID", "运行结果无法读取") from exc
 
     def _serialize_run(self, context: RunContext, *, include_result: bool) -> dict:
-        snapshot = context.snapshot()
+        snapshot = context.snapshot(result_transform=None if include_result else self._result_summary)
         events = self.manager.bus.replay(context.id)
-        payload = redact_value(snapshot.get("result"))
-        summary = self._result_summary(payload)
+        payload = snapshot.get("result")
+        summary = self._result_summary(payload) if include_result else payload
         output = {
             "run_id": context.id,
             "command": context.command,
@@ -302,7 +350,17 @@ class ApiApplication:
             "input_summary": self._input_summary(snapshot.get("parameters")),
         }
         if include_result:
-            output["result"] = redact_value(self._enrich_result(context, payload))
+            output["result"] = redact_result(self._enrich_result(context, payload))
+            if isinstance(payload, dict):
+                output["result"]["exports"] = {
+                    kind: f"/api/runs/{context.id}/exports/{kind}"
+                    for kind in ("result.json", "report.md", "reproduction.zip", "explanation.json")
+                    if kind != "report.md" or payload.get("report_md")
+                }
+                output["result"]["explanation"] = build_explanation(context, events)
+                provenance = context.output("provenance.json")
+                if provenance.is_file():
+                    output["result"]["provenance"] = self._load_run_json(context, "provenance.json")
         return output
 
     @staticmethod
@@ -326,19 +384,21 @@ class ApiApplication:
         if not isinstance(payload, dict):
             return copy.deepcopy(payload)
         output = copy.deepcopy(payload)
+        dimensions_cache: dict[str, tuple[float, float] | None] = {}
         for key in ("evidence", "rows"):
             records = output.get(key)
             if not isinstance(records, list):
                 continue
             output[key] = [
-                cls._enrich_page_record(context, record)
+                cls._enrich_page_record(context, record, dimensions_cache=dimensions_cache)
                 if isinstance(record, dict) else record
                 for record in records
             ]
         return output
 
     @classmethod
-    def _enrich_page_record(cls, context: RunContext, record: dict) -> dict:
+    def _enrich_page_record(cls, context: RunContext, record: dict, *,
+                            dimensions_cache: dict | None = None) -> dict:
         output = dict(record)
         name = str(record.get("page_image") or "")
         if not PAGE_IMAGE_RE.fullmatch(name):
@@ -347,7 +407,12 @@ class ApiApplication:
         if not image_path.is_file():
             return output
 
-        dimensions = cls._page_dimensions(context, record, image_path)
+        if dimensions_cache is not None and name in dimensions_cache:
+            dimensions = dimensions_cache[name]
+        else:
+            dimensions = cls._page_dimensions(context, record, image_path)
+            if dimensions_cache is not None:
+                dimensions_cache[name] = dimensions
         output["page_image_url"] = f"/api/runs/{context.id}/images/{name}"
         output["image_scale"] = IMAGE_SCALE
         if dimensions is not None:

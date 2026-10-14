@@ -203,12 +203,19 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   #report-card h2 .actions, #results h2 .dir-tag, #analysis-card h2 .dir-tag, #checks h2 .dir-tag { display: none !important; }
   body { background: #fff; }
   .card {
-    border: 0; padding: 0 0 12px; margin: 0 0 8px; page-break-inside: avoid;
+    border: 0; padding: 0 0 12px; margin: 0 0 8px; break-inside: auto;
     box-shadow: none;
   }
-  .table-wrap, pre.report { max-height: none; overflow: visible; border: 0; padding: 0; }
+  .table-wrap, pre.report, .report-md, .report-md pre { max-height: none !important; height: auto !important; overflow: visible !important; border: 0; padding: 0; }
+  #qa-card, #search-card, #auto-info, #manual-fallback, #trace-card { display: none !important; }
+  table { width: 100% !important; min-width: 0 !important; font-size: 9px !important; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; }
+  pre, td, th { white-space: normal; overflow-wrap: anywhere; }
+  .report-md pre { white-space: pre-wrap; }
+  @page { size: A4; margin: 12mm; }
   table.data-table th { position: static; }
-  table.data-table { min-width: 0 !important; }
   .qa-item.is-latest { box-shadow: none; }
   #lightbox { display: none !important; }
 }
@@ -297,8 +304,8 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
         </colgroup>
         <thead>
           <tr>
-            <th>指标 / 期间</th><th class="num">本期</th><th class="num">上期</th><th class="num">复算同比</th>
-            <th class="num">披露同比</th><th>核对</th><th class="num">PDF 页</th>
+            <th>指标 / 比较类型</th><th>本期</th><th>比较基期</th><th>复算增减</th>
+            <th>披露增减</th><th>核对</th><th>PDF 页</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -390,6 +397,12 @@ const fmtBig = (v) => {
   if (abs >= 1e8) return (n / 1e8).toLocaleString('zh-CN', { maximumFractionDigits: 2 }) + ' 亿';
   return n.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
 };
+const changeOf = r => r.change || r.yoy || {};
+const changeCheck = r => r.reported_change_check || r.reported_yoy_check;
+const valueUnit = r => r.normalized_unit || (['%', '元/股'].includes(r.unit) ? r.unit : '元');
+const changeText = r => changeOf(r).status === 'ok' ? fmt(changeOf(r).value) + (changeOf(r).unit || '%') : (changeOf(r).reason || changeOf(r).status || '—');
+const checkOutcome = r => changeCheck(r) ? (changeCheck(r).status === 'match' ? '一致' : '不一致，需复核')
+  : ({ not_disclosed: '原文未披露', unparsed: '披露值无法解析', not_comparable: '无法核对（期间不可比）' }[r.disclosure_status] || '未提取到披露值');
 const scopeZh = (s) => ({
   consolidated: '合并', parent_shareholders: '归母', parent_company: '母公司',
   unknown: '未知',
@@ -406,7 +419,7 @@ function renderMd(md) {
   const lines = String(md).split('\n');
   let html = '', inTable = false, inList = false, inCode = false;
   const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
-  const closeTable = () => { if (inTable) { html += '</table>'; inTable = false; } };
+  const closeTable = () => { if (inTable) { html += '</tbody></table>'; inTable = false; } };
   for (const line of lines) {
     if (line.startsWith('```')) { closeList(); closeTable(); html += inCode ? '</pre>' : '<pre>'; inCode = !inCode; continue; }
     if (inCode) { html += esc(line) + '\n'; continue; }
@@ -414,7 +427,7 @@ function renderMd(md) {
       closeList();
       const cells = line.split('|').slice(1, -1).map((c) => c.trim());
       if (/^[-: |]+$/.test(line)) continue;
-      if (!inTable) { html += '<table>'; inTable = true; html += '<tr>' + cells.map((c) => `<th>${esc(c)}</th>`).join('') + '</tr>'; }
+      if (!inTable) { html += '<table><thead>'; inTable = true; html += '<tr>' + cells.map((c) => `<th>${esc(c)}</th>`).join('') + '</tr></thead><tbody>'; }
       else html += '<tr>' + cells.map((c) => `<td>${esc(c)}</td>`).join('') + '</tr>';
       continue;
     }
@@ -660,17 +673,15 @@ function render(data) {
   // ── ② 财报分析：指标与同比 ──
   const tbody = $('#metrics tbody');
   tbody.innerHTML = (data.rows || []).map((r) => {
-    const yoy = r.yoy && r.yoy.status === 'ok' ? fmt(r.yoy.value) + '%' : (r.yoy ? r.yoy.status : '—');
-    const check = r.reported_yoy_check;
-    const outcome = check
-      ? (check.status === 'match' ? '一致' : '不一致，需复核')
-      : '未核对（缺披露值）';
+    const yoy = changeText(r);
+    const check = changeCheck(r);
+    const outcome = checkOutcome(r);
     return `<tr>
-      <td><span class="metric-name">${esc(r.metric_name || r.metric)}</span>${periodCell(r)}</td>
-      <td class="num">${fmtBig(r.current)}</td>
-      <td class="num">${fmtBig(r.previous)}</td>
+      <td><span class="metric-name">${esc(r.metric_name || r.metric)} · ${esc(r.comparison_label || '同比')}</span>${periodCell(r)}</td>
+      <td class="num">${fmtBig(r.current)} ${esc(valueUnit(r))}</td>
+      <td class="num">${fmtBig(r.previous)} ${esc(valueUnit(r))}<br><small>${esc(r.previous_period_end || '')}</small></td>
       <td class="num">${esc(yoy)}</td>
-      <td class="num">${check ? fmt(check.reported) + '%' : '—'}</td>
+      <td class="num">${check ? fmt(check.reported) + esc(check.unit || '%') : esc((r.reported_change || r.reported_yoy)?.raw_value || '—')}</td>
       <td>${badge(outcome)}</td>
       <td class="num">${pageCell(r)}</td>
     </tr>`;
@@ -678,10 +689,15 @@ function render(data) {
 
   const sigs = data.signals || [];
   $('#signals').innerHTML = sigs.length
-    ? sigs.map(s => `<div class="hint"><strong>【${esc(s.epistemic_type || '事实')}】</strong>${esc(s.description)} ${s.value == null ? '' : fmt(s.value)}${esc(s.unit || '')}<br>${esc(s.interpretation || '')}</div>`).join('')
+    ? [...new Set(sigs.map(s => s.document_id + '|' + s.period_start + '|' + s.period_end))].map(key => {
+      const group = sigs.filter(s => s.document_id + '|' + s.period_start + '|' + s.period_end === key);
+      const source = group[0];
+      return `<h3>${esc(source.company_name || source.document_id)} · ${esc(source.period_start || '')} 至 ${esc(source.period_end || '')}</h3>` + group.map(s => `<div class="hint"><strong>【${esc(s.epistemic_type || '事实')}】</strong>${esc(s.description)} ${s.value == null ? '' : fmt(s.value)}${esc(s.unit || '')}<br>${esc(s.interpretation || '')} 来源PDF页：${esc((s.source_pages || []).map(p => p.page).join('、'))}</div>`).join('');
+    }).join('')
     : '';
   const qoq = data.qoq_rows || [];
   if (qoq.length) $('#signals').innerHTML += '<h3>单季环比</h3>' + qoq.map(r => `<p>${esc(r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：${r.qoq.status === 'ok' ? fmt(r.qoq.value) + '%' : esc(r.qoq.reason ?? r.qoq.status)}</p>`).join('');
+  if (data.qoq_blocked?.length) $('#signals').innerHTML += '<h3>累计拆季受阻（未获可比性确认）</h3>' + data.qoq_blocked.map(r => `<p>${esc(r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：${esc((r.reasons || [r.reason]).join('、'))}。尝试值 ${esc(r.attempted_value)} 元，仅供复核操作数，不能作为有效季度值。</p><p class="hint">来源：${esc((r.sources || []).map(s => `${s.document_id} · ${s.period_start} 至 ${s.period_end} · PDF页${s.page}`).join('；'))}</p>`).join('');
   $('#analysis-card').hidden = false;
 
   // ── ③ 纠错核查 ──
@@ -708,7 +724,7 @@ function render(data) {
       </div>`;
       const rows = (data.checks.checks || []).map((c) => `<tr>
         <td>${esc(c.claim_id)}</td>
-        <td>${trackBadge(c.track)}</td>
+        <td>${trackBadge(c.track === 'deterministic' && !['确认错误', '证据支持'].includes(c.status) ? 'review' : c.track)}</td>
         <td class="claim-text">${esc(c.original_sentence || '')}</td>
         <td>${badge(c.status)}</td>
         <td><div class="check-reason">${esc(c.reason || c.reason_code || '—')}</div>${c.verification_scope ? '<div class="check-scope">'+esc(c.verification_scope)+'</div>' : ''}${c.correction ? '<details class="correction"><summary>修改片段</summary><p><span class="correction-label">原片段</span>'+esc(c.correction.before)+'</p><p class="correction-after"><span class="correction-label">建议片段</span>'+esc(c.correction.after)+'</p><p><span class="correction-label">修改后句子</span>'+esc(c.correction.revised_sentence || '需人工调整句子')+'</p></details>' : ''}</td>
@@ -735,7 +751,6 @@ function render(data) {
   clearQaHistory(false);
   $('#qa-input').value = '';
   $('#qa-card').hidden = false;
-  if (data.checks && data.checks.reason) $('#checks-body').insertAdjacentHTML('afterbegin', `<p class="hint">${esc(data.checks.reason)}</p>`);
   if (data.announcement) {
     $('#announcement-body').innerHTML = (data.announcement.events || []).map(e => `<h3>${esc(e.event_name)} · ${esc(window.announcementStatusLabels[e.status] || e.status)}</h3><p>必填缺失：${esc(e.missing_required.join('、') || '无')}；冲突：${esc(e.conflicts.join('、') || '无')}</p><div class="table-wrap"><table class="data-table"><thead><tr><th>字段</th><th>原值</th><th>规范值</th><th>状态</th><th>原页位置</th></tr></thead><tbody>${Object.entries(e.fields).map(([k,v]) => `<tr><td>${esc(window.announcementFieldLabels[k] || k)}</td><td>${esc(v.value ?? '缺失')}</td><td>${esc(v.normalized_value ?? '—')} ${esc(v.normalized_unit || '')}</td><td>${esc(window.announcementStatusLabels[v.status] || v.status)}</td><td>${(data.evidence || []).filter(f => f.evidence_id.startsWith(e.event_id + '_' + k + '_')).map(pageCell).join(' ')}</td></tr>`).join('')}</tbody></table></div>`).join('') || '<p>未找到可明确提取的字段。</p>';
     $('#announcement-card').hidden = false;
@@ -873,64 +888,14 @@ async function qaAsk() {
 function exportMarkdown() {
   const data = window.__last;
   if (!data) { setStatus('还没有分析结果可导出', 'err'); return; }
-  const lines = [];
   const mat = (data.materials || [])[0] || {};
-  lines.push('# 金融投研智能体 · 分析报告');
-  lines.push('');
-  lines.push(`- 公司：${mat.company_name || ''}（${mat.company_code || ''}）`);
-  lines.push(`- 报告年度：${mat.report_year || ''}`);
-  lines.push(`- 运行号：${data.run_id || ''}`);
-  lines.push(`- 生成时间：${new Date().toLocaleString('zh-CN')}`);
-  lines.push('');
-  lines.push('## 指标与同比核对');
-  lines.push('');
-  lines.push('| 指标 | 本年 | 上年 | 复算同比 | 披露同比 | 核对 | PDF页 |');
-  lines.push('| --- | ---: | ---: | ---: | ---: | --- | ---: |');
-  (data.rows || []).forEach((r) => {
-    const yoy = r.yoy && r.yoy.status === 'ok' ? fmt(r.yoy.value) + '%' : (r.yoy ? r.yoy.status : '—');
-    const check = r.reported_yoy_check;
-    const outcome = check
-      ? (check.status === 'match' ? '一致' : '不一致，需复核')
-      : '未核对（缺披露值）';
-    lines.push(`| ${r.metric_name || r.metric} | ${fmtBig(r.current)} | ${fmtBig(r.previous)} | ${yoy} | ${check ? fmt(check.reported) + '%' : '—'} | ${outcome} | ${r.page ?? '—'} |`);
-  });
-  const sigs = data.signals || [];
-  if (sigs.length) {
-    lines.push('', '## 辅助观察', '');
-    sigs.forEach((s) => lines.push(`- ${s.description}${s.value ? '：' + s.value + (s.unit || '') : ''}`));
-  }
-  if (data.checks && data.checks.status === 'completed') {
-    lines.push('', '## 草稿核查', '');
-    const counts = data.checks.counts || {};
-    if (Object.keys(counts).length) {
-      lines.push('结论分布：' + Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(' · '), '');
-    }
-    lines.push('| 编号 | 轨道 | 原句 | 结论 | 说明 |');
-    lines.push('| --- | --- | --- | --- | --- |');
-    (data.checks.checks || []).forEach((c) => {
-      const sentence = String(c.original_sentence || '').replace(/\|/g, '\\|').slice(0, 120);
-      const reason = String(c.reason || c.reason_code || '—').replace(/\|/g, '\\|');
-      const track = { deterministic: 'A 确定', model: 'B 模型', review: 'C 人工' }[c.track] || 'C 人工';
-      lines.push(`| ${c.claim_id} | ${track} | ${sentence} | ${c.status} | ${reason} |`);
-    });
-  }
-  if ((data.evidence || []).length) {
-    lines.push('', '## 证据明细', '');
-    lines.push('| 证据ID | 指标 | 年度 | 数值 | 单位 | 口径 | 页 |');
-    lines.push('| --- | --- | ---: | ---: | --- | --- | ---: |');
-    data.evidence.forEach((e) => {
-      lines.push(`| ${e.evidence_id} | ${e.metric_name || e.metric} | ${e.period_year ?? '—'} | ${e.value ?? '—'} | ${e.unit || '—'} | ${scopeZh(e.scope)} | ${e.page ?? '—'} |`);
-    });
-  }
-  lines.push('', '## 核查报告', '');
-  lines.push(data.report_md || '');
-  const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+  const blob = new Blob([data.report_md || '# 本次运行没有生成报告\n'], { type: 'text/markdown;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `分析报告_${mat.company_code || 'report'}_${mat.report_year || ''}.md`;
   a.click();
   URL.revokeObjectURL(a.href);
-  setStatus('Markdown 已下载', '');
+  setStatus('完整 Markdown 已下载', '');
 }
 
 function exportPdf() {

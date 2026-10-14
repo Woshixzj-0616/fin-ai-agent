@@ -219,12 +219,17 @@ def run_pipeline(
     write_json(run.output("webui_evidence.json"), facts)
     write_json(run.output("webui_failures.json"), failures)
     analysis = analyze(facts, run)
-    report = report_markdown(analysis, materials, None)
+    source_links = {material["document_id"]: Path(os.path.relpath(base / material["local_file"], run.folder)).as_posix()
+                    for material in materials}
+    report = report_markdown(analysis, materials, None, source_links=source_links)
     issues = [fact for fact in facts if evidence_issues(fact)]
     checks = _check_draft(draft, facts, run) if draft and draft.strip() else None
+    if checks is not None:
+        report += "\n\n" + draft_report_markdown(checks)
+    run.output("webui_report.md").write_text(report, encoding="utf-8")
     counts = {"match": 0, "mismatch": 0, "unverified": 0, "issue": len(issues)}
     for row in analysis["rows"]:
-        check = row.get("reported_yoy_check")
+        check = row.get("reported_change_check") or row.get("reported_yoy_check")
         if check and check.get("status") == "match":
             counts["match"] += 1
         elif check and check.get("status") == "mismatch":
@@ -232,7 +237,7 @@ def run_pipeline(
         else:
             counts["unverified"] += 1
     payload: dict = {
-        "ok": not failures,
+        "ok": not failures and not (checks and checks.get("status") == "failed"),
         "run_id": run.id,
         "document_id": record["document_id"],
         "materials": [
@@ -242,7 +247,9 @@ def run_pipeline(
                 "report_year": material["report_year"],
                 "title": material.get("title", ""),
                 "page_count": material.get("page_count"),
-                "sha256": material.get("sha256", "")[:12],
+                "sha256": material.get("sha256", ""),
+                "document_id": material.get("document_id"),
+                "local_file": material.get("local_file"),
             }
             for material in materials
         ],
@@ -269,7 +276,13 @@ def run_pipeline(
                 "unit": fact.get("unit"),
                 "period_start": fact.get("period_start"),
                 "period_end": fact.get("period_end"),
+                "period_kind": fact.get("period_kind"),
                 "normalized_value": fact.get("normalized_value"),
+                "normalized_unit": fact.get("normalized_unit"),
+                "currency": fact.get("currency"),
+                "document_id": fact.get("document_id"),
+                "source_file": fact.get("source_file"),
+                "source_sha256": fact.get("source_sha256"),
                 "page": fact.get("page"),
                 "page_image": fact.get("page_image"),
                 "value_bbox": fact.get("value_bbox"),
@@ -302,7 +315,7 @@ def run_pipeline(
             LAST_DOCUMENT_TEXTS.update(doc_texts)
     run.finish(
         status=("partial_failure" if failures or
-                (checks and checks.get("execution_status") == "partial") else "ok"),
+                (checks and (checks.get("execution_status") == "partial" or checks.get("status") == "failed")) else "ok"),
         materials=len(materials),
         evidence_count=len(facts),
         failures=len(failures),
@@ -312,6 +325,24 @@ def run_pipeline(
 
     payload["trace"] = build_trace(run.events, facts)
     return payload
+
+
+def draft_report_markdown(bundle: dict) -> str:
+    """将实际核查结论加入可交付报告，保留失败范围与修改意见。"""
+    def cell(value):
+        return str(value or "—").replace("<", "&lt;").replace(">", "&gt;").replace("|", "\\|").replace("\n", " ")
+    lines = ["## 研报草稿核查", "", f"核查状态：{cell(bundle.get('status'))}；模式：{cell(bundle.get('mode'))}。", "",
+             cell(bundle.get("reason")), "",
+             "确认错误与证据支持由程序核查；模型判断属于待复核解释。未核查句子不能视为通过。", "",
+             "| 主张 | 原句 | 结果 | 原因 | 修改建议 | 证据 ID |", "|---|---|---|---|---|---|"]
+    for check in bundle.get("checks") or []:
+        lines.append("| " + " | ".join(cell(value) for value in (
+            check.get("claim_id"), check.get("quote") or check.get("original_sentence"),
+            check.get("status"), check.get("reason"), check.get("suggestion"),
+            ", ".join(check.get("evidence_ids") or []))) + " |")
+    if bundle.get("unfinished_sentence_ids"):
+        lines += ["", "未完成句子：" + ", ".join(map(str, bundle["unfinished_sentence_ids"]))]
+    return "\n".join(lines) + "\n"
 
 
 def _check_draft(draft: str, facts: list[dict], run) -> dict:
@@ -418,7 +449,7 @@ def run_announcement_pipeline(
     run=None,
     publish_latest: bool = True,
 ) -> dict:
-    from announcements import extract_announcement
+    from announcements import SCHEMAS, extract_announcement
     from trace import build_trace
 
     import pymupdf
@@ -439,7 +470,7 @@ def run_announcement_pipeline(
             run.read(path),
             event_type,
             run=run,
-            source_file="results/webui_announcement.pdf",
+            source_file=str(path.relative_to(base)),
             ocr=ocr,
         )
     except Exception as exc:
@@ -462,7 +493,7 @@ def run_announcement_pipeline(
                         {
                             "evidence_id": f"{event['event_id']}_{field}_{index}",
                             "metric": field,
-                            "metric_name": field,
+                            "metric_name": SCHEMAS[event["event_type"]]["fields"][field][0],
                             "event_name": event["event_name"],
                             "value": location["value"],
                             "normalized_value": location["normalized_value"],
@@ -487,7 +518,7 @@ def run_announcement_pipeline(
                                     )
                                 )
                             ),
-                            "source_file": "results/webui_announcement.pdf",
+                            "source_file": str(path.relative_to(base)),
                             "source_sha256": output["source_sha256"],
                         }
                     )

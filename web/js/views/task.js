@@ -30,6 +30,7 @@ const STAGES = [
 ];
 
 function currentStageIndex(state) {
+  if (["succeeded", "partial_failed"].includes(state.currentRun?.status)) return STAGES.length - 1;
   const phase = state.currentRun?.current_phase;
   if (phase) {
     const index = STAGES.findIndex((stage) => stage.phases.has(phase));

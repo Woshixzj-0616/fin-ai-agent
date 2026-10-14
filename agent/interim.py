@@ -42,6 +42,27 @@ def header_period(label: str, identity: dict, stock: bool) -> dict | None:
             "period_basis": "cumulative" if cumulative else "single_quarter"}
 
 
+def disclosed_change(raw: str, header: dict, *, page: int, bbox: list) -> dict:
+    """披露增减列独立于期间值，保留原文、比较类型和跨页表头来源。"""
+    heading = compact(header.get("text"))
+    value = compact(raw)
+    comparison_kind = "year_end" if re.search(r"上年度末|上年末", heading) else "yoy" if "同期" in heading else "unknown"
+    base = {"raw_value": raw, "header": header, "page": page, "bbox": bbox,
+            "comparison_kind": comparison_kind}
+    if value in {"", "-", "—", "不适用"}:
+        return {**base, "status": "not_disclosed"}
+    points = re.fullmatch(r"(增加|减少|提高|降低|上升|下降)?([+\-−]?\d+(?:\.\d+)?)个百分点", value)
+    rate = re.fullmatch(r"([+\-−]?\d+(?:\.\d+)?)[%％]?", value)
+    if points:
+        amount = decimal(points[2])
+        if points[1] in {"减少", "降低", "下降"}:
+            amount = -abs(amount)
+        return {**base, "status": "ok", "value": text(amount), "unit": "个百分点", "method": "percentage_points"}
+    if rate and ("%" in heading or "％" in heading or value.endswith(("%", "％"))):
+        return {**base, "status": "ok", "value": text(decimal(rate[1])), "unit": "%", "method": "relative_growth"}
+    return {**base, "status": "unparsed"}
+
+
 def extract_interim(document, material: dict, run) -> list[dict]:
     from extract import ALIASES, METRICS, box, default_scope, document_currency
     texts = [page.get_text() for page in document]
@@ -56,7 +77,7 @@ def extract_interim(document, material: dict, run) -> list[dict]:
         clean = re.sub(r"[（(](?:人民币)?(?:亿元|万元|千元|百万元|元/股|元|%|％)[）)]$", "", label)
         return next((key for alias, key, _ in ALIASES if compact(alias) == clean), None)
 
-    def emit(page, raw_label, raw_value, label_bbox, value_bbox, header, table_bbox, method, content):
+    def emit(page, raw_label, raw_value, label_bbox, value_bbox, header, table_bbox, method, content, reported=None):
         metric = metric_label(raw_label)
         if not metric:
             return
@@ -82,6 +103,7 @@ def extract_interim(document, material: dict, run) -> list[dict]:
             issues.append("scope_unknown")
         ident = "|".join(map(str, (material["document_id"], metric, period["period_start"],
                                    period["period_end"], page.number+1, method, value_bbox)))
+        report_change = reported if period["period_year"] == identity["report_year"] else None
         facts.append({"schema_version": 2, "evidence_id": sha256(ident.encode())[:24],
                       "document_id": material["document_id"], "company_code": material["company_code"],
                       "company_name": material["company_name"], "report_year": material["report_year"],
@@ -96,7 +118,11 @@ def extract_interim(document, material: dict, run) -> list[dict]:
                       "source_url": material["source_url"], "announcement_id": material["announcement_id"],
                       "page": page.number+1, "page_label": page.get_label(), "table_id": f"p{page.number+1}_interim",
                       "table_bbox": table_bbox, "value_bbox": value_bbox, "label_bbox": label_bbox,
-                      "year_header": header, "reported_yoy": None, "adjustment_header": None,
+                      "year_header": header,
+                      "reported_change": report_change,
+                      "reported_yoy": report_change if report_change and report_change.get("comparison_kind") == "yoy" and report_change.get("status") == "ok" else None,
+                      "disclosure_status": report_change.get("status") if report_change else "not_extracted",
+                      "adjustment_header": None,
                       "issues": issues, "extraction_method": method})
 
     for page, content in zip(document, texts):
@@ -109,12 +135,19 @@ def extract_interim(document, material: dict, run) -> list[dict]:
         page_count, next_carry, recognized_grid = len(facts), None, False
         for table in grids:
             grid = table.extract()
-            headers = {}
+            headers, change_headers = {}, {}
             # 只允许紧邻上一页末尾显式表头、且列边界一致的续表。
             if continuation and table.rows and len(grid[0]) == continuation["columns"]:
                 bounds = [tuple(round(v, 1) for v in (r[0], r[2])) if r else None for r in table.rows[0].cells]
                 if bounds == continuation["bounds"] and not compact(grid[0][0]):
                     headers = continuation["headers"]
+                    change_headers = {ci: dict(value) for ci, value in continuation.get("changes", {}).items()}
+                    for ci, header in change_headers.items():
+                        tail = grid[0][ci]
+                        if tail and not metric_label(grid[0][0]):
+                            header["text"] += tail
+                            header["continuation_page"] = page.number + 1
+                            header["continuation_bbox"] = box(table.rows[0].cells[ci])
                     recognized_grid = True
                     run.event("period_header_carry", page=page.number+1, source_page=page.number,
                               rule="adjacent_page_matching_column_boundaries", headers=headers)
@@ -124,9 +157,12 @@ def extract_interim(document, material: dict, run) -> list[dict]:
                                 and (header_period(label, identity, False) or header_period(label, identity, True))}
                 if len(period_cells) >= 2:
                     headers = period_cells
+                    change_headers = {ci: {"text": label, "bbox": box(table.rows[ri].cells[ci]), "page": page.number + 1}
+                                      for ci, label in enumerate(row) if label and table.rows[ri].cells[ci]
+                                      and re.search(r"增减|变动|比.*上年", compact(label))}
                     recognized_grid = True
                     if ri == len(grid)-1:
-                        next_carry = {"page": page.number, "headers": headers, "columns": len(row),
+                        next_carry = {"page": page.number, "headers": headers, "changes": change_headers, "columns": len(row),
                                       "bounds": [tuple(round(v, 1) for v in (r[0], r[2])) if r else None
                                                  for r in table.rows[ri].cells]}
                     continue
@@ -134,8 +170,12 @@ def extract_interim(document, material: dict, run) -> list[dict]:
                     continue
                 for ci, header in headers.items():
                     if ci < len(row) and row[ci] and table.rows[ri].cells[ci]:
+                        options = [index for index in change_headers if index > ci]
+                        change_column = min(options) if options else None
+                        reported = disclosed_change(row[change_column] or "", change_headers[change_column],
+                                                    page=page.number+1, bbox=box(table.rows[ri].cells[change_column])) if change_column is not None and table.rows[ri].cells[change_column] else None
                         emit(page, row[0], row[ci], box(table.rows[ri].cells[0]), box(table.rows[ri].cells[ci]),
-                             header, box(table.bbox), "interim_grid_headers", content)
+                             header, box(table.bbox), "interim_grid_headers", content, reported)
         if is_summary and not recognized_grid:
             # 无网格：指标行与数值行须在同一 words 基线；折行标签仅拼接无数值的上一行。
             rows = page_rows(page)

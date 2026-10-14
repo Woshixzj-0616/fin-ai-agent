@@ -36,17 +36,21 @@ export function createRunEventStream({
     if (!currentRunId) {
       throw new TypeError("runId 不能为空");
     }
-    const cursor = Math.max(0, Number(afterSeq) || 0);
+    const value = Number(afterSeq);
+    const cursor = Number.isSafeInteger(value) && value >= 0 ? value : 0;
     const url = `/api/runs/${encodeURIComponent(currentRunId)}/events?${LAST_EVENT_ID_QUERY}=${cursor}`;
     // The browser owns the Last-Event-ID header; after_seq lets our
     // explicit reconnect path resume from the same persisted cursor.
-    source = new EventSource(url, { withCredentials: true });
+    const connection = new EventSource(url, { withCredentials: true });
+    source = connection;
 
-    source.onopen = () => {
+    connection.onopen = () => {
+      if (source !== connection) return;
       onConnection("open");
     };
 
-    source.onmessage = (event) => {
+    connection.onmessage = (event) => {
+      if (source !== connection) return;
       const payload = parseEvent(event);
       const lastEventId = Number(event.lastEventId || payload.seq || 0);
       onEvent(payload, {
@@ -55,7 +59,8 @@ export function createRunEventStream({
       });
     };
 
-    source.onerror = (error) => {
+    connection.onerror = (error) => {
+      if (source !== connection) return;
       onError(error);
       onConnection("error");
     };

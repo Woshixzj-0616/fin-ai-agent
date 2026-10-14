@@ -406,6 +406,9 @@ def _direction_row(output: dict, item: dict, facts: list[dict], *, code: str, me
     previous = _comparable_previous(facts, fact)
     if previous is None:
         return stop("direction_base_missing", "方向核查缺少唯一可比的上期数值，不能凭语气判断")
+    stated_base = (output.get("grounding", {}).get("period") or {}).get("comparison_year")
+    if stated_base is not None and stated_base != previous.get("period_year"):
+        return stop("direction_base_mismatch", "原文明示比较年度与可用上年基期不同，不能替换比较对象")
     computation = evidence_yoy(fact, previous)
     if computation.get("status") != "ok":
         reasons = computation.get("reasons") or [computation.get("reason") or "期间不可比"]
