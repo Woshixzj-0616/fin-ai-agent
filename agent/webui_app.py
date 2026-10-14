@@ -21,7 +21,8 @@ def main() -> int:
     parser.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))
     args = parser.parse_args()
     server = ThreadingHTTPServer((args.host, args.port), Handler)
-    print(f"薄页面已启动：http://{args.host}:{args.port}/")
+    print(f"投研工作台已启动：http://{args.host}:{args.port}/app/")
+    print(f"兼容页面：http://{args.host}:{args.port}/")
     print("Ctrl+C 停止。分析流水线与 CLI live 相同，结果落 results/。")
     try:
         server.serve_forever()

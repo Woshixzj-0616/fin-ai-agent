@@ -127,12 +127,37 @@ def unique_company_in(text: str, facts: list[dict] | None) -> dict | None:
     return mentions[0] if len(mentions) == 1 else None
 
 
+def _year_mentions(content: str) -> list[dict]:
+    """年度必须带期间语义，金额、编号和小数中的四位数不作为年度。"""
+    mentions = []
+    for match in re.finditer(r"(?<![\d.])((?:19|20)\d{2})(?!\d)", content or ""):
+        suffix = content[match.end():]
+        prefix = content[:match.start()]
+        if (re.match(r"\s*(?:年|Q[1-4]\b|[-/]\d{1,2}[-/]\d{1,2}(?!\d)|\.\d{1,2}\.\d{1,2}(?!\d))", suffix, re.I)
+                or re.search(r"\bFY\s*$", prefix, re.I)):
+            mentions.append({"year": int(match[1]), "start": match.start(), "end": match.end()})
+    return mentions
+
+
+def _comparison_years(content: str, mentions: list[dict]) -> tuple[int, int] | None:
+    years = {item["year"] for item in mentions}
+    if len(years) != 2 or len(segments(content)) != 1:
+        return None
+    baseline = [item for item in mentions if re.search(
+        r"(?:相比于|相较于|相较|相比|相对于|较|比|对比)\s*$", content[:item["start"]])]
+    bases = {item["year"] for item in baseline}
+    if len(bases) != 1:
+        return None
+    base = next(iter(bases))
+    return next(iter(years - {base})), base
+
+
 def _preceding_reference(preceding: str, facts: list[dict] | None = None,
                          year=None) -> dict | None:
     """最近的、唯一可定位的上文指代：逐句回看，遇到多义就停，不跨段乱猜。"""
     for segment in reversed(segments(preceding)):
         if year is not None:
-            years = set(re.findall(r"(?<!\d)((?:19|20)\d{2})(?!\d)", segment))
+            years = {str(item["year"]) for item in _year_mentions(segment)}
             if not years:
                 continue
             if years != {str(int(year))}:
@@ -240,22 +265,29 @@ def resolve_period(year, *, sentence: str = "", context: str = "", quote: str = 
                    paragraph: str = "", preceding: str = "") -> dict:
     """引文/本句明确年度优先；模型与原文冲突单列，多年度未定位则拒绝继承。"""
     model_year = int(year) if year is not None else None
-    pattern = r"(?<!\d)((?:19|20)\d{2})(?!\d)"
     base = {"year": model_year, "model_year": model_year, "conflict": False,
             "located_in": None, "matched_text": None}
     for label, content in (("quote", quote), ("sentence", sentence)):
-        years = set(re.findall(pattern, content or ""))
+        mentions = _year_mentions(content or "")
+        years = {item["year"] for item in mentions}
         if len(years) == 1:
             actual = int(next(iter(years)))
             return {**base, "year": actual, "located_in": label, "matched_text": str(actual),
                     "conflict": model_year is not None and model_year != actual}
         if len(years) > 1:
+            comparison = _comparison_years(content, mentions)
+            if comparison:
+                actual, prior = comparison
+                return {**base, "year": actual, "comparison_year": prior,
+                        "located_in": label, "matched_text": str(actual),
+                        "binding_rule": "explicit_comparison_roles",
+                        "conflict": model_year is not None and model_year != actual}
             return {**base, "ambiguous": True}
     if model_year is None:
         return base
     for label, content in (("context", context), ("paragraph", paragraph)):
-        years = set(re.findall(pattern, content or ""))
-        if years == {str(model_year)}:
+        years = {item["year"] for item in _year_mentions(content or "")}
+        if years == {model_year}:
             return {**base, "located_in": label, "matched_text": str(model_year)}
     reference = _preceding_reference(preceding, year=model_year) if preceding else None
     if reference:

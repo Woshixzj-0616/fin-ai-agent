@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-14",
+  "scope": "整体均衡优化、用户补充问题及可核验分析过程",
+  "initial_base": "255f5815ddb35dd8e8058744601716c114e5be59",
+  "branch": "optimize/project-quality",
+  "environment": {
+    "python": "3.14.5",
+    "PyMuPDF": "1.28.2",
+    "httpx": "0.28.1",
+    "node": "v24.15.0"
+  },
+  "tests": {
+    "baseline_python": 416,
+    "python": 443,
+    "seconds": 18.352,
+    "status": "passed",
+    "frontend_scenarios": 10,
+    "integrated_upstream_retested": true
+  },
+  "gates": {
+    "sensitive_scan": "passed",
+    "sensitive_scan_text_files": 186,
+    "documentation_markdown_files": 67,
+    "compilation": "passed",
+    "structure": {
+      "schema_version": 1,
+      "generated_at": "2026-10-14",
+      "violations": [],
+      "warnings": [
+        {
+          "path": "agent/test.py",
+          "lines": 1286,
+          "bytes": 69343,
+          "warning": "超过 1200 行或 80KiB；只审查不直接失败"
+        }
+      ],
+      "webui": {
+        "path": "agent/webui.py",
+        "lines": 108,
+        "limit": 300,
+        "ok": true
+      }
+    },
+    "release_smoke": {
+      "schema_version": 1,
+      "generated_at": "2026-10-14T18:20:37+08:00",
+      "command": [
+        "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/.venv/bin/python",
+        "-B",
+        "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/agent/webui_app.py",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "53110"
+      ],
+      "checks": {
+        "app": {
+          "path": "/app/",
+          "status": 200,
+          "ok": true,
+          "content_type": "text/html; charset=utf-8"
+        },
+        "legacy_page": {
+          "path": "/",
+          "status": 200,
+          "ok": true,
+          "content_type": "text/html; charset=utf-8"
+        },
+        "runs_api": {
+          "path": "/api/runs",
+          "status": 200,
+          "ok": true,
+          "content_type": "application/json; charset=utf-8"
+        },
+        "legacy_search_api": {
+          "path": "/api/search",
+          "status": 200,
+          "ok": true,
+          "content_type": "application/json; charset=utf-8"
+        }
+      },
+      "server_stdout": "",
+      "server_stderr": "",
+      "ok": true
+    },
+    "reverse_checks": {
+      "schema_version": 1,
+      "checks": [
+        {
+          "id": "R1",
+          "name": "敏感扫描器正样本必须红",
+          "injection": "临时文本放入运行时拼出的 OpenAI 风格密钥",
+          "expected": "正常样本 0，正样本非 0，且不回显密钥",
+          "observed": "normal=0, injected=1, secret_echo=False, rule_echo=True",
+          "pass": true
+        },
+        {
+          "id": "R2",
+          "name": "脱敏门移除必须红",
+          "injection": "将 events/run_manager 的 redact_value 临时替换为恒等函数",
+          "expected": "正常落盘无密钥；移除后 event JSONL 或 run.json 出现密钥",
+          "observed": "normal_hit=False, injected_hit=True",
+          "pass": true
+        },
+        {
+          "id": "R3",
+          "name": "安全头移除必须红",
+          "injection": "临时禁用 webui_http._send_security_headers",
+          "expected": "/app/ 正常有 CSP；禁用后 CSP 缺失",
+          "observed": "normal_csp=True, injected_csp=False, statuses=200/200",
+          "pass": true
+        },
+        {
+          "id": "R4",
+          "name": "上传总量门移除必须红",
+          "injection": "临时把对比材料上限改为 5、总量上限改为 81，并保留验证桩",
+          "expected": "正常 5 份被拒；移除数量/总量门后不再被拒",
+          "observed": "normal_code=INVALID_UPLOAD, injected_rejected=False, injected_error=accepted",
+          "pass": true
+        },
+        {
+          "id": "R5",
+          "name": "代理欺骗必须红",
+          "injection": "未配置代理时临时直接采用 X-Forwarded-For 作为客户端 IP",
+          "expected": "正常第 11 次 429；注入后伪造不同 XFF 可绕过 429",
+          "observed": "normal_has_429=True, injected_has_429=False",
+          "pass": true
+        },
+        {
+          "id": "R6",
+          "name": "旧 API 删除必须红",
+          "injection": "临时从 Handler.do_POST 拦截并移除 /api/search",
+          "expected": "正常 200；移除后 404",
+          "observed": "normal=200, injected=404",
+          "pass": true
+        },
+        {
+          "id": "R7",
+          "name": "旧页面迁移丢内容必须红",
+          "injection": "临时把旧 PAGE 中的 /api/ask 替换为 /api/removed",
+          "expected": "正常响应含 /api/ask；注入响应缺失",
+          "observed": "normal_has_ask=True, injected_has_ask=False",
+          "pass": true
+        },
+        {
+          "id": "R8",
+          "name": "webui.py 重新塞回实现必须红",
+          "injection": "临时构造 301 行的 agent/webui.py 并运行结构审查",
+          "expected": "真实仓库 0 违规；注入文件触发 300 行门",
+          "observed": "real_violations=0, injected_over_limit=True",
+          "pass": true
+        },
+        {
+          "id": "R9",
+          "name": "归档漏 Web 资产必须红",
+          "injection": "临时把 Run.sources 扫描根指向没有 web/legacy/index.html 的假仓库",
+          "expected": "真实归档含旧页面；注入归档缺失",
+          "observed": "normal_has_asset=True, injected_has_asset=False",
+          "pass": true
+        },
+        {
+          "id": "R10",
+          "name": "兼容清单隐藏调用方必须红",
+          "injection": "把 /api/analyze 从 keep 改成 retired，但保留已有调用方",
+          "expected": "正常清单不违反退役门；注入行违反 `retired => callers=[]`",
+          "observed": "normal_violation=False, injected_violation=True, callers=['web/legacy/index.html', 'agent/test_competition.py']",
+          "pass": true
+        },
+        {
+          "id": "R11",
+          "name": "文档坏链必须红",
+          "injection": "临时 Markdown 写入不存在的本地链接 missing.md",
+          "expected": "正常文档 0；坏链文档非 0 且报本地链接不存在",
+          "observed": "normal=0, injected=1, missing_link_error=True",
+          "pass": true
+        }
+      ],
+      "ok": true
+    }
+  },
+  "real_annual_cases": {
+    "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+    "evidence_count": 35,
+    "model_called": false,
+    "mode": "controlled_structured_claims_and_real_pdf",
+    "checks": [
+      {
+        "claim_id": "C2",
+        "status": "确认错误",
+        "reason": "可比口径下陈述值与证据或计算结果不同",
+        "expected": "1708.99",
+        "correction": {
+          "field": "revenue",
+          "before": "1965.34亿元",
+          "after": "1708.99亿元",
+          "original_sentence": "贵州茅台2024年合并口径营业收入为1965.34亿元。",
+          "revised_sentence": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176"
+          ],
+          "page": 5,
+          "apply_automatically": true,
+          "condition": "只替换已核实的数值字段；不等式或未定位片段需人工编辑"
+        },
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176"
+        ],
+        "grounding": {
+          "company": {
+            "conflict": false,
+            "model_code": "600519",
+            "sentence_codes": [
+              "600519"
+            ],
+            "ignored_mentions": [],
+            "code": "600519",
+            "basis": "sentence_company",
+            "matched": "贵州茅台",
+            "position": 0,
+            "note": null
+          },
+          "period": {
+            "year": 2024,
+            "model_year": 2024,
+            "conflict": false,
+            "located_in": "quote",
+            "matched_text": "2024"
+          }
+        }
+      },
+      {
+        "claim_id": "C6",
+        "status": "证据支持",
+        "reason": "可比期间计算方向为「增长」，与陈述一致",
+        "expected": null,
+        "correction": null,
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176",
+          "d3fe304c4c3a83041491c5b2"
+        ],
+        "grounding": {
+          "company": {
+            "conflict": false,
+            "model_code": "600519",
+            "sentence_codes": [
+              "600519"
+            ],
+            "ignored_mentions": [],
+            "code": "600519",
+            "basis": "sentence_company",
+            "matched": "贵州茅台",
+            "position": 0,
+            "note": null
+          },
+          "period": {
+            "year": 2024,
+            "model_year": 2024,
+            "conflict": false,
+            "located_in": "quote",
+            "matched_text": "2024",
+            "comparison_year": 2023,
+            "binding_rule": "explicit_comparison_roles"
+          }
+        }
+      }
+    ]
+  },
+  "browser_checks": {
+    "real_pledge": "passed",
+    "half_plus_q1_rows": 20,
+    "disclosure_matches": 20,
+    "blocked_q2": 4,
+    "explanation_events": 97,
+    "download_manifest_verified": true,
+    "session_credential_exported": false,
+    "legacy_table_display": "table",
+    "legacy_table_columns_px": [
+      78,
+      112,
+      379,
+      156,
+      391
+    ],
+    "legacy_invalid_page_checks": 2,
+    "human_calculation_explanation_visible": true,
+    "full_calculation_input_output_expandable": true,
+    "native_print_dialog_opened": true,
+    "printed_pdf_pages_verified": false
+  },
+  "limitations": [
+    "本轮未调用真实大模型；模型步骤协议回归使用受控输入，不是模型泛化评测。",
+    "原始微信临时路径在验证期间被清理，后续使用先前核验为同一 SHA-256 的仓库副本。",
+    "系统打印窗口不能由本次浏览器工具操作；未声称打印 PDF 页数、分页和末尾内容已实测。",
+    "团队人工复签、额外盲测及现场模型连通性仍须按实际环境完成。"
+  ],
+  "integrated_upstream": "d1ed3d3f65512931cc939e1d6d5869eab335f876"
+}

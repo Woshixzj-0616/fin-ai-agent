@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/app/css/layout.css">
   <link rel="stylesheet" href="/app/css/components.css">
   <link rel="stylesheet" href="/app/css/responsive.css">
+  <link rel="stylesheet" href="/app/css/print.css">
 </head>
 <body data-sidebar-open="false">
   <main class="app-shell" data-app="fin-workbench">
@@ -27,7 +28,7 @@
             <p class="section-kicker">当前会话</p>
             <h2 id="run-list-heading">运行记录</h2>
           </div>
-          <button class="button button-quiet" type="button" disabled>新建</button>
+          <button class="button button-quiet" id="new-run" type="button">新建</button>
         </div>
         <div class="run-list" id="run-list" aria-live="polite">
           <div class="empty-state empty-state-compact">
@@ -58,6 +59,7 @@
           <h2>投研核查工作台</h2>
         </div>
         <div class="workspace-status">
+          <button class="button" id="print-run" type="button" disabled>打印 / 存为 PDF</button>
           <div class="status-region" id="status-region" role="status" data-status="idle">等待任务</div>
           <div class="error-region" id="error-region" role="alert" hidden></div>
         </div>
@@ -68,18 +70,23 @@
           <header class="panel-header">
             <div>
               <p class="section-kicker">任务输入</p>
-              <h3 id="task-heading">年报核查</h3>
+              <h3 id="task-heading">财报分析与研报核查</h3>
             </div>
-            <span class="badge badge-neutral">本地处理</span>
+            <span class="badge badge-neutral">受控材料</span>
           </header>
           <form class="task-form" id="task-form">
             <div class="form-grid command-grid">
               <label class="field field-span">
                 <span>任务类型</span>
                 <select id="task-command" name="command">
-                  <option value="financial">年报核查</option>
+                  <option value="financial">财报分析与研报核查</option>
                   <option value="announcement">公告字段抽取</option>
                 </select>
+              </label>
+              <label class="field field-span file-field">
+                <span>财报或公告 PDF</span>
+                <input type="file" name="pdf" accept="application/pdf,.pdf" required>
+                <small>单份最多 40MiB；财报信息可从原文自动识别。</small>
               </label>
             </div>
             <div class="form-grid" id="financial-fields">
@@ -96,10 +103,6 @@
                 <input type="text" name="name" autocomplete="off" placeholder="例如 贵州茅台">
               </label>
               <label class="field field-span file-field">
-                <span>年报 PDF</span>
-                <input type="file" name="pdf" accept="application/pdf,.pdf">
-              </label>
-              <label class="field field-span file-field">
                 <span>比较材料（最多 4 份）</span>
                 <input id="comparison-pdfs" type="file" name="comparison_pdf" accept="application/pdf,.pdf" multiple>
               </label>
@@ -113,8 +116,9 @@
                 <span>公告事件类型</span>
                 <select name="event_type">
                   <option value="auto">自动识别</option>
-                  <option value="dividend">分红</option>
-                  <option value="share_change">股本变动</option>
+                  <option value="pledge">股份质押</option>
+                  <option value="winning_bid">中标</option>
+                  <option value="equity_change">股权变动</option>
                 </select>
               </label>
               <label class="field checkbox-field">

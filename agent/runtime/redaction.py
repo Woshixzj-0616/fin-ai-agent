@@ -24,6 +24,10 @@ _FORBIDDEN_FIELDS = frozenset(
         "raw",
         "raw_response",
         "reasoning",
+        "reasoning_content",
+        "thinking_content",
+        "internal_reasoning",
+        "thoughts",
         "sentences",
         "system_prompt",
         "thinking",
@@ -88,8 +92,8 @@ def redact_value(
     *,
     depth: int = 0,
     max_depth: int = 8,
-    max_items: int = 100,
-    max_string: int = 2000,
+    max_items: int | None = 100,
+    max_string: int | None = 2000,
 ) -> Any:
     """递归清理公开数据；禁止字段直接移除，字符串统一走凭证规则。"""
     if depth > max_depth:
@@ -126,10 +130,16 @@ def redact_value(
     return redact_text(value, limit=240)
 
 
+def redact_result(value: Any) -> Any:
+    """完整业务产物只脱敏，不套用事件预览的条数和文本长度限制。"""
+    return redact_value(value, max_depth=32, max_items=None, max_string=None)
+
+
 __all__ = [
     "SECRET_PATTERNS",
     "REDACTED_FIELD",
     "REDACTED_SECRET",
     "redact_text",
     "redact_value",
+    "redact_result",
 ]

@@ -38,10 +38,19 @@ const STATUS_LABELS = {
 const api = createApiClient();
 const store = createRunStore();
 let submitting = false;
+let loadVersion = 0;
+let listVersion = 0;
+let selectionVersion = 0;
+let observedRunId = null;
+let askPending = null;
+let searchPending = null;
+let renderedState = null;
+let renderScheduled = false;
 
 const elements = {
   body: document.body,
   runList: document.querySelector("#run-list"),
+  newRun: document.querySelector("#new-run"),
   runSidebarToggle: document.querySelector("#run-sidebar-toggle"),
   sidebarBackdrop: document.querySelector("#sidebar-backdrop"),
   stageView: document.querySelector("#stage-view"),
@@ -61,6 +70,7 @@ const elements = {
   announcementFields: document.querySelector("#announcement-fields"),
   taskSubmit: document.querySelector("#task-submit"),
   cancelRun: document.querySelector("#cancel-run"),
+  printRun: document.querySelector("#print-run"),
   formNote: document.querySelector(".form-note"),
   sidebarFooter: document.querySelector(".sidebar-footer"),
   evidenceDialog: document.querySelector("#evidence-dialog"),
@@ -200,21 +210,53 @@ function renderControls(state) {
   elements.taskSubmit.disabled = submitting || !file;
   elements.taskSubmit.textContent = submitting ? "正在提交…" : "开始核查";
   elements.taskCommand.disabled = submitting;
+  elements.newRun.disabled = submitting;
+  elements.printRun.disabled = !state.result;
   elements.formNote.textContent = running
     ? "当前运行仍在进行；新提交会创建一条独立运行。"
     : file
       ? `已选择：${file.name}`
       : "尚未开始分析。";
+  const canQuery = isTerminal(run) && Boolean(state.result);
+  const asking = askPending?.runId === state.currentRunId && askPending.version === selectionVersion;
+  const searching = searchPending?.runId === state.currentRunId && searchPending.version === selectionVersion;
+  elements.askForm.querySelector('button[type="submit"]').disabled = !canQuery || asking;
+  elements.searchForm.querySelector('button[type="submit"]').disabled = !canQuery || searching;
 }
 
 function renderApp(state) {
-  renderRunList(state);
+  const before = renderedState;
+  const selected = !before || before.currentRunId !== state.currentRunId;
+  if (selected || before.runs !== state.runs) renderRunList(state);
   renderStatus(state);
-  renderTaskView(elements.stageView, state);
-  renderTraceView(elements.traceView, state);
-  renderResultsView(elements.resultsView, state);
-  renderAskView(elements.askContent, state);
+  if (selected || before.currentRun !== state.currentRun || before.events !== state.events) {
+    renderTaskView(elements.stageView, state);
+  }
+  if (selected || before.events !== state.events || before.result !== state.result) renderTraceView(elements.traceView, state);
+  if (selected || before.result !== state.result) renderResultsView(elements.resultsView, state);
+  if (selected || before.currentRun !== state.currentRun || before.askHistory !== state.askHistory
+      || before.searchResults !== state.searchResults || before.searchStatus !== state.searchStatus) {
+    renderAskView(elements.askContent, state);
+  }
   renderControls(state);
+  renderedState = state;
+}
+
+function scheduleRender(state) {
+  if (observedRunId !== state.currentRunId) {
+    observedRunId = state.currentRunId;
+    selectionVersion += 1;
+  }
+  if (renderScheduled) return;
+  renderScheduled = true;
+  requestAnimationFrame(() => {
+    renderScheduled = false;
+    renderApp(store.getState());
+  });
+}
+
+function stillSelected(request) {
+  return request.runId === store.getState().currentRunId && request.version === selectionVersion;
 }
 
 function setSidebarOpen(open) {
@@ -253,6 +295,7 @@ function updateRunFromEvent(payload) {
 }
 
 async function handleStreamEvent(payload) {
+  if (payload?.run_id !== store.getState().currentRunId) return;
   updateRunFromEvent(payload);
   if (!TERMINAL_STATUSES.has(payload?.status)) return;
   stream.close();
@@ -273,14 +316,17 @@ function handleStreamError() {
 }
 
 async function refreshRuns() {
+  const version = ++listVersion;
   const payload = await api.listRuns();
   const runs = Array.isArray(payload?.runs) ? payload.runs : [];
-  store.setState({ runs });
+  if (version === listVersion) store.setState({ runs });
   return runs;
 }
 
 async function loadRun(runId, { connect = true, includeResult = false } = {}) {
   if (!runId) return null;
+  const version = ++loadVersion;
+  const active = () => version === loadVersion && store.getState().currentRunId === runId;
   const state = store.getState();
   if (state.currentRunId !== runId) {
     store.setState({
@@ -299,11 +345,13 @@ async function loadRun(runId, { connect = true, includeResult = false } = {}) {
   persistCurrentRun(runId);
   try {
     const run = await api.getRun(runId);
+    if (!active()) return null;
     upsertRun(run);
     store.setState({ currentRun: run });
     if (isTerminal(run)) {
       if (includeResult || !store.getState().result) {
         const detail = await api.getRun(runId, { includeResult: true });
+        if (!active()) return null;
         upsertRun(detail);
         store.setState({ currentRun: detail, result: detail.result || null });
       }
@@ -319,7 +367,7 @@ async function loadRun(runId, { connect = true, includeResult = false } = {}) {
     }
     return run;
   } catch (error) {
-    setError(error);
+    if (active()) setError(error);
     return null;
   }
 }
@@ -334,8 +382,10 @@ async function selectRun(runId) {
 }
 
 async function initialise() {
+  const version = loadVersion;
   try {
     const runs = await refreshRuns();
+    if (version !== loadVersion) return;
     const saved = storedCurrentRun();
     const selected = runs.find((run) => run.run_id === saved)?.run_id || runs[0]?.run_id;
     if (selected) await loadRun(selected, { connect: true });
@@ -356,6 +406,13 @@ function buildTaskForm() {
   form.append("command", command);
   const pdf = fields.namedItem("pdf")?.files?.[0];
   if (!pdf) throw new Error("请选择 PDF 文件");
+  const comparisons = command === "financial" ? Array.from(fields.namedItem("comparison_pdf")?.files || []) : [];
+  if (comparisons.length > 4) throw new Error("比较材料最多 4 份，请减少后再提交");
+  const uploads = [pdf, ...comparisons];
+  if (uploads.some(file => file.size > 40 * 1024 * 1024)) throw new Error("单份 PDF 不能超过 40MiB");
+  if (uploads.reduce((total, file) => total + file.size, 0) > 80 * 1024 * 1024) {
+    throw new Error("主 PDF 与比较 PDF 合计不能超过 80MiB");
+  }
   form.append("pdf", pdf);
 
   if (command === "financial") {
@@ -363,8 +420,7 @@ function buildTaskForm() {
       const value = fields.namedItem(name)?.value?.trim();
       if (value) form.append(name, value);
     }
-    const comparisons = fields.namedItem("comparison_pdf")?.files || [];
-    Array.from(comparisons).slice(0, 4).forEach((file) => {
+    comparisons.forEach((file) => {
       form.append("comparison_pdf", file);
     });
   } else {
@@ -418,15 +474,16 @@ async function handleCancel() {
   const state = store.getState();
   const run = currentRun(state);
   if (!run || isTerminal(run) || state.cancelPending) return;
+  const request = { runId: run.run_id, version: selectionVersion };
   store.setState({ cancelPending: true });
   try {
     await api.cancelRun(run.run_id);
-    await loadRun(run.run_id, { connect: false, includeResult: true });
+    if (stillSelected(request)) await loadRun(run.run_id, { connect: false, includeResult: true });
     await refreshRuns();
   } catch (error) {
-    setError(error);
+    if (stillSelected(request)) setError(error);
   } finally {
-    store.setState({ cancelPending: false });
+    if (stillSelected(request)) store.setState({ cancelPending: false });
   }
 }
 
@@ -500,15 +557,23 @@ async function handleAsk(event) {
   const question = elements.askInput.value.trim();
   const run = currentRun();
   if (!question || !run || !isTerminal(run)) return;
+  if (askPending && stillSelected(askPending)) return;
+  const request = { runId: run.run_id, version: selectionVersion };
+  askPending = request;
+  renderControls(store.getState());
   try {
     const answer = await api.ask(run.run_id, question);
+    if (!stillSelected(request)) return;
     store.setState({
       askHistory: [...store.getState().askHistory, { question, answer }],
       error: null,
     });
-    elements.askInput.value = "";
+    if (elements.askInput.value.trim() === question) elements.askInput.value = "";
   } catch (error) {
-    setError(error);
+    if (stillSelected(request)) setError(error);
+  } finally {
+    if (askPending === request) askPending = null;
+    renderControls(store.getState());
   }
 }
 
@@ -517,9 +582,13 @@ async function handleSearch(event) {
   const query = elements.searchInput.value.trim();
   const run = currentRun();
   if (!query || !run || !isTerminal(run)) return;
+  if (searchPending && stillSelected(searchPending)) return;
+  const request = { runId: run.run_id, version: selectionVersion };
+  searchPending = request;
   store.setState({ searchStatus: "loading", searchResults: [] });
   try {
     const result = await api.search(run.run_id, query);
+    if (!stillSelected(request)) return;
     const hits = Array.isArray(result.hits) ? result.hits : [];
     store.setState({
       searchResults: hits,
@@ -527,8 +596,13 @@ async function handleSearch(event) {
       error: null,
     });
   } catch (error) {
-    store.setState({ searchStatus: "error" });
-    setError(error);
+    if (stillSelected(request)) {
+      store.setState({ searchStatus: "error" });
+      setError(error);
+    }
+  } finally {
+    if (searchPending === request) searchPending = null;
+    renderControls(store.getState());
   }
 }
 
@@ -560,13 +634,27 @@ elements.runList.addEventListener("click", (event) => {
 });
 
 elements.taskForm.addEventListener("submit", handleTaskSubmit);
-elements.taskForm.addEventListener("change", renderControls.bind(null, store.getState()));
+elements.taskForm.addEventListener("change", () => renderControls(store.getState()));
 elements.taskCommand.addEventListener("change", commandChanged);
 elements.cancelRun.addEventListener("click", handleCancel);
-elements.resultsView.addEventListener("click", (event) => {
+elements.newRun.addEventListener("click", () => {
+  stream.close();
+  loadVersion += 1;
+  persistCurrentRun(null);
+  store.setState({currentRunId: null, currentRun: null, result: null, events: [],
+    askHistory: [], searchResults: [], searchStatus: "idle", error: null,
+    cancelPending: false, connection: "idle"});
+  elements.taskForm.reset();
+  commandChanged();
+  elements.taskCommand.focus();
+});
+elements.printRun.addEventListener("click", () => window.print());
+function handleEvidenceClick(event) {
   const button = event.target.closest("[data-image-url]");
   if (button) openEvidence(button);
-});
+}
+elements.resultsView.addEventListener("click", handleEvidenceClick);
+elements.traceView.addEventListener("click", handleEvidenceClick);
 elements.askForm.addEventListener("submit", handleAsk);
 elements.searchForm.addEventListener("submit", handleSearch);
 elements.evidenceClose.addEventListener("click", closeEvidence);
@@ -576,8 +664,17 @@ elements.evidenceDialog.addEventListener("click", (event) => {
 window.addEventListener("resize", () => {
   if (elements.evidenceDialog.open) drawEvidenceBoxes();
 });
+let printDetails = [];
+window.addEventListener("beforeprint", () => {
+  printDetails = Array.from(elements.resultsView.querySelectorAll("details")).filter(node => !node.open);
+  for (const node of printDetails) node.open = true;
+});
+window.addEventListener("afterprint", () => {
+  for (const node of printDetails) node.open = false;
+  printDetails = [];
+});
 
-store.subscribe(renderApp);
+store.subscribe(scheduleRender);
 renderApp(store.getState());
 commandChanged();
 initialise();

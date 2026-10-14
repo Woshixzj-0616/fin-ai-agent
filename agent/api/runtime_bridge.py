@@ -2,17 +2,19 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import threading
 from pathlib import Path
 from typing import Any
 
 try:
     from runtime import RunStatus
     from runtime.events import timestamp_now
-    from runtime.redaction import redact_text, redact_value
+    from runtime.redaction import redact_result, redact_text, redact_value
 except ModuleNotFoundError:
     from agent.runtime import RunStatus
     from agent.runtime.events import timestamp_now
-    from agent.runtime.redaction import redact_text, redact_value
+    from agent.runtime.redaction import redact_result, redact_text, redact_value
 
 
 _TERMINAL_EVENT_STATUSES = {
@@ -36,6 +38,7 @@ _PRESENTATION = {
     "extraction_completed": ("抽取完成", "parser"),
     "extraction_dedup": ("证据去重", "program"),
     "extraction_failed": ("抽取失败", "parser"),
+    "period_header_carry": ("沿用跨页表头", "parser"),
     "file_read": ("读取文件", "program"),
     "http_error": ("材料请求失败", "program"),
     "http_request": ("请求材料", "program"),
@@ -51,6 +54,7 @@ _PRESENTATION = {
     "loop_submit_failed": ("结构化提交失败", "model"),
     "material_registered": ("登记材料", "program"),
     "model_parse": ("模型计划摘要", "model"),
+    "pipeline_completed": ("结果准备", "runtime"),
     "quarter_dedup": ("季度证据去重", "program"),
     "run_finished": ("运行结束", "runtime"),
     "run_started": ("开始运行", "runtime"),
@@ -86,6 +90,7 @@ def _plan_item(item: Any) -> dict[str, Any]:
         "ambiguity",
         "plain_claim",
         "verification_action",
+        "period_kind", "kind", "value", "unit", "direction", "currency", "qualifier",
     )
     output = {
         key: _safe_value(item.get(key))
@@ -94,6 +99,8 @@ def _plan_item(item: Any) -> dict[str, Any]:
     }
     if "plain_claim" in output:
         output["plain_claim"] = _safe_text(output["plain_claim"], limit=160)
+    if item.get("quote"):
+        output["original_sentence"] = redact_text(item["quote"])
     return output
 
 
@@ -150,7 +157,9 @@ def _event_meta(kind: str, payload: dict[str, Any]) -> tuple[str, str]:
         return title, f"{payload.get('claim_id', '主张')} · {payload.get('status', '已裁决')}"
     if kind == "run_finished":
         return title, f"运行终态：{payload.get('status', 'succeeded')}"
-    return title, "旧流水线事件"
+    if kind == "pipeline_completed":
+        return title, "计算完成，正在保存完整结果"
+    return title, "已记录本步实际输入、输出与依据"
 
 
 class RuntimeRunBridge:
@@ -163,6 +172,7 @@ class RuntimeRunBridge:
         self.folder = context.folder
         self.command = context.command
         self._events: list[str] = []
+        self._detail_lock = threading.Lock()
 
     @property
     def events(self) -> list[str]:
@@ -175,7 +185,8 @@ class RuntimeRunBridge:
         raw = dict(data)
         raw_status = raw.pop("status", None)
         payload, evidence_ids = _event_payload(kind, raw)
-        title, actor = _event_meta(kind, payload)
+        title, summary = _event_meta(kind, payload)
+        actor = _PRESENTATION.get(kind, (title, "legacy"))[1]
         status = "completed"
         if raw_status in _TERMINAL_EVENT_STATUSES or raw_status == "running":
             status = str(raw_status)
@@ -185,36 +196,44 @@ class RuntimeRunBridge:
             kind,
             actor=actor,
             title=title,
-            summary=_event_meta(kind, payload)[1],
+            summary=summary,
             status=status,
             evidence_ids=evidence_ids,
             payload=payload,
         )
-        self._append(kind, payload, title=title, summary=event.summary, timestamp=event.timestamp)
+        complete = redact_result(dict(data))
+        if kind == "model_parse":
+            parsed = data.get("parsed") if isinstance(data.get("parsed"), dict) else {}
+            complete = {"claim_count": len(parsed.get("items") or []),
+                        "plan": [_plan_item(item) for item in parsed.get("items") or []],
+                        "unclaimed_sentence_ids": parsed.get("unclaimed_sentences") or [],
+                        "input_sentences": [{"sentence_id": row.get("sentence_id"), "original_sentence": row.get("text")}
+                                            for row in data.get("sentences") or [] if isinstance(row, dict)]}
+        self._append(kind, complete, title=title, summary=event.summary, timestamp=event.timestamp, seq=event.seq)
 
     def read(self, path: Path) -> bytes:
         blob = self.context.read(path)
         payload = {
             "path": str(Path(path).resolve()),
             "size_bytes": len(blob),
+            "sha256": hashlib.sha256(blob).hexdigest(),
         }
         title, _ = _event_meta("file_read", payload)
-        self._append("file_read", payload, title=title, summary=f"{Path(path).name} · {len(blob)} bytes")
+        records = [json.loads(line) for line in self.context.events]
+        record = next((item for item in reversed(records) if item.get("event_type") == "file_read"
+                       and item.get("payload", {}).get("path") == payload["path"]), {})
+        self._append("file_read", payload, title=title, summary=f"{Path(path).name} · {len(blob)} bytes",
+                     seq=record.get("seq"), timestamp=record.get("timestamp"))
         return blob
 
     def finish(self, *, snapshot_prefix=None, status: str = "succeeded", **summary: Any) -> bool:
         safe_summary = _safe_value(dict(summary))
-        payload = _safe_value({"status": status, **safe_summary})
         # 公告抽取沿用 completed/no_fields，运行接口使用统一终态。
         runtime_status = {"completed": "succeeded", "no_fields": "partial_failed"}.get(status, status)
-        finished = self.context.finish(RunStatus.coerce(runtime_status), result=safe_summary)
-        self._append(
-            "run_finished",
-            payload,
-            title="运行结束",
-            summary=f"运行终态：{status}",
-        )
-        return finished
+        prepared = self.context.prepare_finish(RunStatus.coerce(runtime_status), **safe_summary)
+        if prepared:
+            self.event("pipeline_completed", requested_status=runtime_status, **safe_summary)
+        return prepared
 
     def _append(
         self,
@@ -224,17 +243,19 @@ class RuntimeRunBridge:
         title: str = "",
         summary: str = "",
         timestamp: str | None = None,
+        seq: int | None = None,
     ) -> None:
-        self._events.append(
-            json.dumps(
-                {
+        record = redact_result({
                     "time": timestamp or timestamp_now(),
                     "run_id": self.id,
+                    "seq": seq,
                     "event": kind,
                     **payload,
                     "title": title or kind,
                     "summary": summary,
-                },
-                ensure_ascii=False,
-            )
-        )
+                })
+        line = json.dumps(record, ensure_ascii=False)
+        with self._detail_lock:
+            self._events.append(line)
+            with self.output("execution_details.jsonl").open("a", encoding="utf-8") as stream:
+                stream.write(line + "\n")
