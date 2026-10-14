@@ -114,23 +114,31 @@ class ApiApplication:
         pdf: bytes,
         comparison_pdfs: list[bytes],
     ) -> dict:
-        bridge = RuntimeRunBridge(context)
-        if self.workflow_runner is not None:
-            return self.workflow_runner(
+        try:
+            from model_settings import activate_model_session, reset_model_session
+        except ModuleNotFoundError:
+            from agent.model_settings import activate_model_session, reset_model_session
+        token = activate_model_session(context.session_id)
+        try:
+            bridge = RuntimeRunBridge(context)
+            if self.workflow_runner is not None:
+                return self.workflow_runner(
+                    context,
+                    command,
+                    parameters,
+                    pdf,
+                    comparison_pdfs,
+                )
+            return self._default_workflow(
                 context,
+                bridge,
                 command,
                 parameters,
                 pdf,
                 comparison_pdfs,
             )
-        return self._default_workflow(
-            context,
-            bridge,
-            command,
-            parameters,
-            pdf,
-            comparison_pdfs,
-        )
+        finally:
+            reset_model_session(token)
 
     @staticmethod
     def _default_workflow(

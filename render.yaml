@@ -15,5 +15,3 @@ services:
         value: "3.12"
       - key: HOST
         value: "0.0.0.0"
-      - key: APP_ACCESS_PASSWORD
-        sync: false

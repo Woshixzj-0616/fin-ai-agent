@@ -27,8 +27,10 @@ try:
     from api.sse import encode_sse, heartbeat_frame, parse_last_event_id
     from materials import ROOT, Run
     from model_settings import (
+        activate_model_session,
         prepare_model_settings,
         public_model_settings,
+        reset_model_session,
         save_model_settings,
     )
     from qa import answer as qa_answer
@@ -57,8 +59,10 @@ except ModuleNotFoundError:
     from agent.api.sse import encode_sse, heartbeat_frame, parse_last_event_id
     from agent.materials import ROOT, Run
     from agent.model_settings import (
+        activate_model_session,
         prepare_model_settings,
         public_model_settings,
+        reset_model_session,
         save_model_settings,
     )
     from agent.qa import answer as qa_answer
@@ -459,7 +463,7 @@ class Handler(BaseHTTPRequestHandler):
         if not self._authorized():
             return
         if path == "/api/settings/model":
-            _json(self, 200, public_model_settings())
+            _json(self, 200, public_model_settings(self._new_api_session()))
             return
         if path == "/api/runs":
             _json(self, 200, self._api().list_runs(self._new_api_session()))
@@ -505,7 +509,7 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
         if path in ("/", "/index.html"):
-            if os.environ.get("APP_ACCESS_PASSWORD"):
+            if os.environ.get("APP_ACCESS_PASSWORD") or os.environ.get("FIN_PUBLIC_MODE") == "1":
                 self.send_response(302)
                 self.send_header("Location", "/app/finscope.html")
                 self.send_header("Content-Length", "0")
@@ -646,6 +650,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if not self._authorized():
             return
+        token = activate_model_session(self._new_api_session())
         try:
             ip = self._client_ip()
             if not _rate_limit(ip):
@@ -821,6 +826,8 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as exc:
             traceback.print_exc()
             _json(self, 400, {"error": f"{type(exc).__name__}: {exc}"})
+        finally:
+            reset_model_session(token)
 
 
 __all__ = [

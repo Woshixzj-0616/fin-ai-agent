@@ -4,32 +4,56 @@ from __future__ import annotations
 import os
 import re
 import threading
+from contextvars import ContextVar, Token
 from urllib.parse import urlsplit
 
 
 _LOCK = threading.RLock()
 _OVERRIDES: dict[str, str] = {}
+_SESSION_OVERRIDES: dict[str, dict[str, str]] = {}
+_CURRENT_SESSION: ContextVar[str | None] = ContextVar("model_session", default=None)
 _ALLOWED = {"api_key", "base_url", "model", "format"}
 _SECRET_SHAPE = re.compile(r"(?i)(?:sk-[a-z0-9_-]{12,}|key\s*[:=]\s*\S{8,})")
 _DEFAULT_BASE_URL = "https://api.deepseek.com"
 _DEFAULT_MODEL = "deepseek-chat"
 
 
+def activate_model_session(session_id: str) -> Token:
+    """Bind one browser session to this request or background run."""
+    return _CURRENT_SESSION.set(session_id)
+
+
+def reset_model_session(token: Token) -> None:
+    _CURRENT_SESSION.reset(token)
+
+
+def _overrides(session_id: str | None = None) -> dict[str, str]:
+    selected = session_id if session_id is not None else _CURRENT_SESSION.get()
+    return _SESSION_OVERRIDES.get(selected, {}) if selected else _OVERRIDES
+
+
 def current_model_settings() -> dict[str, str]:
     """返回调用模型客户端所需设置的快照。"""
     with _LOCK:
+        overrides = _overrides()
+        env_key = "" if os.environ.get("FIN_PUBLIC_MODE") == "1" else os.environ.get("LLM_API_KEY", "")
         return {
-            "api_key": _OVERRIDES.get("api_key", os.environ.get("LLM_API_KEY", "")),
-            "base_url": _OVERRIDES.get("base_url", os.environ.get("LLM_BASE_URL") or _DEFAULT_BASE_URL),
-            "model": _OVERRIDES.get("model", os.environ.get("LLM_MODEL") or _DEFAULT_MODEL),
-            "format": _OVERRIDES.get("format", os.environ.get("LLM_FORMAT") or "json_object"),
+            "api_key": overrides.get("api_key", env_key),
+            "base_url": overrides.get("base_url", os.environ.get("LLM_BASE_URL") or _DEFAULT_BASE_URL),
+            "model": overrides.get("model", os.environ.get("LLM_MODEL") or _DEFAULT_MODEL),
+            "format": overrides.get("format", os.environ.get("LLM_FORMAT") or "json_object"),
             "stream": os.environ.get("LLM_STREAM", ""),
         }
 
 
-def public_model_settings() -> dict[str, object]:
+def public_model_settings(session_id: str | None = None) -> dict[str, object]:
     """返回状态与非敏感参数，不返回 API 密钥。"""
-    settings = current_model_settings()
+    token = activate_model_session(session_id) if session_id else None
+    try:
+        settings = current_model_settings()
+    finally:
+        if token is not None:
+            reset_model_session(token)
     key = settings["api_key"]
     base_url = settings["base_url"]
     try:
@@ -41,7 +65,8 @@ def public_model_settings() -> dict[str, object]:
     except ValueError:
         base_url = ""
     with _LOCK:
-        source = "temporary" if _OVERRIDES.get("api_key") else "environment" if os.environ.get("LLM_API_KEY") else "none"
+        override = _overrides(session_id)
+        source = "temporary" if override.get("api_key") else "environment" if key else "none"
     return {
         "configured": bool(
             key
@@ -56,7 +81,7 @@ def public_model_settings() -> dict[str, object]:
         "base_url": base_url,
         "model": settings["model"],
         "format": settings["format"] if settings["format"] in {"json_schema", "json_object"} else "json_schema",
-        "has_temporary_key": bool(_OVERRIDES.get("api_key")),
+        "has_temporary_key": bool(override.get("api_key")),
     }
 
 
@@ -116,11 +141,13 @@ def prepare_model_settings(payload: object) -> tuple[dict[str, str], dict[str, s
     return candidate, changes
 
 
-def save_model_settings(changes: dict[str, str]) -> None:
+def save_model_settings(changes: dict[str, str], session_id: str | None = None) -> None:
     """只更新当前 Python 进程内的覆盖值；空密钥恢复到环境变量配置。"""
     with _LOCK:
+        selected = session_id if session_id is not None else _CURRENT_SESSION.get()
+        overrides = _SESSION_OVERRIDES.setdefault(selected, {}) if selected else _OVERRIDES
         for name, value in changes.items():
             if name == "api_key" and not value:
-                _OVERRIDES.pop(name, None)
+                overrides.pop(name, None)
             else:
-                _OVERRIDES[name] = value
+                overrides[name] = value
