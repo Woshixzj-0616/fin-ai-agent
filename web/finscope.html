@@ -45,6 +45,58 @@
   <style id="v401-collapsible-timeline-styles">
     .timeline-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:15px;cursor:pointer;list-style:none}.timeline-panel>summary::-webkit-details-marker{display:none}.timeline-panel>summary:after{content:"＋";color:var(--teal);font-size:15px}.timeline-panel[open]>summary:after{content:"−"}.timeline-panel>#timeline{margin-top:15px}
   </style>
+  <style id="v402-sidebar-styles">
+    .work-layout{grid-template-columns:250px minmax(0,1fr)}
+    .sidebar{padding:25px 16px 20px;background:#fff;border-right:1px solid #e8ecea}
+    .side-label{margin:0 4px 12px;color:#929b98;font-size:10px;font-weight:600;letter-spacing:0;text-transform:none}
+    .side-project{padding:13px;border:0;border-bottom:1px solid #e8ecea;border-radius:0;background:transparent}
+    .side-project-current{padding:0}
+    .side-project-heading{align-items:center}
+    .side-project-icon{width:32px;height:32px;border-radius:9px}
+    .side-project-text strong{font-size:13px}
+    .side-project-meta{margin-top:10px}
+    .project-sidebar-actions{margin:10px 0 18px}
+    .project-sidebar-actions .btn{font-size:10px}
+    .side-navigation{display:grid;gap:4px;padding-top:5px}
+    .side-navigation .side-label{margin:0 4px 4px}
+    .side-navigation .side-button{min-height:42px;margin:0;padding:10px 12px;border-radius:10px;color:#697571;font-size:12px}
+    .side-navigation .side-button:hover{background:#f4f5f4;color:#283a35}
+    .side-navigation .side-button.active{background:#f0f1f0;color:#18211f;font-weight:800}
+    .side-navigation .side-button .icon{width:17px;height:17px}
+    .sidebar-bottom{padding-top:15px}
+    .main-area{padding-top:30px}
+    .overview-pane{display:grid;gap:14px}.overview-pane[hidden]{display:none}
+    .overview-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 24px}
+    .overview-hero h2{margin:0;color:var(--navy);font-size:23px;letter-spacing:-.035em}
+    .overview-hero p:not(.pane-kicker){margin:6px 0 0;color:#788680;font-size:12px}
+    .overview-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .overview-columns{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:14px}
+    .overview-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;margin:0}
+    .overview-facts div{min-width:0}
+    .overview-facts dt{color:#8c9994;font-size:10px}
+    .overview-facts dd{margin:5px 0 0;overflow-wrap:anywhere;color:#344b46;font-size:12px;font-weight:700}
+    .overview-run-card{padding:15px;border:1px solid #e7eeeb;border-radius:11px;background:#fbfdfc}
+    .overview-run-card strong{display:block;color:#344b46;font-size:12px}
+    .overview-run-card p{margin:6px 0 12px;color:#87948f;font-size:10px;line-height:1.6}
+    .overview-module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .overview-module{display:grid;justify-items:start;gap:6px;min-width:0;padding:15px;border:1px solid #e2e8e5;border-radius:11px;background:#fff;text-align:left;cursor:pointer;transition:.15s ease}
+    .overview-module:hover{border-color:#bfd9ce;background:#fbfdfc;transform:translateY(-1px)}
+    .overview-module-icon{display:grid;width:29px;height:29px;place-items:center;border-radius:8px;background:#f2f5f3;color:#4f7168;font-size:17px}
+    .overview-module strong{color:#30453f;font-size:12px}
+    .overview-module small{color:#87948f;font-size:9px;line-height:1.5}
+    .overview-module-status{color:#a07b46;font-size:9px}
+    .history-list{display:grid;gap:8px}
+    .history-run{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:1px solid #e3eae7;border-radius:12px;background:#fff;text-align:left;cursor:pointer}
+    .history-run:hover,.history-run.active{border-color:#c9e0d6;background:#f9fcfa}
+    .history-run-icon{display:grid;width:34px;height:34px;place-items:center;flex:0 0 auto;border-radius:10px;background:#eff6f2;color:#3e8971;font-size:15px}
+    .history-run-copy{min-width:0;flex:1}
+    .history-run-copy strong,.history-run-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .history-run-copy strong{color:#334943;font-size:11px}
+    .history-run-copy small{margin-top:4px;color:#8b9993;font-size:9px}
+    .history-run-status{color:#71817b;font-size:10px}
+    @media(max-width:980px){.work-layout{grid-template-columns:220px minmax(0,1fr)}.overview-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-columns{grid-template-columns:1fr}}
+    @media(max-width:700px){.overview-hero{align-items:flex-start;flex-direction:column}.overview-module-grid{grid-template-columns:1fr}.overview-facts{grid-template-columns:1fr 1fr}}
+  </style>
 </head>
 <body>
   <section id="screen-setup">
@@ -113,19 +165,18 @@
     </header>
     <div class="work-layout">
       <aside class="sidebar" id="sidebar">
-        <p class="side-label">当前项目 <span class="tag teal">本机</span></p>
+        <p class="side-label">当前项目</p>
         <div id="sidebar-project" class="side-project"></div>
         <div class="project-sidebar-actions"><button class="btn btn-sm" id="select-project" type="button">选择项目</button><button class="btn btn-primary btn-sm" id="new-project" type="button">＋ 新建项目</button></div>
         <div id="project-picker-list" class="project-picker-list" hidden></div>
         <div class="side-spacer"></div>
-        <p class="side-label">研究流程</p>
-        <button class="side-button active" data-view="extract" type="button"><span class="icon"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v6h5M9 13h6M9 17h6"/></svg></span>资料提取</button>
-        <button class="side-button" data-view="finance" type="button"><span class="icon"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/></svg></span>财务分析</button>
-        <button class="side-button" data-view="review" type="button"><span class="icon"><svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2Z"/><path d="m9 10 2 2 4-4"/></svg></span>研报审查</button>
-        <div class="side-spacer"></div>
-        <p class="side-label">本项目运行</p>
-        <div id="run-list"></div>
-        <div class="sidebar-bottom"><button class="btn btn-primary btn-sm" id="sidebar-start" type="button"><span class="icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>开始资料分析</button><div class="local-footnote">项目目录和原始 PDF 保存在当前浏览器。分析记录保存在本地服务中。</div></div>
+        <nav id="workspace-navigation" class="side-navigation" aria-label="工作区导航">
+          <p class="side-label">工作区</p>
+          <button class="side-button active" data-section="overview" type="button"><span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>项目概览</button>
+          <button class="side-button" data-section="analysis" type="button"><span class="icon"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/></svg></span>财务分析</button>
+          <button class="side-button" data-section="history" type="button"><span class="icon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg></span>运行记录</button>
+        </nav>
+        <div class="sidebar-bottom"><div class="local-footnote">项目目录和原始 PDF 保存在当前浏览器。分析记录保存在本地服务中。</div></div>
       </aside>
 
       <main class="main-area"><div class="main-inner">
@@ -161,10 +212,30 @@
         </section>
         <div id="workspace-home-view">
         <div class="breadcrumb"><span>研究项目</span><span>›</span><strong id="breadcrumb-project">—</strong></div>
-        <div class="page-heading"><div><h1 id="workspace-title">资料提取</h1><p id="workspace-subtitle">整理项目资料，并查看真实的解析进度与原文证据。</p></div><div class="heading-actions"><button class="btn btn-sm" id="workspace-edit-project" type="button" hidden>项目资料</button><span id="run-status" class="status-pill" data-status="idle"><span class="dot"></span>等待分析</span><button class="btn btn-sm btn-danger" id="cancel-run" type="button" hidden>取消运行</button></div></div>
-        <nav class="tabs" aria-label="研究流程"><button class="tab active" data-view="extract" type="button"><span class="tab-number">01</span>资料提取</button><button class="tab" data-view="finance" type="button"><span class="tab-number">02</span>财务分析</button><button class="tab" data-view="review" type="button"><span class="tab-number">03</span>研报审查</button></nav>
+        <div class="page-heading"><div><h1 id="workspace-title">项目概览</h1><p id="workspace-subtitle">整理项目资料，并查看真实的解析进度与原文证据。</p></div><div class="heading-actions"><button class="btn btn-sm" id="workspace-edit-project" type="button" hidden>项目资料</button><span id="run-status" class="status-pill" data-status="idle"><span class="dot"></span>等待分析</span><button class="btn btn-sm btn-danger" id="cancel-run" type="button" hidden>取消运行</button></div></div>
 
-        <section class="pane" id="pane-extract">
+        <nav id="analysis-tabs" class="tabs" aria-label="研究流程" hidden>
+          <button class="tab active" data-track="extract" type="button"><span class="tab-number">01</span>资料提取</button>
+          <button class="tab" data-track="finance" type="button"><span class="tab-number">02</span>财务分析</button>
+          <button class="tab" data-track="review" type="button"><span class="tab-number">03</span>研报审查</button>
+        </nav>
+        <section class="pane overview-pane" id="pane-overview">
+          <section class="surface overview-hero">
+            <div><p class="pane-kicker">PROJECT OVERVIEW</p><h2 id="overview-project-name">项目概览</h2><p id="overview-project-summary">选择一个项目，查看资料和研究进展。</p></div>
+            <button class="btn btn-sm" id="overview-edit-project" type="button">编辑项目资料</button>
+          </section>
+          <div id="overview-metrics" class="metric-grid overview-metrics"></div>
+          <div class="overview-columns">
+            <section class="surface section-card"><div class="card-head"><h3>当前项目资料</h3><small>本地项目</small></div><dl class="overview-facts"><div><dt>公司名称</dt><dd id="overview-company">—</dd></div><div><dt>证券代码</dt><dd id="overview-code">—</dd></div><div><dt>报告年度</dt><dd id="overview-year">—</dd></div><div><dt>主财报 PDF</dt><dd id="overview-primary-file">—</dd></div><div><dt>比较材料</dt><dd id="overview-comparisons">—</dd></div><div><dt>研报草稿</dt><dd id="overview-draft">—</dd></div></dl></section>
+            <section class="surface section-card"><div class="card-head"><h3>最近运行</h3><small id="overview-run-status">等待分析</small></div><div class="overview-run-card"><strong id="overview-run-id">尚未开始运行</strong><p id="overview-run-time">完成资料分析后，最新运行会显示在这里。</p><button class="btn btn-quiet btn-sm" data-section="history" type="button">查看运行记录 →</button></div></section>
+          </div>
+          <section class="surface section-card overview-modules"><div class="card-head"><h3>研究工作区</h3><small>从右侧内容继续处理</small></div><div class="overview-module-grid">
+            <button class="overview-module" data-view="extract" type="button"><span class="overview-module-icon">▤</span><strong>研究资料</strong><small>财报解析、提取证据与处理轨迹</small><span class="overview-module-status" id="overview-material-status">待查看</span></button>
+            <button class="overview-module" data-view="finance" type="button"><span class="overview-module-icon">⌁</span><strong>财务分析</strong><small>指标、趋势与数据质量提示</small><span class="overview-module-status" id="overview-finance-status">待查看</span></button>
+            <button class="overview-module" data-view="review" type="button"><span class="overview-module-icon">✓</span><strong>研究核查</strong><small>核对研报草稿中的事实主张</small><span class="overview-module-status" id="overview-review-status">待核查</span></button>
+          </div></section>
+        </section>
+        <section class="pane" id="pane-extract" hidden>
           <div class="pane-head"><div><p class="pane-kicker">Document intelligence</p><h2>资料解析与证据</h2><p>分析阶段来自后端事件流；完成后可查看提取出的指标与原文位置。</p></div><button class="btn btn-primary btn-sm" id="extract-start" type="button">开始资料分析</button></div>
           <div id="extract-empty" class="empty-inline"><div class="empty-symbol"><span class="icon"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2 2Z"/><path d="M14 3v6h5M9 13h6M9 17h6"/></svg></span></div><strong id="extract-empty-title">项目已建立，资料尚未提交分析</strong><p id="extract-empty-copy">先检查公司名称、证券代码和报告年度，再启动分析。文件身份无法确认时，可以在项目资料里手动补齐。</p><div class="identity-empty-actions"><button class="btn btn-primary btn-sm" id="empty-start" type="button">检查信息并开始分析</button><button class="btn btn-sm" id="empty-ai-complete" type="button" hidden>AI 补全缺失信息</button></div></div>
           <div id="extract-content" hidden>
@@ -182,8 +253,13 @@
         </section>
 
         <section class="pane" id="pane-review" hidden>
-          <div class="pane-head"><div><p class="pane-kicker">Research report review</p><h2>研报审查</h2><p>提交研报草稿后，系统会用项目原始 PDF 建立一次新的运行并核对其中的主张。</p></div></div>
+          <div class="pane-head"><div><p class="pane-kicker">Research report review</p><h2>研究核查</h2><p>提交研报草稿后，系统会用项目原始 PDF 建立一次新的运行并核对其中的主张。</p></div></div>
           <div class="audit-layout"><section class="surface section-card"><div class="card-head"><h3>研报草稿</h3><small>保存在当前浏览器项目中</small></div><textarea id="review-draft" class="draft-editor" placeholder="粘贴需要核查的研报段落。保存后，点击下方按钮开始审查。"></textarea><div class="draft-actions"><span id="draft-status" class="muted small">草稿尚未保存</span><button class="btn btn-sm" id="save-draft" type="button">保存草稿</button></div><div class="panel-divider"></div><div class="notice">开始审查会重新提交项目原始 PDF 和草稿。已有分析记录会保留为独立运行。</div><button class="btn btn-primary" id="review-start" type="button" style="width:100%;margin-top:14px">基于此草稿开始核查</button></section><section class="surface section-card"><div class="card-head"><h3>审查结果</h3><small id="audit-run-label">等待运行</small></div><div id="audit-empty" class="empty-inline" style="padding:31px 16px"><strong>本次运行没有研报核查结果</strong><p>先粘贴草稿并启动审查。系统会明确显示完成、部分核查或未运行状态。</p></div><div id="audit-result" hidden></div></section></div>
+        </section>
+        <section class="pane" id="pane-history" hidden>
+          <div class="pane-head"><div><p class="pane-kicker">RUN HISTORY</p><h2>运行记录</h2><p>查看本项目保存的分析运行，并重新打开历史结果。</p></div></div>
+          <div id="history-empty" class="empty-inline"><strong>还没有运行记录</strong><p>启动资料分析后，运行状态和结果会保存在这里。</p></div>
+          <div id="history-list" class="history-list"></div>
         </section>
         <div id="workspace-error" class="error-box" hidden role="alert"></div>
         </div>
@@ -264,7 +340,7 @@
       const MAX_FILE_BYTES=38*1024*1024;
       const MAX_TOTAL_UPLOAD_BYTES=39*1024*1024;
       const terminal=new Set(["succeeded","partial_failed","failed","cancelled","expired"]);
-      const viewCopy={extract:["资料提取","整理项目资料，并查看真实的解析进度与原文证据。"],finance:["财务分析","检查指标、趋势与数据质量提示。"],review:["研报审查","用项目财报材料核查研究报告中的事实主张。"]};
+      const sectionCopy={overview:["项目概览","查看项目资料、最近运行与当前研究进展。"],analysis:["财务分析","在右侧切换资料提取、财务分析和研报审查。"],history:["运行记录","查看并重新打开本项目的历史运行。"]};const trackCopy={extract:["资料提取","整理项目资料，并查看真实的解析进度与原文证据。"],finance:["财务分析","检查指标、趋势与数据质量提示。"],review:["研报审查","用项目财报材料核查研究报告中的事实主张。"]};
       const $=id=>document.getElementById(id);
       const ui={setup:$("screen-setup"),workspace:$("screen-workspace"),file:$("pdf-file"),drop:$("drop-zone"),fileCard:$("file-card"),prefill:$("prefill-state"),projectName:$("project-name"),detailFile:$("detail-project-file"),modelKey:$("model-key"),modelDialog:$("model-dialog"),createDialog:$("create-project-dialog"),evidenceDialog:$("evidence-dialog")};
       let projects=[];
@@ -272,7 +348,9 @@
       let activeRun=null;
       let activeResult=null;
       let events=[];
+      let currentSection="overview";
       let currentView="extract";
+      let projectPickerOpen=false;
       let selectedFile=null;
       let selectedComparisonFiles=[];
       let selectedDetailFile=null;
@@ -280,7 +358,6 @@
       let removeDetailPrimary=false;
       let detailFileError=false;
       let detailComparisonError=false;
-      let projectPickerOpen=false;
       let prefilledIdentity={};
       let keySetupRequired=false;
       let eventSource=null;
@@ -329,7 +406,7 @@
       async function inspectComparisonFiles(fileList){const files=Array.from(fileList||[]);if(files.length>4){selectedComparisonFiles=[];renderComparisonFiles();setComparisonState("比较材料最多选择 4 份 PDF。","error");$("project-comparison-files").value="";return}if(files.reduce((sum,file)=>sum+file.size,0)>MAX_TOTAL_UPLOAD_BYTES){selectedComparisonFiles=[];renderComparisonFiles();setComparisonState("比较材料总大小不能超过 39 MiB；如果还要上传财报，创建时会再校验合计大小。","error");$("project-comparison-files").value="";return}for(const file of files){if(file.size>MAX_FILE_BYTES||!/\.pdf$/i.test(file.name)||await file.slice(0,5).text()!=="%PDF-"){selectedComparisonFiles=[];renderComparisonFiles();setComparisonState("请确认比较材料均为有效 PDF，且每份不超过 38 MiB。","error");$("project-comparison-files").value="";return}}selectedComparisonFiles=files;renderComparisonFiles();setComparisonState(files.length?`已选择 ${files.length} 份比较材料，创建后会保存在项目中。`:"尚未添加比较材料。",files.length?"success":"info")}
       function showFile(file){ui.fileCard.replaceChildren();if(!file){ui.fileCard.hidden=true;updateCreateAvailability();return}const type=document.createElement("span");type.className="file-type";type.textContent="PDF";const meta=document.createElement("span");meta.className="file-meta";const title=document.createElement("strong");title.textContent=file.name;const detail=document.createElement("span");detail.textContent=`${fmtBytes(file.size)} · PDF`;meta.append(title,detail);const remove=document.createElement("button");remove.type="button";remove.className="file-remove";remove.textContent="×";remove.setAttribute("aria-label","移除 PDF");remove.addEventListener("click",()=>{selectedFile=null;prefilledIdentity={};for(const id of ["project-company","project-code","project-year"])if(!$(id).dataset.edited)$(id).value="";ui.file.value="";ui.fileCard.hidden=true;updateCreateAvailability();setPrefill("项目名称和财报 PDF 至少填写一项。");});ui.fileCard.append(type,meta,remove);ui.fileCard.hidden=false;updateCreateAvailability()}
       function updateModelDisplay(){const title=$("setup-model-title"),detail=$("setup-model-detail"),keyState=$("model-key-state");const model=modelState.model||"deepseek-chat";$("setup-model-name").textContent=model;if(modelState.configured){title.textContent="DeepSeek 已配置";detail.textContent=`${model} · ${modelState.source==="environment"?"服务端配置":"当前服务进程"}`;keyState.textContent="•••••••• 已配置";keyState.dataset.state="ready"}else{title.textContent="等待配置密钥";detail.textContent="DeepSeek · deepseek-chat";keyState.textContent="尚未配置";keyState.dataset.state="missing"}const status=$("model-dialog-status");if(status&&!ui.modelDialog.open)status.textContent=modelState.configured?"DeepSeek 密钥已配置。输入新密钥可替换当前密钥。":"请输入 DeepSeek API 密钥。"}
-      async function refreshModelState(){try{modelState=await api("/api/settings/model")}catch{modelState={configured:false,source:"none",base_url:"",model:"deepseek-chat",format:"json_object",has_temporary_key:false};$("setup-model-detail").textContent="分析服务暂不可达；请稍后重试。"}updateModelDisplay();keySetupRequired=!modelState.configured;if(keySetupRequired)openModelDialog()}
+      async function refreshModelState(){try{modelState=await api("/api/settings/model")}catch{modelState={configured:false,source:"none",base_url:"",model:"deepseek-chat",format:"json_object",has_temporary_key:false};$("setup-model-detail").textContent="本地服务暂不可达；请确认服务正在运行。"}updateModelDisplay();keySetupRequired=!modelState.configured;if(keySetupRequired)openModelDialog()}
       function openModelDialog(){ui.modelKey.value="";keySetupRequired=!modelState.configured;ui.modelDialog.classList.toggle("dialog-required",keySetupRequired);$("model-dialog-status").style.color="";$("model-dialog-status").textContent=modelState.configured?"DeepSeek 密钥已配置。输入新密钥即可替换。":"请输入 DeepSeek API 密钥后继续。";if(ui.modelDialog.showModal){if(!ui.modelDialog.open)ui.modelDialog.showModal()}else ui.modelDialog.setAttribute("open","")}
       function closeDialog(dialog){if(dialog.close)dialog.close();else dialog.removeAttribute("open")}
       async function saveModel(event){event.preventDefault();const secret=ui.modelKey.value.trim();if(!secret){$("model-dialog-status").textContent="请先输入 DeepSeek API 密钥。";ui.modelKey.focus();return}try{modelState=await api("/api/settings/model",jsonOptions({api_key:secret}));ui.modelKey.value="";updateModelDisplay();keySetupRequired=!modelState.configured;if(keySetupRequired){ui.modelDialog.classList.add("dialog-required");$("model-dialog-status").textContent="密钥尚未通过格式校验，请检查后重试。";return}ui.modelDialog.classList.remove("dialog-required");closeDialog(ui.modelDialog);notify("DeepSeek 密钥已保存在本地服务进程中。","success")}catch(error){$("model-dialog-status").textContent=error.message;$("model-dialog-status").style.color="#a45149"}}
@@ -397,8 +474,36 @@
       function renderDetailComparisonFiles(){const root=$("detail-comparison-list"),p=project();root.replaceChildren();const files=selectedDetailComparisonFiles??p?.comparisonFiles??[];files.forEach(file=>{const row=document.createElement("div");row.className="comparison-file";const name=document.createElement("span");name.textContent=`${file.name} · ${fmtBytes(file.size)}`;row.append(name);root.append(row)})}
       function renderProjectPage(){const p=project();if(!p)return;$("project-page-title").textContent=p.name||"未命名项目";$("detail-project-name").value=p.name||"";$("detail-company-name").value=p.company||"";$("detail-company-code").value=p.code||"";$("detail-report-year").value=p.year||"";$("detail-document-type").value=p.documentType||"annual";$("detail-project-draft").value=p.draft||"";ui.detailFile.value="";$("detail-comparison-files").value="";selectedDetailFile=null;selectedDetailComparisonFiles=null;removeDetailPrimary=false;detailFileError=false;detailComparisonError=false;const state=$("detail-file-state");state.textContent=p.fileName?`${p.fileName} · ${fmtBytes(p.fileSize)} · 选择文件可替换`:"尚未关联财报 PDF。";state.dataset.kind="info";$("detail-remove-file").hidden=!p.fileName;$("detail-remove-file").textContent="移除当前财报";$("detail-clear-comparisons").hidden=!(p.comparisonFiles||[]).length;renderDetailComparisonFiles();setDetailComparisonState(p.comparisonFiles?.length?`当前保存 ${p.comparisonFiles.length} 份比较材料。`:"尚未添加比较材料。")}
       async function inspectDetailComparisonFiles(fileList){const files=Array.from(fileList||[]);detailComparisonError=false;if(files.length>4){detailComparisonError=true;setDetailComparisonState("比较材料最多选择 4 份 PDF。","error");return}for(const file of files){if(file.size>MAX_FILE_BYTES||!/\.pdf$/i.test(file.name)||await file.slice(0,5).text()!=="%PDF-"){detailComparisonError=true;setDetailComparisonState("请确认比较材料均为有效 PDF，且每份不超过 38 MiB。","error");return}}selectedDetailComparisonFiles=files;renderDetailComparisonFiles();setDetailComparisonState(files.length?`已选择 ${files.length} 份材料，保存后会替换当前比较材料。`:"将清空现有比较材料。",files.length?"success":"info")}
-      function renderRunList(){const root=$("run-list");root.replaceChildren();const p=project();const ids=(p?.runIds||[]).slice().reverse();if(!ids.length){const empty=document.createElement("p");empty.className="muted small";empty.style.padding="0 9px";empty.textContent="尚无运行记录";root.append(empty);return}for(const runId of ids){const item=document.createElement("button");item.type="button";item.className=`side-run${runId===p.activeRunId?" active":""}`;const icon=document.createElement("span");icon.className="run-mark";icon.textContent="↗";const copy=document.createElement("span");copy.className="side-run-copy";const title=document.createElement("strong");title.textContent=runId===p.activeRunId?statusText(activeRun?.status||"queued"):`运行 ${runId.slice(0,8)}`;const sub=document.createElement("small");sub.textContent=runId===p.activeRunId?fmtDate(activeRun?.created_at):"点击加载历史记录";copy.append(title,sub);item.append(icon,copy);item.addEventListener("click",()=>loadRun(runId));root.append(item)}}
-      function renderTabs(){document.querySelectorAll("[data-view]").forEach(button=>{button.classList.toggle("active",button.dataset.view===currentView)});for(const key of ["extract","finance","review"])$("pane-"+key).hidden=key!==currentView;$("workspace-title").textContent=viewCopy[currentView][0];$("workspace-subtitle").textContent=viewCopy[currentView][1]}
+      function renderOverview(){
+        const p=project(),counts=activeResult&&activeResult.counts||{},root=$("overview-metrics");
+        root.replaceChildren();
+        const runCount=p?(p.runIds||[]).length:0,matched=activeResult?Number(counts.match||0):"—",needsReview=activeResult?Number(counts.mismatch||0)+Number(counts.unverified||0)+Number(counts.issue||0):"—";
+        const metrics=[["运行次数",runCount,"本项目累计分析记录"],["当前运行",statusText(activeRun&&activeRun.status||"idle"),activeRun?fmtDate(activeRun.created_at):"等待下一次分析"],["核对一致",matched,"本次运行明确匹配的主张"],["待关注",needsReview,"差异、待核验或证据提示"]];
+        metrics.forEach(([label,value,detail])=>{const card=document.createElement("article");card.className="metric-card";const l=document.createElement("span");l.textContent=label;const v=document.createElement("strong");v.textContent=String(value);const d=document.createElement("small");d.textContent=detail;card.append(l,v,d);root.append(card)});
+        $("overview-project-name").textContent=p?(p.name||"未命名项目"):"尚未选择项目";
+        $("overview-project-summary").textContent=p?[p.company||"公司信息待补充",p.year?p.year+" 年度":"年度待补",p.fileName||"财报 PDF 待补"].join(" · "):"选择或创建一个项目，查看资料和研究进展。";
+        $("overview-company").textContent=p&&p.company||"待补充";$("overview-code").textContent=p&&p.code||"待补充";$("overview-year").textContent=p&&p.year?p.year+" 年":"待补充";
+        $("overview-primary-file").textContent=p&&p.fileName||"未添加";$("overview-comparisons").textContent=p?(p.comparisonFiles||[]).length+" 份":"—";$("overview-draft").textContent=p&&String(p.draft||"").trim()?"已保存":"未添加";
+        $("overview-run-status").textContent=activeRun?statusText(activeRun.status):"等待分析";$("overview-run-id").textContent=activeRun?("运行 "+String(activeRun.run_id||p&&p.activeRunId||"").slice(0,12)):"尚未开始运行";
+        $("overview-run-time").textContent=activeRun?fmtDate(activeRun.created_at):(runCount?"本项目已有 "+runCount+" 次运行，点击查看历史记录。":"完成资料分析后，最新运行会显示在这里.");$("overview-edit-project").disabled=!p;
+        $("overview-material-status").textContent=activeRun&&activeRun.status==="succeeded"?"运行已完成":p&&p.fileName?"PDF 已添加":"资料待补充";
+        $("overview-finance-status").textContent=activeResult&&Array.isArray(activeResult.rows)?activeResult.rows.length+" 项指标":activeResult?"结果已生成":"等待分析结果";
+        $("overview-review-status").textContent=activeResult&&activeResult.checks?"已有核查结果":p&&String(p.draft||"").trim()?"草稿待核查":"尚无研报草稿";
+      }
+      function renderRunList(){
+        const root=$("history-list"),empty=$("history-empty");if(!root||!empty)return;root.replaceChildren();
+        const p=project(),ids=(p&&p.runIds||[]).slice().reverse();empty.hidden=ids.length>0;if(!ids.length)return;
+        for(const runId of ids){
+          const item=document.createElement("button");item.type="button";item.className="history-run"+(runId===p.activeRunId?" active":"");
+          const icon=document.createElement("span");icon.className="history-run-icon";icon.textContent="↗";
+          const copy=document.createElement("span");copy.className="history-run-copy";
+          const title=document.createElement("strong");title.textContent=runId===p.activeRunId&&activeRun?statusText(activeRun.status):"运行 "+runId.slice(0,8);
+          const sub=document.createElement("small");sub.textContent=runId===p.activeRunId&&activeRun?fmtDate(activeRun.created_at):"运行编号 "+runId;
+          copy.append(title,sub);const status=document.createElement("span");status.className="history-run-status";status.textContent=runId===p.activeRunId&&activeRun?statusText(activeRun.status):"打开记录 →";
+          item.append(icon,copy,status);item.addEventListener("click",()=>loadRun(runId));root.append(item);
+        }
+      }
+      function renderTabs(){document.querySelectorAll("#workspace-navigation [data-section]").forEach(button=>button.classList.toggle("active",button.dataset.section===currentSection));document.querySelectorAll("#analysis-tabs [data-track]").forEach(button=>button.classList.toggle("active",button.dataset.track===currentView));$("analysis-tabs").hidden=currentSection!=="analysis";$("pane-overview").hidden=currentSection!=="overview";$("pane-history").hidden=currentSection!=="history";for(const key of ["extract","finance","review"])$("pane-"+key).hidden=currentSection!=="analysis"||key!==currentView;$("workspace-title").textContent=sectionCopy[currentSection][0];$("workspace-subtitle").textContent=sectionCopy[currentSection][1]}
       function renderStatus(){
         const run=activeRun,status=run?.status||"idle",p=project();
         const badge=$("run-status");badge.dataset.status=status;badge.replaceChildren();
@@ -407,26 +512,25 @@
         badge.append(dot,document.createTextNode(statusText(status)));
         const canCancel=run&&["queued","running"].includes(status),canStart=Boolean(p?.fileName);
         $("cancel-run").hidden=!canCancel;
-        $("sidebar-start").textContent=canCancel?"分析进行中":!p?"选择项目":!p.fileName?"先添加财报 PDF":"开始资料分析";
-        $("sidebar-start").disabled=Boolean(canCancel)||!canStart;
         $("extract-start").disabled=Boolean(canCancel)||!canStart;
         $("empty-start").disabled=Boolean(canCancel);
         $("review-start").disabled=Boolean(canCancel)||!canStart;
         renderRunList();
       }
-      function setView(view){if(!viewCopy[view])return;$("project-page").hidden=true;$("workspace-home-view").hidden=false;currentView=view;renderTabs();renderStatus();renderPane();document.body.classList.remove("sidebar-open");window.scrollTo({top:0,behavior:"smooth"})}
+      function setSection(section){if(!sectionCopy[section])return;$("project-page").hidden=true;$("workspace-home-view").hidden=false;currentSection=section;renderTabs();renderStatus();renderPane();document.body.classList.remove("sidebar-open");window.scrollTo({top:0,behavior:"smooth"})}
+      function setTrack(track){if(!trackCopy[track])return;$("project-page").hidden=true;$("workspace-home-view").hidden=false;currentView=track;currentSection="analysis";renderTabs();renderStatus();renderPane();document.body.classList.remove("sidebar-open");window.scrollTo({top:0,behavior:"smooth"})}
       function enterWorkspace(){
         if(eventSource){eventSource.close();eventSource=null}
-        activeProjectId=null;activeRun=null;activeResult=null;events=[];
+        activeProjectId=null;activeRun=null;activeResult=null;events=[];projectPickerOpen=false;
         try{localStorage.removeItem(STORAGE_KEY+".active")}catch{}
-        ui.setup.hidden=true;ui.workspace.hidden=false;$("workspace-home-view").hidden=false;$("project-page").hidden=true;currentView="extract";
+        ui.setup.hidden=true;ui.workspace.hidden=false;$("workspace-home-view").hidden=false;$("project-page").hidden=true;projectPickerOpen=false;currentSection="overview";currentView="extract";
         renderTabs();renderSideProject();renderStatus();renderPane();renderRecent();
       }
       function openProject(projectId){
         const p=projects.find(x=>x.id===projectId);if(!p)return;
         activeProjectId=projectId;persist();events=[];activeResult=null;activeRun=null;
         if(eventSource){eventSource.close();eventSource=null}
-        ui.setup.hidden=true;ui.workspace.hidden=false;$("workspace-home-view").hidden=false;$("project-page").hidden=true;projectPickerOpen=false;currentView="extract";
+        ui.setup.hidden=true;ui.workspace.hidden=false;$("workspace-home-view").hidden=false;$("project-page").hidden=true;currentSection="overview";currentView="extract";
         renderTabs();renderSideProject();renderStatus();renderPane();renderRecent();
         api("/api/runs").then(({runs=[]})=>{
           const allowed=new Set(p.runIds||[]),known=(runs||[]).filter(r=>allowed.has(r.run_id));
@@ -435,7 +539,7 @@
         }).catch(()=>{if(p.activeRunId)loadRun(p.activeRunId).catch(()=>{})});
       }
       function showProjectPage(projectId){const p=projects.find(x=>x.id===projectId);if(!p)return;openProject(projectId);$("workspace-home-view").hidden=true;$("project-page").hidden=false;renderProjectPage();document.body.classList.remove("sidebar-open");window.scrollTo({top:0,behavior:"smooth"})}
-      function returnToWorkspace(){$("project-page").hidden=true;$("workspace-home-view").hidden=false;currentView="extract";renderTabs();renderStatus();renderPane();window.scrollTo({top:0,behavior:"smooth"})}
+      function returnToWorkspace(){$("project-page").hidden=true;$("workspace-home-view").hidden=false;currentSection="overview";currentView="extract";renderTabs();renderStatus();renderPane();window.scrollTo({top:0,behavior:"smooth"})}
       function showSetup(){
         if(eventSource){eventSource.close();eventSource=null}
         activeProjectId=null;activeRun=null;activeResult=null;events=[];
@@ -488,7 +592,7 @@
       function verdictClass(value){const s=String(value||"").toLowerCase();if(["match","matched","pass","verified","succeeded"].includes(s))return "match";if(["mismatch","failed","error","unsupported"].includes(s))return "mismatch";return "review"}
       function renderFinance(){const hasResult=Boolean(activeResult&&typeof activeResult==="object");$("finance-empty").hidden=hasResult;$("finance-content").hidden=!hasResult;if(!hasResult)return;const counts=activeResult.counts||{},cards=[["核对一致",counts.match??0,"明确匹配的财务主张"],["存在差异",counts.mismatch??0,"需要重点复核"],["待核验",counts.unverified??0,"证据不足或未覆盖"],["证据问题",counts.issue??(activeResult.issues||[]).length,"口径或质量提示"]];const metricRoot=$("finance-metrics");metricRoot.replaceChildren();cards.forEach(([label,value,detail])=>{const card=document.createElement("article");card.className="metric-card";const l=document.createElement("span");l.textContent=label;const v=document.createElement("strong");v.textContent=displayMetric(value);const d=document.createElement("small");d.textContent=detail;card.append(l,v,d);metricRoot.append(card)});const rows=Array.isArray(activeResult.rows)?activeResult.rows:[];$("rows-count").textContent=`${rows.length} 项指标`;const rowsRoot=$("finance-rows");rowsRoot.replaceChildren();if(!rows.length){const note=document.createElement("p");note.className="muted small";note.textContent="本次运行没有返回财务指标行。";rowsRoot.append(note)}else{const wrap=document.createElement("div");wrap.className="table-wrap";const table=document.createElement("table");table.className="data-table";const head=document.createElement("thead"),hr=document.createElement("tr");["指标","本期","上期","同比 / 核查","依据"].forEach(text=>{const th=document.createElement("th");th.textContent=text;hr.append(th)});head.append(hr);const body=document.createElement("tbody");rows.slice(0,300).forEach(row=>{const tr=document.createElement("tr");const fields=[row.metric_name||row.metric||"—",displayMetric(row.current??row.value),displayMetric(row.previous),""];for(let i=0;i<3;i++){const td=document.createElement("td");if(i===0){td.className="table-main";td.textContent=fields[i];if(row.unit){const small=document.createElement("small");small.className="table-sub";small.textContent=row.unit;td.append(small)}}else td.textContent=fields[i];tr.append(td)}const check=row.reported_yoy_check||row.yoy_check||{};const verdict=document.createElement("td");if(check.status){const chip=document.createElement("span");chip.className=`verdict ${verdictClass(check.status)}`;chip.textContent=check.status==="match"?"一致":check.status==="mismatch"?"不一致":String(check.status);verdict.append(chip);if(check.reported!==undefined){const small=document.createElement("small");small.className="table-sub";small.textContent=`报告 ${displayMetric(check.reported)} · 计算 ${displayMetric(check.computed)}`;verdict.append(small)}}else{verdict.textContent=row.yoy??row.reported_yoy??"未计算"}tr.append(verdict);const source=document.createElement("td");if(row.page_image_url){const b=document.createElement("button");b.className="evidence-open";b.type="button";b.textContent=`第 ${escText(row.page)} 页`;b.addEventListener("click",()=>openEvidence(row));source.append(b)}else source.textContent=displayMetric(row.page);tr.append(source);body.append(tr)});table.append(head,body);wrap.append(table);rowsRoot.append(wrap)}const signals=activeResult.signals||activeResult.qoq_rows||[];const signalRoot=$("finance-signals");signalRoot.replaceChildren();if(!Array.isArray(signals)||!signals.length){const p=document.createElement("p");p.className="muted small";p.textContent=Array.isArray(activeResult.limits)?activeResult.limits.join("、"):"本次运行没有额外的趋势摘要。";signalRoot.append(p)}else signals.slice(0,20).forEach(item=>{const card=document.createElement("article");card.className="signal-card";const title=document.createElement("strong");title.textContent=typeof item==="string"?item:item.title||item.name||item.metric_name||item.metric||"分析提示";const text=document.createElement("p");text.textContent=typeof item==="string"?"":item.summary||item.message||item.interpretation||JSON.stringify(item);card.append(title,text);signalRoot.append(card)});$("report-preview").textContent=activeResult.report_md||"本次运行没有生成报告文本。"}
       function renderReview(){const p=project();if(!p)$("review-draft").value="";else if($("review-draft").value!==p.draft)$("review-draft").value=p.draft||"";const checks=activeResult?.checks;const has=Boolean(checks&&typeof checks==="object");$("audit-empty").hidden=has;$("audit-result").hidden=!has;$("audit-run-label").textContent=activeRun?`${statusText(activeRun.status)} · ${fmtDate(activeRun.created_at)}`:"等待运行";if(!has)return;const root=$("audit-result");root.replaceChildren();const status=checks.status||checks.execution_status||"unknown";const kind=status==="completed"||status==="succeeded"?"success":status==="failed"?"error":"warning";const banner=document.createElement("div");banner.className="audit-banner";banner.dataset.kind=kind;const icon=document.createElement("span");icon.className="icon";icon.textContent=kind==="success"?"✓":kind==="error"?"!":"·";const copy=document.createElement("span");const title=document.createElement("strong");title.textContent=({completed:"核查已完成",failed:"核查未完成",skipped:"未执行语义核查",partial:"核查部分完成"})[status]||`核查状态：${status}`;const reason=document.createElement("small");reason.textContent=checks.reason|| (checks.mode==="local_supplemental"?"当前为有限的本地核查结果；其他句子未核验。":"以返回的核查记录为准，不把缺少结果视为通过。");copy.append(title,reason);banner.append(icon,copy);root.append(banner);if(checks.counts&&typeof checks.counts==="object"){const summary=document.createElement("p");summary.className="muted small";summary.textContent=Object.entries(checks.counts).map(([k,v])=>`${k} ${v}`).join(" · ");root.append(summary)}const list=document.createElement("div");list.className="check-list";const items=Array.isArray(checks.checks)?checks.checks:[];if(!items.length){const pEl=document.createElement("p");pEl.className="muted small";pEl.textContent="没有可显示的逐条核查项。";list.append(pEl)}items.slice(0,150).forEach(item=>{const card=document.createElement("article");card.className="check-item";const top=document.createElement("div");top.className="check-top";const titleEl=document.createElement("strong");titleEl.textContent=item.claim||item.sentence||item.text||item.metric_name||"核查主张";const badge=document.createElement("span");badge.className=`verdict ${verdictClass(item.status)}`;badge.textContent=String(item.status||"待核验");top.append(titleEl,badge);card.append(top);const detail=document.createElement("p");detail.textContent=item.reason||item.explanation||item.answer||item.note||"未返回解释。";card.append(detail);const ids=Array.isArray(item.evidence_ids)?item.evidence_ids:[];if(ids.length){const evidence=document.createElement("small");evidence.className="check-evidence";evidence.textContent=`证据编号：${ids.join("、")}`;card.append(evidence)}list.append(card)});root.append(list)}
-      function renderPane(){renderExtract();renderFinance();renderReview();renderAnalysisWaitScreen()}
+      function renderPane(){renderOverview();renderExtract();renderFinance();renderReview();renderRunList();renderAnalysisWaitScreen()}
       const analysisStages=[
         {title:"准备资料",detail:"读取文件并确认报告身份",phases:["run","identity"]},
         {title:"抽取证据",detail:"解析财报并整理页码与数据",phases:["extraction"]},
@@ -598,7 +702,6 @@
         if(identityMissing(p).length){
           openIdentityRequiredDialog(p);return;
         }
-        const button=$("sidebar-start");button.disabled=true;
         try{
           const file=await readFile(p.id);if(!file?.blob)throw new Error("本机浏览器中找不到这份 PDF，请在项目资料中重新添加。");
         const form=new FormData();form.append("command","financial");form.append("pdf",file.blob,file.name||p.fileName);
@@ -611,11 +714,11 @@
           if(withDraft)p.draft=draft;persist();
           activeRun={run_id:created.run_id,status:created.status||"queued",command:"financial",created_at:new Date().toISOString(),current_phase:"run"};
           activeResult=null;events=[];if(eventSource){eventSource.close();eventSource=null}
-          setView("extract");renderStatus();renderPane();connectEvents(created.run_id);
+          setTrack("extract");renderStatus();renderPane();connectEvents(created.run_id);
           notify(withDraft?"研报审查运行已创建，正在提交原始 PDF 与草稿。":"项目分析已启动，正在提交原始 PDF。","success");
           await refreshActiveRun();
         }catch(error){showWorkspaceError("无法启动分析："+error.message)}
-        finally{button.disabled=false;renderStatus()}
+        finally{renderStatus()}
       }
       async function inspectProjectPdf(file){
         selectedDetailFile=file;removeDetailPrimary=false;detailFileError=false;const state=$("detail-file-state");$("detail-remove-file").textContent="移除当前财报";$("detail-remove-file").hidden=false;
@@ -709,10 +812,10 @@
         $("cancel-create-project").addEventListener("click",()=>closeDialog(ui.createDialog));
         ui.createDialog.addEventListener("click",event=>{if(event.target===ui.createDialog)closeDialog(ui.createDialog)});
         $("enter-workspace").addEventListener("click",enterWorkspace);
-        $("workspace-edit-project").addEventListener("click",openEditProject);
+        $("workspace-edit-project").addEventListener("click",openEditProject);$("overview-edit-project").addEventListener("click",openEditProject);
         $("menu-toggle").addEventListener("click",()=>document.body.classList.toggle("sidebar-open"));
-        document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>setView(button.dataset.view)));
-        $("sidebar-start").addEventListener("click",()=>startRun());$("extract-start").addEventListener("click",()=>startRun());
+        document.querySelectorAll("[data-section]").forEach(button=>button.addEventListener("click",()=>setSection(button.dataset.section)));document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>setTrack(button.dataset.view)));document.querySelectorAll("#analysis-tabs [data-track]").forEach(button=>button.addEventListener("click",()=>setTrack(button.dataset.track)));
+        $("extract-start").addEventListener("click",()=>startRun());
         $("empty-ai-complete").addEventListener("click",()=>{const p=project();if(p){showProjectPage(p.id);requestProjectCompletion()}});
         $("empty-start").addEventListener("click",()=>{const p=project();if(!p)newProject();else if(!p.fileName)openEditProject();else startRun()});
         $("review-start").addEventListener("click",()=>{saveDraft();startRun({withDraft:true})});
@@ -736,7 +839,7 @@
       }
       async function init(){
         if(location.protocol==="file:"){
-          document.body.innerHTML='<main style="min-height:100vh;display:grid;place-items:center;background:#f5f8f6;padding:24px;font-family:system-ui,sans-serif;color:#263d38"><section style="max-width:600px;background:white;padding:36px;border:1px solid #dce7e2;border-radius:20px;box-shadow:0 12px 40px #163a3012"><h1 style="margin:0 0 16px;font-size:28px">请从服务地址打开 FinScope</h1><p style="line-height:1.8">直接双击 HTML 文件无法连接分析服务，因此会显示“Failed to fetch”。这与 API 密钥是否正确无关。</p><p style="line-height:1.8">本地预览请返回 v4.0.1 文件夹，双击 <strong>启动 v4.0.1.cmd</strong>；团队访问请使用部署平台提供的网址。</p></section></main>';
+          document.body.innerHTML='<main style="min-height:100vh;display:grid;place-items:center;background:#f5f8f6;padding:24px;font-family:system-ui,sans-serif;color:#263d38"><section style="max-width:600px;background:white;padding:36px;border:1px solid #dce7e2;border-radius:20px;box-shadow:0 12px 40px #163a3012"><h1 style="margin:0 0 16px;font-size:28px">请从服务地址打开 FinScope</h1><p style="line-height:1.8">直接双击 HTML 文件无法连接分析服务，因此会显示“Failed to fetch”。这与 API 密钥是否正确无关。</p><p style="line-height:1.8">本地预览请返回 v4.0.2 文件夹，双击 <strong>启动 v4.0.2.cmd</strong>，然后访问 <code>127.0.0.1:8768/app/finscope.html</code>。团队访问请使用 Render 部署后的网址。</p></section></main>';
           return;
         }
         projects=loadProjects();bind();renderRecent();await refreshModelState();

@@ -28,3 +28,5 @@ data/cache/
 results/runs/
 .env
 .env.*
+.agents/
+skills-lock.json
