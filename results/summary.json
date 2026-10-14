@@ -1,14 +1,14 @@
 {
-  "run_id": "20261008_221052_c14ce0a7",
-  "finished_at": "2026-10-08T22:11:02+08:00",
+  "run_id": "20261014_153104_66775796",
+  "finished_at": "2026-10-14T15:31:05+08:00",
   "output_sha256": {
-    "checked_draft.txt": "62d8ac3a541024848d6ffc79b11a7264a62d44d71ba43c7a689a6a67ffb6d3c8",
-    "question_eval.json": "a45f813ba4bd8afa6956106032ba40ac318b193fec26d4d7ef80516698daacdd",
-    "question_eval.md": "b7acd9b1afb35490f7e1a578b896645ab0e51c18e2c215d7bc46970daf2b3787",
-    "run.json": "fab3dea16bd5a372ea245a77405faea09212ea06d5acab634e3bf239f1fe4e97",
-    "text_checks.json": "c840802e81c7505d50f43f4eb2f2757b5bbd4f720e19ffeafe57c37362a0bd0a",
-    "text_report.md": "dd6e506c8e1c6726c3fff828ad51a411be89e0d3cff98b70cce1630243e2a24d",
-    "trace.json": "2410845a2468113ddc12e2630818067e9b02cd9aaf4c8191b36f09ef3e33dfaf"
+    "600519_2025_c80fb718_p5.png": "5ef5720c6f7eeeed36eaa1fe764b0e226091195052dd60d0566480ad7c26b60a",
+    "600519_2025_f3197b2a_p1.png": "b4b3d52a69090a9a10ec7d74ccd3d4d2b9adcd9cbb41643d5748e3aa4d9d0545",
+    "600519_2025_f3197b2a_p2.png": "ab37798625755ff82ca6b69b236c5208245400eb0b8c2abb4e7c696cfbfd9239",
+    "run.json": "d16eefa72f89adb66d75372eb7da5cdca70931d3f45eb9435118f411747f7374",
+    "trace.json": "8eadd1aba206de1ec71dcca25bd58423c92cec32a7671b4abfd752643a55e803",
+    "webui_evidence.json": "e69cebe0f4b484b774bae0705db422095eeda677007e6d4fd0f3cae52c81cbe4",
+    "webui_failures.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
   },
   "history_policy": {
     "keep_runs": 20,
@@ -16,9 +16,8 @@
     "oversized_latest": "保留完整本次运行，清除更早历史"
   },
   "status": "ok",
-  "scored": 103,
-  "passed": 103,
-  "failed": 0,
-  "pass_rate": 1.0,
-  "llm": true
+  "materials": 2,
+  "evidence_count": 40,
+  "failures": 0,
+  "draft_checked": false
 }

@@ -21,7 +21,7 @@ header {
 }
 header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 650; }
 header .sub { margin: 0; color: var(--muted); font-size: 13px; }
-main { max-width: 1100px; margin: 0 auto; padding: 22px 20px 60px; }
+main { max-width: 1200px; margin: 0 auto; padding: 22px 20px 60px; }
 .card {
   background: var(--card); border: 1px solid var(--line); border-radius: 12px;
   padding: 18px 20px; margin-bottom: 16px;
@@ -32,7 +32,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 22px 20px 60px; }
 }
 .card h2 .actions { margin-left: auto; display: flex; gap: 8px; }
 .card h2 button { padding: 5px 12px; font-size: 12.5px; font-weight: 600; }
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
 input[type=text], input[type=number], textarea {
   width: 100%; border: 1px solid var(--line); border-radius: 8px;
@@ -68,17 +68,35 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .stat.ok .n { color: var(--ok); }
 .stat.bad .n { color: var(--bad); }
 .stat.info .n { color: var(--info); }
-table.grid {
-  width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; background: #fff;
+table.data-table {
+  display: table; width: 100%; table-layout: fixed; border-collapse: separate;
+  border-spacing: 0; font-size: 13px; background: #fff;
 }
-table.grid th, table.grid td {
-  border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left;
+table.data-table th, table.data-table td {
+  border-bottom: 1px solid var(--line); padding: 12px 10px; text-align: left;
+  vertical-align: top; line-height: 1.6; overflow-wrap: anywhere;
 }
-table.grid th {
+table.data-table th {
   background: #f9fafb; font-weight: 600; color: var(--muted); font-size: 12px;
   position: sticky; top: 0; z-index: 1; white-space: nowrap;
 }
-table.grid td.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.data-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.data-table tbody tr:last-child td { border-bottom: 0; }
+table.data-table tbody tr:hover { background: #f8faff; }
+table.data-table .badge { max-width: 100%; white-space: normal; }
+#evidence { min-width: 1080px; }
+#metrics { min-width: 900px; }
+.metric-name { font-weight: 600; }
+.period-line { display: block; white-space: nowrap; font-size: 12px; color: var(--muted); }
+.evidence-id { font: 11px/1.6 Consolas, monospace; color: var(--muted); }
+.checks-table { min-width: 860px; }
+.checks-table .claim-text, .checks-table .check-reason { line-height: 1.8; white-space: pre-wrap; }
+.check-scope { margin-top: 8px; font-size: 12px; color: var(--muted); }
+.correction { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+.correction summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.correction p { margin: 8px 0 0; white-space: pre-wrap; }
+.correction-label { display: block; font-size: 12px; color: var(--muted); }
+.correction-after { color: var(--ok); }
 .table-wrap { overflow: auto; max-height: 420px; border: 1px solid var(--line); border-radius: 8px; }
 a.page-link {
   color: var(--accent); cursor: pointer; text-decoration: underline;
@@ -109,6 +127,11 @@ a.page-link {
   border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
   margin-top: 10px; background: #fff;
 }
+.qa-item.is-latest {
+  border-color: var(--accent); border-left: 4px solid var(--accent);
+  box-shadow: 0 0 0 2px rgba(31, 94, 255, .12);
+}
+.qa-latest { margin-left: 8px; font-size: 11px; vertical-align: middle; }
 .qa-item .q { font-weight: 600; font-size: 13.5px; margin-bottom: 6px; }
 .qa-item .a { font-size: 13.5px; white-space: pre-wrap; word-break: break-word; }
 .qa-item .meta { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -168,9 +191,11 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   .stats { flex-wrap: wrap; }
   .stat { min-width: 44%; }
   .card { padding: 16px; }
-  table.grid th, table.grid td { padding: 6px 8px; font-size: 12px; }
+  table.data-table th, table.data-table td { padding: 10px 8px; font-size: 12px; }
   .qa-item .row, .row { flex-wrap: wrap; }
-  .grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .card h2 { flex-wrap: wrap; }
+  .card h2 .actions { flex-wrap: wrap; }
   pre.report { font-size: 12px; }
 }
 @media print {
@@ -182,7 +207,9 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
     box-shadow: none;
   }
   .table-wrap, pre.report { max-height: none; overflow: visible; border: 0; padding: 0; }
-  table.grid th { position: static; }
+  table.data-table th { position: static; }
+  table.data-table { min-width: 0 !important; }
+  .qa-item.is-latest { box-shadow: none; }
   #lightbox { display: none !important; }
 }
 </style>
@@ -213,7 +240,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
       <input type="file" id="comparison-pdfs" accept="application/pdf" multiple>
     </div>
     <div id="manual-fallback" hidden>
-      <div class="grid" style="margin-top:10px">
+      <div class="form-grid" style="margin-top:10px">
         <div>
           <label>证券代码</label>
           <input type="text" id="code" placeholder="6 位数字" maxlength="6" inputmode="numeric">
@@ -243,11 +270,16 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
     <h2>① 结构化提取 <span class="dir-tag">财务证据 / 方向一公告字段</span></h2>
     <div class="stats" id="stats"></div>
     <div class="table-wrap">
-      <table class="grid" id="evidence">
+      <table class="data-table" id="evidence">
+        <colgroup>
+          <col style="width:13%"><col style="width:18%"><col style="width:17%">
+          <col style="width:5%"><col style="width:6%"><col style="width:7%">
+          <col style="width:5%"><col style="width:9%"><col style="width:20%">
+        </colgroup>
         <thead>
           <tr>
-            <th>证据 ID</th><th>指标</th><th>年度</th><th>数值</th><th>单位</th>
-            <th>口径</th><th>调整</th><th>PDF 页</th><th>问题</th>
+            <th>指标</th><th>期间</th><th class="num">数值</th><th>单位</th>
+            <th>口径</th><th>调整</th><th class="num">PDF 页</th><th>问题</th><th>证据 ID</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -258,11 +290,15 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   <section class="card" id="analysis-card" hidden>
     <h2>② 财报分析 <span class="dir-tag">方向二 · 财报指标与同比</span></h2>
     <div class="table-wrap">
-      <table class="grid" id="metrics">
+      <table class="data-table" id="metrics">
+        <colgroup>
+          <col style="width:26%"><col style="width:16%"><col style="width:16%">
+          <col style="width:11%"><col style="width:11%"><col style="width:13%"><col style="width:7%">
+        </colgroup>
         <thead>
           <tr>
-            <th>指标</th><th>本年</th><th>上年</th><th>复算同比</th>
-            <th>披露同比</th><th>核对</th><th>PDF 页</th>
+            <th>指标 / 期间</th><th class="num">本期</th><th class="num">上期</th><th class="num">复算同比</th>
+            <th class="num">披露同比</th><th>核对</th><th class="num">PDF 页</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -298,7 +334,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   </section>
 
   <section class="card" id="qa-card" hidden>
-    <h2>④ 受限问答</h2>
+    <h2>④ 受限问答 <span class="actions"><button class="secondary" id="qa-clear" type="button" disabled>清除历史提问</button></span></h2>
     <p class="hint" style="margin:0 0 10px">只基于本次已抽取的证据回答；每个数字挂 evidence_id，点页码可溯源。</p>
     <div class="row" style="margin-top:0">
       <input type="text" id="qa-input" placeholder="如：2024年营业收入是多少 / 营收同比 / 有什么问题"
@@ -306,7 +342,7 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
       <button id="qa-ask" type="button">提问</button>
     </div>
     <div class="status-line" id="qa-status"></div>
-    <div id="qa-history"></div>
+    <div id="qa-history" role="log" aria-live="polite"></div>
   </section>
 
   <section class="card" id="report-card" hidden>
@@ -361,6 +397,9 @@ const scopeZh = (s) => ({
 const adjZh = (a) => ({
   as_reported: '披露值', before: '调整前', after: '调整后',
 }[a] || a || '—');
+const periodCell = (record) => record.period_start && record.period_end
+  ? `<span class="period-line">${esc(record.period_start)}</span><span class="period-line">至 ${esc(record.period_end)}</span>`
+  : `<span class="period-line">${esc(record.period_year ?? '—')}</span>`;
 
 function renderMd(md) {
   // 极简 Markdown 渲染：标题/表格/加粗/代码/列表/分隔线；正文经 esc 后再注入标签
@@ -559,7 +598,7 @@ async function run() {
   for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card', 'search-card']) {
     $('#' + id).hidden = true;
   }
-  $('#qa-history').innerHTML = '';
+  clearQaHistory(false);
   // 有草稿时先亮出核查卡「生成中」，避免用户以为没反应
   if (hasDraft) {
     $('#checks-body').innerHTML = '<div class="hint">正在流式核查草稿…（LLM 拆句 → 工具裁决 → 双轨报告）</div>';
@@ -604,15 +643,15 @@ function render(data) {
   ]).map(([k, n, cls]) => `<div class="stat ${cls}"><div class="n">${n}</div><div class="k">${k}</div></div>`).join('');
 
   const evBody = (data.evidence || []).map((e) => `<tr>
-    <td>${esc(e.evidence_id)}</td>
-    <td>${esc(window.announcementFieldLabels[e.metric_name] || e.metric_name || e.metric)}</td>
-    <td>${esc(e.period_start && e.period_end ? e.period_start + ' 至 ' + e.period_end : e.period_year)}</td>
+    <td class="metric-name">${esc(window.announcementFieldLabels[e.metric_name] || e.metric_name || e.metric)}</td>
+    <td>${periodCell(e)}</td>
     <td class="num">${fmt(e.value)}</td>
     <td>${esc(e.unit || '—')}</td>
     <td>${esc(scopeZh(e.scope))}</td>
     <td>${esc(adjZh(e.adjustment))}</td>
     <td class="num">${pageCell(e)}</td>
     <td>${(e.issues && e.issues.length) ? badge(String(e.issues.join('；'))) : '<span class="badge ok">干净</span>'}</td>
+    <td><code class="evidence-id">${esc(e.evidence_id)}</code></td>
   </tr>`).join('');
   $('#evidence tbody').innerHTML = evBody ||
     `<tr><td colspan="9" class="empty">没有提取到证据</td></tr>`;
@@ -627,7 +666,7 @@ function render(data) {
       ? (check.status === 'match' ? '一致' : '不一致，需复核')
       : '未核对（缺披露值）';
     return `<tr>
-      <td>${esc(r.metric_name || r.metric)}<br><small>${esc(r.period_start || '')} 至 ${esc(r.period_end || '')}</small></td>
+      <td><span class="metric-name">${esc(r.metric_name || r.metric)}</span>${periodCell(r)}</td>
       <td class="num">${fmtBig(r.current)}</td>
       <td class="num">${fmtBig(r.previous)}</td>
       <td class="num">${esc(yoy)}</td>
@@ -670,13 +709,14 @@ function render(data) {
       const rows = (data.checks.checks || []).map((c) => `<tr>
         <td>${esc(c.claim_id)}</td>
         <td>${trackBadge(c.track)}</td>
-        <td>${esc((c.original_sentence || '').slice(0, 80))}</td>
+        <td class="claim-text">${esc(c.original_sentence || '')}</td>
         <td>${badge(c.status)}</td>
-        <td>${esc(c.reason || c.reason_code || '—')}${c.verification_scope ? '<br>'+esc(c.verification_scope) : ''}${c.correction ? '<details><summary>修改片段</summary>'+esc(c.correction.before)+' → '+esc(c.correction.after)+'<p>'+esc(c.correction.revised_sentence || '需人工调整句子')+'</p></details>' : ''}</td>
+        <td><div class="check-reason">${esc(c.reason || c.reason_code || '—')}</div>${c.verification_scope ? '<div class="check-scope">'+esc(c.verification_scope)+'</div>' : ''}${c.correction ? '<details class="correction"><summary>修改片段</summary><p><span class="correction-label">原片段</span>'+esc(c.correction.before)+'</p><p class="correction-after"><span class="correction-label">建议片段</span>'+esc(c.correction.after)+'</p><p><span class="correction-label">修改后句子</span>'+esc(c.correction.revised_sentence || '需人工调整句子')+'</p></details>' : ''}</td>
       </tr>`).join('');
       box.innerHTML = `<div class="hint" style="margin-bottom:8px">${esc(data.checks.reason || '')}<br>双轨：A 确定（本地裁决）· B 模型（只解释）· C 人工（需复核）。${head || '已出结果'}</div>
         ${agentLine}
-        <div class="table-wrap"><table class="grid">
+        <div class="table-wrap"><table class="data-table checks-table" id="claim-checks">
+          <colgroup><col style="width:7%"><col style="width:10%"><col style="width:34%"><col style="width:14%"><col style="width:35%"></colgroup>
           <thead><tr><th>编号</th><th>轨道</th><th>原句</th><th>结论</th><th>说明</th></tr></thead>
           <tbody>${rows}</tbody>
         </table></div>`;
@@ -692,12 +732,12 @@ function render(data) {
   // ── ④⑤ 报告与问答 ──
   $('#report').innerHTML = renderMd(data.report_md || '(无报告)');
   $('#report-card').hidden = false;
-  $('#qa-history').innerHTML = '';
+  clearQaHistory(false);
   $('#qa-input').value = '';
   $('#qa-card').hidden = false;
   if (data.checks && data.checks.reason) $('#checks-body').insertAdjacentHTML('afterbegin', `<p class="hint">${esc(data.checks.reason)}</p>`);
   if (data.announcement) {
-    $('#announcement-body').innerHTML = (data.announcement.events || []).map(e => `<h3>${esc(e.event_name)} · ${esc(window.announcementStatusLabels[e.status] || e.status)}</h3><p>必填缺失：${esc(e.missing_required.join('、') || '无')}；冲突：${esc(e.conflicts.join('、') || '无')}</p><table class="grid"><thead><tr><th>字段</th><th>原值</th><th>规范值</th><th>状态</th><th>原页位置</th></tr></thead><tbody>${Object.entries(e.fields).map(([k,v]) => `<tr><td>${esc(window.announcementFieldLabels[k] || k)}</td><td>${esc(v.value ?? '缺失')}</td><td>${esc(v.normalized_value ?? '—')} ${esc(v.normalized_unit || '')}</td><td>${esc(window.announcementStatusLabels[v.status] || v.status)}</td><td>${(data.evidence || []).filter(f => f.evidence_id.startsWith(e.event_id + '_' + k + '_')).map(pageCell).join(' ')}</td></tr>`).join('')}</tbody></table>`).join('') || '<p>未找到可明确提取的字段。</p>';
+    $('#announcement-body').innerHTML = (data.announcement.events || []).map(e => `<h3>${esc(e.event_name)} · ${esc(window.announcementStatusLabels[e.status] || e.status)}</h3><p>必填缺失：${esc(e.missing_required.join('、') || '无')}；冲突：${esc(e.conflicts.join('、') || '无')}</p><div class="table-wrap"><table class="data-table"><thead><tr><th>字段</th><th>原值</th><th>规范值</th><th>状态</th><th>原页位置</th></tr></thead><tbody>${Object.entries(e.fields).map(([k,v]) => `<tr><td>${esc(window.announcementFieldLabels[k] || k)}</td><td>${esc(v.value ?? '缺失')}</td><td>${esc(v.normalized_value ?? '—')} ${esc(v.normalized_unit || '')}</td><td>${esc(window.announcementStatusLabels[v.status] || v.status)}</td><td>${(data.evidence || []).filter(f => f.evidence_id.startsWith(e.event_id + '_' + k + '_')).map(pageCell).join(' ')}</td></tr>`).join('')}</tbody></table></div>`).join('') || '<p>未找到可明确提取的字段。</p>';
     $('#announcement-card').hidden = false;
     $('#analysis-card').hidden = true;
     $('#qa-card').hidden = true;
@@ -735,11 +775,28 @@ function renderQa(item) {
     return `<span class="evidence-chip">${label}</span>`;
   }).join('');
   const ids = (item.evidence_ids || []).map((id) => `<code style="font-size:11px">${esc(id)}</code>`).join(' ');
-  return `<div class="qa-item">
-    <div class="q">问：${esc(item.question)}</div>
+  return `<div class="qa-item is-latest" aria-label="最新回答">
+    <div class="q">问：${esc(item.question)}<span class="badge info qa-latest">本次回答</span></div>
     <div class="a">${esc(item.answer)}</div>
     <div class="meta">${qaBadge(item.status)}${cites || (ids ? '<span class="hint">证据：' + ids + '</span>' : '')}</div>
   </div>`;
+}
+
+function clearQaHistory(announce = true) {
+  $('#qa-history').replaceChildren();
+  $('#qa-clear').disabled = true;
+  $('#qa-status').textContent = announce ? '历史提问已清除' : '';
+  $('#qa-status').className = 'status-line';
+}
+
+function appendQa(item) {
+  document.querySelectorAll('#qa-history .is-latest').forEach((card) => {
+    card.classList.remove('is-latest');
+    card.removeAttribute('aria-label');
+    card.querySelector('.qa-latest')?.remove();
+  });
+  $('#qa-history').insertAdjacentHTML('afterbegin', renderQa(item));
+  $('#qa-clear').disabled = false;
 }
 
 async function searchRun() {
@@ -800,7 +857,7 @@ async function qaAsk() {
       return;
     }
     const item = { question: q, ...data };
-    $('#qa-history').insertAdjacentHTML('afterbegin', renderQa(item));
+    appendQa(item);
     $('#qa-input').value = '';
     const n = (data.evidence_ids || []).length;
     $('#qa-status').textContent = n ? `已答，引用 ${n} 条证据` : '已答（无引用证据）';
@@ -887,6 +944,7 @@ $('#pdf').addEventListener('change', onFilePicked);
 $('#export-md').addEventListener('click', exportMarkdown);
 $('#export-pdf').addEventListener('click', exportPdf);
 $('#qa-ask').addEventListener('click', qaAsk);
+$('#qa-clear').addEventListener('click', () => clearQaHistory());
 $('#qa-input').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') { e.preventDefault(); qaAsk(); }
 });
