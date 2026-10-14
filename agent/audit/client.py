@@ -63,10 +63,15 @@ class LLMClient:
 
     @classmethod
     def from_environment(cls, *, base_url=None, model=None, mode=None, ask_key=False, config=None):
-        key = getpass.getpass("临时API密钥（不回显、不保存）：") if ask_key else os.environ.get("LLM_API_KEY", "")
-        return cls(base_url or os.environ.get("LLM_BASE_URL", ""),
-                   model or os.environ.get("LLM_MODEL", ""), key,
-                   mode or os.environ.get("LLM_FORMAT", "json_schema"), config=config)
+        try:
+            from model_settings import current_model_settings
+        except ModuleNotFoundError:
+            from agent.model_settings import current_model_settings
+        settings = current_model_settings()
+        key = getpass.getpass("临时API密钥（不回显、不保存）：") if ask_key else settings["api_key"]
+        return cls(base_url or settings["base_url"],
+                   model or settings["model"], key,
+                   mode or settings["format"], config=config)
 
     def _guard_blob(self, blob: bytes) -> None:
         if self.key.encode() in blob or SECRET_PATTERN.search(blob.decode("utf-8", errors="replace")):

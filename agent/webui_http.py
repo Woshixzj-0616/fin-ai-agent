@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import base64
+import hmac
 import os
 import queue
 import re
@@ -24,6 +26,11 @@ try:
     )
     from api.sse import encode_sse, heartbeat_frame, parse_last_event_id
     from materials import ROOT, Run
+    from model_settings import (
+        prepare_model_settings,
+        public_model_settings,
+        save_model_settings,
+    )
     from qa import answer as qa_answer
     from webui_page import PAGE, PAGE_PNG
     from webui_pipeline import (
@@ -49,6 +56,11 @@ except ModuleNotFoundError:
     )
     from agent.api.sse import encode_sse, heartbeat_frame, parse_last_event_id
     from agent.materials import ROOT, Run
+    from agent.model_settings import (
+        prepare_model_settings,
+        public_model_settings,
+        save_model_settings,
+    )
     from agent.qa import answer as qa_answer
     from agent.webui_page import PAGE, PAGE_PNG
     from agent.webui_pipeline import (
@@ -82,6 +94,12 @@ APP_CSP = (
     "default-src 'self'; script-src 'self'; style-src 'self'; "
     "img-src 'self' data:; connect-src 'self'; object-src 'none'; "
     "base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+)
+FIN_SCOPE_CSP = (
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; "
+    "style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
+    "connect-src 'self'; object-src 'none'; base-uri 'none'; "
+    "frame-ancestors 'none'; form-action 'self'"
 )
 LEGACY_CSP = (
     "default-src 'self'; script-src 'self' 'unsafe-inline'; "
@@ -258,6 +276,32 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         print(f"[webui] {self.address_string()} {fmt % args}")
 
+    def _authorized(self) -> bool:
+        """Require a shared team password when the service is internet-facing."""
+        password = os.environ.get("APP_ACCESS_PASSWORD", "")
+        if not password:
+            return True
+        header = self.headers.get("Authorization", "")
+        try:
+            scheme, encoded = header.split(" ", 1)
+            supplied = base64.b64decode(encoded, validate=True).decode("utf-8")
+            username, candidate = supplied.split(":", 1)
+            valid = scheme.lower() == "basic" and username == "finscope"
+            valid = valid and hmac.compare_digest(candidate, password)
+        except (ValueError, UnicodeDecodeError):
+            valid = False
+        if valid:
+            return True
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="FinScope", charset="UTF-8"')
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", "0")
+        self.send_header("Connection", "close")
+        _send_security_headers(self)
+        self.end_headers()
+        self.close_connection = True
+        return False
+
     def _serve_web_asset(self, path: str) -> None:
         resolved = _resolve_web_asset(path)
         if resolved is None:
@@ -279,7 +323,7 @@ class Handler(BaseHTTPRequestHandler):
                 if asset.suffix.lower() == ".html"
                 else "public, max-age=300"
             ),
-            csp=APP_CSP,
+            csp=FIN_SCOPE_CSP if asset == WEB_ROOT / "finscope.html" else APP_CSP,
             permissions_policy=asset.suffix.lower() == ".html",
         )
 
@@ -409,6 +453,14 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlsplit(self.path)
         path = parsed.path
+        if path == "/healthz":
+            _json(self, 200, {"status": "ok"})
+            return
+        if not self._authorized():
+            return
+        if path == "/api/settings/model":
+            _json(self, 200, public_model_settings())
+            return
         if path == "/api/runs":
             _json(self, 200, self._api().list_runs(self._new_api_session()))
             return
@@ -453,13 +505,18 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
         if path in ("/", "/index.html"):
-            _send_bytes(
-                self,
-                200,
-                "text/html; charset=utf-8",
-                PAGE.encode("utf-8"),
-                csp=LEGACY_CSP,
-            )
+            if os.environ.get("APP_ACCESS_PASSWORD"):
+                self.send_response(302)
+                self.send_header("Location", "/app/finscope.html")
+                self.send_header("Content-Length", "0")
+                self.send_header("Cache-Control", "no-store")
+                _send_security_headers(self)
+                self.end_headers()
+            else:
+                _send_bytes(
+                    self, 200, "text/html; charset=utf-8", PAGE.encode("utf-8"),
+                    csp=LEGACY_CSP,
+                )
             return
         if path.startswith("/img/"):
             self._serve_image(path[len("/img/") :])
@@ -587,6 +644,8 @@ class Handler(BaseHTTPRequestHandler):
         )
 
     def do_POST(self):
+        if not self._authorized():
+            return
         try:
             ip = self._client_ip()
             if not _rate_limit(ip):
@@ -594,6 +653,39 @@ class Handler(BaseHTTPRequestHandler):
                 return
             path = urlsplit(self.path).path
             ctype = self.headers.get("Content-Type") or ""
+            if path == "/api/settings/model" and ctype.startswith("application/json"):
+                try:
+                    body = self._read_json_body(limit=8 * 1024)
+                    _, changes = prepare_model_settings(body)
+                    save_model_settings(changes)
+                    _json(self, 200, public_model_settings())
+                except ValueError as exc:
+                    _json_api_error(
+                        self,
+                        ApiError(400, "INVALID_MODEL_SETTINGS", str(exc)),
+                    )
+                return
+            if path == "/api/projects/complete-identity" and ctype.startswith("multipart/form-data"):
+                try:
+                    fields, pdf = _parse_multipart(self)
+                    project = json.loads(fields.get("project") or "{}")
+                    if not isinstance(project, dict):
+                        raise ValueError("项目资料格式无效")
+                    if pdf:
+                        validate_pdf_upload(pdf)
+                    try:
+                        from project_completion import ProjectCompletionError, complete_project_identity
+                    except ModuleNotFoundError:
+                        from agent.project_completion import ProjectCompletionError, complete_project_identity
+                    try:
+                        result = complete_project_identity(project, pdf)
+                    except ProjectCompletionError as exc:
+                        _json(self, 422, {"error": {"message": str(exc)}})
+                        return
+                    _json(self, 200, result)
+                except (ValueError, InvalidUpload) as exc:
+                    _json(self, 400, {"error": {"message": str(exc)}})
+                return
             if path == "/api/runs" and ctype.startswith("multipart/form-data"):
                 try:
                     self._create_run_json()
@@ -733,6 +825,7 @@ class Handler(BaseHTTPRequestHandler):
 
 __all__ = [
     "APP_CSP",
+    "FIN_SCOPE_CSP",
     "Handler",
     "LEGACY_CSP",
     "MAX_UPLOAD",

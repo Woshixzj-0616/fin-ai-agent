@@ -56,6 +56,12 @@ python3 -B agent/main.py audit --claims data/demo/audit_claims.json
 
 ## 第三方与交付
 
+### `main_front_y` 团队访问
+
+此分支包含 v4.0.1 前端和配套后端。Render 部署清单在 `render.yaml`，服务名为 `fin-ai-agent-front-y`，固定部署本分支。部署时在 Render 控制台为 `APP_ACCESS_PASSWORD` 设置团队访问密码；不要把密码或 DeepSeek API 密钥提交到仓库。服务启动后访问 Render 分配的网址，浏览器登录框的用户名为 `finscope`，密码为配置的团队访问密码；首页会进入新版界面。随后可在新版界面配置 DeepSeek 密钥。
+
+当前同一服务的已授权访问者共用进程内的模型配置，服务重启后需重新输入密钥。项目资料和 PDF 分别保存在各自浏览器，不是共享项目库。本地双击 `启动 v4.0.1.cmd` 可在 `http://127.0.0.1:8766/app/finscope.html` 预览；这个本机地址不能发给其他人访问。部署后的实际网址以 Render 控制台生成的 `onrender.com` 地址为准。
+
 集中披露见 [第三方与来源清单](docs/第三方与来源清单.md)。公开披露 PDF 的再分发许可未被默认认定为开放许可；本仓协作源码的许可证需权利人共同确定。LLM 的实际模型名、主机、调用模式与用量在每次运行记录中保存，不记录密钥。
 
 方向 1/2/5 修复与 Skill/MCP 骨架已合入 `main`。GitHub 远端和已部署网页的版本应以实际提交、部署记录为准。
