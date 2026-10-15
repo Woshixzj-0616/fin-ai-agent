@@ -48,6 +48,10 @@ def complete_project_identity(project: dict, pdf: bytes = b"") -> dict:
         except ModuleNotFoundError:
             from agent.model_settings import current_model_settings
             from agent.audit.client import LLMClient, LLMError
+        try:
+            from backend_runtime import load_config
+        except ModuleNotFoundError:
+            from agent.backend_runtime import load_config
 
         settings = current_model_settings()
         if not settings.get("api_key"):
@@ -104,7 +108,18 @@ def complete_project_identity(project: dict, pdf: bytes = b"") -> dict:
                 "confidence": {"company": 0.0, "code": 0.0, "year": 0.0},
             },
         }
-        client = LLMClient.from_environment()
+        # Identity completion is interactive; cap it separately from long analyses.
+        http_config = load_config()
+        request_deadline = min(http_config["http"]["request_deadline_seconds"], 60)
+        http_config["http"]["request_deadline_seconds"] = request_deadline
+        http_config["http"]["timeout_seconds"] = min(
+            http_config["http"]["timeout_seconds"], 60, request_deadline
+        )
+        http_config["http"]["max_retries"] = 0
+        http_config["http"]["max_output_tokens"] = min(
+            http_config["http"]["max_output_tokens"], 1200
+        )
+        client = LLMClient.from_environment(config=http_config)
         response = client.chat(
             [
                 {"role": "system", "content": system},
@@ -156,6 +171,37 @@ def complete_project_identity(project: dict, pdf: bytes = b"") -> dict:
     except ProjectCompletionError:
         raise
     except LLMError as exc:
-        raise ProjectCompletionError(str(exc) or "AI 补全失败，请检查模型连接后重试。") from None
+        status = getattr(exc, "request_status", None)
+        if type(status) is int:
+            message = f"DeepSeek API 已返回 HTTP {status}。请核对 API 密钥、模型权限、请求配置或账户状态。"
+        else:
+            known_causes = {
+                "ConnectError", "ConnectTimeout", "ReadTimeout", "WriteTimeout",
+                "PoolTimeout", "ProxyError", "RemoteProtocolError", "SSLError",
+                "URLError", "TimeoutError", "ConnectionError", "OSError",
+            }
+            cause = None
+            context = exc.__context__
+            while context is not None and cause is None:
+                detail = str(context)
+                prefix = "模型接口连接失败或超时："
+                if detail.startswith(prefix) and detail[len(prefix):] in known_causes:
+                    cause = detail[len(prefix):]
+                elif detail == "模型请求总时限已用尽":
+                    cause = "request_deadline"
+                context = context.__context__
+            if cause == "ReadTimeout":
+                message = "已连到 DeepSeek API，但模型响应超时。请稍后重试，或返回手动补充。"
+            elif cause in {"ConnectTimeout", "TimeoutError"}:
+                message = "连接 DeepSeek API 超时。请检查本机网络、代理或防火墙后重试。"
+            elif cause in {"ConnectError", "ProxyError", "URLError", "ConnectionError", "OSError", "SSLError"}:
+                message = f"本地服务无法正常连接 DeepSeek API（{cause}）。请检查网络、代理或防火墙后重试。"
+            elif cause == "request_deadline":
+                message = "DeepSeek 请求超过 60 秒仍未完成。请稍后重试，或返回手动补充。"
+            elif cause:
+                message = f"DeepSeek 连接未完成（{cause}）。请检查网络或代理设置后重试。"
+            else:
+                message = "AI 接口未能及时返回，请检查 DeepSeek 服务和网络后重试，或手动补充。"
+        raise ProjectCompletionError(message) from None
     except Exception:
         raise ProjectCompletionError("AI 补全暂时失败，请检查模型连接后重试，或手动补充。") from None
