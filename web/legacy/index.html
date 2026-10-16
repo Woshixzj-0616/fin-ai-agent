@@ -81,11 +81,18 @@ table.data-table th {
   position: sticky; top: 0; z-index: 1; white-space: nowrap;
 }
 table.data-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.data-table .cell-note { white-space: normal; text-align: left; }
 table.data-table tbody tr:last-child td { border-bottom: 0; }
 table.data-table tbody tr:hover { background: #f8faff; }
 table.data-table .badge { max-width: 100%; white-space: normal; }
 #evidence { min-width: 1080px; }
-#metrics { min-width: 900px; }
+#metrics { min-width: 1000px; }
+.comparison-item { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.comparison-item span { overflow-wrap: anywhere; }
+.comparison-item button { margin-left: auto; padding: 4px 10px; }
+.signal-group { margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--line); }
+.source-info { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.blocked-quarter { border-left: 3px solid var(--warn); padding: 8px 12px; margin: 10px 0; background: #fffcf5; }
 .metric-name { font-weight: 600; }
 .period-line { display: block; white-space: nowrap; font-size: 12px; color: var(--muted); }
 .evidence-id { font: 11px/1.6 Consolas, monospace; color: var(--muted); }
@@ -199,14 +206,30 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
   pre.report { font-size: 12px; }
 }
 @media print {
+  @page { size: A4 landscape; margin: 12mm; }
   header .sub, main > .card:first-child, .status-line,
   #report-card h2 .actions, #results h2 .dir-tag, #analysis-card h2 .dir-tag, #checks h2 .dir-tag { display: none !important; }
   body { background: #fff; }
+  header { padding: 0 0 8px; }
+  main { max-width: none; margin: 0; padding: 0; }
+  #search-card, #qa-card .row, #qa-clear, #qa-status { display: none !important; }
+  #qa-card:not(:has(.qa-item)) { display: none !important; }
+  #checks:has(.empty), #trace-card { display: none !important; }
   .card {
-    border: 0; padding: 0 0 12px; margin: 0 0 8px; page-break-inside: avoid;
+    border: 0; padding: 0 0 12px; margin: 0 0 8px; break-inside: auto;
     box-shadow: none;
   }
-  .table-wrap, pre.report { max-height: none; overflow: visible; border: 0; padding: 0; }
+  .table-wrap, pre.report, .report-md, .report-md pre { max-height: none !important; height: auto !important; overflow: visible !important; border: 0; padding: 0; }
+  #qa-card, #auto-info, #manual-fallback { display: none !important; }
+  table { width: 100% !important; min-width: 0 !important; }
+  pre, td, th { white-space: normal; overflow-wrap: anywhere; }
+  .report-md pre { white-space: pre-wrap; }
+  h1, h2, h3 { break-after: avoid; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  table.data-table th, table.data-table td { font-size: 10px; padding: 6px; }
+  .report-md table { table-layout: fixed; }
+  .report-md th, .report-md td { font-size: 9px; padding: 4px; overflow-wrap: anywhere; }
   table.data-table th { position: static; }
   table.data-table { min-width: 0 !important; }
   .qa-item.is-latest { box-shadow: none; }
@@ -235,9 +258,12 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
       <div class="file-meta" id="file-meta"></div>
     </div>
     <div id="auto-info" class="auto-info" hidden></div>
-    <div style="margin-top:12px">
+    <div id="comparison-area" style="margin-top:12px">
       <label for="comparison-pdfs">比较财报（可选，最多 4 份同公司报告；环比需要相邻季度累计数或单季值）</label>
       <input type="file" id="comparison-pdfs" accept="application/pdf" multiple>
+      <button id="comparison-clear" class="secondary" type="button" disabled>清空比较财报</button>
+      <div id="comparison-files" aria-live="polite"></div>
+      <p class="hint">可逐项移除；切换主材料或任务会清空比较文件。</p>
     </div>
     <div id="manual-fallback" hidden>
       <div class="form-grid" style="margin-top:10px">
@@ -297,8 +323,8 @@ a.evidence-chip { cursor: pointer; color: var(--accent); border-color: #c7d7fe; 
         </colgroup>
         <thead>
           <tr>
-            <th>指标 / 期间</th><th class="num">本期</th><th class="num">上期</th><th class="num">复算同比</th>
-            <th class="num">披露同比</th><th>核对</th><th class="num">PDF 页</th>
+            <th>指标 / 期间 / 比较类型</th><th class="num">本期</th><th class="num">比较基期</th><th class="num">复算变化</th>
+            <th class="num">披露变化</th><th>核对</th><th class="num">PDF 页</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -398,15 +424,30 @@ const adjZh = (a) => ({
   as_reported: '披露值', before: '调整前', after: '调整后',
 }[a] || a || '—');
 const periodCell = (record) => record.period_start && record.period_end
-  ? `<span class="period-line">${esc(record.period_start)}</span><span class="period-line">至 ${esc(record.period_end)}</span>`
+  ? `<span class="period-line">${esc(record.period_start)}</span>${record.period_start === record.period_end ? '' : '<span class="period-line">至 '+esc(record.period_end)+'</span>'}`
   : `<span class="period-line">${esc(record.period_year ?? '—')}</span>`;
+const changeText = (c) => c?.status === 'ok' ? fmt(c.value) + (c.unit || '%')
+  : c?.reason || c?.reasons?.join('；') || ({missing:'缺少可比基期',not_comparable:'期间或口径不可比',zero_base:'基期为零'}[c?.status] || c?.status || '—');
+const metricValue = (r, key) => r[key] == null ? '—' : ['%', '％', '元/股'].includes(r.value_unit || r.unit)
+  ? fmt(r[key]) + (r.value_unit || r.unit) : fmtBig(r[key]) + '元';
+const changeOf = r => r.change || r.yoy || {};
+const changeCheck = r => r.reported_change_check || r.reported_yoy_check;
+const reportedText = (r) => {
+  const reported = r.reported_change || r.reported_yoy;
+  return reported?.value != null ? String(reported.value) + (reported.unit || '%')
+    : ({not_disclosed:'原文未披露',not_extracted:'未提取到',unresolved:'无法解析'}[r.disclosure_status] || '未提取到');
+};
+const checkOutcome = (r) => changeCheck(r)
+  ? ({match:'一致',mismatch:'不一致，需复核'}[changeCheck(r).status] || '未核对（'+(changeCheck(r).reason || '比较类型不一致')+'）')
+  : changeOf(r).status !== 'ok' ? '未核对（'+changeText(changeOf(r))+'）'
+  : '未核对（'+({not_disclosed:'原文未披露',unresolved:'披露值无法解析'}[r.disclosure_status] || '未提取到披露值')+'）';
 
 function renderMd(md) {
   // 极简 Markdown 渲染：标题/表格/加粗/代码/列表/分隔线；正文经 esc 后再注入标签
   const lines = String(md).split('\n');
   let html = '', inTable = false, inList = false, inCode = false;
   const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
-  const closeTable = () => { if (inTable) { html += '</table>'; inTable = false; } };
+  const closeTable = () => { if (inTable) { html += '</tbody></table>'; inTable = false; } };
   for (const line of lines) {
     if (line.startsWith('```')) { closeList(); closeTable(); html += inCode ? '</pre>' : '<pre>'; inCode = !inCode; continue; }
     if (inCode) { html += esc(line) + '\n'; continue; }
@@ -414,7 +455,7 @@ function renderMd(md) {
       closeList();
       const cells = line.split('|').slice(1, -1).map((c) => c.trim());
       if (/^[-: |]+$/.test(line)) continue;
-      if (!inTable) { html += '<table>'; inTable = true; html += '<tr>' + cells.map((c) => `<th>${esc(c)}</th>`).join('') + '</tr>'; }
+      if (!inTable) { html += '<table><thead>'; inTable = true; html += '<tr>' + cells.map((c) => `<th>${esc(c)}</th>`).join('') + '</tr></thead><tbody>'; }
       else html += '<tr>' + cells.map((c) => `<td>${esc(c)}</td>`).join('') + '</tr>';
       continue;
     }
@@ -508,20 +549,64 @@ function closeLightbox() {
 }
 
 let autoInfo = {};  // 从 PDF 自动识别到的字段
+let identificationSequence = 0;
+let identityPromise = null;
+let comparisonFiles = [];
+const taskNames = {financial:'财报分析', pledge:'股份质押', winning_bid:'中标', equity_change:'股权变动'};
+
+function renderComparisonFiles() {
+  $('#comparison-clear').disabled = !comparisonFiles.length;
+  $('#comparison-files').innerHTML = comparisonFiles.map((file, index) =>
+    `<div class="comparison-item"><span>${esc(file.name)}</span><button class="secondary" type="button" data-remove-comparison="${index}" aria-label="移除 ${esc(file.name)}">移除</button></div>`).join('');
+}
+function setComparisonFiles(files) {
+  comparisonFiles = Array.from(files);
+  const transfer = new DataTransfer();
+  comparisonFiles.forEach(file => transfer.items.add(file));
+  $('#comparison-pdfs').files = transfer.files;
+  renderComparisonFiles();
+}
+function clearComparisons() {
+  comparisonFiles = [];
+  $('#comparison-pdfs').value = '';
+  renderComparisonFiles();
+}
+function materialMismatch(info, task) {
+  if (task === 'financial' && info.material_type === 'announcement')
+    return '该PDF为公告，请选择“公告字段 · '+(taskNames[info.suggested_task] || '对应类型')+'”，无需填写财报年度';
+  if (task !== 'financial' && info.material_type === 'financial') return '该PDF为财报，请选择“财报分析”任务';
+  if (task !== 'financial' && info.suggested_task && info.suggested_task !== task)
+    return '该PDF识别为“'+taskNames[info.suggested_task]+'”公告，请核对任务类型';
+  return '';
+}
 
 async function prefill() {
   const file = $('#pdf').files[0];
   if (!file) return;
+  const sequence = ++identificationSequence;
+  const task = $('#task-type').value;
   const form = new FormData();
   form.append('pdf', file);
   setStatus('正在从 PDF 识别公司信息…', 'busy');
   try {
     const res = await fetch('/api/prefill', { method: 'POST', body: form });
     const data = await res.json();
+    if (sequence !== identificationSequence || $('#pdf').files[0] !== file || $('#task-type').value !== task) return;
+    if (!res.ok || data.error) throw new Error(data.error || '材料识别失败');
     autoInfo = data;
     const tags = [];
     if (data.name) tags.push(`<span class="tag">${esc(data.name)}</span>`);
     if (data.code) tags.push(`<span class="tag">${esc(data.code)}</span>`);
+    const mismatch = materialMismatch(data, task);
+    if (data.material_type === 'announcement' || task !== 'financial') {
+      tags.push(`<span class="tag">${esc(taskNames[data.suggested_task] || '公告')}</span>`);
+      if (data.announcement_date) tags.push(`<span class="tag">公告日期 ${esc(data.announcement_date)}</span>`);
+      $('#manual-fallback').hidden = true;
+      $('#auto-info').innerHTML = '已识别：' + tags.join(' ');
+      $('#auto-info').hidden = false;
+      setStatus(mismatch || '已选择公告，点“开始分析”提取字段；无需填写财报年度', mismatch ? 'err' : '');
+      return;
+    }
     if (data.year) tags.push(`<span class="tag">${esc(data.year)} ${esc(({annual:'年报',half:'半年报',quarter:'季报'})[data.report_kind] || '财务报告')}</span>`);
     const missing = [];
     if (!data.code) missing.push('代码');
@@ -541,13 +626,21 @@ async function prefill() {
     $('#auto-info').hidden = false;
     setStatus(missing.length ? '部分字段未识别，请手动补充' : '已自动识别，点「开始分析」即可', '');
   } catch (e) {
-    $('#manual-fallback').hidden = false;
-    setStatus('自动识别失败，请手动填写', 'err');
+    if (sequence !== identificationSequence) return;
+    $('#manual-fallback').hidden = task !== 'financial';
+    setStatus(task === 'financial' ? '自动识别失败，请手动填写财报身份' : '自动识别身份失败；可继续按所选公告类型提取字段', task === 'financial' ? 'err' : '');
   }
 }
 
 function onFilePicked() {
+  ++identificationSequence;
+  identityPromise = null;
   autoInfo = {};
+  clearComparisons();
+  $('#manual-fallback').hidden = true;
+  for (const id of ['code', 'name', 'year']) $('#'+id).value = '';
+  $('#comparison-area').hidden = $('#task-type').value !== 'financial';
+  window.__last = null;
   for (const id of ['results', 'analysis-card', 'checks', 'report-card', 'qa-card', 'announcement-card', 'trace-card', 'search-card', 'auto-info']) $('#' + id).hidden = true;
   const file = $('#pdf').files[0];
   if (!file) {
@@ -559,14 +652,19 @@ function onFilePicked() {
   const kb = file.size / 1024;
   const size = kb > 1024 ? (kb / 1024).toFixed(1) + ' MB' : Math.max(1, Math.round(kb)) + ' KB';
   $('#file-meta').textContent = file.name + ' · ' + size;
-  if ($('#task-type').value === 'financial') prefill();
-  else setStatus('已选择公告，点「开始分析」提取事件字段', '');
+  identityPromise = prefill();
 }
 
 async function run() {
   const file = $('#pdf').files[0];
+  const task = $('#task-type').value;
   const draft = $('#draft').value;
   if (!file) { setStatus('请选择财报或公告 PDF', 'err'); return; }
+  if (identityPromise) await identityPromise;
+  if ($('#pdf').files[0] !== file || $('#task-type').value !== task) return;
+  const mismatch = materialMismatch(autoInfo, task);
+  if (mismatch) { setStatus(mismatch, 'err'); return; }
+  if (task === 'financial' && comparisonFiles.length > 4) { setStatus('比较财报最多4份，请先移除多余文件', 'err'); return; }
 
   // 自动识别到的（或手填的）字段
   const code = ($('#manual-fallback').hidden ? (autoInfo.code || '') : ($('#code').value.trim() || autoInfo.code || '')).trim();
@@ -575,17 +673,21 @@ async function run() {
 
   const form = new FormData();
   form.append('pdf', file);
-  if (code) form.append('code', code);
-  if (name) form.append('name', name);
-  if (year) form.append('year', year);
-  form.append('draft', draft || '');
-  form.append('event_type', $('#task-type').value);
+  if (task === 'financial') {
+    if (code) form.append('code', code);
+    if (name) form.append('name', name);
+    if (year) form.append('year', year);
+    form.append('draft', draft || '');
+    comparisonFiles.forEach(comparison => form.append('comparison_pdf', comparison));
+  }
+  form.append('event_type', task);
   form.append('ocr', $('#ocr').checked ? 'true' : 'false');
-  for (const comparison of $('#comparison-pdfs').files) form.append('comparison_pdf', comparison);
 
   $('#run').disabled = true;
+  for (const id of ['pdf', 'task-type', 'comparison-pdfs', 'comparison-clear']) $('#'+id).disabled = true;
+  $('#comparison-files').querySelectorAll('button').forEach(button => button.disabled = true);
   // 分段进度提示，避免 7 秒只有单调「请稍候」
-  const hasDraft = !!(draft || '').trim();
+  const hasDraft = task === 'financial' && !!(draft || '').trim();
   const stages = hasDraft
     ? ['正在识别 PDF 身份…', '正在抽取指标…', '正在渲染页图…', '正在流式核查草稿（工具循环）…']
     : ['正在识别 PDF 身份…', '正在抽取指标…', '正在渲染页图…', '正在核算同比与核查…'];
@@ -605,7 +707,7 @@ async function run() {
     $('#checks').hidden = false;
   }
   try {
-    const endpoint = $('#task-type').value === 'financial' ? '/api/analyze' : '/api/announcement';
+    const endpoint = task === 'financial' ? '/api/analyze' : '/api/announcement';
     const res = await fetch(endpoint, { method: 'POST', body: form });
     const data = await res.json();
     if (!res.ok || data.error) {
@@ -614,12 +716,15 @@ async function run() {
     }
     render(data);
     const c = data.counts || {};
-    setStatus(data.announcement ? `完成：公告事件 ${c.events || 0} 项 · 字段证据 ${data.evidence.length} 条 · 待复核 ${data.issues.length} 条` : `完成：提取证据 ${data.evidence.length} 条 · 同比一致 ${c.match || 0} · 不一致 ${c.mismatch || 0} · 待复核 ${data.issues.length} 条`, '');
+    setStatus(data.announcement ? `完成：公告事件 ${c.events || 0} 项 · 字段证据 ${data.evidence.length} 条 · 待复核 ${data.issues.length} 条` : `完成：提取证据 ${data.evidence.length} 条 · 变化一致 ${c.match || 0} · 不一致 ${c.mismatch || 0} · 待复核 ${data.issues.length} 条`, '');
   } catch (e) {
     setStatus('请求失败：' + e, 'err');
   } finally {
     clearInterval(stageTimer);
     $('#run').disabled = false;
+    for (const id of ['pdf', 'task-type', 'comparison-pdfs']) $('#'+id).disabled = false;
+    $('#comparison-files').querySelectorAll('button').forEach(button => button.disabled = false);
+    $('#comparison-clear').disabled = !comparisonFiles.length;
   }
 }
 
@@ -636,9 +741,9 @@ function render(data) {
     ['待复核', (data.issues || []).length, (data.issues || []).length ? 'warn' : 'ok'],
   ] : [
     ['提取证据', (data.evidence || []).length, 'info'],
-    ['同比一致', c.match || 0, 'ok'],
-    ['同比不一致', c.mismatch || 0, 'bad'],
-    ['缺披露值', c.unverified || 0, ''],
+    ['变化一致', c.match || 0, 'ok'],
+    ['变化不一致', c.mismatch || 0, 'bad'],
+    ['未核对', c.unverified || 0, ''],
     ['待复核', (data.issues || []).length, (data.issues || []).length ? 'bad' : 'ok'],
   ]).map(([k, n, cls]) => `<div class="stat ${cls}"><div class="n">${n}</div><div class="k">${k}</div></div>`).join('');
 
@@ -660,28 +765,44 @@ function render(data) {
   // ── ② 财报分析：指标与同比 ──
   const tbody = $('#metrics tbody');
   tbody.innerHTML = (data.rows || []).map((r) => {
-    const yoy = r.yoy && r.yoy.status === 'ok' ? fmt(r.yoy.value) + '%' : (r.yoy ? r.yoy.status : '—');
-    const check = r.reported_yoy_check;
-    const outcome = check
-      ? (check.status === 'match' ? '一致' : '不一致，需复核')
-      : '未核对（缺披露值）';
+    const change = changeText(changeOf(r));
+    const outcome = checkOutcome(r);
     return `<tr>
-      <td><span class="metric-name">${esc(r.metric_name || r.metric)}</span>${periodCell(r)}</td>
-      <td class="num">${fmtBig(r.current)}</td>
-      <td class="num">${fmtBig(r.previous)}</td>
-      <td class="num">${esc(yoy)}</td>
-      <td class="num">${check ? fmt(check.reported) + '%' : '—'}</td>
+      <td><span class="metric-name">${esc(r.metric_name || r.metric)}</span>${periodCell(r)}<span class="period-line">${esc(r.comparison_label || '同比')}</span></td>
+      <td class="num">${esc(metricValue(r, 'current'))}</td>
+      <td class="num">${esc(metricValue(r, 'previous'))}<span class="period-line">${esc(r.previous_period_end || '')}</span></td>
+      <td class="num ${changeOf(r).status !== 'ok' ? 'cell-note' : ''}">${esc(change)}</td>
+      <td class="num ${!(r.reported_change || r.reported_yoy) ? 'cell-note' : ''}">${esc(reportedText(r))}</td>
       <td>${badge(outcome)}</td>
       <td class="num">${pageCell(r)}</td>
     </tr>`;
   }).join('') || `<tr><td colspan="7" class="empty">没有抽出指标</td></tr>`;
 
-  const sigs = data.signals || [];
-  $('#signals').innerHTML = sigs.length
-    ? sigs.map(s => `<div class="hint"><strong>【${esc(s.epistemic_type || '事实')}】</strong>${esc(s.description)} ${s.value == null ? '' : fmt(s.value)}${esc(s.unit || '')}<br>${esc(s.interpretation || '')}</div>`).join('')
-    : '';
+  const sourceLinks = (sources) => (sources || []).map(source => {
+    const e = (data.evidence || []).find(e => e.evidence_id === source.evidence_id) || source;
+    return `<span class="source-info">${esc(source.evidence_id)} · PDF ${pageCell(e)}</span>`;
+  }).join('；');
+  const sigGroups = new Map();
+  for (const s of data.signals || []) {
+    const key = [s.document_id, s.period_start, s.period_end].join('|');
+    if (!sigGroups.has(key)) sigGroups.set(key, []);
+    sigGroups.get(key).push(s);
+  }
+  $('#signals').innerHTML = Array.from(sigGroups.values()).map(group => {
+    const s = group[0];
+    const kind = {half:'半年报',quarter:'季报',annual:'年报'}[s.period_kind] || '财务报告';
+    return `<section class="signal-group"><h3>${esc(s.company_name || s.company_code)} · ${esc(kind)} · ${esc(s.period_start)} 至 ${esc(s.period_end)}</h3>` +
+      group.map(s => `<div class="hint"><strong>【${esc(s.epistemic_type || '事实')}】</strong>${esc(s.description)} ${s.value == null ? '' : fmt(s.value)}${esc(s.unit || '')}<br>${esc(s.interpretation || '')}<div>${sourceLinks(s.sources)}</div></div>`).join('') + '</section>';
+  }).join('');
   const qoq = data.qoq_rows || [];
-  if (qoq.length) $('#signals').innerHTML += '<h3>单季环比</h3>' + qoq.map(r => `<p>${esc(r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：${r.qoq.status === 'ok' ? fmt(r.qoq.value) + '%' : esc(r.qoq.reason ?? r.qoq.status)}</p>`).join('');
+  if (qoq.length) $('#signals').innerHTML += '<h3>单季环比</h3>' + qoq.map(r => `<p>${esc(r.metric_name || r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：${esc(changeText(r.qoq))}</p>`).join('');
+  const blocked = data.qoq_blocked || [];
+  if (blocked.length) $('#signals').innerHTML += '<h3>累计拆季受阻记录</h3>' + blocked.map(r => {
+    const reasons = Array.from(new Set([r.reason, ...(r.reasons || [])].filter(Boolean))).join('；')
+      .replaceAll('accounting_policy_version','会计政策版本').replaceAll('consolidation_basis','合并范围依据').replaceAll('restatement_version','重述版本');
+    const attempted = r.attempted_value == null ? '无可计算尝试值' : '未确认尝试值：'+fmt(r.attempted_value)+'元，未获可比性确认，不能作为有效单季数据';
+    return `<div class="blocked-quarter"><strong>${esc(r.metric_name || r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}</strong><p>${esc(reasons || r.status)}</p><p>${esc(attempted)}</p><div>${sourceLinks(r.sources)}</div></div>`;
+  }).join('');
   $('#analysis-card').hidden = false;
 
   // ── ③ 纠错核查 ──
@@ -873,64 +994,14 @@ async function qaAsk() {
 function exportMarkdown() {
   const data = window.__last;
   if (!data) { setStatus('还没有分析结果可导出', 'err'); return; }
-  const lines = [];
   const mat = (data.materials || [])[0] || {};
-  lines.push('# 金融投研智能体 · 分析报告');
-  lines.push('');
-  lines.push(`- 公司：${mat.company_name || ''}（${mat.company_code || ''}）`);
-  lines.push(`- 报告年度：${mat.report_year || ''}`);
-  lines.push(`- 运行号：${data.run_id || ''}`);
-  lines.push(`- 生成时间：${new Date().toLocaleString('zh-CN')}`);
-  lines.push('');
-  lines.push('## 指标与同比核对');
-  lines.push('');
-  lines.push('| 指标 | 本年 | 上年 | 复算同比 | 披露同比 | 核对 | PDF页 |');
-  lines.push('| --- | ---: | ---: | ---: | ---: | --- | ---: |');
-  (data.rows || []).forEach((r) => {
-    const yoy = r.yoy && r.yoy.status === 'ok' ? fmt(r.yoy.value) + '%' : (r.yoy ? r.yoy.status : '—');
-    const check = r.reported_yoy_check;
-    const outcome = check
-      ? (check.status === 'match' ? '一致' : '不一致，需复核')
-      : '未核对（缺披露值）';
-    lines.push(`| ${r.metric_name || r.metric} | ${fmtBig(r.current)} | ${fmtBig(r.previous)} | ${yoy} | ${check ? fmt(check.reported) + '%' : '—'} | ${outcome} | ${r.page ?? '—'} |`);
-  });
-  const sigs = data.signals || [];
-  if (sigs.length) {
-    lines.push('', '## 辅助观察', '');
-    sigs.forEach((s) => lines.push(`- ${s.description}${s.value ? '：' + s.value + (s.unit || '') : ''}`));
-  }
-  if (data.checks && data.checks.status === 'completed') {
-    lines.push('', '## 草稿核查', '');
-    const counts = data.checks.counts || {};
-    if (Object.keys(counts).length) {
-      lines.push('结论分布：' + Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(' · '), '');
-    }
-    lines.push('| 编号 | 轨道 | 原句 | 结论 | 说明 |');
-    lines.push('| --- | --- | --- | --- | --- |');
-    (data.checks.checks || []).forEach((c) => {
-      const sentence = String(c.original_sentence || '').replace(/\|/g, '\\|').slice(0, 120);
-      const reason = String(c.reason || c.reason_code || '—').replace(/\|/g, '\\|');
-      const track = { deterministic: 'A 确定', model: 'B 模型', review: 'C 人工' }[c.track] || 'C 人工';
-      lines.push(`| ${c.claim_id} | ${track} | ${sentence} | ${c.status} | ${reason} |`);
-    });
-  }
-  if ((data.evidence || []).length) {
-    lines.push('', '## 证据明细', '');
-    lines.push('| 证据ID | 指标 | 年度 | 数值 | 单位 | 口径 | 页 |');
-    lines.push('| --- | --- | ---: | ---: | --- | --- | ---: |');
-    data.evidence.forEach((e) => {
-      lines.push(`| ${e.evidence_id} | ${e.metric_name || e.metric} | ${e.period_year ?? '—'} | ${e.value ?? '—'} | ${e.unit || '—'} | ${scopeZh(e.scope)} | ${e.page ?? '—'} |`);
-    });
-  }
-  lines.push('', '## 核查报告', '');
-  lines.push(data.report_md || '');
-  const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+  const blob = new Blob([data.report_md || '# 本次运行没有生成报告\n'], { type: 'text/markdown;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `分析报告_${mat.company_code || 'report'}_${mat.report_year || ''}.md`;
+  a.download = '分析报告_' + (mat.company_code || 'report') + '_' + (mat.report_year || '') + '.md';
   a.click();
   URL.revokeObjectURL(a.href);
-  setStatus('Markdown 已下载', '');
+  setStatus('完整 Markdown 已下载', '');
 }
 
 function exportPdf() {
@@ -941,6 +1012,13 @@ function exportPdf() {
 
 $('#run').addEventListener('click', run);
 $('#pdf').addEventListener('change', onFilePicked);
+$('#task-type').addEventListener('change', onFilePicked);
+$('#comparison-pdfs').addEventListener('change', () => setComparisonFiles($('#comparison-pdfs').files));
+$('#comparison-clear').addEventListener('click', clearComparisons);
+$('#comparison-files').addEventListener('click', e => {
+  const button = e.target.closest('[data-remove-comparison]');
+  if (button) setComparisonFiles(comparisonFiles.filter((_, index) => index !== Number(button.dataset.removeComparison)));
+});
 $('#export-md').addEventListener('click', exportMarkdown);
 $('#export-pdf').addEventListener('click', exportPdf);
 $('#qa-ask').addEventListener('click', qaAsk);

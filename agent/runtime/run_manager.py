@@ -23,7 +23,7 @@ from .events import (
     phase_for_event,
     timestamp_now,
 )
-from .redaction import redact_text, redact_value
+from .redaction import redact_result, redact_text, redact_value
 from .sessions import SessionRegistry
 
 
@@ -106,6 +106,7 @@ class RunContext:
         self._status = RunStatus.QUEUED
         self._cancel_reason: str | None = None
         self._result: Any = None
+        self._prepared_finish: tuple[RunStatus, dict[str, Any]] | None = None
         self._error: str | None = None
         self._error_type: str | None = None
         self._lock = threading.RLock()
@@ -214,6 +215,17 @@ class RunContext:
         )
         return self
 
+    def prepare_finish(self, status: RunStatus | str, **summary: Any) -> bool:
+        """流水线登记期望终态，最终结果落盘前不对外发布结束事件。"""
+        terminal = RunStatus.coerce(status)
+        if terminal not in TERMINAL_STATUSES:
+            raise RunStateError("prepare_finish 需要终态")
+        with self._lock:
+            if self._status in TERMINAL_STATUSES:
+                return False
+            self._prepared_finish = (terminal, dict(summary))
+        return True
+
     def finish(self, status: RunStatus | str, **summary: Any) -> bool:
         terminal = RunStatus.coerce(status)
         if terminal not in TERMINAL_STATUSES:
@@ -221,12 +233,17 @@ class RunContext:
         with self._lock:
             if self._status in TERMINAL_STATUSES:
                 return False
-            self._status = terminal
-            self.finished_at = timestamp_now()
+            previous_result = self._result
             if "result" in summary:
                 self._result = summary["result"]
+            try:
+                self._write_result()
+            except Exception:
+                self._result = previous_result
+                raise
+            self._status = terminal
+            self.finished_at = timestamp_now()
             self._write_state()
-            self._write_result()
         self.event(
             "run_finished",
             phase="run",
@@ -269,15 +286,15 @@ class RunContext:
             self._write_result()
 
     def _write_result(self) -> None:
-        """结果落盘供服务重启后读取；过大或不可序列化时明确不写。"""
+        """完整结果落盘；过大或不可序列化须明确失败，不能伪装交付成功。"""
         if self._result is None:
             return
         try:
-            encoded = json.dumps(redact_value(self._result), ensure_ascii=False)
-        except (TypeError, ValueError):
-            return
+            encoded = json.dumps(redact_result(self._result), ensure_ascii=False)
+        except (TypeError, ValueError) as exc:
+            raise RunStateError("运行结果无法序列化为 JSON") from exc
         if len(encoded.encode("utf-8")) > MAX_RESULT_BYTES:
-            return
+            raise RunStateError("运行结果超过允许大小，未生成完整交付产物")
         _atomic_write(self.folder / "result.json", encoded + "\n")
 
     def _record_error(self, exc: Exception) -> None:
@@ -286,19 +303,20 @@ class RunContext:
             self._error = str(exc)
             self._write_state()
 
-    def snapshot(self) -> dict[str, Any]:
+    def snapshot(self, *, result_transform: Callable[[Any], Any] | None = None) -> dict[str, Any]:
         with self._lock:
+            result = result_transform(self._result) if result_transform else self._result
             return {
                 "run_id": self.id,
                 "session_id": self.session_id,
                 "command": self.command,
-                "parameters": redact_value(dict(self.parameters)),
+                "parameters": redact_result(dict(self.parameters)),
                 "status": self._status.value,
                 "created_at": self.created_at,
                 "started_at": self.started_at,
                 "finished_at": self.finished_at,
                 "cancel_reason": redact_text(self._cancel_reason or ""),
-                "result": redact_value(self._result),
+                "result": redact_result(result),
                 "error_type": self._error_type,
                 "error": redact_text(self._error or ""),
                 "events_path": str(self.events_path),
@@ -310,7 +328,7 @@ class RunContext:
             "run_id": self.id,
             "session_id": self.session_id,
             "command": self.command,
-            "parameters": redact_value(dict(self.parameters)),
+            "parameters": redact_result(dict(self.parameters)),
             "status": self._status.value,
             "created_at": self.created_at,
             "started_at": self.started_at,
@@ -489,9 +507,14 @@ class RunManager:
     ) -> None:
         try:
             result = target(context, *args, **kwargs)
-            if not context.cancelled_event.is_set():
-                context._record_result(result)
-                context.finish(RunStatus.SUCCEEDED, result=result)
+            with context._lock:
+                if not context.cancelled_event.is_set():
+                    if context.status in TERMINAL_STATUSES:
+                        # 兼容直接管理终态的旧调用者；新版桥接流水线使用 prepare_finish。
+                        context._record_result(result)
+                    else:
+                        terminal, summary = context._prepared_finish or (RunStatus.SUCCEEDED, {})
+                        context.finish(terminal, **{**summary, "result": result})
         except RunCancelled:
             pass
         except Exception as exc:  # noqa: BLE001 - 工作线程必须记录所有用户代码异常

@@ -55,14 +55,14 @@ def _direction_of(value) -> str | None:
     return "flat"
 
 
-def _comparable_previous(facts: list[dict], fact: dict) -> dict | None:
+def _comparable_previous(facts: list[dict], fact: dict, baseline_year=None) -> dict | None:
     """方向核查的上期值：年报走同报告比较列，半年/单季走上年同一期间。"""
-    if fact.get("period_kind") == "annual":
+    if fact.get("period_kind") == "annual" and baseline_year in {None, fact.get("period_year", 0) - 1}:
         return select_previous(facts, fact)
     start, end = fact.get("period_start") or "", fact.get("period_end") or ""
     if len(start) < 10 or len(end) < 10:
         return None
-    previous_year = int(fact.get("period_year") or 0) - 1
+    previous_year = int(baseline_year) if baseline_year is not None else int(fact.get("period_year") or 0) - 1
     candidates = [f for f in facts
                   if f.get("company_code") == fact.get("company_code")
                   and f.get("metric") == fact.get("metric")
@@ -168,6 +168,8 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
             year = period_binding.get("year")
             if year is None or not period_binding.get("located_in"):
                 return stop("unresolved_period", "比较期间无法在原文唯一定位", "证据不足")
+            if period_binding.get("baseline_year") is not None and period_binding["baseline_year"] != year:
+                return stop("unsupported_comparison_period", "跨公司比较的两侧年份不同，现有工具不能按同一年份替代", "证据不足")
             relation = _comparison_relation(quote)
             if relation is None:
                 return stop("ungrounded_comparison_operator", "比较方向没有在逐字引文中明确定位")
@@ -253,7 +255,9 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                     "指标不在目录内（营收/营业总收入/归母/扣非/经营现金流/EPS/加权ROE/总资产）", "证据不足")
     if item["metric"] != metric and item["metric"] not in {"unknown", "unsupported"}:
         return stop("model_parse_conflict", "模型指标分类与原文指标名称不一致")
-    period_fields = _precise_period({**item, "period_year": year}, quote + "\n" + sentence)
+    period_binding = output["grounding"]["period"]
+    period_fields = _precise_period({**item, "period_year": year},
+                                    period_binding.get("current_text") or quote + "\n" + sentence)
     if period_fields.get("conflict"):
         return stop("model_parse_conflict", "模型期间分类与原文的半年/单季/累计表达不一致")
     if period_fields.get("unsupported"):
@@ -294,6 +298,8 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
     kind = item.get("kind") or ("yoy" if item.get("claim_type") == "yoy" else "amount")
     if kind not in {"amount", "yoy"}:
         return stop("unsupported_operation", "数值裁决仅支持金额与年度同比")
+    if kind == "yoy" and period_binding.get("baseline_year") not in {None, year - 1}:
+        return stop("unsupported_comparison_period", "原文明示的比较基期不是上年，不能替换成同比基期", "证据不足")
     if kind == "amount" and re.search(r"增加了?|减少了?|增长了?|下降了?", quote) and not re.search(r"增至|降至|达到", quote):
         return stop("unsupported_change_amount", "增减金额不等于期末/当期金额，需人工复核")
     if kind == "yoy" and re.search(r"下降|减少|降低|下滑", quote) and value > 0:
@@ -403,9 +409,22 @@ def _direction_row(output: dict, item: dict, facts: list[dict], *, code: str, me
                     "方向核查缺少唯一的公司/指标/期间证据（" + str(located.get("status")) + "），不凭语气判断")
     index = {fact.get("evidence_id"): fact for fact in facts}
     fact = index.get(located["items"][0]["evidence_id"])
-    previous = _comparable_previous(facts, fact)
+    binding = output.get("grounding", {}).get("period", {})
+    baseline_year = binding.get("baseline_year")
+    if baseline_year is not None:
+        baseline_fields = _precise_period({**item, "period_year": baseline_year}, binding["baseline_text"])
+        if baseline_fields.get("unsupported") or baseline_fields.get("conflict"):
+            return stop("direction_not_comparable", "比较基期的期间类型与本期不一致或无法定位")
+        if bool(baseline_fields) != bool(period_fields) or any(
+                baseline_fields.get(k, "")[4:] != period_fields.get(k, "")[4:]
+                for k in ("period_start", "period_end")):
+            return stop("direction_not_comparable", "原文明示的本期与比较基期不是相同期间")
+    previous = _comparable_previous(facts, fact, baseline_year)
     if previous is None:
         return stop("direction_base_missing", "方向核查缺少唯一可比的上期数值，不能凭语气判断")
+    stated_base = (output.get("grounding", {}).get("period") or {}).get("comparison_year")
+    if stated_base is not None and stated_base != previous.get("period_year"):
+        return stop("direction_base_mismatch", "原文明示比较年度与可用上年基期不同，不能替换比较对象")
     computation = evidence_yoy(fact, previous)
     if computation.get("status") != "ok":
         reasons = computation.get("reasons") or [computation.get("reason") or "期间不可比"]

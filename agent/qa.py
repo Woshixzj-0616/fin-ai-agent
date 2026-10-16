@@ -26,6 +26,14 @@ _ISSUE_CUE = re.compile(r"问题|异常|issue|错误|风险|瑕疵|待复核|不
 _OVERVIEW_CUE = re.compile(r"哪些|有什么|列表|概览|总览|一览|整体|全部指标|分析结果")
 
 
+def _comparison_kind(question: str, metric) -> str:
+    if re.search(r"上年(?:度)?末|(?:较|比|相较于?)年初(?!至)", question):
+        return "year_end"
+    if "百分点" in question or metric in {"weighted_roe", "deducted_weighted_roe"} and not re.search(r"相对|增长率", question):
+        return "percentage_points"
+    return "yoy"
+
+
 def match_metric(question: str) -> str | None:
     """最长别名命中指标键。别名来自 METRICS，不另建词表。"""
     best, best_len = None, 0
@@ -83,7 +91,9 @@ def _question_facts(intent: dict, facts: list[dict]) -> list[dict]:
     """按问题公司和期间后缀同时保留本期与可比基期，不把半年混成年报。"""
     return [f for f in facts
             if (not intent.get("company_code") or f.get("company_code") == intent["company_code"])
-            and (not intent.get("period_end") or str(f.get("period_end", ""))[4:] == intent["period_end"][4:])
+            and (not intent.get("period_end") or str(f.get("period_end", ""))[4:] == intent["period_end"][4:]
+                 or intent.get("comparison_kind") == "year_end" and f.get("period_kind") == "instant"
+                 and f.get("period_end") == f"{int(intent['period_year'])-1}-12-31")
             and (not intent.get("period_start") or f.get("period_kind") == "instant"
                  or str(f.get("period_start", ""))[4:] == intent["period_start"][4:])]
 
@@ -268,16 +278,20 @@ def _answer_value(intent: dict, facts: list[dict], draft: str = "") -> dict:
     return _ok(answer, [cite], intent)
 
 
-def _answer_yoy(intent: dict, facts: list[dict], draft: str = "") -> dict:
+def _answer_yoy(intent: dict, facts: list[dict], draft: str = "", question: str = "") -> dict:
     metric, year = intent.get("metric"), intent.get("period_year")
     if not metric or not year:
         return _no_evidence("未识别出指标或年度，无法算同比。", intent)
     company = intent.get("company_code") or _company_of(facts)
+    kind = _comparison_kind(question, metric)
+    comparison_label = {"year_end": "较上年末变化", "percentage_points": "同比变化", "yoy": "同比"}[kind]
+    if kind == "yoy" and metric in {"weighted_roe", "deducted_weighted_roe"}:
+        comparison_label = "同比相对增幅"
     out = compute_yoy(facts, company_name_or_code=company,
-                      metric=metric, year=int(year), draft=draft)
+                      metric=metric, year=int(year), draft=draft, comparison_kind=kind)
     if out.get("status") != "ok" or not out.get("current_evidence_id"):
         return _no_evidence(
-            f"证据不足：{year} 年「{METRICS.get(metric, [metric])[0]}」同比无法用已加载证据复算。",
+            f"证据不足：{year} 年「{METRICS.get(metric, [metric])[0]}」{comparison_label}无法用已加载证据复算。",
             intent)
     yoy = out.get("yoy") or {}
     cur_id = out.get("current_evidence_id")
@@ -296,7 +310,7 @@ def _answer_yoy(intent: dict, facts: list[dict], draft: str = "") -> dict:
     if yoy.get("status") == "ok":
         val = _fmt_pct(yoy.get("value"))
         calc = yoy.get("formula") or yoy.get("calculation") or ""
-        answer = f"{label}{period_label} {name}同比 {val}%。"
+        answer = f"{label}{period_label} {name}{comparison_label} {val}{yoy.get('unit') or '%'}。"
         if calc:
             answer += f"计算式：{calc}。"
     else:
@@ -395,12 +409,13 @@ def answer(question: str, facts: list[dict], *, client=None, run=None,
         intent = {**parse_intent_with_llm(q, facts, client, run), **period_fields}
         intent["company_code"] = str(asked["code"]) if asked and asked.get("code") else _company_of(facts)
 
+    intent["comparison_kind"] = _comparison_kind(q, intent.get("metric"))
     facts = _question_facts(intent, facts)
     if not facts:
         return _no_evidence("没有匹配问题公司与明确期间的证据。", intent)
     kind = intent.get("kind") or "value"
     if kind == "yoy":
-        out = _answer_yoy(intent, facts, draft)
+        out = _answer_yoy(intent, facts, draft, q)
     elif kind == "issues":
         out = _answer_issues(intent, facts)
     elif kind == "overview":

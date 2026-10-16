@@ -11,7 +11,9 @@ from finance import convert, decimal, evidence_yoy, select_previous, text
 def compute_yoy(facts: list[dict], *, company_name_or_code: str, metric: str, year: int,
                 draft: str = "", report_kind: str | None = None,
                 period_start: str | None = None, period_end: str | None = None,
-                document_id: str | None = None) -> dict:
+                document_id: str | None = None, comparison_kind: str = "yoy") -> dict:
+    if comparison_kind not in {"yoy", "year_end", "percentage_points"}:
+        return _err("比较类型未支持")
     located = find_evidence(facts, company_name_or_code=company_name_or_code, metric=metric,
                             period_year=int(year), draft=draft, report_kind=report_kind,
                             period_start=period_start, period_end=period_end,
@@ -19,8 +21,8 @@ def compute_yoy(facts: list[dict], *, company_name_or_code: str, metric: str, ye
     if located.get("status") != "ok":
         return located
     fact = next(f for f in facts if f["evidence_id"] == located["items"][0]["evidence_id"])
-    previous = select_previous(facts, fact)
-    computation = evidence_yoy(fact, previous)
+    previous = select_previous(facts, fact, comparison_kind)
+    computation = evidence_yoy(fact, previous, comparison_kind)
     return {"status": "ok" if computation.get("status") == "ok" else computation.get("status"),
             "yoy": computation, "current_evidence_id": fact["evidence_id"],
             "previous_evidence_id": (previous or {}).get("evidence_id"),

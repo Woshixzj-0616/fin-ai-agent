@@ -18,8 +18,8 @@ SCHEMAS = {
                    "shares": ["本次质押数量", "本次质押股份数量", "本次质押股份数", "质押股数", "质押数量"],
                    "pledgee": ["质权人", "质押权人"], "start_date": ["质押起始日", "起始日期", "质押开始日期"],
                    "end_date": ["质押到期日", "到期日期", "质押结束日期"],
-                   "purpose": ["质押用途", "质押融资用途", "用途"],
-                   "ratio_percent": ["占公司总股本比例", "占总股本比例"]}},
+                   "purpose": ["质押用途", "质押融资用途", "质押融资资金用途", "用途"],
+                   "ratio_percent": ["占公司总股本比例", "占总股本比例", "占本公司股份总数比例"]}},
     "winning_bid": {
         "name": "中标", "required": ["project_name", "winner", "amount"],
         "fields": {"project_name": ["项目名称", "中标项目", "标的名称"],
@@ -37,6 +37,13 @@ SCHEMAS = {
                    "change_date": ["股权变动日期", "变动日期", "转让日期"],
                    "change_method": ["变动方式", "转让方式"], "amount": ["转让价款", "交易金额"]}},
 }
+
+
+def clean_field_header(raw: str) -> str:
+    label = re.sub(r"\s+", "", raw or "").strip("：:")
+    # 只清理比例列的脚注标记，不把“占其所持”改成“占公司总数”。
+    label = re.sub(r"(?<=股份总数)注\d*|(?<=比例)注\d*$", "", label)
+    return re.sub(r"[（(](?:亿股|万股|股|亿元|万元|元|%|％)[）)]$", "", label)
 
 
 def normalize_field(field: str, raw: str, header: str = "") -> dict:
@@ -175,14 +182,15 @@ def extract_announcement(blob: bytes, event_type: str = "auto", *, run=None,
                 for ri, row in enumerate(grid):
                     if len(row) != 2 or not row[0] or not row[1]:
                         continue
-                    label = re.sub(r"\s+", "", row[0]).strip("：:")
+                    label = clean_field_header(row[0])
                     matched = next((field for field, aliases in spec["fields"].items()
                                     if label in aliases), None)
                     if matched:
                         raw = row[1].strip()
                         vertical.setdefault(matched, []).append({**normalize_field(matched, raw, label),
                             "quote": raw, **location(page, raw), "bbox": list(table.rows[ri].cells[1]),
-                            "location_status": "table_cell", "table": ti, "row": ri})
+                            "location_status": "table_cell", "table": ti, "row": ri,
+                            "header": {"text": row[0], "bbox": list(table.rows[ri].cells[0]), "page": page.number+1}})
                 if len(vertical) >= 2:
                     occurrences.append({"fields": vertical, "channel": "table", "page": page.number+1})
                     continue
@@ -192,7 +200,7 @@ def extract_announcement(blob: bytes, event_type: str = "auto", *, run=None,
                     ambiguous = set()
                     for ci, label in enumerate(row):
                         compact = re.sub(r"\s+", "", label or "")
-                        clean = re.sub(r"[（(](?:亿股|万股|股|亿元|万元|元|%|％)[）)]$", "", compact)
+                        clean = clean_field_header(label)
                         for field, aliases in spec["fields"].items():
                             if clean in aliases:
                                 if field in mapped:
@@ -214,7 +222,9 @@ def extract_announcement(blob: bytes, event_type: str = "auto", *, run=None,
                         cell_box = table.rows[ri].cells[ci]
                         fields[field] = [{**normalize_field(field, raw, label), "quote": raw,
                                           **location(page, raw), "bbox": list(cell_box) if cell_box else None,
-                                          "location_status": "table_cell", "table": ti, "row": ri}]
+                                          "location_status": "table_cell", "table": ti, "row": ri,
+                                          "header": {"text": grid[header_row][ci],
+                                                     "bbox": list(table.rows[header_row].cells[ci]), "page": page.number+1}}]
                     if fields and not any(re.sub(r"\s+", "", row[ci] or "") == "合计" for ci, _ in mapping.values()):
                         occurrences.append({"fields": fields, "channel": "table", "page": page.number+1})
         anchor = {"pledge": "pledgor", "winning_bid": "project_name", "equity_change": "seller"}[event_type]

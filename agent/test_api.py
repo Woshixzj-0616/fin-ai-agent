@@ -295,8 +295,10 @@ class ApiApplicationTests(unittest.TestCase):
         events = self.manager.bus.replay(context.id)
         self.assertEqual(
             [event.event_type for event in events],
-            ["run_created", "run_started", "file_read", "calculation", "run_finished"],
+            ["run_created", "run_started", "file_read", "calculation", "pipeline_completed"],
         )
+        self.assertEqual(context.status.value, "running")
+        context.finish(context._prepared_finish[0], result={"evidence": [1]})
         self.assertEqual(context.status.value, "succeeded")
 
 
@@ -307,8 +309,10 @@ class ApiApplicationTests(unittest.TestCase):
                 context.start()
                 bridge = RuntimeRunBridge(context)
                 bridge.finish(status=legacy_status, event_count=0)
+                self.assertEqual(context.status.value, "running")
+                self.assertEqual(json.loads(bridge.events[-1])["requested_status"], expected)
+                context.finish(context._prepared_finish[0], result={"events": []})
                 self.assertEqual(context.status.value, expected)
-                self.assertEqual(json.loads(bridge.events[-1])["status"], legacy_status)
 
     def test_real_announcement_workflow_retains_results(self):
         # 使用当前默认工作流和真实 PDF，覆盖抽取到 API 终态的桥接。

@@ -169,28 +169,35 @@ def derive_quarter(current: dict, previous_cumulative: dict | None = None) -> di
 
 
 def growth(current: dict, previous: dict | None, kind: str = "yoy") -> dict:
-    if kind not in {"yoy", "qoq"}:
-        return result("not_comparable", reason="增长类型必须为 yoy 或 qoq")
+    if kind not in {"yoy", "qoq", "year_end", "percentage_points"}:
+        return result("not_comparable", reason="比较类型未支持")
     if previous is None:
         return result("missing", reason="缺少唯一可比期间数据")
     compare = comparability(current, previous)
     reasons = list(compare["reasons"])
     try:
-        a0, a1 = (date.fromisoformat(current[k]) for k in ("period_start", "period_end"))
-        b0, b1 = (date.fromisoformat(previous[k]) for k in ("period_start", "period_end"))
+        a0, a1 = map(date.fromisoformat, period_bounds(current, allow_legacy_annual=True))
+        b0, b1 = map(date.fromisoformat, period_bounds(previous, allow_legacy_annual=True))
         if current.get("metric") in STOCK_METRICS:
             if kind == "qoq":
                 reasons.append("时点余额不按单季流量环比计算")
+            elif kind == "year_end":
+                if b1.isoformat() != f"{a1.year-1}-12-31" or a0 != a1 or b0 != b1:
+                    reasons.append("较上年末变化需要本期时点余额与上年12月31日余额")
             elif (a1.year - b1.year, a1.month, a1.day) != (1, b1.month, b1.day):
                 reasons.append("余额同比需为上年相同日期")
-        elif kind == "yoy":
+        elif kind in {"yoy", "percentage_points"}:
             if (a0.year - b0.year, a1.year - b1.year, a0.month, a0.day, a1.month, a1.day) != (
                     1, 1, b0.month, b0.day, b1.month, b1.day):
                 reasons.append("同比要求上年相同期间")
-        else:
+        elif kind == "qoq":
             if (a0.toordinal() != b1.toordinal() + 1 or
                     current.get("duration_months") != 3 or previous.get("duration_months") != 3):
                 reasons.append("环比需要相邻的完整单季，不能比较累计数")
+        else:
+            reasons.append("较上年末变化只用于时点余额")
+        if kind == "percentage_points" and not (current.get("unit") in {"%", "％"} and previous.get("unit") in {"%", "％"}):
+            reasons.append("百分点差需要两侧均为百分比")
     except (KeyError, ValueError, TypeError):
         reasons.append("期间起止未明确")
     if reasons:
@@ -201,7 +208,11 @@ def growth(current: dict, previous: dict | None, kind: str = "yoy") -> dict:
                       comparability=compare,
                       evidence_ids=[current.get("evidence_id"), previous.get("evidence_id")])
     try:
-        out = yoy(amount(current), amount(previous))
+        if kind == "percentage_points":
+            from finance import percentage_points
+            out = percentage_points(amount(current), amount(previous))
+        else:
+            out = yoy(amount(current), amount(previous))
     except ValueError as exc:
         return result("not_comparable", reasons=[str(exc)])
     out.update(growth_kind=kind, evidence_ids=[current["evidence_id"], previous["evidence_id"]],

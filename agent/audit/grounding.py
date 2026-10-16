@@ -132,7 +132,7 @@ def _preceding_reference(preceding: str, facts: list[dict] | None = None,
     """最近的、唯一可定位的上文指代：逐句回看，遇到多义就停，不跨段乱猜。"""
     for segment in reversed(segments(preceding)):
         if year is not None:
-            years = set(re.findall(r"(?<!\d)((?:19|20)\d{2})(?!\d)", segment))
+            years = {m[1] for m in _year_mentions(segment)}
             if not years:
                 continue
             if years != {str(int(year))}:
@@ -236,17 +236,58 @@ def resolve_subject(name, *, sentence: str, context: str = "", draft: str = "",
             "note": "模型给出的公司名既不在句内，也无法在上下文、段落或草稿中定位"}
 
 
+def _year_mentions(content: str):
+    # 日期/年度语义是定位依据，金额 1965.34、编号和证券代码不是。
+    mentions = []
+    for match in re.finditer(r"(?<![\d.])((?:19|20)\d{2})(?!\d)", content or ""):
+        suffix, prefix = content[match.end():], content[:match.start()]
+        if (re.match(r"\s*(?:年|Q[1-4]\b|[-/]\d{1,2}[-/]\d{1,2}(?!\d)|\.\d{1,2}\.\d{1,2}(?!\d))", suffix, re.I)
+                or re.search(r"\bFY\s*$", prefix, re.I)):
+            mentions.append(match)
+    return mentions
+
+
+def _year_comparison(content: str, mentions: list) -> dict | None:
+    if len(mentions) != 2:
+        return None
+    first, second = mentions
+    between = content[first.end():second.start()]
+    if re.search(r"[。！？；\n]", between):
+        return None
+    prefix = content[:first.start()]
+    if re.search(r"(?:与|较|比|相比(?:于)?|相较(?:于)?|相对于|对比)\s*$", prefix) and re.search(r"相比|相较|[，,]", between):
+        current, baseline = second, first
+    elif re.search(r"(?:较|比|相比(?:于)?|相较(?:于)?|相对于|对比)\s*$", between):
+        current, baseline = first, second
+    else:
+        return None
+    pieces = {first.start(): content[first.start():second.start()], second.start(): content[second.start():]}
+    return {"year": int(current[1]), "baseline_year": int(baseline[1]),
+            "comparison_year": int(baseline[1]), "binding_rule": "explicit_comparison_roles",
+            "current_text": pieces[current.start()], "baseline_text": pieces[baseline.start()],
+            "comparison_basis": content[first.start():second.end()]}
+
+
 def resolve_period(year, *, sentence: str = "", context: str = "", quote: str = "",
                    paragraph: str = "", preceding: str = "") -> dict:
     """引文/本句明确年度优先；模型与原文冲突单列，多年度未定位则拒绝继承。"""
     model_year = int(year) if year is not None else None
-    pattern = r"(?<!\d)((?:19|20)\d{2})(?!\d)"
     base = {"year": model_year, "model_year": model_year, "conflict": False,
             "located_in": None, "matched_text": None}
     for label, content in (("quote", quote), ("sentence", sentence)):
-        years = set(re.findall(pattern, content or ""))
+        mentions = _year_mentions(content)
+        years = {m[1] for m in mentions}
+        relation = _year_comparison(content, mentions)
+        if relation:
+            return {**base, **relation, "located_in": label, "matched_text": relation["comparison_basis"],
+                    "conflict": model_year is not None and model_year != relation["year"]}
         if len(years) == 1:
             actual = int(next(iter(years)))
+            sentence_relation = _year_comparison(sentence, _year_mentions(sentence)) if label == "quote" else None
+            if sentence_relation and content in sentence and sentence_relation["baseline_year"] == actual and re.search(
+                    r"(?:较|比|相比(?:于)?|相较(?:于)?|相对于|对比)\s*$", content[:mentions[0].start()]):
+                return {**base, **sentence_relation, "located_in": "sentence", "matched_text": sentence_relation["comparison_basis"],
+                        "conflict": model_year is not None and model_year != sentence_relation["year"]}
             return {**base, "year": actual, "located_in": label, "matched_text": str(actual),
                     "conflict": model_year is not None and model_year != actual}
         if len(years) > 1:
@@ -254,7 +295,7 @@ def resolve_period(year, *, sentence: str = "", context: str = "", quote: str = 
     if model_year is None:
         return base
     for label, content in (("context", context), ("paragraph", paragraph)):
-        years = set(re.findall(pattern, content or ""))
+        years = {m[1] for m in _year_mentions(content)}
         if years == {str(model_year)}:
             return {**base, "located_in": label, "matched_text": str(model_year)}
     reference = _preceding_reference(preceding, year=model_year) if preceding else None

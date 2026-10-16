@@ -83,41 +83,67 @@ def extract_selected(root: Path, run: Run, code=None, year=None, render=False, r
     return materials, facts, failures
 
 
-def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | None = None) -> str:
+def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | None = None, *,
+                    source_links: dict[str, str] | None = None) -> str:
     lines = ["# 财务证据与分析", "", analysis["basis"], "", analysis["limits"], "",
              "金额单位为人民币元；PDF页码从文件第一页开始计数，可能与印刷页码不同。", "",
              "年报披露同比及半年报、季报披露同比均按原文小数位数使用 ROUND_HALF_UP 核对；一致只表示报告内部算术一致。", "",
              "适用范围：当前指标目录与已识别的期间表头；24条固定参考答案尚待团队人工复签，"
              "新公司、新措辞和新版式的泛化能力尚未独立验证。", "",
-             "| 公司 | 报告年度 / 本期期间 | 指标 | 本期 | 同报告上年同期 | 基期状态 | 复算同比（核对精度） | 披露同比 | 核对结果 | PDF页 |",
+             "| 公司 | 报告年度 / 本期期间 | 指标 / 比较类型 | 本期 | 比较基期 | 基期状态 | 复算变化（核对精度） | 披露变化 | 核对结果 | PDF页 |",
              "|---|---:|---|---:|---:|---|---|---|---|---:|"]
     for row in analysis["rows"]:
-        calc = row["yoy"]
-        rate = format(decimal(calc["value"]), ".4f") + "%" if calc["status"] == "ok" else calc["status"]
-        check = row.get("reported_yoy_check")
-        disclosed = row.get("reported_yoy")
-        reported = str(disclosed["value"]) + "%" if disclosed else "未提取到"
+        calc = row.get("change") or row["yoy"]
+        unit = calc.get("unit", "%")
+        rate = format(decimal(calc["value"]), ".4f") + unit if calc["status"] == "ok" else calc["status"]
+        check = row.get("reported_change_check") or row.get("reported_yoy_check")
+        disclosed = row.get("reported_change") or row.get("reported_yoy")
+        disclosure_status = row.get("disclosure_status")
+        missing = {"not_disclosed": "原文未披露", "not_extracted": "未提取到披露值", "unresolved": "披露值无法解析"}.get(disclosure_status, "未提取到")
+        reported = str(disclosed["value"]) + disclosed.get("unit", "%") if disclosed else missing
         outcome = "未核对（缺少披露值）" if calc["status"] == "ok" else f"未核对（{calc['status']}）"
         if check:
-            rate = str(check["calculated_rounded"]) + "%"
-            reported = str(check["reported"]) + "%"
-            outcome = {"match": "一致", "mismatch": "不一致，需复核"}.get(check["status"], "未核对")
+            rate = str(check["calculated_rounded"]) + unit
+            reported = str(check["reported"]) + check.get("unit", "%")
+            outcome = {"match": "一致", "mismatch": "不一致，需复核"}.get(check["status"], "未核对（" + check.get("reason", "比较类型不一致") + "）")
+        elif calc["status"] == "ok" and disclosure_status:
+            outcome = "未核对（" + missing + "）"
         period = f"{row.get('period_start', '未知')} 至 {row.get('period_end', '未知')}"
-        lines.append(f"| {row['company_name']} | {row['report_year']} / {period} | {row['metric_name']} | "
-                     f"{row['current']} | {row['previous']} | {row['previous_adjustment']} | "
+        value_unit = row.get("value_unit") or row.get("unit") or ""
+        current_value = str(row['current']) + value_unit
+        previous_value = str(row['previous']) + value_unit if row.get('previous') is not None else "—"
+        label = row['metric_name'] + " / " + row.get("comparison_label", "同比")
+        lines.append(f"| {row['company_name']} | {row['report_year']} / {period} | {label} | "
+                     f"{current_value} | {previous_value} | {row['previous_adjustment']} / {row.get('previous_period_end') or '—'} | "
                      f"{rate} | {reported} | {outcome} | {row['page']} |")
     lines += ["", "## 辅助分析", ""]
     for signal in analysis["signals"]:
-        lines += [f"- 【{signal.get('epistemic_type', '事实')}】{signal['document_id'].split('_')[0]}：{signal['description']} "
-                  f"{signal.get('value', '')}{signal.get('unit', '')}。{signal['interpretation']}"]
+        period = f"{signal.get('period_start', '未知')} 至 {signal.get('period_end', '未知')}"
+        pages = "、".join(str(p) for p in dict.fromkeys(s.get('page') for s in signal.get('sources', []) if s.get('page')))
+        lines += [f"- 【{signal.get('epistemic_type', '事实')}】{signal.get('company_name') or signal['document_id'].split('_')[0]} · {period} · 材料 {signal['document_id']}：{signal['description']} "
+                  f"{signal.get('value', '')}{signal.get('unit', '')}。{signal['interpretation']} PDF页：{pages or '见证据'}；证据：{', '.join(signal.get('evidence_ids', []))}。"]
     if not analysis["signals"]:
         lines += ["没有产生可确认的辅助分析项。"]
     lines += ["", "## 单季环比", "", "| 公司 | 指标 | 单季期间 | 状态 | 环比 % | 证据 |", "|---|---|---|---|---|---|"]
     for row in analysis.get("qoq_rows", []):
         c = row["qoq"]
-        lines.append(f"| {row['company_code']} | {row['metric']} | {row['period_start']} 至 {row['period_end']} | {c['status']} | {c.get('value', '—')} | {', '.join(row['evidence_ids'])} |")
+        state = c['status'] + ("：" + c['reason'] if c.get('reason') else "：" + "、".join(c['reasons']) if c.get('reasons') else "")
+        lines.append(f"| {row['company_code']} | {row.get('metric_name') or row['metric']} | {row['period_start']} 至 {row['period_end']} | {state} | {c.get('value') or '—'} | {', '.join(row['evidence_ids'])} |")
     if not analysis.get("qoq_rows"):
         lines.append("| — | — | — | 缺少可比较单季数据 | — | — |")
+    if analysis.get("blocked_derivations"):
+        lines += ["", "### 累计拆季受阻记录", "", "以下尝试值未获可比性确认，不作为有效单季数据或核查证据。", ""]
+        for row in analysis["blocked_derivations"]:
+            reasons = "；".join(dict.fromkeys([*([row['reason']] if row.get('reason') else []), *(row.get('reasons') or [])]))
+            for key, label in (("accounting_policy_version", "会计政策版本"), ("consolidation_basis", "合并范围依据"), ("restatement_version", "重述版本")):
+                reasons = reasons.replace(key, label)
+            sources = "；".join(f"{s.get('document_id')} · {s.get('period_start')} 至 {s.get('period_end')} · PDF第{s.get('page')}页 · {s.get('evidence_id')}" for s in row.get('sources', []))
+            operands = row.get("operands") or {}
+            attempted = "未提供可计算的尝试值" if row.get("attempted_value") is None else f"未确认尝试值：{row['attempted_value']}元（不得作为有效单季数据）"
+            state = {"not_comparable": "不可比", "missing": "缺少累计数"}.get(row["status"], row["status"])
+            lines += [f"- {row.get('company_name') or row['company_code']} · {row.get('metric_name') or row['metric']} · {row['period_start']} 至 {row['period_end']}：{state}；{reasons}。",
+                      f"  来源：{sources or ', '.join(row.get('evidence_ids', []))}。",
+                      f"  本期累计：{operands.get('current_ytd', '缺失')}；上季累计：{operands.get('previous_ytd', '缺失')}；{attempted}。"]
     lines += ["", "事实为原始字段及可复算结果；推论是待补证据的分析框架；本系统不生成投资观点。", ""]
     if checks is not None:
         lines += ["", "## 结构化样例核对", "",
@@ -128,8 +154,9 @@ def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | 
                          f"{check.get('suggestion') or check.get('reason', '')} |")
     lines += ["", "## 来源与待复核事项", ""]
     for material in materials:
+        source_link = (source_links or {}).get(material.get("document_id"), "../" + material["local_file"])
         lines += [f"- {material['company_name']} {material['report_year']}年 {material.get('report_kind', '财务报告')}："
-                  f"[原始PDF](../{material['local_file']})；公告ID {material['announcement_id']}；"
+                  f"[原始PDF]({source_link})；公告ID {material['announcement_id']}；"
                   f"SHA-256 {material['sha256']}。",
                   f"  披露日期状态：{material['disclosure_date_status']}；"
                   f"版本策略：{material['version_policy']}；需复核最新有效版本："

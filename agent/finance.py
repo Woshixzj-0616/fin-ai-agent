@@ -298,7 +298,11 @@ def comparable(current: dict, previous: dict) -> list[str]:
     return list(dict.fromkeys(reasons))
 
 
-def evidence_yoy(current: dict, previous: dict | None) -> dict:
+def evidence_yoy(current: dict, previous: dict | None, comparison_kind: str = "yoy") -> dict:
+    kind = comparison_kind
+    if kind != "yoy":
+        from periods import growth
+        return growth(current, previous, kind)
     if current.get("period_kind") != "annual":
         from periods import growth
         return growth(current, previous)
@@ -320,7 +324,16 @@ def evidence_yoy(current: dict, previous: dict | None) -> dict:
     return answer
 
 
-def select_previous(facts: list[dict], current: dict) -> dict | None:
+def select_previous(facts: list[dict], current: dict, comparison_kind: str = "yoy") -> dict | None:
+    if comparison_kind == "year_end":
+        expected = f"{current['period_year']-1}-12-31"
+        candidates = [f for f in facts if f.get("comparison_group") == current.get("comparison_group")
+                      and f.get("company_code") == current.get("company_code") and f.get("metric") == current.get("metric")
+                      and f.get("document_id") == current.get("document_id")
+                      and f.get("period_start") == expected and f.get("period_end") == expected]
+        preferred = [f for f in candidates if f.get("adjustment") == "after"] or [
+            f for f in candidates if f.get("adjustment") == "as_reported"]
+        return preferred[0] if len(preferred) == 1 else None
     candidates = [f for f in facts if f["comparison_group"] == current["comparison_group"]
                   and f["metric"] == current["metric"]
                   and f["period_year"] == current["period_year"] - 1
@@ -333,16 +346,26 @@ def select_previous(facts: list[dict], current: dict) -> dict | None:
     return preferred[0] if len(preferred) == 1 else None
 
 
+def select_year_end(facts: list[dict], current: dict) -> dict | None:
+    """上年末余额独立选择，沿用同材料与调整版本限制。"""
+    return select_previous(facts, current, "year_end")
+
+
 def analyze(facts: list[dict], run) -> dict:
     facts = [{**fact, "issues": evidence_issues(fact)} for fact in facts]
     current = [f for f in facts if f["period_year"] == f["report_year"]]
     rows, groups = [], {}
     for fact in current:
-        previous = select_previous(facts, fact)
-        computation = evidence_yoy(fact, previous)
-        reported = fact.get("reported_yoy")
+        kind = fact.get("comparison_kind") or (
+            "percentage_points" if fact.get("metric") in {"weighted_roe", "deducted_weighted_roe"} else "yoy")
+        previous = select_previous(facts, fact, kind)
+        computation = evidence_yoy(fact, previous, kind)
+        yoy_previous = select_previous(facts, fact)
+        relative_yoy = evidence_yoy(fact, yoy_previous)
+        reported = fact.get("reported_change") or fact.get("reported_yoy")
         disclosure_check = None
-        if computation["status"] == "ok" and reported:
+        valid_reported = reported and decimal(reported.get("value")) is not None
+        if computation["status"] == "ok" and valid_reported:
             places = max(0, -decimal(reported["value"]).as_tuple().exponent)
             step = Decimal(1).scaleb(-places)
             with localcontext() as context:
@@ -355,8 +378,11 @@ def analyze(facts: list[dict], run) -> dict:
                 "calculated_rounded": text(rounded), "reported": reported["value"],
                 "decimals": places, "rounding": "ROUND_HALF_UP",
                 "tolerance_ulp": text(step),
-                "source_page": fact["page"], "source_bbox": reported["bbox"],
+                "source_page": reported.get("page", fact["page"]), "source_bbox": reported.get("bbox"),
+                "unit": reported.get("unit", "%"), "comparison_kind": reported.get("comparison_kind", "yoy"),
             }
+            if reported.get("comparison_kind", "yoy") != kind or reported.get("unit", "%") != computation.get("unit", "%"):
+                disclosure_check.update(status="not_comparable", reason="披露值与复算值的比较类型或单位不一致")
         row = {
             "company_code": fact["company_code"], "company_name": fact["company_name"],
             "report_year": fact["report_year"], "metric": fact["metric"],
@@ -364,7 +390,17 @@ def analyze(facts: list[dict], run) -> dict:
             "previous": previous["normalized_value"] if previous else None,
             "previous_adjustment": previous["adjustment"] if previous else None,
             "scope": fact["scope"], "currency": fact["currency"], "unit": fact.get("unit"),
-            "yoy": computation, "reported_yoy": reported, "reported_yoy_check": disclosure_check,
+            "value_unit": fact.get("normalized_unit") or fact.get("unit"),
+            "normalized_unit": fact.get("normalized_unit") or fact.get("unit"),
+            "comparison_kind": kind,
+            "comparison_label": {"yoy": "同比", "year_end": "较上年末变化", "percentage_points": "同比百分点变化"}.get(kind, kind),
+            "disclosure_status": fact.get("disclosure_status") or ("extracted" if reported else "not_extracted"),
+            "change": computation, "reported_change": reported, "reported_change_check": disclosure_check,
+            "yoy": relative_yoy,
+            "reported_yoy": reported if kind != "year_end" else None,
+            "reported_yoy_check": disclosure_check if kind != "year_end" else None,
+            "previous_period_start": previous.get("period_start") if previous else None,
+            "previous_period_end": previous.get("period_end") if previous else None,
             "evidence_id": fact["evidence_id"],
             "previous_evidence_id": previous["evidence_id"] if previous else None,
             "source_file": fact["source_file"], "page": fact["page"],
@@ -375,7 +411,7 @@ def analyze(facts: list[dict], run) -> dict:
         }
         rows.append(row)
         groups.setdefault((fact["document_id"], fact.get("period_start"), fact.get("period_end")), {}).setdefault(fact["metric"], []).append((fact, row))
-        run.event("calculation", operation="period_yoy", **row)
+        run.event("calculation", operation="period_change", **row)
     signals = []
     for (document_id, _, _), options in groups.items():
         metrics = {key: values[0] for key, values in options.items() if len(values) == 1}
@@ -405,13 +441,10 @@ def analyze(facts: list[dict], run) -> dict:
                     })
     for signal in signals:
         signal["epistemic_type"] = "事实"
-        run.event("calculation", operation="auxiliary_signal", **signal)
     from financial_signals import extended_signals
     additions = extended_signals(facts, rows)
-    for signal in additions:
-        run.event("calculation", operation="financial_signal", **signal)
     signals.extend(additions)
-    from periods import derive_quarter, growth, NON_ADDITIVE
+    from periods import derive_quarter, growth, NON_ADDITIVE, period_bounds
     quarter_facts, blocked_derivations = [], []
     for fact in current:
         if fact.get("metric") in NON_ADDITIVE:
@@ -428,11 +461,17 @@ def analyze(facts: list[dict], run) -> dict:
                 quarter_facts.append({**fact, **{k: derived[k] for k in ("period_start", "period_end")},
                                       "duration_months": 3, "period_kind": "quarter", "value": derived["value"],
                                       "unit": "元", "normalized_value": derived["value"], "derivation": derived})
-            elif derived.get("status") == "not_comparable" and derived.get("attempted_value") is not None:
+            else:
+                bounds = period_bounds(fact)
+                quarter_start = fact.get("period_start")
+                if bounds and bounds[1][5:7] in {"03", "06", "09", "12"}:
+                    quarter_start = f"{bounds[1][:4]}-{int(bounds[1][5:7])-2:02d}-01"
                 # 被阻断的跨报告派生照样留档：操作数、来源和被阻断的尝试都不丢。
                 blocked_derivations.append({
-                    "company_code": fact.get("company_code"), "metric": fact.get("metric"),
-                    "period_start": derived.get("period_start") or fact.get("period_start"),
+                    "company_code": fact.get("company_code"), "company_name": fact.get("company_name"),
+                    "metric": fact.get("metric"), "metric_name": fact.get("metric_name"),
+                    "report_year": fact.get("report_year"), "document_id": fact.get("document_id"),
+                    "period_start": derived.get("period_start") or quarter_start,
                     "period_end": derived.get("period_end") or fact.get("period_end"),
                     "current_evidence_id": fact.get("evidence_id"),
                     "previous_evidence_id": (candidates[0].get("evidence_id") if len(candidates) == 1 else None),
@@ -441,6 +480,8 @@ def analyze(facts: list[dict], run) -> dict:
                     "attempted_value": derived.get("attempted_value"),
                     "comparability": derived.get("comparability"),
                     "evidence_ids": derived.get("evidence_ids", []),
+                    "sources": [{k: source.get(k) for k in ("evidence_id", "document_id", "source_file", "page", "period_start", "period_end")}
+                                for source in [fact, *([candidates[0]] if len(candidates) == 1 else [])]],
                     "epistemic_type": "事实",
                 })
             run.event("calculation", operation="derive_quarter", evidence_ids=derived.get("evidence_ids", []), calculation=derived)
@@ -464,13 +505,32 @@ def analyze(facts: list[dict], run) -> dict:
         candidates.sort(key=lambda p: p["period_end"], reverse=True)
         nearest = [p for p in candidates if p["period_end"] == candidates[0]["period_end"]] if candidates else []
         computation = growth(f, nearest[0] if len(nearest) == 1 else None, "qoq")
-        source_ids = list(dict.fromkeys(f.get("derivation", {}).get("evidence_ids", [f["evidence_id"]]) +
-                         (nearest[0].get("derivation", {}).get("evidence_ids", [nearest[0]["evidence_id"]]) if len(nearest) == 1 else [])))
+        if not nearest:
+            from datetime import date, timedelta
+            from periods import end_date
+            last = date.fromisoformat(f["period_start"]) - timedelta(days=1)
+            first = f"{last.year}-{last.month-2:02d}-01"
+            computation["reason"] = f"缺少{first}至{end_date(last.year, last.month)}的上一完整单季数据"
+        current_ids = f.get("derivation", {}).get("evidence_ids", [f["evidence_id"]])
+        previous_ids = nearest[0].get("derivation", {}).get("evidence_ids", [nearest[0]["evidence_id"]]) if len(nearest) == 1 else []
+        source_ids = list(dict.fromkeys(current_ids + previous_ids))
         computation["evidence_ids"] = source_ids
-        qoq_rows.append({"company_code": f["company_code"], "metric": f["metric"],
+        qoq_rows.append({"company_code": f["company_code"], "company_name": f.get("company_name"),
+                         "metric": f["metric"], "metric_name": f.get("metric_name"), "document_id": f.get("document_id"),
                          "period_start": f["period_start"], "period_end": f["period_end"], "qoq": computation,
                          "derivation": f.get("derivation"), "evidence_ids": source_ids, "epistemic_type": "事实"})
         run.event("calculation", operation="quarter_qoq", **qoq_rows[-1])
+    by_evidence = {f["evidence_id"]: f for f in facts}
+    for signal in signals:
+        linked = [by_evidence[e] for e in signal.get("evidence_ids", []) if e in by_evidence]
+        source = next((f for f in linked if f.get("document_id") == signal.get("document_id")), linked[0] if linked else None)
+        if source:
+            signal.update({key: source.get(key) for key in ("company_code", "company_name", "report_year", "period_kind", "period_start", "period_end")})
+            signal["sources"] = [{key: by_evidence[e].get(key) for key in
+                                   ("evidence_id", "document_id", "source_file", "page", "period_start", "period_end")}
+                                  for e in signal.get("evidence_ids", []) if e in by_evidence]
+            signal["source_pages"] = signal["sources"]
+        run.event("calculation", operation="financial_signal", **signal)
     return {"rows": rows, "signals": signals,
             "qoq_rows": qoq_rows,
             "blocked_derivations": blocked_derivations,

@@ -213,7 +213,7 @@ def _json_api_error(handler: BaseHTTPRequestHandler, error: ApiError) -> None:
     _json(handler, error.status, error.to_dict())
 
 
-def _parse_multipart(handler: BaseHTTPRequestHandler) -> tuple[dict, bytes]:
+def _parse_multipart(handler: BaseHTTPRequestHandler, *, max_bytes: int | None = None) -> tuple[dict, bytes]:
     """只支持浏览器标准 multipart/form-data，够薄页面用。"""
     ctype = handler.headers.get("Content-Type", "")
     match = re.search(r'boundary="?([^";]+)"?', ctype)
@@ -221,9 +221,12 @@ def _parse_multipart(handler: BaseHTTPRequestHandler) -> tuple[dict, bytes]:
         raise ValueError("缺少 multipart boundary")
     boundary = b"--" + match.group(1).encode()
     length = int(handler.headers.get("Content-Length") or 0)
-    if length <= 0 or length > MAX_UPLOAD:
-        raise ValueError("请求体为空或超过 40MiB")
+    limit = MAX_UPLOAD if max_bytes is None else max_bytes
+    if length <= 0 or length > limit:
+        raise ValueError(f"请求体为空或超过 {limit // (1024 * 1024)}MiB")
     body = handler.rfile.read(length)
+    if len(body) != length:
+        raise ValueError("上传请求体不完整，请重新提交")
     fields: dict = {}
     pdf = b""
     for part in body.split(boundary):
@@ -367,7 +370,15 @@ class Handler(BaseHTTPRequestHandler):
             subscription.close()
 
     def _create_run_json(self) -> None:
-        fields, pdf = _parse_multipart(self)
+        try:
+            from api.routes import MAX_RUN_UPLOAD_BYTES
+        except ModuleNotFoundError:
+            from agent.api.routes import MAX_RUN_UPLOAD_BYTES
+        # PDF 合计 80MiB，另为草稿与 multipart 头保留 1MiB；单文件限制仍在统一校验入口。
+        try:
+            fields, pdf = _parse_multipart(self, max_bytes=MAX_RUN_UPLOAD_BYTES + 1024 * 1024)
+        except ValueError as exc:
+            raise InvalidUpload(str(exc)) from exc
         if not pdf:
             raise InvalidUpload("缺少 PDF")
         command = (fields.get("command") or "financial").strip()
@@ -377,6 +388,11 @@ class Handler(BaseHTTPRequestHandler):
             name = (fields.get("name") or "").strip()
             year_raw = (fields.get("year") or "").strip()
             auto = guess_identity(pdf)
+            if auto.get("material_type") == "announcement":
+                names = {"pledge": "股份质押", "winning_bid": "中标", "equity_change": "股权变动"}
+                _json(self, 400, {"error": "该PDF为公告，请切换到“公告字段 · " + names.get(auto.get("suggested_task"), "对应类型") + "”，无需填写财报年度",
+                                 "reason_code": "wrong_material_type", "suggested_task": auto.get("suggested_task")})
+                return
             code = code or str(auto.get("code") or "")
             name = name or str(auto.get("name") or "")
             year_raw = year_raw or str(auto.get("year") or "")
@@ -419,6 +435,17 @@ class Handler(BaseHTTPRequestHandler):
         match = re.fullmatch(r"/api/runs/([^/]+)/images/([^/]+)", path)
         if match:
             self._serve_run_image(match.group(1), unquote(match.group(2)))
+            return
+        match = re.fullmatch(r"/api/runs/([^/]+)/exports/([^/]+)", path)
+        if match:
+            try:
+                filename, mime, blob = self._api().export_run(
+                    self._new_api_session(), match.group(1), match.group(2))
+            except ApiError as exc:
+                _json_api_error(self, exc)
+                return
+            _send_bytes(self, 200, mime, blob,
+                        extra_headers=(("Content-Disposition", f'attachment; filename="{filename}"'),))
             return
         match = re.fullmatch(r"/api/runs/([^/]+)", path)
         if match:

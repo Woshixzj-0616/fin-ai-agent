@@ -693,6 +693,34 @@
   border-bottom: 1px solid var(--border);
 }
 
+.check-card {
+  margin: 12px 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-wrap: anywhere;
+}
+
+.check-card blockquote {
+  margin: 12px 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+  color: var(--text-muted);
+}
+
+.check-card pre {
+  overflow: auto;
+  max-height: 320px;
+  white-space: pre-wrap;
+}
+
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
 .result-section:last-child {
   border-bottom: 0;
 }

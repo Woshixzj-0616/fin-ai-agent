@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-14",
+  "source_commit": "14bc563",
+  "target_project": "D:\\Desktop\\fin-ai-agent",
+  "base_commit": "d1ed3d3",
+  "source_change_files": 38,
+  "fin_repairs_preserved": true,
+  "python_tests": {
+    "total": 468,
+    "passed": 466,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 2,
+    "skip_reasons": [
+      "Chinese OCR language data unavailable",
+      "Windows symlink privilege unavailable"
+    ]
+  },
+  "frontend_scenarios": 10,
+  "python_compile_files": 102,
+  "javascript_syntax_files": 10,
+  "environment": {
+    "python": "3.13.7",
+    "PyMuPDF": "1.28.2",
+    "httpx": "0.28.1",
+    "node": "v24.16.0"
+  },
+  "sensitive_scan": "passed",
+  "documentation_check": "passed",
+  "structure": {
+    "schema_version": 1,
+    "generated_at": "2026-10-14",
+    "violations": [],
+    "warnings": [
+      {
+        "path": "agent/test.py",
+        "lines": 1286,
+        "bytes": 70628,
+        "warning": "超过 1200 行或 80KiB；只审查不直接失败"
+      }
+    ],
+    "webui": {
+      "path": "agent/webui.py",
+      "lines": 108,
+      "limit": 300,
+      "ok": true
+    }
+  },
+  "release_smoke": {
+    "schema_version": 1,
+    "generated_at": "2026-10-14T21:38:38+08:00",
+    "command": [
+      "D:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "D:\\Desktop\\金融000\\tmp\\fin_w_merge_can1n5zn\\project\\agent\\webui_app.py",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "56493"
+    ],
+    "checks": {
+      "app": {
+        "path": "/app/",
+        "status": 200,
+        "ok": true,
+        "content_type": "text/html; charset=utf-8"
+      },
+      "legacy_page": {
+        "path": "/",
+        "status": 200,
+        "ok": true,
+        "content_type": "text/html; charset=utf-8"
+      },
+      "runs_api": {
+        "path": "/api/runs",
+        "status": 200,
+        "ok": true,
+        "content_type": "application/json; charset=utf-8"
+      },
+      "legacy_search_api": {
+        "path": "/api/search",
+        "status": 200,
+        "ok": true,
+        "content_type": "application/json; charset=utf-8"
+      }
+    },
+    "server_stdout": "",
+    "server_stderr": "",
+    "ok": true
+  },
+  "reverse_checks": {
+    "schema_version": 1,
+    "checks": [
+      {
+        "id": "R1",
+        "name": "敏感扫描器正样本必须红",
+        "injection": "临时文本放入运行时拼出的 OpenAI 风格密钥",
+        "expected": "正常样本 0，正样本非 0，且不回显密钥",
+        "observed": "normal=0, injected=1, secret_echo=False, rule_echo=True",
+        "pass": true
+      },
+      {
+        "id": "R2",
+        "name": "脱敏门移除必须红",
+        "injection": "将 events/run_manager 的 redact_value 临时替换为恒等函数",
+        "expected": "正常落盘无密钥；移除后 event JSONL 或 run.json 出现密钥",
+        "observed": "normal_hit=False, injected_hit=True",
+        "pass": true
+      },
+      {
+        "id": "R3",
+        "name": "安全头移除必须红",
+        "injection": "临时禁用 webui_http._send_security_headers",
+        "expected": "/app/ 正常有 CSP；禁用后 CSP 缺失",
+        "observed": "normal_csp=True, injected_csp=False, statuses=200/200",
+        "pass": true
+      },
+      {
+        "id": "R4",
+        "name": "上传总量门移除必须红",
+        "injection": "临时把对比材料上限改为 5、总量上限改为 81，并保留验证桩",
+        "expected": "正常 5 份被拒；移除数量/总量门后不再被拒",
+        "observed": "normal_code=INVALID_UPLOAD, injected_rejected=False, injected_error=accepted",
+        "pass": true
+      },
+      {
+        "id": "R5",
+        "name": "代理欺骗必须红",
+        "injection": "未配置代理时临时直接采用 X-Forwarded-For 作为客户端 IP",
+        "expected": "正常第 11 次 429；注入后伪造不同 XFF 可绕过 429",
+        "observed": "normal_has_429=True, injected_has_429=False",
+        "pass": true
+      },
+      {
+        "id": "R6",
+        "name": "旧 API 删除必须红",
+        "injection": "临时从 Handler.do_POST 拦截并移除 /api/search",
+        "expected": "正常 200；移除后 404",
+        "observed": "normal=200, injected=404",
+        "pass": true
+      },
+      {
+        "id": "R7",
+        "name": "旧页面迁移丢内容必须红",
+        "injection": "临时把旧 PAGE 中的 /api/ask 替换为 /api/removed",
+        "expected": "正常响应含 /api/ask；注入响应缺失",
+        "observed": "normal_has_ask=True, injected_has_ask=False",
+        "pass": true
+      },
+      {
+        "id": "R8",
+        "name": "webui.py 重新塞回实现必须红",
+        "injection": "临时构造 301 行的 agent/webui.py 并运行结构审查",
+        "expected": "真实仓库 0 违规；注入文件触发 300 行门",
+        "observed": "real_violations=0, injected_over_limit=True",
+        "pass": true
+      },
+      {
+        "id": "R9",
+        "name": "归档漏 Web 资产必须红",
+        "injection": "临时把 Run.sources 扫描根指向没有 web/legacy/index.html 的假仓库",
+        "expected": "真实归档含旧页面；注入归档缺失",
+        "observed": "normal_has_asset=True, injected_has_asset=False",
+        "pass": true
+      },
+      {
+        "id": "R10",
+        "name": "兼容清单隐藏调用方必须红",
+        "injection": "把 /api/analyze 从 keep 改成 retired，但保留已有调用方",
+        "expected": "正常清单不违反退役门；注入行违反 `retired => callers=[]`",
+        "observed": "normal_violation=False, injected_violation=True, callers=['web/legacy/index.html', 'agent/test_competition.py']",
+        "pass": true
+      },
+      {
+        "id": "R11",
+        "name": "文档坏链必须红",
+        "injection": "临时 Markdown 写入不存在的本地链接 missing.md",
+        "expected": "正常文档 0；坏链文档非 0 且报本地链接不存在",
+        "observed": "normal=0, injected=1, missing_link_error=True",
+        "pass": true
+      }
+    ],
+    "ok": true
+  },
+  "real_model_requests": 0,
+  "original_result_files": 104,
+  "original_results_sha256": {
+    "results/000000_2026_426209dc_p2.png": "780edaed6f89731bd4e428a1bfb2eeab7d041165865496c4ee9b8b8c0c555ea7",
+    "results/000000_2026_b973fc98_p1.png": "09ee35fe8291ac6aa056afaa28e987bd82a1d301211cdb3d0d7cff116224e603",
+    "results/000858_2023_1aab0efb_p57.png": "a965667173ff5291c4608d1e642b7dece3911643d038d8253879bafe4ed722b6",
+    "results/000858_2023_1aab0efb_p7.png": "421f6c929fcdeece067bb5e8ea7decb271f25417e9bb0062e37bc463ff1f17df",
+    "results/000858_2024_b737191a_p60.png": "43496c59a0ed3527c8eb2753e1d3e6692817fa203dc22ad1eb3af667cc7e05d7",
+    "results/000858_2024_b737191a_p7.png": "1259db559fe6bad0040345742256f20f1e6bbd1a2ff5471f781a96d5b8ca44fc",
+    "results/000858_2025_09133e1f_p56.png": "a198d3bcaacef2e9737c88c9396c408354b32bbe234baeaaefd5186a19acdc58",
+    "results/000858_2025_09133e1f_p7.png": "694ee52c6e4908c3562b6357e6a66e61599dc10cc83caee784467accf4734a87",
+    "results/600519_2023_2125ff97_p5.png": "7103af67d3f7b3af0cf55f33da6cc370d6597cd2992ec716758391f3410cff3f",
+    "results/600519_2023_2125ff97_p63.png": "01810225e5e2b48883f5a29fe989b09293657075847e6d61050f9ba286fee075",
+    "results/600519_2024_5299f494_p5.png": "5ff3e0c589cb31f3eaa3f1da3dcd8fde892fc60163408b2f8cccf82c60a9803d",
+    "results/600519_2024_5299f494_p63.png": "7dcb749ce79080cf56f83528e7eda2bd674b143b98f8192b9a199d6e7b2906fd",
+    "results/600519_2025_474905de_p6.png": "0ba7fa8d2665f861659718787526194ecda3ceb4fec28d119b2a03e728b983e0",
+    "results/600519_2025_474905de_p61.png": "9a6a2a0e659e8ba363937c0274394b1a1b9bbf7ca7963467bbae00fffb0eb9a6",
+    "results/600519_2025_c80fb718_p5.png": "5ef5720c6f7eeeed36eaa1fe764b0e226091195052dd60d0566480ad7c26b60a",
+    "results/600519_2025_f3197b2a_p1.png": "b4b3d52a69090a9a10ec7d74ccd3d4d2b9adcd9cbb41643d5748e3aa4d9d0545",
+    "results/600519_2025_f3197b2a_p2.png": "ab37798625755ff82ca6b69b236c5208245400eb0b8c2abb4e7c696cfbfd9239",
+    "results/600887_2023_d56b0be9_p7.png": "64fc0b26628f08faab31ff7b2d32691212fd93e4b95d62622e8718bae161aea4",
+    "results/600887_2023_d56b0be9_p88.png": "494dee4611635929c59b25be506aa7d75e1925dcb3b48080536061b9fd637af6",
+    "results/600887_2024_a82a81e5_p7.png": "61986769ef8781b437c48b921919e1fc03bc5e40ae39bbf37fe7a1e418e33edb",
+    "results/600887_2024_a82a81e5_p91.png": "12804b0298910e5770dc7669f4c6f532bb7c4c3c5c78a30b54d5bde85f4db649",
+    "results/600887_2025_d17b8c54_p7.png": "b4e118c1e5e9c6be1ea1fb89e3d9ed4fcfe5d63dbe934c7622b149dccbfefe57",
+    "results/600887_2025_d17b8c54_p86.png": "361c383e122fdcc7a1e86443fea3b1bb32cad605597b9868b3164275c9b5a0b9",
+    "results/analysis.json": "155982a3466f9c281477e3e292907766debb5cb649dde12235a179c27dc9f44e",
+    "results/analysis_events.jsonl": "bd9c19e760aa865cb1e027023f322691b08c00ba3ec25666fd3f83078e1c7e47",
+    "results/analysis_run.json": "bf43519bfd89cf500c644cb687656ee5892ce0aafeaa22e6a263e074a74bdf0c",
+    "results/announcement_events.json": "dd3f976bdeae7e26d4e3a24f4b375f6122f3cbc2046f3ba3d891eef1b0ce11dd",
+    "results/audit_checks.json": "c19ec3ec2484a696d7a324b5aee51c6794fb8162017e2c2e06bd57d502d60635",
+    "results/audit_events.jsonl": "54a1ad2620d20685e2af08cc0a9ad57cb6ca51f5b836237a3c3d72114e1ac873",
+    "results/audit_report.md": "2671595b18e4f99cafe1f0d8b73cade6a19f4d700b4a8f9cba7a5e03c8fee41a",
+    "results/audit_run.json": "722dac55c10f7975c4c6c1cee6e0175215b823dd22b407b596807590ebeed45f",
+    "results/backend_acceptance_repair_20261012.json": "9c29bc55d2750fa918cceea7a56dbb5eef079d7211e1a0b0639df820ca655a04",
+    "results/backend_fullchain_live_20261012.json": "7ac52edbd26099a145c0c13b6dfadd56463399c854dabe97c914d0b7965c3fa4",
+    "results/backend_gap_review_20261012.json": "a5e6c9222eb24667adbde56c93a01ce490a01649919d2be634a20e25a85f4791",
+    "results/backend_upgrade_acceptance_20261012.json": "52360ab143dec924f594c4c8ef5f2f0a7678dc42ca7d9c8f9c825ae2938afac0",
+    "results/backend_upgrade_fix_20261012.json": "09d25bc4c12751cd86981104d35f3d16a1c6c2d5c02803685b3fb6861f0ca110",
+    "results/backend_upgrade_report.md": "e99731d353fffdcfe14fc63fb1532203d07ce0dd46a7dbabff0a61bb4de51aa2",
+    "results/backend_upgrade_validation.json": "07595764366d1c39c438f7d875efd9978d0d12e93be9c43a06acd5e403398aab",
+    "results/checked_draft.txt": "40d78e610d945270b5e0efd004e705f8dfa20cfc8af0ff5d90b6ae5f830f7a5e",
+    "results/competition_test_results.txt": "e0aec577765f451d0ab503690ac939f8880fd5c384e74656af24e7a2122c2104",
+    "results/competition_validation.json": "a4a3d36779eb0eac97290c2ae76da08bc337c5f28c2703e5399ec85ba16923a9",
+    "results/demo_report.md": "3f0450b4b386bf484e569ee38f4a62abcdf986fd12a87137e9f7d850ab90ce23",
+    "results/docs_header_btn.png": "c85955c5b7389d8058e5512c66dcf79d84f247655f962ec5fc5a59682f1c0ba9",
+    "results/docs_qa_smoke.png": "d0cbaf053d393c13388237b2ab8517b3fd44b204ed9a1e370d53402dc1f849e7",
+    "results/events.jsonl": "d7e8772992ca44c640433d097f8e9f90488358c7e38d3d164dd7ad3129e7a488",
+    "results/evidence.csv": "728e5632a58e17f2f64ea51212acafbd52e57f729b912a326bad0257e4bc6d47",
+    "results/evidence.json": "b9ca9c5f071be13bc08a1a3074dcc32ab8da1082762974ce400d234df64c37a9",
+    "results/failures.json": "e6c07ab878ca0d249c6c5d19728fc9f22aa8817edefe3c3fc974e7066544cbe4",
+    "results/full_extract_report.json": "86b106a924711062a2cdee634e39e8270edee5046195c5645f6f0444ae6c3751",
+    "results/history.zip": "e1bb767877729ac62241dc5645d4d9e60f62446259f2a720f5fb132ba3ce66aa",
+    "results/live_drill.json": "d8ee58200d817abb2d37c710abf374e3fc239c8979b9f690367ec6560a2c329b",
+    "results/live_drill.md": "7b6b81803b409b483b1059d780fc882194659260ecf8de185e9795571192761b",
+    "results/live_report.md": "0bfe06f5aae535320ca0b74fa3b5bafe12f33bbd42b006159541c741b98ab8a8",
+    "results/llm_smoke_draft.txt": "b00cc2e4e12c2aacd58838f7a5d37e845ade9ec9fde4bea36de2916b4affa532",
+    "results/question_eval.json": "a45f813ba4bd8afa6956106032ba40ac318b193fec26d4d7ef80516698daacdd",
+    "results/question_eval.md": "b7acd9b1afb35490f7e1a578b896645ab0e51c18e2c215d7bc46970daf2b3787",
+    "results/question_eval_draft.txt": "62d8ac3a541024848d6ffc79b11a7264a62d44d71ba43c7a689a6a67ffb6d3c8",
+    "results/report.md": "1898cc3174c71f440f106fedd5f64d432f0d630bede72c44332ac60ee325628a",
+    "results/run.json": "5b8ea94ae95db5d7be6322f7aceb8a96b98872ca307ee792e4aae47052ce1bea",
+    "results/sample_checks.json": "4519a0b190bf5bdeb2fa34fd7926a7d1820e3a6d6acaf91348ee1d3c4000eeaf",
+    "results/summary.json": "b12d97e3cd7499c92a36e159db6dd698ea2c985f6e57a52606508599692441c4",
+    "results/test_results.txt": "5cec0445b6c02338fccb11c149515d64efa8ed06e90d1338dc0a4f5b3a732787",
+    "results/test_summary.json": "0458cee789555907ad18d9cafcef54375bff212866fd0e70ce2dbfd50edf7640",
+    "results/text_checkpoint_47303c59c8b52940097c2dfb.json": "127f4c2ef0c61d7fc787a81fa7ebb05b112bd2b07ab5d938533093b594a93773",
+    "results/text_checkpoint_92dc2b3359de7ab903e77431.json": "43e0a7ba85ac1840e87fc67ab5bae631b0ccd47ca02ddcfd968d871c2183b4d4",
+    "results/text_checks.json": "946d618fba0768b36438c21e595af3198fef2134204aff8e5e04643b4b8197ec",
+    "results/text_report.md": "48fdf7462b730a9ae8e90690a6eecc62e768d11572f9451de7cbc7997bab25bc",
+    "results/tool_demo.json": "4f127f598f164f70f3ce1c8a366dec87d1b5f01ee07dbdd377806865d2c2c4cf",
+    "results/tool_demo.md": "8df41c3791bfd04460714d0dc49c3bb1a1f6ac8299e6a5242eb9e76e4e492357",
+    "results/trace.json": "0895b6110ddc3f4e6aae15d0af41d663a78bd22f7c1c470321c2dd1c2003c490",
+    "results/webui_announcement.pdf": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+    "results/webui_announcement_events.json": "6d014d45d57c500d45a1535750d4ee2b4f59bfae41bf3d55c91731942335184f",
+    "results/webui_announcement_evidence.json": "c01c5037fdf31b8117600da68fce8b68c601075d09c07ac0800b03b15524e5a1",
+    "results/webui_announcement_report.md": "6ebcafebe643c684e5b0d592b22052a40333bda9f016bc3e2c4348ac89f1b7a1",
+    "results/webui_draft.txt": "d24d9e07cee2bae15a46192dd1ff3ba80fb853e93ee19f4f94dd8bfa1671ce6f",
+    "results/webui_evidence.json": "f142cd023b5858f34599762afabc3adfbbdb5e9675cf27cadb1cb1b74b1cf7b3",
+    "results/webui_failures.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+    "results/eval/e5c_comparison.md": "198a71b9a3600330bf6d7a4915299c5d0774074552c4185145f97f126fbb671c",
+    "results/eval/e5c_report.md": "3567a05ed80e69e05191bebd9be4537b339d683a911a99c2a5e7178fed72c82a",
+    "results/eval/e5c_report_single.md": "48d9541a8e715d4ee45aa93e988e64062debbc6e6708726fb69882c17610deee",
+    "results/eval/e5c_report_single_fallback.md": "abc79a1d70dbf1b4888f995e8ebc0bfd525652e39155aa9bbd51154ecb170874",
+    "results/eval/eval_claims_used.json": "b82872f8587185b563d53090fe741885b23fbc66062ad1039c837562b7a2e4a2",
+    "results/eval/eval_report.md": "5c2ebf58a3c5a770249cc4c8532ada273856abdfec3f8e4ec1475e0fe2938413",
+    "results/eval/eval_results.json": "3b8e4eae421d4aa8b1a50358677f21275da7952c50b9ac8144741f0f63eb58e8",
+    "results/eval/report_eval.json": "753b6f0caba4c98331a388581590b14485a163de055dcd560052bf9eeb6a7641",
+    "results/eval/report_eval_report.md": "e2cf0e1b2afc0d63f2092511ef759bcdf8431bded262764c72bb72fe87ab0588",
+    "results/eval/semantic_eval.json": "46a31c152f628b265b32b84fa67186b619c6b13f935d8ed9e40bc8efa200cfd7",
+    "results/eval/semantic_eval_report.md": "011ef4d4d7df09bf93a9fdea42d766bc2130258c162e305285ef9c28666a7e69",
+    "results/webui_work/data/agent/600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+    "results/webui_work/data/agent/600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf": "c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+    "results/webui_work/data/agent/600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf": "f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+    "results/webui_work/data/agent/manifest.csv": "483c48a88cd37ae7bfc20862fb7aaa213bf1b38e18d5f239810de506a12f2011",
+    "results/webui_work/data/agent/materials.jsonl": "7f757845b47cd1a09008a22d3ddad2f627edcaef29e775e87c2562effd181f40",
+    "results/runs/20261014_205055_9439e42f/600519_2024_5299f494_p5.png": "5ff3e0c589cb31f3eaa3f1da3dcd8fde892fc60163408b2f8cccf82c60a9803d",
+    "results/runs/20261014_205055_9439e42f/600519_2024_5299f494_p63.png": "7dcb749ce79080cf56f83528e7eda2bd674b143b98f8192b9a199d6e7b2906fd",
+    "results/runs/20261014_205055_9439e42f/events.jsonl": "e56e84b7bc9e8f74806fd35a5c59f3cacbbcf24036742259cc8c14da1683b1da",
+    "results/runs/20261014_205055_9439e42f/result.json": "aacb5dbb990d5753c567056c632402a3d76e459562ecb6921548c8a83bf22e92",
+    "results/runs/20261014_205055_9439e42f/run.json": "51131e9550dabd2adeaa75e0dba25dd57974edb58c886708d5866b5aff773d26",
+    "results/runs/20261014_205055_9439e42f/webui_document_texts.json": "86bc84ac8b615a05471fd0205c8f8f5d9d68cfa95b5824da0d0f7f9ae642f868",
+    "results/runs/20261014_205055_9439e42f/webui_evidence.json": "f664c0e5f805c2d81235b13becc10c0d24baede37fe220b210683882cca1774d",
+    "results/runs/20261014_205055_9439e42f/webui_failures.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+    "results/runs/20261014_205055_9439e42f/work/data/agent/600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+    "results/runs/20261014_205055_9439e42f/work/data/agent/manifest.csv": "59a66474ae43b475605b43af921c417819837f12c4987bd88fed00895198ff60",
+    "results/runs/20261014_205055_9439e42f/work/data/agent/materials.jsonl": "cf08dab174de46bcb9cdce21c2b68f3d8c57625a0e6784327d7b17d3f1747528"
+  },
+  "limitations": [
+    "Offline regression and protocol fixtures are not a business blind evaluation.",
+    "Printed PDF pagination and page count require manual browser verification."
+  ]
+}

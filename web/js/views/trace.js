@@ -1,3 +1,5 @@
+import { makeEvidenceButton } from "./results.js";
+
 const PHASE_LABELS = {
   run: "运行",
   identity: "身份",
@@ -60,6 +62,7 @@ function text(value, limit = 180) {
 }
 
 function formatDuration(value) {
+  if (value === null || value === undefined) return "";
   const number = Number(value);
   if (!Number.isFinite(number) || number < 0) return "";
   if (number < 1000) return `${Math.round(number)} ms`;
@@ -69,7 +72,6 @@ function formatDuration(value) {
 function formatPlan(plan) {
   if (!Array.isArray(plan)) return "";
   return plan
-    .slice(0, 12)
     .map((item, index) => {
       if (!item || typeof item !== "object") return "";
       const fields = PLAN_FIELDS
@@ -104,9 +106,9 @@ function panelHeader() {
   const copy = document.createElement("div");
   const kicker = document.createElement("p");
   kicker.className = "section-kicker";
-  kicker.textContent = "执行轨迹";
+  kicker.textContent = "可核验的分析过程";
   const title = document.createElement("h3");
-  title.textContent = "工具与裁决";
+  title.textContent = "模型计划、工具与裁决依据";
   copy.append(kicker, title);
   header.append(copy);
 
@@ -135,18 +137,7 @@ function makeChip(label, value, className = "") {
   return chip;
 }
 
-export function renderTraceView(root, state) {
-  root.replaceChildren(panelHeader());
-
-  if (!state.events.length) {
-    root.append(emptyTrace());
-    return;
-  }
-
-  const list = document.createElement("ol");
-  list.className = "trace-list";
-
-  state.events.forEach((event) => {
+function createTraceItem(event, evidenceIndex) {
     const item = document.createElement("li");
     item.className = "trace-item";
     item.dataset.status = event.status || "completed";
@@ -215,6 +206,11 @@ export function renderTraceView(root, state) {
       label.textContent = "证据";
       evidence.append(label);
       event.evidence_ids.slice(0, 8).forEach((evidenceId) => {
+        const record = evidenceIndex.get(evidenceId);
+        if (record?.page_image_url) {
+          evidence.append(makeEvidenceButton(record, `${evidenceId} · 第 ${record.page} 页`));
+          return;
+        }
         const chip = document.createElement("code");
         chip.textContent = evidenceId;
         evidence.append(chip);
@@ -222,9 +218,77 @@ export function renderTraceView(root, state) {
       body.append(evidence);
     }
 
-    item.append(sequence, body);
-    list.append(item);
-  });
+    if (event.rule) {
+      const rule = document.createElement("p");
+      rule.textContent = `本步依据：${event.rule}`;
+      body.append(rule);
+    }
+    if (event.explanation) {
+      const explanation = document.createElement("p");
+      explanation.className = "step-explanation";
+      explanation.textContent = event.explanation;
+      body.append(explanation);
+    }
+    if (event.payload && Object.keys(event.payload).length) {
+      const details = document.createElement("details");
+      details.className = "event-plan";
+      const label = document.createElement("summary");
+      label.textContent = "步骤记录（输入 / 输出 / 依据）";
+      const content = document.createElement("pre");
+      content.textContent = JSON.stringify(event.payload, null, 2);
+      details.append(label, content);
+      body.append(details);
+    }
 
-  root.append(list);
+    item.append(sequence, body);
+    return item;
+}
+
+const traceCaches = new WeakMap();
+
+export function renderTraceView(root, state) {
+  const explanation = state.result?.explanation;
+  const events = Array.isArray(explanation?.steps) ? explanation.steps : state.events;
+  const mode = explanation ? "complete" : "preview";
+  let cache = traceCaches.get(root);
+  if (!cache || cache.runId !== state.currentRunId || !events.length || cache.mode !== mode) {
+    root.replaceChildren(panelHeader());
+    if (!events.length) {
+      root.append(emptyTrace());
+      traceCaches.delete(root);
+      return;
+    }
+    const summary = document.createElement("p");
+    summary.className = "result-empty";
+    const earlier = document.createElement("button");
+    earlier.type = "button";
+    earlier.className = "button";
+    earlier.textContent = "加载更早 100 条";
+    const list = document.createElement("ol");
+    list.className = "trace-list";
+    cache = { runId: state.currentRunId, mode, count: cache?.runId === state.currentRunId ? cache.count : 100, nodes: new Map(), summary, earlier, list, state };
+    earlier.addEventListener("click", () => {
+      cache.count += 100;
+      renderTraceView(root, cache.state);
+    });
+    root.append(summary, earlier, list);
+    traceCaches.set(root, cache);
+  }
+  cache.state = state;
+  const visible = events.slice(-cache.count);
+  const keys = new Set(visible.map(event => event.seq));
+  for (const [seq, node] of cache.nodes) {
+    if (!keys.has(seq)) { node.remove(); cache.nodes.delete(seq); }
+  }
+  let cursor = cache.list.firstChild;
+  const evidenceIndex = new Map((state.result?.evidence || []).map(record => [record.evidence_id, record]));
+  for (const event of visible) {
+    let node = cache.nodes.get(event.seq);
+    if (!node) { node = createTraceItem(event, evidenceIndex); cache.nodes.set(event.seq, node); }
+    if (node !== cursor) cache.list.insertBefore(node, cursor);
+    cursor = node.nextSibling;
+  }
+  const modelStatus = explanation ? ({not_used:"本次未调用模型",attempted:"模型请求已记录",response_recorded:"模型响应已记录"})[explanation.model_call_status] : "实时预览，结果保存后展示完整业务记录";
+  cache.summary.textContent = `${modelStatus || "实际运行记录"} · 显示 ${visible.length} / ${events.length} 条事件；完整日志保存在复现包中。`;
+  cache.earlier.hidden = visible.length === events.length;
 }

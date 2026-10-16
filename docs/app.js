@@ -35,6 +35,12 @@ function fmtBig(v) {
   if (abs >= 1e8) return (n / 1e8).toLocaleString('zh-CN', { maximumFractionDigits: 2 }) + ' 亿';
   return n.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
 }
+const changeOf = r => r.change || r.yoy || {};
+const changeCheck = r => r.reported_change_check || r.reported_yoy_check;
+const valueUnit = r => r.normalized_unit || (['%', '元/股'].includes(r.unit) ? r.unit : '元');
+const changeText = r => changeOf(r).status === 'ok' ? fmtNum(changeOf(r).value) + (changeOf(r).unit || '%') : (changeOf(r).reason || changeOf(r).status || '—');
+const checkOutcome = r => changeCheck(r) ? (changeCheck(r).status === 'match' ? '一致' : '不一致，需复核')
+  : ({ not_disclosed: '原文未披露', unparsed: '披露值无法解析', not_comparable: '无法核对（期间不可比）' }[r.disclosure_status] || '未提取到披露值');
 function scopeZh(s) {
   return { consolidated: '合并', parent_shareholders: '归母', parent_company: '母公司', unknown: '未知' }[s] || s || '—';
 }
@@ -58,7 +64,7 @@ function renderOverview() {
   const rows = (DATA.analysis && DATA.analysis.rows) || [];
   let match = 0, mismatch = 0, review = 0;
   rows.forEach((r) => {
-    const c = r.reported_yoy_check;
+    const c = changeCheck(r);
     if (c && c.status === 'match') match += 1;
     else if (c && c.status === 'mismatch') mismatch += 1;
     else review += 1;
@@ -87,23 +93,19 @@ function renderYoy() {
   }
   const co = coSel.value;
   const shown = rows.filter((r) => !co || r.company_code === co);
-  $('#yoy-count').textContent = `${shown.length} 行指标 · 同比核对`;
+  $('#yoy-count').textContent = `${shown.length} 行指标 · 披露增减核对`;
   $('#yoy-table tbody').innerHTML = shown.map((r) => {
-    const yoy = r.yoy && r.yoy.status === 'ok'
-      ? fmtNum(r.yoy.value) + '%'
-      : (r.yoy ? r.yoy.status : '—');
-    const check = r.reported_yoy_check;
-    const outcome = check
-      ? (check.status === 'match' ? '一致' : '不一致，需复核')
-      : '未核对（缺披露值）';
+    const yoy = changeText(r);
+    const check = changeCheck(r);
+    const outcome = checkOutcome(r);
     return `<tr>
       <td>${esc(r.company_name || r.company_code)}</td>
       <td class="num">${esc(r.period_start && r.period_end ? r.period_start + ' 至 ' + r.period_end : r.report_year)}</td>
-      <td>${esc(r.metric_name || r.metric)}</td>
-      <td class="num mono">${fmtBig(r.current)}</td>
-      <td class="num mono">${fmtBig(r.previous)}</td>
+      <td>${esc(r.metric_name || r.metric)} · ${esc(r.comparison_label || '同比')}</td>
+      <td class="num mono">${fmtBig(r.current)} ${esc(valueUnit(r))}</td>
+      <td class="num mono">${fmtBig(r.previous)} ${esc(valueUnit(r))}<br>${esc(r.previous_period_end || '')}</td>
       <td class="num mono">${esc(yoy)}</td>
-      <td class="num mono">${check ? fmtNum(check.reported) + '%' : '—'}</td>
+      <td class="num mono">${check ? fmtNum(check.reported) + esc(check.unit || '%') : esc((r.reported_change || r.reported_yoy)?.raw_value || '—')}</td>
       <td>${statusBadge(outcome)}</td>
       <td class="num">${esc(r.page ?? '—')}</td>
     </tr>`;
@@ -121,12 +123,16 @@ function renderYoy() {
     .filter(s => !co || signalSource(s)?.company_code === co)
     .map(s => {
       const source = signalSource(s);
-      const period = source ? `${source.company_name || source.company_code} · ${source.period_start || ''} 至 ${source.period_end || source.report_year}` : s.document_id || '';
+      const period = s.period_start ? `${s.company_name || s.company_code} · ${s.period_start} 至 ${s.period_end}`
+        : source ? `${source.company_name || source.company_code} · ${source.period_start || ''} 至 ${source.period_end || source.report_year}` : s.document_id || '';
       return `<details><summary>【${esc(s.epistemic_type || '事实')}】${esc(period)} · ${esc(s.description)} ${s.value == null ? '' : fmtNum(s.value)}${esc(s.unit || '')}</summary><p>${esc(s.interpretation || '')}</p><pre>${esc(JSON.stringify(s.calculation || s.observations || {}, null, 2))}</pre></details>`;
     }).join('');
   signals.innerHTML += ((DATA.analysis && DATA.analysis.qoq_rows) || [])
     .filter(r => !co || r.company_code === co)
     .map(r => `<p>${esc(r.company_code)} 单季环比 ${esc(METRICS[r.metric]?.[0] || r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：${r.qoq.status === 'ok' ? fmtNum(r.qoq.value) + '%' : esc(r.qoq.reason ?? r.qoq.status)}</p>`).join('');
+  signals.innerHTML += ((DATA.analysis && DATA.analysis.blocked_derivations) || [])
+    .filter(r => !co || r.company_code === co)
+    .map(r => `<p>${esc(r.company_code)} ${esc(METRICS[r.metric]?.[0] || r.metric)} · ${esc(r.period_start)} 至 ${esc(r.period_end)}：未获可比性确认。${esc((r.reasons || [r.reason]).join('、'))}。尝试值 ${esc(r.attempted_value)} 元仅供复核，不作为有效季度值。来源：${esc((r.sources || []).map(s => `${s.document_id} PDF页${s.page}`).join('；'))}</p>`).join('');
 }
 
 /* ---------- 材料台账 ---------- */
