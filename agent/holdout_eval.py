@@ -17,6 +17,8 @@ JUDGED_STATUSES = {"证据支持", "确认错误"}
 ABSTAIN_STATUSES = {"证据不足", "口径冲突／需人工复核"}
 FAILURE_OUTCOMES = {"timeout", "failed", "other"}
 NONVERDICT_OUTCOMES = {"abstain", "model_track"}
+DATASET_HASH_FILE = "dataset.sha256"
+DATASET_FILES = ("manifest.json", "gold.json", "facts.json")
 ANNUAL_SUMMARY = "annual_report_summary"
 REQUIRED_GOLD_FIELDS = (
     "id",
@@ -183,7 +185,12 @@ def compare_runs(runs: list[list[dict]]) -> dict:
     """比较同配置多次运行；状态、原因和引用任一变化都算不一致。"""
     if not runs:
         return {"statement_count": 0, "fully_consistent": 0,
-                "consistency_rate": None, "differences": []}
+                "run_count": 0, "consistency_rate": None, "differences": []}
+    run_count = len(runs)
+    if run_count < 2:
+        identifiers = sorted({row.get("id") for run in runs for row in run if row.get("id")})
+        return {"statement_count": len(identifiers), "fully_consistent": 0,
+                "run_count": run_count, "consistency_rate": None, "differences": []}
     identifiers = sorted({row.get("id") for run in runs for row in run if row.get("id")})
     differences = []
     consistent = 0
@@ -201,6 +208,7 @@ def compare_runs(runs: list[list[dict]]) -> dict:
     return {
         "statement_count": len(identifiers),
         "fully_consistent": consistent,
+        "run_count": run_count,
         "consistency_rate": _ratio(consistent, len(identifiers)),
         "differences": differences,
     }
@@ -341,23 +349,69 @@ def runtime_payload(gold: dict) -> tuple[str, list[dict]]:
         items.append(item)
     return draft, items
 
+def validate_facts(facts_bundle: dict, *, document_hashes: dict[str, str]) -> list[str]:
+    """运行事实必须来自已登记材料，且同一 evidence_id 只能出现一次。"""
+    facts = facts_bundle.get("facts")
+    if not isinstance(facts, list) or not facts:
+        return ["facts.json 缺少非空 facts 数组"]
+    issues = []
+    seen = set()
+    for index, fact in enumerate(facts, 1):
+        evidence_id = fact.get("evidence_id")
+        if not evidence_id:
+            issues.append(f"facts 第 {index} 条缺少 evidence_id")
+        elif evidence_id in seen:
+            issues.append(f"duplicate evidence_id: {evidence_id}")
+        seen.add(evidence_id)
+        document_id = fact.get("document_id")
+        if document_id not in document_hashes:
+            issues.append(f"{evidence_id or index} 引用未登记文档：{document_id}")
+        if not isinstance(fact.get("page"), int) or fact.get("page", 0) < 1:
+            issues.append(f"{evidence_id or index} 缺少有效页码")
+        if fact.get("source_sha256") != document_hashes.get(document_id):
+            issues.append(f"{evidence_id or index} source_sha256 与 manifest 不一致")
+        if not fact.get("source_file"):
+            issues.append(f"{evidence_id or index} 缺少 source_file")
+    return issues
 
 def verify_dataset(dataset_root: Path, *, dev_scope_path: Path | None = None,
                    dev_manifest_path: Path | None = None) -> dict:
     root = Path(dataset_root).resolve()
     manifest_path = root / "manifest.json"
     gold_path = root / "gold.json"
-    digest_path = root / "gold.sha256"
+    facts_path = root / "facts.json"
+    digest_path = root / DATASET_HASH_FILE
     issues = []
-    missing = [path.name for path in (manifest_path, gold_path, digest_path) if not path.is_file()]
+    required_paths = [manifest_path, gold_path, facts_path, digest_path]
+    missing = [path.name for path in required_paths if not path.is_file()]
     if missing:
         return {"ok": False, "issues": [f"缺少文件：{','.join(missing)}"]}
+    actual_hashes = {name: sha256_file(root / name) for name in DATASET_FILES}
+    expected_hashes = {}
+    for line_number, line in enumerate(
+            digest_path.read_text(encoding="utf-8").splitlines(), 1):
+        parts = line.strip().split()
+        if not parts:
+            continue
+        if len(parts) != 2 or len(parts[0]) != 64:
+            issues.append(f"dataset.sha256 第 {line_number} 行格式错误")
+            continue
+        expected_hashes[parts[1]] = parts[0]
+    if set(expected_hashes) != set(DATASET_FILES):
+        issues.append("dataset.sha256 必须且只能登记 manifest.json、gold.json、facts.json")
+    for name in DATASET_FILES:
+        if expected_hashes.get(name) != actual_hashes[name]:
+            issues.append(f"dataset.sha256 与 {name} 不一致")
+    dataset_version = hashlib.sha256("".join(
+        f"{name}:{actual_hashes[name]}\n" for name in DATASET_FILES
+    ).encode("utf-8")).hexdigest()
     manifest = _load_json(manifest_path)
     gold = _load_json(gold_path)
-    expected_gold_hash = digest_path.read_text(encoding="utf-8").strip().split()[0]
-    actual_gold_hash = sha256_file(gold_path)
-    if expected_gold_hash != actual_gold_hash:
-        issues.append("gold.sha256 与 gold.json 不一致")
+    facts_bundle = _load_json(facts_path)
+    if manifest.get("dataset_id") != gold.get("dataset_id"):
+        issues.append("manifest.json 与 gold.json 的 dataset_id 不一致")
+    if manifest.get("dataset_id") != facts_bundle.get("dataset_id"):
+        issues.append("manifest.json 与 facts.json 的 dataset_id 不一致")
     for item in manifest.get("materials") or []:
         material_path = root / str(item.get("local_file") or "")
         if not material_path.is_file():
@@ -369,6 +423,9 @@ def verify_dataset(dataset_root: Path, *, dev_scope_path: Path | None = None,
     issues.extend(validate_manifest(manifest))
     document_ids = {item.get("document_id") for item in manifest.get("materials") or []}
     issues.extend(validate_gold(gold, document_ids=document_ids))
+    document_hashes = {item.get("document_id"): item.get("sha256")
+                       for item in manifest.get("materials") or []}
+    issues.extend(validate_facts(facts_bundle, document_hashes=document_hashes))
     scope_path = dev_scope_path or (root.parent / "scope.csv")
     dev_path = dev_manifest_path or (root.parent / "manifest.csv")
     leakage = {"ok": False, "issues": ["缺少开发集快照"]}
@@ -379,8 +436,10 @@ def verify_dataset(dataset_root: Path, *, dev_scope_path: Path | None = None,
         "ok": not issues,
         "issues": issues,
         "dataset_id": manifest.get("dataset_id"),
-        "gold_sha256": actual_gold_hash,
-        "manifest_sha256": sha256_file(manifest_path),
+        "gold_sha256": actual_hashes["gold.json"],
+        "manifest_sha256": actual_hashes["manifest.json"],
+        "facts_sha256": actual_hashes["facts.json"],
+        "dataset_version": dataset_version,
         "material_count": len(manifest.get("materials") or []),
         "company_count": len({item.get("company_code") for item in manifest.get("materials") or []}),
         "statement_count": len(gold.get("statements") or []),
@@ -399,11 +458,14 @@ def _display(value) -> str:
 def render_markdown(metrics: dict, consistency: dict, meta: dict) -> str:
     """报告模板只允许称“留出集回归”；无独立复核时明确写适用范围。"""
     independent = bool(meta.get("independent_review"))
+    run_count = int(meta.get("run_count") or 0)
     lines = [
         "# P0 留出集回归基线",
         "",
         f"- 数据集：`{meta.get('dataset_id') or '未记录'}`",
+        f"- 数据集版本：`{meta.get('dataset_version') or '未记录'}`",
         f"- 运行方式：`{meta.get('run_mode') or '未记录'}`",
+        f"- 实际运行轮数：{run_count}",
         f"- 独立人工复核：{'有' if independent else '无'}",
         "- 适用范围：留出集回归，用于检查工程链路和结果稳定性。",
     ]
@@ -428,12 +490,6 @@ def render_markdown(metrics: dict, consistency: dict, meta: dict) -> str:
         f"| 本地平均耗时 | {metrics.get('local_mean_ms', '未定义')} ms | 本地计算与编排时间 |",
         f"| 总耗时 P95 | {metrics.get('total_p95_ms', '未定义')} ms | 单条陈述 |",
         "",
-        "## 三次一致性",
-        "",
-        f"- 完全一致：{consistency.get('fully_consistent', 0)} / {consistency.get('statement_count', 0)}",
-        f"- 一致率：{_display(consistency.get('consistency_rate'))}",
-        f"- 差异条数：{len(consistency.get('differences') or [])}",
-        "",
         "## 结果边界",
         "",
         "- 未运行、漏拆、超时和失败都进入分母，不按正确计算。",
@@ -441,6 +497,16 @@ def render_markdown(metrics: dict, consistency: dict, meta: dict) -> str:
         "- 本报告不把固定样例或重复运行替代独立盲测。",
         "",
     ]
+    lines += ["", f"## 运行一致性（实际 {run_count} 轮）", ""]
+    if run_count < 2:
+        lines.append("- 本次不足两轮，不计算重复运行一致性。")
+    else:
+        lines += [
+            f"- 完全一致：{consistency.get('fully_consistent', 0)} / {consistency.get('statement_count', 0)}",
+            f"- 一致率：{_display(consistency.get('consistency_rate'))}",
+            f"- 差异条数：{len(consistency.get('differences') or [])}",
+        ]
+    lines.append("")
     return "\n".join(lines)
 
 
@@ -452,6 +518,7 @@ __all__ = [
     "rows_from_scored",
     "sha256_file",
     "unified_metrics",
+    "validate_facts",
     "validate_gold",
     "validate_manifest",
     "verify_dataset",

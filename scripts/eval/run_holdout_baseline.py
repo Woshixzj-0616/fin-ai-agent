@@ -202,7 +202,7 @@ def _version_record(dataset: dict, mode: str, model: str | None,
             ROOT / "agent" / "holdout_eval.py",
             Path(__file__).resolve(),
         ]),
-        "dataset_version": f"{dataset['manifest_sha256']}:{dataset['gold_sha256']}",
+        "dataset_version": dataset["dataset_version"],
         "run_mode": mode,
     }
 
@@ -230,19 +230,23 @@ def _write_result(output_dir: Path, runs: list[dict], gold: dict, dataset: dict,
     versions = _version_record(dataset, mode, model, base_url)
     meta = {
         "dataset_id": gold["dataset_id"],
+        "dataset_version": dataset["dataset_version"],
         "independent_review": bool(gold.get("independent_review")),
         "run_mode": mode,
+        "run_count": len(runs),
         "model": model,
         "base_url": base_url,
         "version": versions,
         "gold_sha256": dataset["gold_sha256"],
         "manifest_sha256": dataset["manifest_sha256"],
+        "facts_sha256": dataset["facts_sha256"],
         "run_metrics": run_metrics,
     }
     report = render_markdown(combined, consistency, meta)
     report += "\n## 分轮指标\n\n" + _run_table(run_metrics) + "\n"
     outputs = {
         "status": "valid",
+        "dataset_version": dataset["dataset_version"],
         "combined_metrics": combined,
         "run_metrics": run_metrics,
         "consistency": consistency,
@@ -311,8 +315,8 @@ def main(argv: list[str] | None = None) -> int:
         for issue in dataset_after["issues"]:
             print(f"- {issue}")
         return 4
-    if dataset_after["gold_sha256"] != dataset["gold_sha256"]:
-        print("金标在运行后发生变化；本轮结果作废")
+    if dataset_after["dataset_version"] != dataset["dataset_version"]:
+        print("数据集在运行后发生变化；本轮结果作废")
         return 4
 
     outputs = _write_result(output_dir, runs, gold, dataset, mode=args.mode,

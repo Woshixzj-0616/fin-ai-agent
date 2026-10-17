@@ -114,9 +114,16 @@ class ConsistencyTests(unittest.TestCase):
         result = compare_runs(runs)
         self.assertEqual(result["statement_count"], 1)
         self.assertEqual(result["fully_consistent"], 0)
+        self.assertEqual(result["run_count"], 3)
         self.assertEqual(result["consistency_rate"], 0.0)
         self.assertEqual(result["differences"][0]["id"], "A")
         self.assertEqual(result["differences"][0]["run_count"], 3)
+
+    def test_single_run_does_not_report_a_consistency_rate(self):
+        result = compare_runs([[{"id": "A", "outcome": "judged", "status": "证据支持"}]] )
+        self.assertEqual(result["run_count"], 1)
+        self.assertIsNone(result["consistency_rate"])
+        self.assertEqual(result["differences"], [])
 
 
 class LeakageTests(unittest.TestCase):
@@ -236,14 +243,36 @@ class DatasetAndReportTests(unittest.TestCase):
                      "local_file": "materials/missing.pdf"},
                 ],
             }
-            (root / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+            manifest_text = json.dumps(manifest, ensure_ascii=False)
+            (root / "manifest.json").write_text(manifest_text, encoding="utf-8")
             gold = {"dataset_id": "d", "statements": []}
             gold_text = json.dumps(gold, ensure_ascii=False)
             (root / "gold.json").write_text(gold_text, encoding="utf-8")
-            (root / "gold.sha256").write_text(hashlib.sha256(gold_text.encode()).hexdigest() + "\n", encoding="utf-8")
+            facts = {"dataset_id": "d", "facts": [{
+                "evidence_id": "E1", "document_id": "D1", "page": 1,
+                "source_file": "materials/a.pdf", "source_sha256": sha,
+            }]}
+            facts_text = json.dumps(facts, ensure_ascii=False)
+            (root / "facts.json").write_text(facts_text, encoding="utf-8")
+            dataset_hashes = {
+                "manifest.json": hashlib.sha256(manifest_text.encode()).hexdigest(),
+                "gold.json": hashlib.sha256(gold_text.encode()).hexdigest(),
+                "facts.json": hashlib.sha256(facts_text.encode()).hexdigest(),
+            }
+            (root / "dataset.sha256").write_text(
+                "".join(f"{digest}  {name}\n" for name, digest in dataset_hashes.items()),
+                encoding="utf-8",
+            )
             result = verify_dataset(root)
             self.assertFalse(result["ok"])
             self.assertTrue(any("missing.pdf" in issue for issue in result["issues"]))
+            self.assertEqual(result["facts_sha256"], dataset_hashes["facts.json"])
+            self.assertTrue(result["dataset_version"])
+
+            (root / "facts.json").write_text(facts_text + "\n", encoding="utf-8")
+            tampered = verify_dataset(root)
+            self.assertFalse(tampered["ok"])
+            self.assertTrue(any("facts.json 不一致" in issue for issue in tampered["issues"]))
 
     def test_report_without_independent_review_does_not_claim_blind_accuracy(self):
         rows = [row("A", outcome="judged", status="证据支持",
@@ -252,11 +281,25 @@ class DatasetAndReportTests(unittest.TestCase):
         text = render_markdown(
             unified_metrics(rows),
             compare_runs([[rows[0]], [rows[0]], [rows[0]]]),
-            {"independent_review": False, "dataset_id": "d", "run_mode": "replay"},
+            {"independent_review": False, "dataset_id": "d", "dataset_version": "v", "run_mode": "replay", "run_count": 3},
         )
         self.assertIn("留出集回归", text)
         self.assertIn("未进行独立人工复核", text)
         self.assertNotIn("盲测准确率", text)
+        self.assertIn("实际 3 轮", text)
+        self.assertNotIn("三次一致性", text)
+
+    def test_single_run_report_does_not_claim_three_round_consistency(self):
+        rows = [row("A", outcome="judged", status="证据支持",
+                    expect={"kind": "judge", "error": False})]
+        text = render_markdown(
+            unified_metrics(rows), compare_runs([rows]),
+            {"independent_review": False, "dataset_id": "d", "run_count": 1},
+        )
+        self.assertIn("实际运行轮数：1", text)
+        self.assertIn("实际 1 轮", text)
+        self.assertIn("不计算重复运行一致性", text)
+        self.assertNotIn("三次一致性", text)
 
 
 if __name__ == "__main__":
