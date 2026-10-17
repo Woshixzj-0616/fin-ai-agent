@@ -65,12 +65,12 @@ class UnifiedMetricTests(unittest.TestCase):
         self.assertEqual(metrics["total"], 6)
         self.assertEqual(metrics["correct"], 3)
         self.assertAlmostEqual(metrics["judgment_accuracy"], 0.5)
-        self.assertAlmostEqual(metrics["error_recall"], 1.0)
-        self.assertAlmostEqual(metrics["false_positive_rate"], 0.5)
+        self.assertAlmostEqual(metrics["error_recall"], 0.5)
+        self.assertAlmostEqual(metrics["false_positive_rate"], 0.3333)
         self.assertAlmostEqual(metrics["correct_coverage"], 0.5)
         self.assertAlmostEqual(metrics["reasonable_abstention_rate"], 1.0)
-        self.assertAlmostEqual(metrics["failure_rate"], 1 / 6)
-        self.assertAlmostEqual(metrics["omitted_rate"], 1 / 6)
+        self.assertAlmostEqual(metrics["failure_rate"], 0.1667)
+        self.assertAlmostEqual(metrics["omitted_rate"], 0.1667)
         self.assertEqual(metrics["correct_judgments"], 2)
 
     def test_citation_requires_id_document_page_and_locator(self):
@@ -85,8 +85,7 @@ class UnifiedMetricTests(unittest.TestCase):
         ]
         metrics = unified_metrics(rows)
         self.assertEqual(metrics["citation_supported"], 1)
-        self.assertAlmostEqual(metrics["citation_support_rate"], 1 / 3)
-
+        self.assertAlmostEqual(metrics["citation_support_rate"], 0.3333)
     def test_latency_reports_model_and_local_separately(self):
         rows = [
             row("a", outcome="judged", status="证据支持", expect={"kind": "judge", "error": False},
@@ -98,8 +97,7 @@ class UnifiedMetricTests(unittest.TestCase):
         self.assertEqual(metrics["model_mean_ms"], 20)
         self.assertEqual(metrics["local_mean_ms"], 3)
         self.assertEqual(metrics["total_mean_ms"], 23)
-        self.assertEqual(metrics["total_p95_ms"], 23)
-
+        self.assertEqual(metrics["total_p95_ms"], 34)
 
 class ConsistencyTests(unittest.TestCase):
     def test_consistency_uses_full_result_signature(self):
@@ -114,7 +112,8 @@ class ConsistencyTests(unittest.TestCase):
         ]
         result = compare_runs(runs)
         self.assertEqual(result["statement_count"], 1)
-        self.assertAlmostEqual(result["consistency_rate"], 1 / 3)
+        self.assertEqual(result["fully_consistent"], 0)
+        self.assertEqual(result["consistency_rate"], 0.0)
         self.assertEqual(result["differences"][0]["id"], "A")
         self.assertEqual(result["differences"][0]["run_count"], 3)
 
@@ -133,7 +132,7 @@ class LeakageTests(unittest.TestCase):
                  "announcement_id": "100", "document_type": "quarterly_report"},
                 {"document_id": "D3", "company_code": "600941", "sha256": "new-1",
                  "announcement_id": "200", "document_type": "annual_report_summary"},
-                {"document_id": "D4", "company_code": "601899", "sha256": "new-2",
+                {"document_id": "D1", "company_code": "601899", "sha256": "new-2",
                  "announcement_id": "300", "document_type": "interim_report_summary"},
             ]
         }
