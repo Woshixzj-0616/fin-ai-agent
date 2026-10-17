@@ -20,6 +20,7 @@ from audit.schema import (
     validate_schema,
 )
 from backend_runtime import ExecutionLimit, load_config, validate_config
+from stability import classify_failure
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -103,12 +104,13 @@ class LLMClient:
             else:
                 body = self._http.post_json(payload, **options)
         except ExecutionLimit as exc:
-            raise LLMError(str(exc), terminal=True) from None
+            raise LLMError(str(exc), terminal=True, failure_code="budget_exhausted") from None
         except Exception as exc:  # TransportError 等
-            status = getattr(exc, "status", None)
-            message = (f"模型接口HTTP {status}；请核实服务地址、模型权限和输出模式"
-                       if type(status) is int else "模型接口连接失败、超时或运行预算已耗尽")
-            raise LLMError(message, terminal=True, request_status=status) from None
+            failure = classify_failure(exc)
+            message = (f"{failure.user_message}（HTTP {failure.http_status}）"
+                       if type(failure.http_status) is int else failure.user_message)
+            raise LLMError(message, terminal=True, request_status=failure.http_status,
+                           failure_code=failure.code) from None
         self._guard_blob(json.dumps(body, ensure_ascii=False).encode("utf-8"))
         returned = body.get("model") if isinstance(body.get("model"), str) else None
         changed = bool(returned and self._observed_models and returned not in self._observed_models)

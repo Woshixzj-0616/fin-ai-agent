@@ -24,6 +24,7 @@ from backend_runtime import (
     validate_config,
 )
 from materials import AGENT_DIR, sha256, write_json
+from stability import classify_failure
 
 
 def _check_chunk(draft, sentences, facts, run, client, use_loop, tools_used, tool_results,
@@ -88,11 +89,12 @@ def _check_chunk(draft, sentences, facts, run, client, use_loop, tools_used, too
     return results, payload, mode
 
 
-def _unfinished_rows(chunk, reason):
+def _unfinished_rows(chunk, reason, failure_code="unknown"):
     """未完成的句子保留原句和失败原因；已完成的块不受影响，也不会被标成成功。"""
     return [{"claim_id": f"S{sentence['sentence_id']}", "sentence_id": sentence["sentence_id"],
              "original_sentence": sentence["text"], "status": "口径冲突／需人工复核",
              "track": "review", "reason_code": "execution_incomplete", "reason": reason,
+             "failure_code": failure_code,
              "evidence_ids": [], "evidence": [], "calculation": None,
              "expected": None, "suggestion": None} for sentence in chunk["sentences"]]
 
@@ -139,6 +141,9 @@ def _chunk_completion(record, sentence_ids):
         record["reason"] = "；".join(dict.fromkeys(row.get("reason") or "执行失败" for row in failed))
         record["error_type"] = next((row.get("error_type") for row in failed if row.get("error_type")),
                                     record.get("error_type") or "ExecutionFailure")
+        record["failure_code"] = next((row.get("failure_code") for row in failed
+                                    if row.get("failure_code")),
+                                   record.get("failure_code") or "unknown")
 
 def _checkpoint_binding(draft, facts, run, client, config, use_loop):
     import importlib.metadata
@@ -243,7 +248,7 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
     client._checkpoint_commit = save
     all_results, all_tools, all_tool_results, modes = [], [], [], []
     merged = {"items": [], "unclaimed_sentences": []}
-    summary, completed_sentences, stop_reason = [], [], None
+    summary, completed_sentences, stop_reason, stop_failure_code = [], [], None, None
     run.event("draft_loaded", characters=len(draft), sha256=sha256(draft.encode("utf-8")),
               sentences=len(sentences), chunks=len(chunks), config=settings)
     try:
@@ -275,7 +280,7 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
                 try:
                     execution.remaining_seconds()
                     if stop_reason:
-                        raise LLMError(stop_reason, terminal=True)
+                        raise LLMError(stop_reason, terminal=True, failure_code=stop_failure_code)
                     if chunk["oversized_sentence"]:
                         raise LLMError("单句超过分块上限，保留原句并转人工处理，没有截断")
                     run.event("llm_chunk_started", chunk_id=chunk["chunk_id"], context=context,
@@ -311,15 +316,20 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
                     _chunk_completion(record, [sentence["sentence_id"] for sentence in chunk["sentences"]])
                     run.event("llm_chunk_completed" if record["status"] == "completed" else "llm_chunk_failed",
                               chunk_id=chunk["chunk_id"], status=record["status"],
-                              reason=record.get("reason"), error_type=record.get("error_type"), checks=len(results))
+                              reason=record.get("reason"), error_type=record.get("error_type"),
+                              failure_code=record.get("failure_code"), checks=len(results))
                 except Exception as exc:  # noqa: BLE001 - 业务边界必须把单项失败留在本块
+                    failure_info = classify_failure(exc)
                     failure = str(exc) or type(exc).__name__
-                    if getattr(exc, "request_status", None) in {400, 401, 403, 404, 422}:
-                        stop_reason = "接口参数或认证失败；后续分块未发请求，请修正配置后恢复"
+                    if failure_info.code in {"auth_failed", "invalid_request"}:
+                        stop_reason = failure_info.user_message + "；后续分块未发请求，请修正配置后恢复"
+                        stop_failure_code = failure_info.code
                     results = _unfinished_rows({"sentences": retry_sentences},
-                                               f"{type(exc).__name__}: {failure}")
+                                               f"{type(exc).__name__}: {failure}",
+                                               failure_code=failure_info.code)
                     for row in results:
-                        row.update(execution_failed=True, error_type=type(exc).__name__)
+                        row.update(execution_failed=True, error_type=type(exc).__name__,
+                                   failure_code=failure_info.code)
                     results.extend(_tool_verdict_rows(tool_results, facts))
                     if len(chunks) > 1:
                         for result in results:
@@ -330,11 +340,13 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
                               "parsed": (cached["parsed"] if cached else {"items": [], "unclaimed_sentences": []}),
                               "mode": "incomplete", "reason": failure,
                               "error_type": type(exc).__name__,
+                              "failure_code": failure_info.code,
                               "tools_used": [*cached.get("tools_used", []), *used] if cached else used,
                               "tool_results": [*cached.get("tool_results", []), *tool_results] if cached else tool_results}
                     _chunk_completion(record, [sentence["sentence_id"] for sentence in chunk["sentences"]])
                     run.event("llm_chunk_failed", chunk_id=chunk["chunk_id"],
                               reason=failure, error_type=type(exc).__name__,
+                              failure_code=failure_info.code,
                               preserved_verdicts=len(_tool_verdict_rows(tool_results, facts)))
                 record.update(chunk_id=chunk["chunk_id"],
                               sentence_ids=[s["sentence_id"] for s in chunk["sentences"]],
@@ -353,10 +365,13 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
             summary.append({key: record[key] for key in
                             ("chunk_id", "status", "sentence_ids", "start", "end",
                              "elapsed_seconds")}
-                           | ({"reason": record["reason"], "error_type": record.get("error_type")}
+                           | ({"reason": record["reason"], "error_type": record.get("error_type"),
+                               "failure_code": record.get("failure_code") or "unknown"}
                               if record["status"] != "completed" else {}))
         unfinished = sorted(set(s["sentence_id"] for s in sentences) - set(completed_sentences))
         failed_chunks = [entry for entry in summary if entry["status"] != "completed"]
+        failure_codes = dict(Counter(entry.get("failure_code") or "unknown"
+                                   for entry in failed_chunks))
         mode = modes[0] if len(chunks) == 1 else "chunked"
         bundle = {"schema_version": 2, "run_id": run.id,
                   "status": "partial" if unfinished else "completed", "mode": mode,
@@ -367,6 +382,7 @@ def check_text(path: Path, facts: list[dict], run, client: LLMClient, *,
                   "counts": dict(Counter(row["status"] for row in all_results)),
                   "tracks": dict(Counter(row.get("track") or "review" for row in all_results)),
                   "chunks": summary, "failed_chunks": failed_chunks,
+                  "failure_codes": failure_codes,
                   "unfinished_sentence_ids": unfinished,
                   "checkpoint_file": checkpoint.name, "binding_sha256": identity,
                   "execution": execution.snapshot(),

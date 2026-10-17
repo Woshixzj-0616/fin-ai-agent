@@ -5,14 +5,17 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import httpx
 
+from audit.claim_check import check_payload
 from backend_runtime import DEFAULTS
 from llm_check import LLMClient, check_text
 from materials import Run
 from stability import classify_failure, run_offline_fault_matrix
 from test_competition import fact
+from test_upgrade import protocol_item
 
 KEY = "unit-test-credential"
 
@@ -54,6 +57,15 @@ class FailureTaxonomyTests(unittest.TestCase):
             with self.subTest(status=status, message=message):
                 error = TransportError(message or "模型接口HTTP", status=status)
                 self.assertEqual(classify_failure(error).code, expected)
+
+    def test_tool_exception_has_tool_failed_code(self):
+        sentence = "2024年贵州茅台营业收入高于五粮液。"
+        item = protocol_item(quote=sentence, claim_type="comparison", company_b="五粮液",
+                             comparison_operator="exceed")
+        payload = {"items": [item], "unclaimed_sentences": []}
+        with patch("audit.claim_check.check_one_claim", side_effect=TypeError("injected")):
+            rows = check_payload(payload, [{"sentence_id": 1, "text": sentence}], sentence, [annual()])
+        self.assertEqual(rows[0]["failure_code"], "tool_failed")
 
 
 class StabilityIntegrationTests(unittest.TestCase):
