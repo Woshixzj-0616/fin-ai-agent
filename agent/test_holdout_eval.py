@@ -195,6 +195,7 @@ class LeakageTests(unittest.TestCase):
             ],
         }
         draft, items = runtime_payload(gold)
+        self.assertEqual(items[0]["claim_id"], "S1")
         serialized = json.dumps({"draft": draft, "items": items}, ensure_ascii=False)
         self.assertNotIn("GOLD_ONLY_SENTINEL", serialized)
         self.assertNotIn('"expect"', serialized)

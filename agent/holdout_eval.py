@@ -335,6 +335,7 @@ def runtime_payload(gold: dict) -> tuple[str, list[dict]]:
     items = []
     for index, statement in enumerate(statements, 1):
         item = copy.deepcopy(statement.get("claim") or {})
+        item["claim_id"] = statement.get("id")
         item["sentence_id"] = index
         item.setdefault("quote", statement.get("text"))
         items.append(item)
