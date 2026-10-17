@@ -88,7 +88,14 @@ def inspect_bundle(root: Path | str = ROOT) -> dict:
         if not exists:
             problems.append(f"缺少文件：{relative}")
 
-    samples = _load_json(root / "data" / "agent" / "samples.json")
+    sample_path = root / "data" / "agent" / "samples.json"
+    samples = {}
+    if sample_path.is_file():
+        try:
+            loaded = _load_json(sample_path)
+            samples = loaded if isinstance(loaded, dict) else {}
+        except (OSError, ValueError) as exc:
+            problems.append(f"样例文件无法读取：{type(exc).__name__}")
     claims = samples.get("claims") or []
     expected = samples.get("expected_results") or {}
     outcomes = {name: 0 for name in sorted(REQUIRED_CLAIM_OUTCOMES)}
@@ -107,7 +114,13 @@ def inspect_bundle(root: Path | str = ROOT) -> dict:
         problems.append("样例未覆盖：" + ", ".join(missing_outcomes))
 
     audit_path = root / "data" / "demo" / "audit_claims.json"
-    audit_claims = _load_json(audit_path) if audit_path.is_file() else []
+    audit_claims = []
+    if audit_path.is_file():
+        try:
+            loaded = _load_json(audit_path)
+            audit_claims = loaded if isinstance(loaded, list) else []
+        except (OSError, ValueError) as exc:
+            problems.append(f"补充审计样例无法读取：{type(exc).__name__}")
     if len(audit_claims) < 3:
         problems.append("补充审计样例少于 3 条")
 
