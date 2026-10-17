@@ -281,10 +281,15 @@ class DatasetAndReportTests(unittest.TestCase):
         text = render_markdown(
             unified_metrics(rows),
             compare_runs([[rows[0]], [rows[0]], [rows[0]]]),
-            {"independent_review": False, "dataset_id": "d", "dataset_version": "v", "run_mode": "replay", "run_count": 3},
+            {"independent_review": False, "dataset_id": "d", "dataset_version": "v",
+             "run_mode": "replay", "run_count": 3,
+             "diagnostics": [{"id": "A", "expected": "证据支持", "actual": "abstain/证据不足",
+                            "reason_code": "missing_period", "reason_category": "scope_conflict"}]},
         )
         self.assertIn("留出集回归", text)
         self.assertIn("未进行独立人工复核", text)
+        self.assertIn("错误与未达标明细", text)
+        self.assertIn("missing_period", text)
         self.assertNotIn("盲测准确率", text)
         self.assertIn("实际 3 轮", text)
         self.assertIn("统一指标（3 轮累计）", text)

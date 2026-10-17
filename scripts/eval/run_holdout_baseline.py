@@ -26,6 +26,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "eval"))
 
 from eval_harness import ReplayClient, run_full_flow, score_atomic  # noqa: E402
 from holdout_eval import (  # noqa: E402
+    is_correct,
     compare_runs,
     render_markdown,
     rows_from_scored,
@@ -221,11 +222,41 @@ def _run_table(metrics_by_run: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def _expected_label(expect: dict) -> str:
+    if expect.get("kind") == "judge":
+        return "确认错误" if expect.get("error") else "证据支持"
+    if expect.get("kind") == "status":
+        return str(expect.get("status") or "未指定状态")
+    if expect.get("kind") == "nonverdict":
+        return "允许非判定"
+    return "未定义"
+
+
+def _diagnostics(rows: list[dict]) -> list[dict]:
+    results = []
+    for row in rows:
+        if is_correct(row):
+            continue
+        expected = _expected_label(row.get("expect") or {})
+        actual = "/".join(
+            value for value in (row.get("outcome"), row.get("status")) if value
+        ) or "未产出结果"
+        results.append({
+            "id": row.get("id"),
+            "expected": expected,
+            "actual": actual,
+            "reason_code": row.get("reason_code"),
+            "reason_category": row.get("reason_category"),
+        })
+    return results
+
+
 def _write_result(output_dir: Path, runs: list[dict], gold: dict, dataset: dict,
                   *, mode: str, model: str | None, base_url: str | None) -> dict:
     rows = [row for run in runs for row in run["rows"]]
     combined = unified_metrics(rows)
     consistency = compare_runs([run["rows"] for run in runs])
+    diagnostics = _diagnostics(runs[0]["rows"])
     run_metrics = [unified_metrics(run["rows"]) for run in runs]
     versions = _version_record(dataset, mode, model, base_url)
     meta = {
@@ -240,6 +271,7 @@ def _write_result(output_dir: Path, runs: list[dict], gold: dict, dataset: dict,
         "gold_sha256": dataset["gold_sha256"],
         "manifest_sha256": dataset["manifest_sha256"],
         "facts_sha256": dataset["facts_sha256"],
+        "diagnostics": diagnostics,
         "run_metrics": run_metrics,
     }
     report = render_markdown(combined, consistency, meta)
@@ -250,6 +282,7 @@ def _write_result(output_dir: Path, runs: list[dict], gold: dict, dataset: dict,
         "combined_metrics": combined,
         "run_metrics": run_metrics,
         "consistency": consistency,
+        "diagnostics": diagnostics,
         "version": versions,
         "dataset": dataset,
         "gold_hash_before": dataset["gold_sha256"],

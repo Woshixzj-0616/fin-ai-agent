@@ -78,7 +78,7 @@ def _expected_status(expect: dict) -> str | None:
     return None
 
 
-def _is_correct(row: dict) -> bool:
+def is_correct(row: dict) -> bool:
     expect = row.get("expect") or {}
     outcome = row.get("outcome")
     status = row.get("status")
@@ -115,7 +115,7 @@ def _citation_valid(row: dict) -> bool:
 def unified_metrics(rows: list[dict]) -> dict:
     """按 P0 协议计算统一指标；未运行、弃答和失败绝不折成正确。"""
     total = len(rows)
-    correct_rows = [row for row in rows if _is_correct(row)]
+    correct_rows = [row for row in rows if is_correct(row)]
     judged_rows = [row for row in rows
                    if row.get("outcome") == "judged" and row.get("status") in JUDGED_STATUSES]
     explicit_correct = [row for row in correct_rows
@@ -128,7 +128,7 @@ def unified_metrics(rows: list[dict]) -> dict:
                     if row.get("outcome") == "judged" and row.get("status") == "确认错误"]
     abstain_eligible = [row for row in rows if _expected_abstain(row)]
     reasonable_abstentions = [row for row in abstain_eligible
-                              if row.get("outcome") == "abstain" and _is_correct(row)]
+                              if row.get("outcome") == "abstain" and is_correct(row)]
     cited = [row for row in judged_rows if _citation_valid(row)]
     failures = [row for row in rows if row.get("outcome") in FAILURE_OUTCOMES]
     omitted = [row for row in rows if row.get("outcome") == "omitted"]
@@ -508,12 +508,29 @@ def render_markdown(metrics: dict, consistency: dict, meta: dict) -> str:
             f"- 差异条数：{len(consistency.get('differences') or [])}",
         ]
     lines.append("")
+    diagnostics = meta.get("diagnostics") or []
+    lines += ["## 错误与未达标明细", ""]
+    if not diagnostics:
+        lines.append("- 无。")
+    else:
+        lines += [
+            "| 陈述 | 金标预期 | 实际结果 | 原因码 | 原因类别 |",
+            "|---|---|---|---|---|",
+        ]
+        for detail in diagnostics:
+            values = [detail.get("id"), detail.get("expected"), detail.get("actual"),
+                      detail.get("reason_code"), detail.get("reason_category")]
+            lines.append("| " + " | ".join(
+                str(value or "-").replace("|", "\\|") for value in values
+            ) + " |")
+    lines.append("")
     return "\n".join(lines)
 
 
 __all__ = [
     "check_leakage",
     "compare_runs",
+    "is_correct",
     "render_markdown",
     "runtime_payload",
     "rows_from_scored",
