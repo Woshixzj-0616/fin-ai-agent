@@ -1,0 +1,4555 @@
+{
+  "status": "valid",
+  "dataset_version": "d177c78430d84c29d70fa7d2d87d258e4a34d2734112916c7f24f2b11e8f3c36",
+  "combined_metrics": {
+    "total": 90,
+    "correct": 87,
+    "correct_judgments": 57,
+    "judged": 57,
+    "abstain": 21,
+    "omitted": 0,
+    "failed": 0,
+    "model_track": 12,
+    "unrun": 0,
+    "judgment_accuracy": 0.9667,
+    "error_recall": 1.0,
+    "false_positive_rate": 0.0,
+    "correct_coverage": 0.8333,
+    "citation_supported": 57,
+    "citation_support_rate": 1.0,
+    "reasonable_abstentions": 18,
+    "abstain_eligible": 30,
+    "reasonable_abstention_rate": 0.6,
+    "failure_rate": 0.0,
+    "omitted_rate": 0.0,
+    "model_mean_ms": 754.969,
+    "local_mean_ms": 6.636,
+    "total_mean_ms": 761.605,
+    "total_p95_ms": 768.008
+  },
+  "run_metrics": [
+    {
+      "total": 30,
+      "correct": 29,
+      "correct_judgments": 19,
+      "judged": 19,
+      "abstain": 7,
+      "omitted": 0,
+      "failed": 0,
+      "model_track": 4,
+      "unrun": 0,
+      "judgment_accuracy": 0.9667,
+      "error_recall": 1.0,
+      "false_positive_rate": 0.0,
+      "correct_coverage": 0.8333,
+      "citation_supported": 19,
+      "citation_support_rate": 1.0,
+      "reasonable_abstentions": 6,
+      "abstain_eligible": 10,
+      "reasonable_abstention_rate": 0.6,
+      "failure_rate": 0.0,
+      "omitted_rate": 0.0,
+      "model_mean_ms": 753.843,
+      "local_mean_ms": 5.791,
+      "total_mean_ms": 759.634,
+      "total_p95_ms": 759.634
+    },
+    {
+      "total": 30,
+      "correct": 29,
+      "correct_judgments": 19,
+      "judged": 19,
+      "abstain": 7,
+      "omitted": 0,
+      "failed": 0,
+      "model_track": 4,
+      "unrun": 0,
+      "judgment_accuracy": 0.9667,
+      "error_recall": 1.0,
+      "false_positive_rate": 0.0,
+      "correct_coverage": 0.8333,
+      "citation_supported": 19,
+      "citation_support_rate": 1.0,
+      "reasonable_abstentions": 6,
+      "abstain_eligible": 10,
+      "reasonable_abstention_rate": 0.6,
+      "failure_rate": 0.0,
+      "omitted_rate": 0.0,
+      "model_mean_ms": 759.401,
+      "local_mean_ms": 8.607,
+      "total_mean_ms": 768.008,
+      "total_p95_ms": 768.008
+    },
+    {
+      "total": 30,
+      "correct": 29,
+      "correct_judgments": 19,
+      "judged": 19,
+      "abstain": 7,
+      "omitted": 0,
+      "failed": 0,
+      "model_track": 4,
+      "unrun": 0,
+      "judgment_accuracy": 0.9667,
+      "error_recall": 1.0,
+      "false_positive_rate": 0.0,
+      "correct_coverage": 0.8333,
+      "citation_supported": 19,
+      "citation_support_rate": 1.0,
+      "reasonable_abstentions": 6,
+      "abstain_eligible": 10,
+      "reasonable_abstention_rate": 0.6,
+      "failure_rate": 0.0,
+      "omitted_rate": 0.0,
+      "model_mean_ms": 751.662,
+      "local_mean_ms": 5.511,
+      "total_mean_ms": 757.173,
+      "total_p95_ms": 757.173
+    }
+  ],
+  "consistency": {
+    "statement_count": 30,
+    "fully_consistent": 30,
+    "run_count": 3,
+    "consistency_rate": 1.0,
+    "differences": []
+  },
+  "diagnostics": [
+    {
+      "id": "S09",
+      "expected": "证据支持",
+      "actual": "abstain/口径冲突／需人工复核",
+      "reason_code": "unsupported_period",
+      "reason_category": "correct_support"
+    }
+  ],
+  "version": {
+    "code_commit": "d0bba42482b3881ca69cd3153c675bac9f423857",
+    "branch": "p0-holdout-eval-20261017",
+    "model": "deepseek-chat",
+    "base_url": "https://api.deepseek.com/v1",
+    "prompt_version": "533757ce4bdfee6885a7ebfb612bff1db05b75f79474b82a7102d5b2d85a97d6",
+    "rule_version": "c719c1f35bc605abf1c4af4a1cde2e45d876eb197d021681aec244075110a882",
+    "harness_version": "c0ce0ca717ddf74bfb516a46005008545194193c08bb67df932278a17f9c921f",
+    "dataset_version": "d177c78430d84c29d70fa7d2d87d258e4a34d2734112916c7f24f2b11e8f3c36",
+    "run_mode": "live"
+  },
+  "dataset": {
+    "ok": true,
+    "issues": [],
+    "dataset_id": "fin-ai-p0-holdout-20261017-v2",
+    "gold_sha256": "3233111742f2b3599fc8028470e9edf8d46a1a8d482b7cd646c020302c3118e7",
+    "manifest_sha256": "6ca5c1c0e3b312b54281ecf16fed13fadafb8e3b63a2d0e2a18ccb7e6c77d73e",
+    "facts_sha256": "7a216affc2839577b8595902e587b66c54127778f470021e89f08afd3c885eaf",
+    "dataset_version": "d177c78430d84c29d70fa7d2d87d258e4a34d2734112916c7f24f2b11e8f3c36",
+    "material_count": 4,
+    "company_count": 2,
+    "statement_count": 30,
+    "leakage": {
+      "ok": true,
+      "issues": [],
+      "companies": [
+        "600941",
+        "601899"
+      ],
+      "sha256": [
+        "0f200df49d2fe2ba32713dcce62244e8d0f3feefe1384fab578292f56759afea",
+        "2509da6ac58653c6416f8306e956fbdae8708370735e3c38023bdf964eadaba9",
+        "a2c094d6e828decedb6ca7687fd7fd241ad6829a1a7d9f9102b31407a21bde04",
+        "e8731d876387082646c1710afd3367f19d5e8ffe6a13efb9784a8357226167de"
+      ],
+      "document_ids": [
+        "600941-2025-annual-summary",
+        "600941-2026-q1",
+        "601899-2025-annual-summary",
+        "601899-2026-interim-summary"
+      ],
+      "announcement_ids": [
+        "1225023677",
+        "1225036258",
+        "1225131150",
+        "1225493321"
+      ]
+    }
+  },
+  "gold_hash_before": "3233111742f2b3599fc8028470e9edf8d46a1a8d482b7cd646c020302c3118e7",
+  "runs": [
+    {
+      "bundle_status": "completed",
+      "bundle_reason": null,
+      "rows": [
+        {
+          "id": "S01",
+          "sample": null,
+          "sentence_id": 1,
+          "quote": "中国移动2025年营业收入为10,501.87亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S02",
+          "sample": null,
+          "sentence_id": 2,
+          "quote": "中国移动2025年归属于母公司股东的净利润为1,370.95亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S03",
+          "sample": null,
+          "sentence_id": 3,
+          "quote": "紫金矿业2025年营业收入为3,490.79亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S04",
+          "sample": null,
+          "sentence_id": 4,
+          "quote": "紫金矿业2025年归属于上市公司股东的净利润为517.77亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S05",
+          "sample": null,
+          "sentence_id": 5,
+          "quote": "中国移动2026年第一季度营业收入为2,665亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S06",
+          "sample": null,
+          "sentence_id": 6,
+          "quote": "中国移动2026年第一季度归属于母公司股东的净利润为293亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S07",
+          "sample": null,
+          "sentence_id": 7,
+          "quote": "紫金矿业2026年上半年营业收入为1,941.78亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S08",
+          "sample": null,
+          "sentence_id": 8,
+          "quote": "紫金矿业2026年上半年归属于上市公司股东的净利润为391.70亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S09",
+          "sample": null,
+          "sentence_id": 9,
+          "quote": "中国移动2025年末总资产为20,928.82亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "review",
+          "reason_code": "unsupported_period",
+          "reason": "季度/半年期间没有明确起止，不能与全年值混比",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": false,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S10",
+          "sample": null,
+          "sentence_id": 10,
+          "quote": "紫金矿业2025年经营活动产生的现金流量净额为754.30亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-OCF"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S11",
+          "sample": null,
+          "sentence_id": 11,
+          "quote": "中国移动2025年营业收入为10,800亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S12",
+          "sample": null,
+          "sentence_id": 12,
+          "quote": "中国移动2025年归属于母公司股东的净利润为1,400亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S13",
+          "sample": null,
+          "sentence_id": 13,
+          "quote": "中国移动2026年第一季度营业收入为2,500亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S14",
+          "sample": null,
+          "sentence_id": 14,
+          "quote": "中国移动2026年第一季度归属于母公司股东的净利润为306亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2026Q1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S15",
+          "sample": null,
+          "sentence_id": 15,
+          "quote": "紫金矿业2025年营业收入为3,036.40亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S16",
+          "sample": null,
+          "sentence_id": 16,
+          "quote": "紫金矿业2025年归属于上市公司股东的净利润为320.51亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S17",
+          "sample": null,
+          "sentence_id": 17,
+          "quote": "紫金矿业2026年上半年营业收入为1,677.11亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S18",
+          "sample": null,
+          "sentence_id": 18,
+          "quote": "紫金矿业2026年上半年归属于上市公司股东的净利润为232.92亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S19",
+          "sample": null,
+          "sentence_id": 19,
+          "quote": "中国移动2025年合并口径归属于母公司股东的净利润为1,370.95亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "口径冲突／需人工复核"
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "scope 不明确或不一致",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "scope_conflict",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S20",
+          "sample": null,
+          "sentence_id": 20,
+          "quote": "紫金矿业2025年母公司口径营业收入为3,490.79亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "口径冲突／需人工复核"
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "scope 不明确或不一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "scope_conflict",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S21",
+          "sample": null,
+          "sentence_id": 21,
+          "quote": "中国移动2026年第一季度营业收入为2,665亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S22",
+          "sample": null,
+          "sentence_id": 22,
+          "quote": "紫金矿业2026年上半年营业收入为1,941.78亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S23",
+          "sample": null,
+          "sentence_id": 23,
+          "quote": "中国移动2024年营业收入为10,407.59亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2024,
+              "model_year": 2024,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S24",
+          "sample": null,
+          "sentence_id": 24,
+          "quote": "紫金矿业2024年归属于上市公司股东的净利润为320.51亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2024,
+              "model_year": 2024,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S25",
+          "sample": null,
+          "sentence_id": 25,
+          "quote": "中国移动2025年上半年营业收入为5,000亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S26",
+          "sample": null,
+          "sentence_id": 26,
+          "quote": "紫金矿业2025年第一季度营业收入为800亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S27",
+          "sample": null,
+          "sentence_id": 27,
+          "quote": "预计中国移动2027年营业收入将继续增长。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "forecast_marked_only",
+          "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S28",
+          "sample": null,
+          "sentence_id": 28,
+          "quote": "紫金矿业铜业务仍是公司未来增长的重要来源。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "cross_company_comparison",
+          "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S29",
+          "sample": null,
+          "sentence_id": 29,
+          "quote": "中国移动2026年第一季度经营表现整体稳健。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "cross_company_comparison",
+          "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        },
+        {
+          "id": "S30",
+          "sample": null,
+          "sentence_id": 30,
+          "quote": "若铜价维持高位，紫金矿业盈利能力可能继续改善。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "forecast_marked_only",
+          "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 753.843,
+          "local_ms": 5.791
+        }
+      ],
+      "atomic_summary": {
+        "total": 30,
+        "judged": 19,
+        "correct": 19,
+        "wrong": 0,
+        "abstain": 7,
+        "abstain_expected": 6,
+        "abstain_avoidable": 1,
+        "omitted": 0,
+        "timeout": 0,
+        "failed": 0,
+        "model_track": 4,
+        "expected_judge": 20,
+        "citation": 21,
+        "tp": 8,
+        "fp": 0,
+        "tn": 11,
+        "fn": 0,
+        "extra_predictions": 0,
+        "accuracy": 1.0,
+        "error_rate": 0.0,
+        "correct_coverage": 0.95,
+        "precision": 1.0,
+        "recall": 1.0,
+        "false_positive_rate": 0.0,
+        "coverage": 0.8667,
+        "completion": "completed",
+        "unfinished_sentences": 0,
+        "failed_chunks": 0,
+        "attempts": 0,
+        "tokens_charged": 0,
+        "tool_calls": 18,
+        "active_seconds": 22.7526
+      },
+      "extras": [],
+      "run": 1,
+      "mode": "live",
+      "elapsed_ms": 22789.032,
+      "model_ms": 22615.303,
+      "local_ms": 173.729,
+      "run_dir": "results/holdout/p0-baseline-live-v2-20261017/live-run-01"
+    },
+    {
+      "bundle_status": "completed",
+      "bundle_reason": null,
+      "rows": [
+        {
+          "id": "S01",
+          "sample": null,
+          "sentence_id": 1,
+          "quote": "中国移动2025年营业收入为10,501.87亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S02",
+          "sample": null,
+          "sentence_id": 2,
+          "quote": "中国移动2025年归属于母公司股东的净利润为1,370.95亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S03",
+          "sample": null,
+          "sentence_id": 3,
+          "quote": "紫金矿业2025年营业收入为3,490.79亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S04",
+          "sample": null,
+          "sentence_id": 4,
+          "quote": "紫金矿业2025年归属于上市公司股东的净利润为517.77亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S05",
+          "sample": null,
+          "sentence_id": 5,
+          "quote": "中国移动2026年第一季度营业收入为2,665亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S06",
+          "sample": null,
+          "sentence_id": 6,
+          "quote": "中国移动2026年第一季度归属于母公司股东的净利润为293亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S07",
+          "sample": null,
+          "sentence_id": 7,
+          "quote": "紫金矿业2026年上半年营业收入为1,941.78亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S08",
+          "sample": null,
+          "sentence_id": 8,
+          "quote": "紫金矿业2026年上半年归属于上市公司股东的净利润为391.70亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S09",
+          "sample": null,
+          "sentence_id": 9,
+          "quote": "中国移动2025年末总资产为20,928.82亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "review",
+          "reason_code": "unsupported_period",
+          "reason": "季度/半年期间没有明确起止，不能与全年值混比",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": false,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S10",
+          "sample": null,
+          "sentence_id": 10,
+          "quote": "紫金矿业2025年经营活动产生的现金流量净额为754.30亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-OCF"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S11",
+          "sample": null,
+          "sentence_id": 11,
+          "quote": "中国移动2025年营业收入为10,800亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S12",
+          "sample": null,
+          "sentence_id": 12,
+          "quote": "中国移动2025年归属于母公司股东的净利润为1,400亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S13",
+          "sample": null,
+          "sentence_id": 13,
+          "quote": "中国移动2026年第一季度营业收入为2,500亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S14",
+          "sample": null,
+          "sentence_id": 14,
+          "quote": "中国移动2026年第一季度归属于母公司股东的净利润为306亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2026Q1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S15",
+          "sample": null,
+          "sentence_id": 15,
+          "quote": "紫金矿业2025年营业收入为3,036.40亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S16",
+          "sample": null,
+          "sentence_id": 16,
+          "quote": "紫金矿业2025年归属于上市公司股东的净利润为320.51亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S17",
+          "sample": null,
+          "sentence_id": 17,
+          "quote": "紫金矿业2026年上半年营业收入为1,677.11亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S18",
+          "sample": null,
+          "sentence_id": 18,
+          "quote": "紫金矿业2026年上半年归属于上市公司股东的净利润为232.92亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S19",
+          "sample": null,
+          "sentence_id": 19,
+          "quote": "中国移动2025年合并口径归属于母公司股东的净利润为1,370.95亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "口径冲突／需人工复核"
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "scope 不明确或不一致",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "scope_conflict",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S20",
+          "sample": null,
+          "sentence_id": 20,
+          "quote": "紫金矿业2025年母公司口径营业收入为3,490.79亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "口径冲突／需人工复核"
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "scope 不明确或不一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "scope_conflict",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S21",
+          "sample": null,
+          "sentence_id": 21,
+          "quote": "中国移动2026年第一季度营业收入为2,665亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S22",
+          "sample": null,
+          "sentence_id": 22,
+          "quote": "紫金矿业2026年上半年营业收入为1,941.78亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S23",
+          "sample": null,
+          "sentence_id": 23,
+          "quote": "中国移动2024年营业收入为10,407.59亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2024,
+              "model_year": 2024,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S24",
+          "sample": null,
+          "sentence_id": 24,
+          "quote": "紫金矿业2024年归属于上市公司股东的净利润为320.51亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2024,
+              "model_year": 2024,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S25",
+          "sample": null,
+          "sentence_id": 25,
+          "quote": "中国移动2025年上半年营业收入为5,000亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S26",
+          "sample": null,
+          "sentence_id": 26,
+          "quote": "紫金矿业2025年第一季度营业收入为800亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S27",
+          "sample": null,
+          "sentence_id": 27,
+          "quote": "预计中国移动2027年营业收入将继续增长。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "forecast_marked_only",
+          "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S28",
+          "sample": null,
+          "sentence_id": 28,
+          "quote": "紫金矿业铜业务仍是公司未来增长的重要来源。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "cross_company_comparison",
+          "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S29",
+          "sample": null,
+          "sentence_id": 29,
+          "quote": "中国移动2026年第一季度经营表现整体稳健。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "cross_company_comparison",
+          "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        },
+        {
+          "id": "S30",
+          "sample": null,
+          "sentence_id": 30,
+          "quote": "若铜价维持高位，紫金矿业盈利能力可能继续改善。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "forecast_marked_only",
+          "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 759.401,
+          "local_ms": 8.607
+        }
+      ],
+      "atomic_summary": {
+        "total": 30,
+        "judged": 19,
+        "correct": 19,
+        "wrong": 0,
+        "abstain": 7,
+        "abstain_expected": 6,
+        "abstain_avoidable": 1,
+        "omitted": 0,
+        "timeout": 0,
+        "failed": 0,
+        "model_track": 4,
+        "expected_judge": 20,
+        "citation": 21,
+        "tp": 8,
+        "fp": 0,
+        "tn": 11,
+        "fn": 0,
+        "extra_predictions": 0,
+        "accuracy": 1.0,
+        "error_rate": 0.0,
+        "correct_coverage": 0.95,
+        "precision": 1.0,
+        "recall": 1.0,
+        "false_positive_rate": 0.0,
+        "coverage": 0.8667,
+        "completion": "completed",
+        "unfinished_sentences": 0,
+        "failed_chunks": 0,
+        "attempts": 0,
+        "tokens_charged": 0,
+        "tool_calls": 17,
+        "active_seconds": 23.0058
+      },
+      "extras": [],
+      "run": 2,
+      "mode": "live",
+      "elapsed_ms": 23040.22,
+      "model_ms": 22782.016,
+      "local_ms": 258.204,
+      "run_dir": "results/holdout/p0-baseline-live-v2-20261017/live-run-02"
+    },
+    {
+      "bundle_status": "completed",
+      "bundle_reason": null,
+      "rows": [
+        {
+          "id": "S01",
+          "sample": null,
+          "sentence_id": 1,
+          "quote": "中国移动2025年营业收入为10,501.87亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S02",
+          "sample": null,
+          "sentence_id": 2,
+          "quote": "中国移动2025年归属于母公司股东的净利润为1,370.95亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S03",
+          "sample": null,
+          "sentence_id": 3,
+          "quote": "紫金矿业2025年营业收入为3,490.79亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S04",
+          "sample": null,
+          "sentence_id": 4,
+          "quote": "紫金矿业2025年归属于上市公司股东的净利润为517.77亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S05",
+          "sample": null,
+          "sentence_id": 5,
+          "quote": "中国移动2026年第一季度营业收入为2,665亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S06",
+          "sample": null,
+          "sentence_id": 6,
+          "quote": "中国移动2026年第一季度归属于母公司股东的净利润为293亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S07",
+          "sample": null,
+          "sentence_id": 7,
+          "quote": "紫金矿业2026年上半年营业收入为1,941.78亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S08",
+          "sample": null,
+          "sentence_id": 8,
+          "quote": "紫金矿业2026年上半年归属于上市公司股东的净利润为391.70亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S09",
+          "sample": null,
+          "sentence_id": 9,
+          "quote": "中国移动2025年末总资产为20,928.82亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "review",
+          "reason_code": "unsupported_period",
+          "reason": "季度/半年期间没有明确起止，不能与全年值混比",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": false,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S10",
+          "sample": null,
+          "sentence_id": 10,
+          "quote": "紫金矿业2025年经营活动产生的现金流量净额为754.30亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-OCF"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S11",
+          "sample": null,
+          "sentence_id": 11,
+          "quote": "中国移动2025年营业收入为10,800亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S12",
+          "sample": null,
+          "sentence_id": 12,
+          "quote": "中国移动2025年归属于母公司股东的净利润为1,400亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S13",
+          "sample": null,
+          "sentence_id": 13,
+          "quote": "中国移动2026年第一季度营业收入为2,500亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "incorrect_value",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S14",
+          "sample": null,
+          "sentence_id": 14,
+          "quote": "中国移动2026年第一季度归属于母公司股东的净利润为306亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-CM-2026Q1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S15",
+          "sample": null,
+          "sentence_id": 15,
+          "quote": "紫金矿业2025年营业收入为3,036.40亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S16",
+          "sample": null,
+          "sentence_id": 16,
+          "quote": "紫金矿业2025年归属于上市公司股东的净利润为320.51亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S17",
+          "sample": null,
+          "sentence_id": 17,
+          "quote": "紫金矿业2026年上半年营业收入为1,677.11亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S18",
+          "sample": null,
+          "sentence_id": 18,
+          "quote": "紫金矿业2026年上半年归属于上市公司股东的净利润为232.92亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": true
+          },
+          "outcome": "judged",
+          "status": "确认错误",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "可比口径下陈述值与证据或计算结果不同",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "year_mismatch",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S19",
+          "sample": null,
+          "sentence_id": 19,
+          "quote": "中国移动2025年合并口径归属于母公司股东的净利润为1,370.95亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "口径冲突／需人工复核"
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "scope 不明确或不一致",
+          "evidence_ids": [
+            "HO-CM-2025-PNP"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "scope_conflict",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2025-annual-summary",
+              "page": 7,
+              "locator": "data/holdout/materials/600941-2025-annual-summary.pdf#page=7"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S20",
+          "sample": null,
+          "sentence_id": 20,
+          "quote": "紫金矿业2025年母公司口径营业收入为3,490.79亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "口径冲突／需人工复核"
+          },
+          "outcome": "abstain",
+          "status": "口径冲突／需人工复核",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "scope 不明确或不一致",
+          "evidence_ids": [
+            "HO-ZJ-2025-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "scope_conflict",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2025-annual-summary",
+              "page": 4,
+              "locator": "data/holdout/materials/601899-2025-annual-summary.pdf#page=4"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S21",
+          "sample": null,
+          "sentence_id": 21,
+          "quote": "中国移动2026年第一季度营业收入为2,665亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-CM-2026Q1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "600941-2026-q1",
+              "page": 2,
+              "locator": "data/holdout/materials/600941-2026-q1.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S22",
+          "sample": null,
+          "sentence_id": 22,
+          "quote": "紫金矿业2026年上半年营业收入为1,941.78亿元。",
+          "expect": {
+            "kind": "judge",
+            "error": false
+          },
+          "outcome": "judged",
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "HO-ZJ-2026H1-REV"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2026,
+              "model_year": 2026,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2026"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": false,
+          "reason_category": "correct_support",
+          "evidence_locations": [
+            {
+              "document_id": "601899-2026-interim-summary",
+              "page": 2,
+              "locator": "data/holdout/materials/601899-2026-interim-summary.pdf#page=2"
+            }
+          ],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S23",
+          "sample": null,
+          "sentence_id": 23,
+          "quote": "中国移动2024年营业收入为10,407.59亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2024,
+              "model_year": 2024,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S24",
+          "sample": null,
+          "sentence_id": 24,
+          "quote": "紫金矿业2024年归属于上市公司股东的净利润为320.51亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2024,
+              "model_year": 2024,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S25",
+          "sample": null,
+          "sentence_id": 25,
+          "quote": "中国移动2025年上半年营业收入为5,000亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600941",
+              "sentence_codes": [
+                "600941"
+              ],
+              "ignored_mentions": [],
+              "code": "600941",
+              "basis": "sentence_company",
+              "matched": "中国移动",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S26",
+          "sample": null,
+          "sentence_id": 26,
+          "quote": "紫金矿业2025年第一季度营业收入为800亿元。",
+          "expect": {
+            "kind": "status",
+            "status": "证据不足"
+          },
+          "outcome": "abstain",
+          "status": "证据不足",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "未找到唯一匹配的公司、年度、指标与文件版本",
+          "evidence_ids": [],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "601899",
+              "sentence_codes": [
+                "601899"
+              ],
+              "ignored_mentions": [],
+              "code": "601899",
+              "basis": "sentence_company",
+              "matched": "紫金矿业",
+              "position": 0,
+              "note": null
+            },
+            "period": {
+              "year": 2025,
+              "model_year": 2025,
+              "conflict": false,
+              "located_in": "quote",
+              "matched_text": "2025"
+            }
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "material_not_loaded",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S27",
+          "sample": null,
+          "sentence_id": 27,
+          "quote": "预计中国移动2027年营业收入将继续增长。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "forecast_marked_only",
+          "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S28",
+          "sample": null,
+          "sentence_id": 28,
+          "quote": "紫金矿业铜业务仍是公司未来增长的重要来源。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "cross_company_comparison",
+          "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S29",
+          "sample": null,
+          "sentence_id": 29,
+          "quote": "中国移动2026年第一季度经营表现整体稳健。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "cross_company_comparison",
+          "reason": "跨公司/跨库比较：未提取到双侧公司与方向，或超出已加载证据，仅作模型判断保留",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        },
+        {
+          "id": "S30",
+          "sample": null,
+          "sentence_id": 30,
+          "quote": "若铜价维持高位，紫金矿业盈利能力可能继续改善。",
+          "expect": {
+            "kind": "nonverdict"
+          },
+          "outcome": "model_track",
+          "status": "模型判断",
+          "track": "model",
+          "reason_code": "forecast_marked_only",
+          "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+          "evidence_ids": [],
+          "grounding": {
+            "company": null,
+            "period": null
+          },
+          "ok": true,
+          "abstention_allowed": true,
+          "reason_category": "nonverdict",
+          "evidence_locations": [],
+          "model_ms": 751.662,
+          "local_ms": 5.511
+        }
+      ],
+      "atomic_summary": {
+        "total": 30,
+        "judged": 19,
+        "correct": 19,
+        "wrong": 0,
+        "abstain": 7,
+        "abstain_expected": 6,
+        "abstain_avoidable": 1,
+        "omitted": 0,
+        "timeout": 0,
+        "failed": 0,
+        "model_track": 4,
+        "expected_judge": 20,
+        "citation": 21,
+        "tp": 8,
+        "fp": 0,
+        "tn": 11,
+        "fn": 0,
+        "extra_predictions": 0,
+        "accuracy": 1.0,
+        "error_rate": 0.0,
+        "correct_coverage": 0.95,
+        "precision": 1.0,
+        "recall": 1.0,
+        "false_positive_rate": 0.0,
+        "coverage": 0.8667,
+        "completion": "completed",
+        "unfinished_sentences": 0,
+        "failed_chunks": 0,
+        "attempts": 0,
+        "tokens_charged": 0,
+        "tool_calls": 17,
+        "active_seconds": 22.6804
+      },
+      "extras": [],
+      "run": 3,
+      "mode": "live",
+      "elapsed_ms": 22715.182,
+      "model_ms": 22549.857,
+      "local_ms": 165.325,
+      "run_dir": "results/holdout/p0-baseline-live-v2-20261017/live-run-03"
+    }
+  ]
+}
