@@ -459,6 +459,7 @@ def render_markdown(metrics: dict, consistency: dict, meta: dict) -> str:
     """报告模板只允许称“留出集回归”；无独立复核时明确写适用范围。"""
     independent = bool(meta.get("independent_review"))
     run_count = int(meta.get("run_count") or 0)
+    metric_scope = f"{run_count} 轮累计" if run_count else "本次"
     lines = [
         "# P0 留出集回归基线",
         "",
@@ -473,12 +474,12 @@ def render_markdown(metrics: dict, consistency: dict, meta: dict) -> str:
         lines.append("- 本轮未进行独立人工复核，不能表述为独立盲测成绩。")
     lines += [
         "",
-        "## 统一指标",
+        f"## 统一指标（{metric_scope}）",
         "",
         "| 指标 | 值 | 口径 |",
         "|---|---:|---|",
         f"| 判定准确率 | {_display(metrics.get('judgment_accuracy'))} | 正确结论 / 全部金标陈述 |",
-        f"| 正确判定数 | {metrics.get('correct_judgments', 0)} | 仅统计明确给出支持或确认错误的句子 |",
+        f"| 正确判定数（{metric_scope}） | {metrics.get('correct_judgments', 0)} | 仅统计明确给出支持或确认错误的句子 |",
         f"| 错误召回率 | {_display(metrics.get('error_recall'))} | 确认错误命中 / 金标确认错误 |",
         f"| 误报率 | {_display(metrics.get('false_positive_rate'))} | 正确句被误判为确认错误 / 金标正确句 |",
         f"| 正确覆盖率 | {_display(metrics.get('correct_coverage'))} | 正确明确判定或合理弃答 / 全部金标陈述 |",

@@ -287,6 +287,7 @@ class DatasetAndReportTests(unittest.TestCase):
         self.assertIn("未进行独立人工复核", text)
         self.assertNotIn("盲测准确率", text)
         self.assertIn("实际 3 轮", text)
+        self.assertIn("统一指标（3 轮累计）", text)
         self.assertNotIn("三次一致性", text)
 
     def test_single_run_report_does_not_claim_three_round_consistency(self):
