@@ -302,6 +302,32 @@ def validate_gold(gold: dict, *, document_ids: set[str]) -> list[str]:
     return issues
 
 
+def rows_from_scored(scored: dict, statements: list[dict], facts: list[dict], *,
+                       model_ms: float | None = None,
+                       local_ms: float | None = None) -> list[dict]:
+    """把现有原子评分行补齐 P0 指标需要的金标口径与可回查位置。"""
+    statement_index = {item.get("id"): item for item in statements}
+    fact_index = {item.get("evidence_id"): item for item in facts}
+    rows = []
+    for original in scored.get("rows") or []:
+        row = copy.deepcopy(original)
+        statement = statement_index.get(row.get("id")) or {}
+        row["abstention_allowed"] = bool(statement.get("abstention_allowed"))
+        row["reason_category"] = statement.get("reason_category")
+        locations = []
+        for evidence_id in row.get("evidence_ids") or []:
+            fact = fact_index.get(evidence_id)
+            if not fact or not fact.get("document_id") or not fact.get("page"):
+                continue
+            locator = f"{fact.get('source_file') or fact.get('document_id')}#page={fact['page']}"
+            locations.append({"document_id": fact["document_id"], "page": fact["page"],
+                              "locator": locator})
+        row["evidence_locations"] = locations
+        row["model_ms"] = model_ms
+        row["local_ms"] = local_ms
+        rows.append(row)
+    return rows
+
 def runtime_payload(gold: dict) -> tuple[str, list[dict]]:
     """只生成 Agent 可见的草稿与解析项，不带任何评分侧字段。"""
     statements = gold.get("statements") or []
@@ -422,6 +448,7 @@ __all__ = [
     "compare_runs",
     "render_markdown",
     "runtime_payload",
+    "rows_from_scored",
     "sha256_file",
     "unified_metrics",
     "validate_gold",

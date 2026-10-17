@@ -13,6 +13,7 @@ from holdout_eval import (  # noqa: E402
     check_leakage,
     compare_runs,
     render_markdown,
+    rows_from_scored,
     runtime_payload,
     unified_metrics,
     validate_gold,
@@ -201,6 +202,21 @@ class LeakageTests(unittest.TestCase):
 
 
 class DatasetAndReportTests(unittest.TestCase):
+    def test_scored_rows_are_hydrated_with_gold_and_citation_locations(self):
+        scored = {"rows": [{"id": "S1", "outcome": "judged", "status": "证据支持",
+                                  "reason_code": "deterministic_check", "expect": {"kind": "judge", "error": False},
+                                  "evidence_ids": ["E1"]}]}
+        statements = [{"id": "S1", "abstention_allowed": False,
+                       "reason_category": "correct_support"}]
+        facts = [{"evidence_id": "E1", "document_id": "D1", "page": 7,
+                  "source_file": "data/holdout/materials/d1.pdf"}]
+        rows = rows_from_scored(scored, statements, facts, model_ms=12, local_ms=3)
+        self.assertEqual(rows[0]["reason_category"], "correct_support")
+        self.assertEqual(rows[0]["evidence_locations"], [{"document_id": "D1", "page": 7,
+                                                          "locator": "data/holdout/materials/d1.pdf#page=7"}])
+        self.assertEqual(rows[0]["model_ms"], 12)
+        self.assertEqual(rows[0]["local_ms"], 3)
+
     def test_verify_dataset_checks_material_and_gold_hashes(self):
         with tempfile.TemporaryDirectory(prefix="holdout_eval_") as temp:
             root = Path(temp)
