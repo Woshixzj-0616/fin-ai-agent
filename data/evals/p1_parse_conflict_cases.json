@@ -1,0 +1,179 @@
+{
+  "version": "p1-parse-conflicts-v1",
+  "cases": [
+    {
+      "id": "P1-01",
+      "name": "句内唯一公司",
+      "sentence": "2024年，贵州茅台营业收入为100元。",
+      "expect": {"resolution": "unique", "company": "600519"}
+    },
+    {
+      "id": "P1-02",
+      "name": "公司代码唯一",
+      "sentence": "600519在2024年营业收入为100元。",
+      "item": {"company_name": "600519"},
+      "expect": {"resolution": "unique", "company": "600519"}
+    },
+    {
+      "id": "P1-03",
+      "name": "上句唯一主体",
+      "sentence": "归母净利润为50元。",
+      "draft": "2024年贵州茅台营业收入为100元。归母净利润为50元。",
+      "item": {"metric_text": "归母净利润", "metric": "parent_net_profit", "scope": "parent_shareholders", "value": "50"},
+      "expect": {"resolution": "unique", "company": "600519"}
+    },
+    {
+      "id": "P1-04",
+      "name": "材料中新公司全名",
+      "sentence": "2024年示例科技股份有限公司营业收入为100元。",
+      "item": {"company_name": "示例科技股份有限公司"},
+      "expect": {"resolution": "unique", "company": "300999"}
+    },
+    {
+      "id": "P1-05",
+      "name": "已知公司未加载",
+      "sentence": "2024年招商银行营业收入为100元。",
+      "item": {"company_name": "招商银行"},
+      "expect": {"resolution": "materials_missing", "candidate": "600036"}
+    },
+    {
+      "id": "P1-06",
+      "name": "代码公司未加载",
+      "sentence": "600036在2024年营业收入为100元。",
+      "item": {"company_name": "600036"},
+      "expect": {"resolution": "materials_missing", "candidate": "600036"}
+    },
+    {
+      "id": "P1-07",
+      "name": "同句双公司无字段",
+      "sentence": "贵州茅台与五粮液2024年营业收入分别为100元与80元。",
+      "item": {"company_name": null},
+      "expect": {"resolution": "ambiguous_company"}
+    },
+    {
+      "id": "P1-08",
+      "name": "同句双公司模型不得强选",
+      "sentence": "贵州茅台与五粮液2024年营业收入分别为100元与80元。",
+      "item": {"company_name": "贵州茅台"},
+      "expect": {"resolution": "ambiguous_company", "forbid_company": true}
+    },
+    {
+      "id": "P1-09",
+      "name": "上句双公司无法继承",
+      "sentence": "营业收入为100元。",
+      "draft": "贵州茅台与五粮液在2024年披露数据。营业收入为100元。",
+      "item": {"company_name": "贵州茅台"},
+      "expect": {"resolution": "ambiguous_company", "forbid_company": true}
+    },
+    {
+      "id": "P1-10",
+      "name": "年度字段配半年原文",
+      "sentence": "2024年上半年贵州茅台营业收入为100元。",
+      "item": {"period_kind": "annual"},
+      "expect": {"resolution": "period_conflict"}
+    },
+    {
+      "id": "P1-11",
+      "name": "年度字段配季度原文",
+      "sentence": "贵州茅台2024年第一季度营业收入为100元。",
+      "item": {"period_kind": "annual"},
+      "expect": {"resolution": "period_conflict"}
+    },
+    {
+      "id": "P1-12",
+      "name": "模型年份与原文冲突",
+      "sentence": "2024年贵州茅台营业收入为100元。",
+      "item": {"period_year": 2023},
+      "expect": {"resolution": "period_conflict"}
+    },
+    {
+      "id": "P1-13",
+      "name": "同句多年份未说明角色",
+      "sentence": "2023年和2024年贵州茅台营业收入为100元。",
+      "expect": {"resolution": "period_conflict"}
+    },
+    {
+      "id": "P1-14",
+      "name": "相对期间无定位依据",
+      "sentence": "报告期内贵州茅台营业收入为100元。",
+      "expect": {"resolution": "period_conflict"}
+    },
+    {
+      "id": "P1-15",
+      "name": "万元被字段写成元",
+      "sentence": "2024年贵州茅台营业收入为100万元。",
+      "item": {"unit": "元"},
+      "expect": {"resolution": "unit_conflict"}
+    },
+    {
+      "id": "P1-16",
+      "name": "千元被字段写成万元",
+      "sentence": "2024年贵州茅台营业收入为100千元。",
+      "item": {"unit": "万元"},
+      "expect": {"resolution": "unit_conflict"}
+    },
+    {
+      "id": "P1-17",
+      "name": "亿元被字段写成万元",
+      "sentence": "2024年贵州茅台营业收入为5亿元。",
+      "item": {"value": "5", "unit": "万元"},
+      "expect": {"resolution": "unit_conflict"}
+    },
+    {
+      "id": "P1-18",
+      "name": "归母利润被写成合并口径",
+      "sentence": "2024年贵州茅台归母净利润为100元。",
+      "item": {"metric_text": "归母净利润", "metric": "parent_net_profit", "scope": "consolidated"},
+      "expect": {"resolution": "scope_conflict"}
+    },
+    {
+      "id": "P1-19",
+      "name": "合并口径被写成归母口径",
+      "sentence": "2024年贵州茅台合并口径营业收入为100元。",
+      "item": {"scope": "parent_shareholders"},
+      "expect": {"resolution": "scope_conflict"}
+    },
+    {
+      "id": "P1-20",
+      "name": "上市公司股东口径被写成合并",
+      "sentence": "2024年贵州茅台归属于上市公司股东的净利润为100元。",
+      "item": {"metric_text": "归属于上市公司股东的净利润", "metric": "parent_net_profit", "scope": "consolidated"},
+      "expect": {"resolution": "scope_conflict"}
+    },
+    {
+      "id": "P1-21",
+      "name": "母公司报表口径被写成合并",
+      "sentence": "2024年贵州茅台母公司营业收入为100元。",
+      "item": {"scope": "consolidated"},
+      "expect": {"resolution": "scope_conflict"}
+    },
+    {
+      "id": "P1-22",
+      "name": "原文公司优先于模型字段",
+      "sentence": "2024年五粮液营业收入为80元。",
+      "item": {"company_name": "贵州茅台", "value": "80"},
+      "expect": {"resolution": "unique", "company": "000858", "conflict": "company"}
+    },
+    {
+      "id": "P1-23",
+      "name": "模型公司无法在原文定位",
+      "sentence": "2024年营业收入为100元。",
+      "item": {"company_name": "贵州茅台"},
+      "expect": {"resolution": "candidates", "forbid_company": true}
+    },
+    {
+      "id": "P1-24",
+      "name": "未知公司无候选",
+      "sentence": "2024年某某科技营业收入为100元。",
+      "item": {"company_name": "某某科技"},
+      "expect": {"resolution": "candidates", "forbid_company": true, "empty_candidates": true}
+    },
+    {
+      "id": "P1-25",
+      "name": "单位直接对应不误报",
+      "sentence": "2024年贵州茅台营业收入为100万元。",
+      "item": {"unit": "万元"},
+      "expect": {"resolution": "unique", "company": "600519"}
+    }
+  ]
+}
