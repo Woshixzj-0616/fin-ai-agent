@@ -164,9 +164,9 @@ def _reported_yoy_for(row: dict, rows: list[dict], label: str) -> dict | None:
     return bare
 
 
-def extract_via_words(page, report_year, material, currency_note, carry_cols=None):
+def extract_via_words(page, report_year, material, currency_note, carry_cols=None, textpage=None):
     """words 级抽一页，返回 (facts, carry_cols)。"""
-    rows = page_rows(page)
+    rows = page_rows(page, textpage=textpage)
     for r in rows:
         for c in r["cells"]:
             v = to_num(c["text"])
@@ -316,18 +316,26 @@ def extract_via_words(page, report_year, material, currency_note, carry_cols=Non
     return facts, tail_carry(rows, report_year)
 
 
-def extract_words_document(document, material: dict, currency_note) -> list[dict]:
+def _page_at(document, pages, index):
+    return pages[index] if pages and index in pages else document[index]
+
+
+def extract_words_document(document, material: dict, currency_note, textpages=None, pages=None) -> list[dict]:
     """扫全篇主要会计数据页，words 级合并提取。"""
     merged: dict[tuple, dict] = {}
     carry, prev_used = None, False
     for i in range(len(document)):
-        content = document[i].get_text()
+        page = _page_at(document, pages, i)
+        textpage = (textpages or {}).get(i)
+        content = (page.get_text("text", textpage=textpage)
+                   if textpage is not None else page.get_text())
         hit = ("主要会计数据" in content) or ("主要财务指标" in content)
         if not hit and not prev_used:
             carry = None
             continue
-        found, carry = extract_via_words(document[i], material["report_year"],
-                                         material, currency_note, carry if prev_used else None)
+        found, carry = extract_via_words(page, material["report_year"],
+                                         material, currency_note, carry if prev_used else None,
+                                         textpage=textpage)
         if not found:
             prev_used = False
             continue
@@ -344,14 +352,17 @@ def extract_words_document(document, material: dict, currency_note) -> list[dict
 TOTAL_REV_LABEL_RE = re.compile(r"^(?:一、)?营业总收入")
 
 
-def extract_total_revenue(document, material: dict, currency_note) -> list[dict]:
+def extract_total_revenue(document, material: dict, currency_note, textpages=None, pages=None) -> list[dict]:
     """从合并利润表补 `营业总收入`。摘要表常不列这一行（茅台 2024 差营业收入 32.4 亿）。"""
     facts = []
     for index, page in enumerate(document):
-        content = norm(page.get_text())
+        page = _page_at(document, pages, index)
+        textpage = (textpages or {}).get(index)
+        content = norm(page.get_text("text", textpage=textpage)
+                       if textpage is not None else page.get_text())
         if "营业总收入" not in content or "利润表" not in content:
             continue
-        rows = page_rows(page)
+        rows = page_rows(page, textpage=textpage)
         for r in rows:
             for c in r["cells"]:
                 c["num"] = to_num(c["text"])

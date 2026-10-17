@@ -6,13 +6,14 @@ import tempfile
 from pathlib import Path
 
 import re
+import pymupdf
 from decimal import Decimal, InvalidOperation
 
 from extraction.catalog import ALIASES
 from extraction.orchestrator import extract_material
 from periods import STOCK_METRICS
 from holdout_eval import verify_dataset
-from materials import Run
+from materials import Run, sha256
 
 
 def _compact(value: str | None) -> str:
@@ -82,6 +83,18 @@ def compare_extraction(targets: list[dict], facts: list[dict],
     explicit_uncertain = 0
     correct = value_correct = period_correct = unit_correct = 0
     page_correct = label_correct = located = missing = 0
+    ocr_review = ocr_candidates = ocr_value_correct = ocr_complete = 0
+    ocr_missing = ocr_policy_violations = 0
+    automatic_total = sum(not target.get("requires_review") for target in targets)
+    ocr_total = len(targets) - automatic_total
+    failures = material_failures or []
+    material_stats = {
+        "failed": len(failures),
+        "automatic_failures": sum(item.get("mode", "automatic") != "ocr" for item in failures),
+        "ocr_failures": sum(item.get("mode") == "ocr" for item in failures),
+        "ocr_materials": sum(item.get("mode") == "ocr" for item in failures),
+    }
+    review_counts = {key: 0 for key in counts}
 
     by_metric: dict[tuple[str, str], list[dict]] = {}
     for fact in facts:
@@ -95,8 +108,13 @@ def compare_extraction(targets: list[dict], facts: list[dict],
             expected_period,
         )
         if actual is None:
-            missing += 1
-            rows.append({"evidence_id": target.get("evidence_id"), "status": "missing"})
+            if target.get("requires_review"):
+                ocr_missing += 1
+                rows.append({"evidence_id": target.get("evidence_id"),
+                             "status": "ocr_review_missing"})
+            else:
+                missing += 1
+                rows.append({"evidence_id": target.get("evidence_id"), "status": "missing"})
             continue
 
         checks = {
@@ -107,25 +125,48 @@ def compare_extraction(targets: list[dict], facts: list[dict],
             "label": _label_matches(target, actual),
             "location": _located(actual),
         }
+        failed = [field for field, passed in checks.items() if not passed]
+        actual_ocr = bool(actual.get("ocr_used")
+                         or "ocr_requires_manual_review" in actual.get("issues", []))
+        if target.get("requires_review") or actual_ocr:
+            for field in failed:
+                review_counts[field] += 1
+            policy_ok = bool(target.get("requires_review")) and actual_ocr
+            if not policy_ok:
+                ocr_policy_violations += 1
+                status = "ocr_policy_violation"
+            else:
+                ocr_candidates += 1
+                ocr_review += 1
+                ocr_value_correct += int(checks["value"])
+                ocr_complete += int(not failed)
+                status = "ocr_review"
+            rows.append({
+                "evidence_id": target.get("evidence_id"),
+                "status": status,
+                "failed_fields": failed,
+                "actual_evidence_id": actual.get("evidence_id"),
+                "actual_page": actual.get("page"),
+                "requires_manual_review": True,
+            })
+            continue
+
         for field, passed in checks.items():
             if passed:
                 if field == "location":
                     located += 1
-                else:
-                    if field == "value":
-                        value_correct += 1
-                    elif field == "period":
-                        period_correct += 1
-                    elif field == "unit":
-                        unit_correct += 1
-                    elif field == "page":
-                        page_correct += 1
-                    elif field == "label":
-                        label_correct += 1
+                elif field == "value":
+                    value_correct += 1
+                elif field == "period":
+                    period_correct += 1
+                elif field == "unit":
+                    unit_correct += 1
+                elif field == "page":
+                    page_correct += 1
+                elif field == "label":
+                    label_correct += 1
             else:
                 counts[field] += 1
-
-        failed = [field for field, passed in checks.items() if not passed]
         if not failed:
             correct += 1
             status = "correct"
@@ -145,7 +186,16 @@ def compare_extraction(targets: list[dict], facts: list[dict],
 
     return {
         "total": len(targets),
+        "automatic_total": automatic_total,
+        "automatic_correct": correct,
         "correct": correct,
+        "ocr_total": ocr_total,
+        "ocr_review": ocr_review,
+        "ocr_candidates": ocr_candidates,
+        "ocr_value_correct": ocr_value_correct,
+        "ocr_complete": ocr_complete,
+        "ocr_missing": ocr_missing,
+        "ocr_policy_violations": ocr_policy_violations,
         "value_correct": value_correct,
         "period_correct": period_correct,
         "unit_correct": unit_correct,
@@ -154,9 +204,11 @@ def compare_extraction(targets: list[dict], facts: list[dict],
         "located": located,
         "missing": missing,
         "material_failures": len(material_failures or []),
+        "material_stats": material_stats,
         "explicit_uncertain": explicit_uncertain,
         "silent_errors": silent_errors,
         "mismatch_counts": counts,
+        "review_mismatch_counts": review_counts,
         "rows": rows,
     }
 
@@ -182,8 +234,30 @@ def run_holdout(root: Path, protocol_path: Path) -> dict:
     metric_order = protocol["target_metrics"]
     targets = [fact for fact in facts_bundle["facts"]
                if fact.get("document_id") in selected_ids and fact.get("metric") in metric_order]
+    automatic_target_count = protocol.get("automatic_target_fact_count", len(targets))
+    if len(targets) != automatic_target_count:
+        raise ValueError(
+            f"P2 自动目标事实数不符：{len(targets)} != {automatic_target_count}")
+
+    derived_specs = protocol.get("derived_materials", [])
+    for spec in derived_specs:
+        source_id = spec["source_document_id"]
+        if source_id not in selected_ids:
+            raise ValueError(f"派生 OCR 材料引用了清单外文档：{source_id}")
+        source_targets = [
+            fact for fact in facts_bundle["facts"]
+            if fact.get("document_id") == source_id
+            and fact.get("page") == spec["source_page"]
+            and fact.get("metric") in spec["target_metrics"]]
+        if len(source_targets) != spec["target_fact_count"]:
+            raise ValueError(
+                f"派生 OCR 目标事实数不符：{len(source_targets)} != {spec['target_fact_count']}")
+        for fact in source_targets:
+            targets.append({**fact, "document_id": spec["document_id"], "page": 1,
+                            "evidence_id": str(fact.get("evidence_id")) + "-scan",
+                            "requires_review": True, "review_reason": "ocr"})
     if len(targets) != protocol["target_fact_count"]:
-        raise ValueError(f"P2 目标事实数不符：{len(targets)} != {protocol['target_fact_count']}")
+        raise ValueError(f"P2 目标事实总数不符：{len(targets)} != {protocol['target_fact_count']}")
 
     extracted = []
     material_runs = []
@@ -197,21 +271,77 @@ def run_holdout(root: Path, protocol_path: Path) -> dict:
                 facts = extract_material(root, material, run)
             except Exception as exc:
                 failure = {"document_id": document_id, "error_type": type(exc).__name__,
+                           "mode": "automatic",
                            "error": str(exc)}
                 failures.append(failure)
                 material_runs.append({**failure, "status": "review"})
                 continue
             extracted.extend(facts)
             material_runs.append({"document_id": document_id, "status": "ok",
+                                  "mode": "automatic", "ocr_used": False,
                                   "fact_count": len(facts),
                                   "needs_review": sum(bool(fact.get("issues")) for fact in facts)})
 
+        for spec in derived_specs:
+            document_id = spec["document_id"]
+            source_material = materials[spec["source_document_id"]]
+            source_path = root / source["path"] / source_material["local_file"]
+            relative = Path("data") / "derived" / f"{document_id}.pdf"
+            scanned_path = Path(temp).resolve() / relative
+            fingerprint = _render_scanned_page(
+                source_path, scanned_path, spec["source_page"], spec["render_scale"])
+            material = {**source_material,
+                        "document_id": document_id,
+                        "local_file": relative.as_posix(),
+                        "sha256": fingerprint,
+                        "document_type": "annual_report_summary_scanned"}
+            try:
+                facts = extract_material(
+                    Path(temp).resolve(), material, run, ocr=True)
+            except Exception as exc:
+                failure = {"document_id": document_id, "mode": "ocr",
+                           "error_type": type(exc).__name__, "error": str(exc)}
+                failures.append(failure)
+                material_runs.append({**failure, "status": "review"})
+                continue
+            extracted.extend(facts)
+            material_runs.append({
+                "document_id": document_id, "mode": "ocr", "status": "ok",
+                "fact_count": len(facts), "ocr_used": True,
+                "needs_review": sum(bool(fact.get("issues")) for fact in facts),
+                "ocr_review_facts": sum(bool(fact.get("ocr_used")) for fact in facts),
+            })
+
     comparison = compare_extraction(targets, extracted, material_failures=failures)
+    material_stats = {
+        "total": len(material_runs),
+        "ok": sum(item["status"] == "ok" for item in material_runs),
+        "failed": len(failures),
+        "automatic_materials": sum(item.get("mode") == "automatic" for item in material_runs),
+        "ocr_materials": sum(item.get("mode") == "ocr" for item in material_runs),
+        "automatic_failures": sum(item.get("mode") == "automatic" for item in failures),
+        "ocr_failures": sum(item.get("mode") == "ocr" for item in failures),
+    }
     comparison.update(
         dataset_verification=verification,
+        material_stats=material_stats,
         material_runs=material_runs,
-        target_document_ids=protocol["material_ids"],
+        target_document_ids=protocol["material_ids"] + [spec["document_id"] for spec in derived_specs],
         target_metrics=metric_order,
         material_failures_detail=failures,
     )
     return {"report": comparison, "facts": extracted, "targets": targets}
+def _render_scanned_page(source: Path, destination: Path, page_number: int,
+                         scale: float) -> str:
+    """把指定原页确定性栅格化为单页扫描 PDF，保留原页版式用于 OCR 挑战。"""
+    with pymupdf.open(source) as document:
+        page = document[page_number - 1]
+        pixmap = page.get_pixmap(matrix=pymupdf.Matrix(scale, scale), alpha=False)
+        scanned = pymupdf.open()
+        target = scanned.new_page(width=page.rect.width, height=page.rect.height)
+        target.insert_image(target.rect, stream=pixmap.tobytes("png"))
+        blob = scanned.tobytes()
+        scanned.close()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(blob)
+    return sha256(blob)

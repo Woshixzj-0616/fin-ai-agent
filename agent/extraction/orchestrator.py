@@ -4,6 +4,7 @@ from __future__ import annotations
 import pymupdf
 from finance import NON_AMOUNT_UNITS, convert, decimal, text
 from materials import Run, sha256, within
+from ocr_runtime import ocr_textpage, page_snapshot
 from words import METRIC_UNIT, norm
 
 from .annual import extract_total_revenue, extract_words_document
@@ -94,10 +95,57 @@ def _scanned_pdf_hint(document, texts: list[str]) -> str | None:
         return ("这份 PDF 几乎没有文字层（像是扫描版/影印件），当前版本不支持 OCR，"
                 "无法抽取财务数据。请提供带文字层的年度报告 PDF；"
                 "可在阅读器里选中表格里的数字来确认是否有文字层。")
-    if nonempty < max(2, pages // 10):
+    if nonempty < max(min(2, pages), pages // 10):
         return (f"PDF 文字层过少（约 {nonempty}/{pages} 页可检索），更像影印件；"
                 "若确认原档如此，请改用官方文字版年报。")
     return None
+
+
+def _ocr_scanned_pages(document, texts: list[str], run: Run, document_id: str):
+    """对低文字层页面做 OCR，返回 textpage 索引与逐页语言证据。"""
+    textpages: dict[int, object] = {}
+    evidence: dict[int, dict] = {}
+    pages: dict[int, object] = {}
+    for page, content in zip(document, texts):
+        if len(norm(content)) >= 20:
+            continue
+        textpage, language_evidence = ocr_textpage(
+            page, run, purpose=f"annual_financial_extraction:{document_id}")
+        textpages[page.number] = textpage
+        evidence[page.number + 1] = language_evidence
+        pages[page.number] = page
+        texts[page.number] = page.get_text("text", textpage=textpage)
+    return textpages, evidence, pages
+
+
+def _mark_ocr_facts(facts: list[dict], document, run: Run, material: dict,
+                    language_evidence: dict[int, dict]) -> None:
+    """OCR 事实只能进入人工复核；快照只保留真正产生事实的页面。"""
+    snapshots: dict[int, tuple[str, str]] = {}
+    for fact in facts:
+        page_number = fact.get("page")
+        if page_number not in language_evidence:
+            continue
+        fact["ocr_used"] = True
+        fact["review_status"] = "needs_review"
+        fact["issues"] = list(dict.fromkeys(
+            fact.get("issues", []) + ["ocr_requires_manual_review"]))
+        if page_number not in snapshots:
+            snapshots[page_number] = page_snapshot(
+                document[page_number - 1], run,
+                prefix=f"{material['document_id']}_ocr")
+        image, fingerprint = snapshots[page_number]
+        fact["ocr_page_image"] = image
+        fact["ocr_evidence"] = {
+            **language_evidence[page_number],
+            "page_image": image,
+            "page_image_sha256": fingerprint,
+        }
+    if snapshots:
+        run.event("ocr_review_required", document_id=material["document_id"],
+                  pages=sorted(snapshots), evidence_count=sum(
+                      fact.get("ocr_used", False) for fact in facts),
+                  reason="ocr_requires_manual_review")
 
 
 def _with_origin(facts: list[dict], material: dict) -> list[dict]:
@@ -110,19 +158,32 @@ def _with_origin(facts: list[dict], material: dict) -> list[dict]:
     return facts
 
 
-def extract_material(root, material: dict, run: Run) -> list[dict]:
+def extract_material(root, material: dict, run: Run, *, ocr: bool = False) -> list[dict]:
+    material = dict(material)
+    material.setdefault("announcement_id", None)
+    material.setdefault("source_url", None)
     path = within(root, root / material["local_file"])
     blob = run.read(path)
     if sha256(blob) != material["sha256"]:
         raise ValueError("提取前指纹复核失败")
     with pymupdf.open(stream=blob, filetype="pdf") as document:
         texts = [page.get_text() for page in document]
+        textpages, ocr_language_evidence = ({}, {})
+        ocr_pages = {}
+        if ocr:
+            textpages, ocr_language_evidence, ocr_pages = _ocr_scanned_pages(
+                document, texts, run, material["document_id"])
         scanned = _scanned_pdf_hint(document, texts)
         if scanned:
-            raise ValueError(scanned)
+            if ocr:
+                raise ValueError("本地 OCR 未识别出可检索文字；请检查扫描清晰度或语言包。")
+            raise ValueError(scanned.replace("当前版本不支持 OCR",
+                                       "可显式启用本地 OCR 后重试"))
         from periods import report_period
         identity = report_period("".join(texts[:10]), material["report_year"])
         if identity["report_kind"] in {"quarter", "half"}:
+            if textpages:
+                raise ValueError("扫描版季报/半年报 OCR 暂未接入，请提供文字版或年度报告摘要。")
             from interim import extract_interim
             return _with_origin(extract_interim(document, material, run), material)
         currency = document_currency(document, texts)
@@ -160,16 +221,20 @@ def extract_material(root, material: dict, run: Run) -> list[dict]:
             grid_facts = []
 
         # ── 通道 2：words 级（稳健） ──
-        words_facts = extract_words_document(document, material, currency)
+        words_facts = extract_words_document(
+            document, material, currency, textpages=textpages, pages=ocr_pages)
 
         # ── 通道 3：利润表补营业总收入 ──
-        total_facts = extract_total_revenue(document, material, currency)
+        total_facts = extract_total_revenue(
+            document, material, currency, textpages=textpages, pages=ocr_pages)
 
         for channel, channel_facts in (("grid", grid_facts), ("words", words_facts), ("income_statement", total_facts)):
             run.event("extraction_channel", document_id=material["document_id"], channel=channel,
                       count=len(channel_facts), evidence_ids=[f["evidence_id"] for f in channel_facts],
                       error=grid_error if channel == "grid" else None)
         facts = _dedupe(grid_facts + words_facts + total_facts, run)
+        _mark_ocr_facts(facts, document, run, material, ocr_language_evidence)
+        _mark_ocr_facts(facts, document, run, material, ocr_language_evidence)
         if not facts:
             raise ValueError(grid_error or (
                 "未识别到「主要会计数据」摘要表。可能原因：①扫描版无文字层 ②版式过新/过偏 ③该 PDF 不是年度报告。"
