@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+  "event_type": "pledge",
+  "events": [
+    {
+      "event_id": "71921730fe603a15df869ee8",
+      "event_type": "pledge",
+      "event_name": "股份质押",
+      "company_code": null,
+      "company_name": null,
+      "fields": {
+        "pledgor": {
+          "value": "复星\n高科技",
+          "normalized_value": "复星高科技",
+          "unit": null,
+          "normalized_unit": null,
+          "status": "extracted",
+          "evidence": [
+            {
+              "value": "复星\n高科技",
+              "normalized_value": "复星高科技",
+              "unit": null,
+              "issues": [],
+              "quote": "复星\n高科技",
+              "page": 2,
+              "page_label": "",
+              "bbox": [
+                60.97999954223633,
+                158.5399932861328,
+                103.6500015258789,
+                237.0399932861328
+              ],
+              "location_status": "table_cell",
+              "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+              "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+              "table": 0,
+              "row": 1
+            }
+          ]
+        },
+        "shares": {
+          "value": "49000000",
+          "normalized_value": "49000000",
+          "unit": "股",
+          "normalized_unit": "股",
+          "status": "extracted",
+          "evidence": [
+            {
+              "value": "49000000",
+              "normalized_value": "49000000",
+              "unit": "股",
+              "issues": [],
+              "normalized_unit": "股",
+              "quote": "49,000,000",
+              "page": 2,
+              "page_label": "",
+              "bbox": [
+                133.5500030517578,
+                158.5399932861328,
+                194.0,
+                237.0399932861328
+              ],
+              "location_status": "table_cell",
+              "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+              "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+              "table": 0,
+              "row": 1
+            }
+          ]
+        },
+        "pledgee": {
+          "value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+          "normalized_value": "中国工商银行股份有限公司上海市长宁支行",
+          "unit": null,
+          "normalized_unit": null,
+          "status": "extracted",
+          "evidence": [
+            {
+              "value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+              "normalized_value": "中国工商银行股份有限公司上海市长宁支行",
+              "unit": null,
+              "issues": [],
+              "quote": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+              "page": 2,
+              "page_label": "",
+              "bbox": [
+                353.3500061035156,
+                158.5399932861328,
+                402.8999938964844,
+                237.0399932861328
+              ],
+              "location_status": "table_cell",
+              "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+              "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+              "table": 0,
+              "row": 1
+            }
+          ]
+        },
+        "start_date": {
+          "value": "2025 年\n8 月\n14 日",
+          "normalized_value": "2025-08-14",
+          "unit": null,
+          "normalized_unit": null,
+          "status": "extracted",
+          "evidence": [
+            {
+              "value": "2025 年\n8 月\n14 日",
+              "normalized_value": "2025-08-14",
+              "unit": null,
+              "issues": [],
+              "quote": "2025 年\n8 月\n14 日",
+              "page": 2,
+              "page_label": "",
+              "bbox": [
+                268.29998779296875,
+                158.5399932861328,
+                310.8500061035156,
+                237.0399932861328
+              ],
+              "location_status": "table_cell",
+              "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+              "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+              "table": 0,
+              "row": 1
+            }
+          ]
+        },
+        "end_date": {
+          "value": "2027 年\n8 月\n18 日",
+          "normalized_value": "2027-08-18",
+          "unit": null,
+          "normalized_unit": null,
+          "status": "extracted",
+          "evidence": [
+            {
+              "value": "2027 年\n8 月\n18 日",
+              "normalized_value": "2027-08-18",
+              "unit": null,
+              "issues": [],
+              "quote": "2027 年\n8 月\n18 日",
+              "page": 2,
+              "page_label": "",
+              "bbox": [
+                310.8500061035156,
+                158.5399932861328,
+                353.3500061035156,
+                237.0399932861328
+              ],
+              "location_status": "table_cell",
+              "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+              "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+              "table": 0,
+              "row": 1
+            }
+          ]
+        },
+        "purpose": {
+          "value": null,
+          "normalized_value": null,
+          "status": "missing",
+          "evidence": []
+        },
+        "ratio_percent": {
+          "value": null,
+          "normalized_value": null,
+          "status": "missing",
+          "evidence": []
+        }
+      },
+      "missing_required": [],
+      "conflicts": [],
+      "status": "extracted",
+      "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+      "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+      "epistemic_type": "事实",
+      "channels": [
+        "table"
+      ],
+      "ocr_used": false,
+      "association_unresolved": false,
+      "currency": "CNY"
+    }
+  ],
+  "status": "completed",
+  "ocr_used": false,
+  "limits": "支持明确标签、表头及限定的中标通知正文句式；未提取字段不补猜。扫描 OCR 结果需人工复核。"
+}

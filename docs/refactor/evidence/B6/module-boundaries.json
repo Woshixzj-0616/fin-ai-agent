@@ -1,0 +1,29 @@
+{
+  "audit_legacy_import_violations": [],
+  "facade_definitions": {
+    "agent_loop.py": [],
+    "audit_checks.py": [],
+    "llm_check.py": [],
+    "tools.py": []
+  },
+  "implementation_owners": {
+    "audit.claim_check.check_one_claim": "audit.claim_check",
+    "audit.claim_check.check_payload": "audit.claim_check",
+    "audit.client.LLMClient": "audit.client",
+    "audit.loop.run_loop": "audit.loop",
+    "audit.loop.run_loop_native": "audit.loop",
+    "audit.report.render_report": "audit.report",
+    "audit.schema.LLMError": "audit.schema",
+    "audit.schema.METRICS": null,
+    "audit.schema.schema": "audit.schema",
+    "audit.supplements.check_valuation": "audit.supplements",
+    "audit.tools.dispatch.dispatch": "audit.tools.dispatch",
+    "audit.tools.specs.tool_specs": "audit.tools.specs"
+  },
+  "source_archive_count": 85,
+  "source_archive_required": {
+    "audit/schema.py": true,
+    "audit/service.py": true,
+    "audit/tools/specs.py": true
+  }
+}

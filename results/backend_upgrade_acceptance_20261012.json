@@ -1,0 +1,1629 @@
+{
+  "acceptance_date": "2026-10-12",
+  "timezone": "Asia/Shanghai",
+  "project_root": "D:\\Desktop\\fin-ai-agent",
+  "verdict": "needs_fixes",
+  "headline": "工程检查通过，六组必要返修未关闭",
+  "review_only": true,
+  "live_model_requests": 0,
+  "external_data_requests": 0,
+  "head": "ca806e43972e4e78baf5cf197457349f53767a7e",
+  "branch": "main",
+  "findings": [
+    {
+      "id": "R1",
+      "priority": 1,
+      "title": "原子评分复用首项并隐藏漏拆",
+      "locations": [
+        {
+          "file": "agent/eval_harness.py",
+          "line": 92
+        },
+        {
+          "file": "scripts/eval/run_llm_eval.py",
+          "line": 188
+        }
+      ],
+      "probes": [
+        "atomic_score_reuses_first_row",
+        "atomic_score_hides_omitted_second_claim"
+      ]
+    },
+    {
+      "id": "R2",
+      "priority": 1,
+      "title": "公司和期间的明确原文被模型覆盖",
+      "locations": [
+        {
+          "file": "agent/audit/grounding.py",
+          "line": 184
+        },
+        {
+          "file": "agent/audit/grounding.py",
+          "line": 245
+        }
+      ],
+      "probes": [
+        "company_quote_overridden_within_same_sentence",
+        "period_model_context_overrides_explicit_year"
+      ]
+    },
+    {
+      "id": "R3",
+      "priority": 1,
+      "title": "跨公司比较忽略期间冲突及累计长度",
+      "locations": [
+        {
+          "file": "agent/audit/claim_check.py",
+          "line": 143
+        },
+        {
+          "file": "agent/audit/tools/compare.py",
+          "line": 132
+        }
+      ],
+      "probes": [
+        "comparison_discards_explicit_half_year_conflict",
+        "comparison_single_quarter_vs_cumulative"
+      ]
+    },
+    {
+      "id": "R4",
+      "priority": 1,
+      "title": "方向与比较运算符没有核对原文",
+      "locations": [
+        {
+          "file": "agent/audit/claim_check.py",
+          "line": 22
+        },
+        {
+          "file": "agent/audit/claim_check.py",
+          "line": 150
+        }
+      ],
+      "probes": [
+        "direction_model_overrides_explicit_word",
+        "comparison_operator_overrides_explicit_word"
+      ]
+    },
+    {
+      "id": "R5",
+      "priority": 1,
+      "title": "趋势工具静默放宽筛选并跳过质量及可比性",
+      "locations": [
+        {
+          "file": "agent/audit/tools/compute.py",
+          "line": 42
+        },
+        {
+          "file": "agent/audit/tools/compute.py",
+          "line": 85
+        }
+      ],
+      "probes": [
+        "trend_wrong_report_kind",
+        "trend_nonexistent_document",
+        "trend_unknown_cross_report_basis",
+        "trend_ignores_review_restriction"
+      ]
+    },
+    {
+      "id": "R6",
+      "priority": 1,
+      "title": "工具异常被缓存为完成，恢复不重试",
+      "locations": [
+        {
+          "file": "agent/audit/claim_check.py",
+          "line": 153
+        },
+        {
+          "file": "agent/audit/service.py",
+          "line": 210
+        }
+      ],
+      "probes": [
+        "tool_exception_is_completed"
+      ],
+      "additional_probe": "tool_error_resume_still_skipped"
+    }
+  ],
+  "regression": {
+    "scratch": "C:\\Users\\admin\\AppData\\Local\\Temp\\fin_acceptance_20261012_epp555rm",
+    "python": "3.12.14",
+    "exit_code": 0,
+    "elapsed_seconds": 18.859,
+    "frontend_checked": 19,
+    "frontend_mismatches": [],
+    "changed_by_tests": [],
+    "restored_exact_before_test_bytes": [],
+    "remaining_changed": [],
+    "tail": [
+      "[webui] 127.0.0.1 \"GET /app/css/responsive.css HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/api.js HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/stream.js HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/main.js HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/run-state.js HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/views/ask.js HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/views/task.js HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/views/trace.js HTTP/1.1\" 200 -",
+      "[webui] 127.0.0.1 \"GET /app/js/views/results.js HTTP/1.1\" 200 -"
+    ],
+    "tests_run": 359,
+    "passed": 358,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "suite_elapsed_seconds": 18.312
+  },
+  "gates": {
+    "commands": [
+      {
+        "gate": "sensitive",
+        "exit_code": 0,
+        "elapsed_seconds": 0.344,
+        "tail": [
+          "敏感信息扫描通过：扫描 173 个文本文件"
+        ]
+      },
+      {
+        "gate": "docs",
+        "exit_code": 0,
+        "elapsed_seconds": 0.156,
+        "tail": [
+          "文档检查通过：61 个 Markdown 文件"
+        ]
+      },
+      {
+        "gate": "structure",
+        "exit_code": 0,
+        "elapsed_seconds": 0.219,
+        "tail": [
+          "结构审查通过：1 项体量警告，webui.py 108 行"
+        ]
+      },
+      {
+        "gate": "smoke",
+        "exit_code": 0,
+        "elapsed_seconds": 0.75,
+        "tail": [
+          "发布冒烟通过：app, legacy_page, runs_api, legacy_search_api"
+        ]
+      },
+      {
+        "gate": "reverse",
+        "exit_code": 0,
+        "elapsed_seconds": 5.391,
+        "tail": [
+          "R10 PASS normal_violation=False, injected_violation=True, callers=['web/legacy/index.html', 'agent/test_competition.py']",
+          "R11 PASS normal=0, injected=1, missing_link_error=True",
+          "B7 反向检查通过：C:\\Users\\admin\\AppData\\Local\\Temp\\fin_acceptance_20261012_epp555rm\\reverse.json"
+        ]
+      },
+      {
+        "gate": "report_eval",
+        "exit_code": 0,
+        "elapsed_seconds": 0.515,
+        "tail": [
+          "  S1: 判定 7/7 · 弃答 0 · 漏拆 0 · 失败 0",
+          "  S2: 判定 6/6 · 弃答 0 · 漏拆 0 · 失败 0",
+          "端到端 13/13 · 报告 D:\\Desktop\\fin-ai-agent\\results\\eval\\report_eval_report.md"
+        ]
+      },
+      {
+        "gate": "e5c_dryrun",
+        "exit_code": 0,
+        "elapsed_seconds": 0.485,
+        "tail": [
+          "运行记录（临时）：C:\\Users\\admin\\AppData\\Local\\Temp\\e5c_run_ffjlb75t\\results",
+          "dry-run 判定 8/8 vs 扰动 0/8",
+          "报告 D:\\Desktop\\fin-ai-agent\\results\\eval\\e5c_report.md"
+        ]
+      }
+    ],
+    "historical_reports_restored_to_precise_precheck_bytes": true
+  },
+  "adversarial": {
+    "project_root": "D:\\Desktop\\fin-ai-agent",
+    "live_model_requests": 0,
+    "probes": {
+      "company_quote_overridden_within_same_sentence": {
+        "sentence": "2024年贵州茅台营业收入为80元，五粮液营业收入为80元。",
+        "quote": "贵州茅台营业收入为80元",
+        "model_company": "五粮液",
+        "expected": "茅台为100：该金额应确认错误或拒绝错配",
+        "actual": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "wly"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "000858",
+              "sentence_codes": [
+                "600519",
+                "000858"
+              ],
+              "ignored_mentions": [],
+              "code": "000858",
+              "basis": "sentence_multi_company_quoted",
+              "matched": "五粮液",
+              "position": 18,
+              "note": "同句多公司，按模型字段与句内一致的一项绑定"
+            },
+            "period": {
+              "year": 2024,
+              "located_in": "sentence",
+              "matched_text": "2024"
+            }
+          },
+          "expected": null,
+          "calculation": {
+            "status": "match",
+            "value": "80",
+            "exact_value": "80",
+            "claimed_value": "80",
+            "operator": "eq",
+            "decimals": 0,
+            "rounding": "ROUND_HALF_UP",
+            "difference": "0",
+            "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+            "claimed_unit": "元",
+            "actual_unit": "元",
+            "actual_value": "80"
+          }
+        }
+      },
+      "period_model_context_overrides_explicit_year": {
+        "sentence": "2024年贵州茅台营业收入为80元。",
+        "model_year": 2023,
+        "context": "2023年贵州茅台营业收入为80元。",
+        "expected": "2024年为100：拒绝用2023年80作支持",
+        "actual": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "deterministic_check",
+          "reason": "单位、口径和陈述精度下与原文证据一致",
+          "evidence_ids": [
+            "mt2023"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600519",
+              "sentence_codes": [
+                "600519"
+              ],
+              "ignored_mentions": [],
+              "code": "600519",
+              "basis": "sentence_company",
+              "matched": "贵州茅台",
+              "position": 5,
+              "note": null
+            },
+            "period": {
+              "year": 2023,
+              "located_in": "context",
+              "matched_text": "2023"
+            }
+          },
+          "expected": null,
+          "calculation": {
+            "status": "match",
+            "value": "80",
+            "exact_value": "80",
+            "claimed_value": "80",
+            "operator": "eq",
+            "decimals": 0,
+            "rounding": "ROUND_HALF_UP",
+            "difference": "0",
+            "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+            "claimed_unit": "元",
+            "actual_unit": "元",
+            "actual_value": "80"
+          }
+        }
+      },
+      "comparison_discards_explicit_half_year_conflict": {
+        "sentence": "2024年上半年贵州茅台营业收入高于五粮液。",
+        "model_period_kind": "annual",
+        "expected": "半年50<100，拒绝年度100>80替代",
+        "actual": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "cross_company_comparison",
+          "reason": "贵州茅台 2024年年度（截至 2024-12-31）营业收入=100，五粮液=80，判断 贵州茅台>五粮液 成立",
+          "evidence_ids": [
+            "mt",
+            "wly"
+          ],
+          "grounding": {
+            "company": {
+              "a": {
+                "conflict": false,
+                "model_code": "600519",
+                "sentence_codes": [
+                  "600519",
+                  "000858"
+                ],
+                "ignored_mentions": [],
+                "code": "600519",
+                "basis": "sentence_first_company",
+                "matched": "贵州茅台",
+                "position": 8,
+                "note": "同句多公司，按引文中最先出现的主体绑定"
+              },
+              "b": {
+                "conflict": false,
+                "model_code": "000858",
+                "sentence_codes": [
+                  "600519",
+                  "000858"
+                ],
+                "ignored_mentions": [],
+                "code": "000858",
+                "basis": "sentence_multi_company_quoted",
+                "matched": "五粮液",
+                "position": 18,
+                "note": "同句多公司，按模型字段与句内一致的一项绑定"
+              }
+            },
+            "period": {
+              "year": 2024,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "expected": null,
+          "calculation": null
+        }
+      },
+      "comparison_single_quarter_vs_cumulative": {
+        "expected": "needs_review/period_mismatch：三个月不能和九个月累计直接比",
+        "actual": {
+          "verdict": "evidence_supported",
+          "operator": "exceed",
+          "reason_code": "cross_company_comparison",
+          "reason": "贵州茅台 2024年季度（截至 2024-09-30）营业收入=120，五粮液=100，判断 贵州茅台>五粮液 成立",
+          "evidence_ids": [
+            "mt-q3",
+            "wly-ytd"
+          ],
+          "period": {
+            "period_kind": "quarter",
+            "period_start": "2024-07-01",
+            "period_end": "2024-09-30"
+          },
+          "values": [
+            {
+              "company_code": "600519",
+              "value": "120",
+              "evidence_id": "mt-q3",
+              "period_kind": "quarter",
+              "period_end": "2024-09-30",
+              "document_id": "doc-600519-2024",
+              "source_file": "data/600519-2024.pdf",
+              "page": 5
+            },
+            {
+              "company_code": "000858",
+              "value": "100",
+              "evidence_id": "wly-ytd",
+              "period_kind": "quarter",
+              "period_end": "2024-09-30",
+              "document_id": "doc-000858-2024",
+              "source_file": "data/000858-2024.pdf",
+              "page": 5
+            }
+          ]
+        }
+      },
+      "trend_wrong_report_kind": {
+        "expected": "拒绝未匹配条件或未知跨报告可比性",
+        "actual": {
+          "status": "ok",
+          "report_kind": "half",
+          "series": [
+            {
+              "year": 2022,
+              "value": "100",
+              "evidence_id": "mt-2022",
+              "period_kind": "annual",
+              "period_end": "2022-12-31",
+              "document_id": "doc-600519-2022"
+            },
+            {
+              "year": 2023,
+              "value": "120",
+              "evidence_id": "mt-2023",
+              "period_kind": "annual",
+              "period_end": "2023-12-31",
+              "document_id": "doc-600519-2023"
+            },
+            {
+              "year": 2024,
+              "value": "150",
+              "evidence_id": "mt-2024",
+              "period_kind": "annual",
+              "period_end": "2024-12-31",
+              "document_id": "doc-600519-2024"
+            }
+          ],
+          "yoy": [
+            {
+              "year": 2023,
+              "yoy_pct": "20.00",
+              "evidence_ids": [
+                "mt-2022",
+                "mt-2023"
+              ]
+            },
+            {
+              "year": 2024,
+              "yoy_pct": "25.00",
+              "evidence_ids": [
+                "mt-2023",
+                "mt-2024"
+              ]
+            }
+          ],
+          "cagr_pct": "22.47",
+          "total_change_pct": "50.00",
+          "monotonic_up": true,
+          "monotonic_down": false,
+          "years": [
+            2022,
+            2023,
+            2024
+          ],
+          "evidence_ids": [
+            "mt-2022",
+            "mt-2023",
+            "mt-2024"
+          ]
+        }
+      },
+      "trend_nonexistent_document": {
+        "expected": "拒绝未匹配条件或未知跨报告可比性",
+        "actual": {
+          "status": "ok",
+          "report_kind": null,
+          "series": [
+            {
+              "year": 2022,
+              "value": "100",
+              "evidence_id": "mt-2022",
+              "period_kind": "annual",
+              "period_end": "2022-12-31",
+              "document_id": "doc-600519-2022"
+            },
+            {
+              "year": 2023,
+              "value": "120",
+              "evidence_id": "mt-2023",
+              "period_kind": "annual",
+              "period_end": "2023-12-31",
+              "document_id": "doc-600519-2023"
+            },
+            {
+              "year": 2024,
+              "value": "150",
+              "evidence_id": "mt-2024",
+              "period_kind": "annual",
+              "period_end": "2024-12-31",
+              "document_id": "doc-600519-2024"
+            }
+          ],
+          "yoy": [
+            {
+              "year": 2023,
+              "yoy_pct": "20.00",
+              "evidence_ids": [
+                "mt-2022",
+                "mt-2023"
+              ]
+            },
+            {
+              "year": 2024,
+              "yoy_pct": "25.00",
+              "evidence_ids": [
+                "mt-2023",
+                "mt-2024"
+              ]
+            }
+          ],
+          "cagr_pct": "22.47",
+          "total_change_pct": "50.00",
+          "monotonic_up": true,
+          "monotonic_down": false,
+          "years": [
+            2022,
+            2023,
+            2024
+          ],
+          "evidence_ids": [
+            "mt-2022",
+            "mt-2023",
+            "mt-2024"
+          ]
+        }
+      },
+      "trend_unknown_cross_report_basis": {
+        "expected": "拒绝未匹配条件或未知跨报告可比性",
+        "actual": {
+          "status": "ok",
+          "report_kind": null,
+          "series": [
+            {
+              "year": 2022,
+              "value": "100",
+              "evidence_id": "mt-2022",
+              "period_kind": "annual",
+              "period_end": "2022-12-31",
+              "document_id": "doc-600519-2022"
+            },
+            {
+              "year": 2023,
+              "value": "120",
+              "evidence_id": "mt-2023",
+              "period_kind": "annual",
+              "period_end": "2023-12-31",
+              "document_id": "doc-600519-2023"
+            },
+            {
+              "year": 2024,
+              "value": "150",
+              "evidence_id": "mt-2024",
+              "period_kind": "annual",
+              "period_end": "2024-12-31",
+              "document_id": "doc-600519-2024"
+            }
+          ],
+          "yoy": [
+            {
+              "year": 2023,
+              "yoy_pct": "20.00",
+              "evidence_ids": [
+                "mt-2022",
+                "mt-2023"
+              ]
+            },
+            {
+              "year": 2024,
+              "yoy_pct": "25.00",
+              "evidence_ids": [
+                "mt-2023",
+                "mt-2024"
+              ]
+            }
+          ],
+          "cagr_pct": "22.47",
+          "total_change_pct": "50.00",
+          "monotonic_up": true,
+          "monotonic_down": false,
+          "years": [
+            2022,
+            2023,
+            2024
+          ],
+          "evidence_ids": [
+            "mt-2022",
+            "mt-2023",
+            "mt-2024"
+          ]
+        }
+      },
+      "trend_ignores_review_restriction": {
+        "expected": "禁止使用明确待复核事实计算确定性趋势",
+        "actual": {
+          "status": "ok",
+          "report_kind": null,
+          "series": [
+            {
+              "year": 2022,
+              "value": "100",
+              "evidence_id": "mt-2022",
+              "period_kind": "annual",
+              "period_end": "2022-12-31",
+              "document_id": "doc-600519-2022"
+            },
+            {
+              "year": 2023,
+              "value": "120",
+              "evidence_id": "mt-2023",
+              "period_kind": "annual",
+              "period_end": "2023-12-31",
+              "document_id": "doc-600519-2023"
+            },
+            {
+              "year": 2024,
+              "value": "150",
+              "evidence_id": "mt-2024",
+              "period_kind": "annual",
+              "period_end": "2024-12-31",
+              "document_id": "doc-600519-2024"
+            }
+          ],
+          "yoy": [
+            {
+              "year": 2023,
+              "yoy_pct": "20.00",
+              "evidence_ids": [
+                "mt-2022",
+                "mt-2023"
+              ]
+            },
+            {
+              "year": 2024,
+              "yoy_pct": "25.00",
+              "evidence_ids": [
+                "mt-2023",
+                "mt-2024"
+              ]
+            }
+          ],
+          "cagr_pct": "22.47",
+          "total_change_pct": "50.00",
+          "monotonic_up": true,
+          "monotonic_down": false,
+          "years": [
+            2022,
+            2023,
+            2024
+          ],
+          "evidence_ids": [
+            "mt-2022",
+            "mt-2023",
+            "mt-2024"
+          ]
+        }
+      },
+      "atomic_score_reuses_first_row": {
+        "expected": "两个判定均与金标一致，correct=2/wrong=0",
+        "actual": {
+          "summary": {
+            "total": 2,
+            "judged": 2,
+            "correct": 1,
+            "wrong": 1,
+            "abstain": 0,
+            "abstain_expected": 0,
+            "abstain_avoidable": 0,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 0,
+            "expected_judge": 2,
+            "citation": 2,
+            "precision": 0.5,
+            "recall": 0.5,
+            "false_positive_rate": 0.5,
+            "coverage": 1.0,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 0,
+            "tokens_charged": null,
+            "tool_calls": null,
+            "active_seconds": null
+          },
+          "rows": [
+            {
+              "id": "a",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "营收为100元",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": null,
+              "reason": null,
+              "evidence_ids": [
+                "e1"
+              ],
+              "grounding": null,
+              "ok": true
+            },
+            {
+              "id": "b",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "归母净利润为50元",
+              "expect": {
+                "kind": "judge",
+                "error": true
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": null,
+              "reason": null,
+              "evidence_ids": [
+                "e1"
+              ],
+              "grounding": null,
+              "ok": false
+            }
+          ],
+          "note": "功能评测口径：逐条原子陈述；未判定/漏拆/超时/失败不计入正确。"
+        }
+      },
+      "atomic_score_hides_omitted_second_claim": {
+        "expected": "只有一个原子结果，correct=1/omitted=1",
+        "actual": {
+          "summary": {
+            "total": 2,
+            "judged": 2,
+            "correct": 2,
+            "wrong": 0,
+            "abstain": 0,
+            "abstain_expected": 0,
+            "abstain_avoidable": 0,
+            "omitted": 0,
+            "timeout": 0,
+            "failed": 0,
+            "model_track": 0,
+            "expected_judge": 2,
+            "citation": 2,
+            "precision": 1.0,
+            "recall": 1.0,
+            "false_positive_rate": 0.0,
+            "coverage": 1.0,
+            "completion": "completed",
+            "unfinished_sentences": 0,
+            "failed_chunks": 0,
+            "attempts": 0,
+            "tokens_charged": null,
+            "tool_calls": null,
+            "active_seconds": null
+          },
+          "rows": [
+            {
+              "id": "a",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "营收为100元",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": null,
+              "reason": null,
+              "evidence_ids": [
+                "e1"
+              ],
+              "grounding": null,
+              "ok": true
+            },
+            {
+              "id": "b",
+              "sample": null,
+              "sentence_id": 1,
+              "quote": "归母净利润为50元",
+              "expect": {
+                "kind": "judge",
+                "error": false
+              },
+              "outcome": "judged",
+              "status": "证据支持",
+              "track": "deterministic",
+              "reason_code": null,
+              "reason": null,
+              "evidence_ids": [
+                "e1"
+              ],
+              "grounding": null,
+              "ok": true
+            }
+          ],
+          "note": "功能评测口径：逐条原子陈述；未判定/漏拆/超时/失败不计入正确。"
+        }
+      },
+      "direction_model_overrides_explicit_word": {
+        "sentence": "2024年贵州茅台营业收入下降。",
+        "model_direction": "up",
+        "expected": "100→120，与原文下降冲突，不能给证据支持",
+        "actual": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "direction_supported",
+          "reason": "可比期间计算方向为「增长」，与陈述一致",
+          "evidence_ids": [
+            "mt-current",
+            "mt-previous"
+          ],
+          "grounding": {
+            "company": {
+              "conflict": false,
+              "model_code": "600519",
+              "sentence_codes": [
+                "600519"
+              ],
+              "ignored_mentions": [],
+              "code": "600519",
+              "basis": "sentence_company",
+              "matched": "贵州茅台",
+              "position": 5,
+              "note": null
+            },
+            "period": {
+              "year": 2024,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "expected": null,
+          "calculation": {
+            "status": "ok",
+            "value": "20.0",
+            "unit": "%",
+            "operands": {
+              "current": "120",
+              "previous": "100"
+            },
+            "formula": "(current - previous) / previous * 100",
+            "negative_policy": "review",
+            "evidence_ids": [
+              "mt-current",
+              "mt-previous"
+            ]
+          }
+        }
+      },
+      "tool_exception_is_completed": {
+        "expected": "程序异常记为失败或partial，可恢复，不得复用为completed",
+        "actual": {
+          "status": "completed",
+          "chunks": [
+            {
+              "chunk_id": 1,
+              "status": "completed",
+              "sentence_ids": [
+                1
+              ],
+              "start": 0,
+              "end": 19,
+              "elapsed_seconds": 0.0
+            }
+          ],
+          "failed_chunks": [],
+          "unfinished_sentence_ids": [],
+          "checks": [
+            {
+              "status": "证据不足",
+              "track": "review",
+              "reason_code": "tool_execution_failed",
+              "reason": "跨公司比较工具未能完成：TypeError: acceptance injected tool failure",
+              "evidence_ids": [],
+              "grounding": {
+                "company": {
+                  "a": {
+                    "conflict": false,
+                    "model_code": "600519",
+                    "sentence_codes": [
+                      "600519",
+                      "000858"
+                    ],
+                    "ignored_mentions": [],
+                    "code": "600519",
+                    "basis": "sentence_first_company",
+                    "matched": "贵州茅台",
+                    "position": 5,
+                    "note": "同句多公司，按引文中最先出现的主体绑定"
+                  },
+                  "b": {
+                    "conflict": false,
+                    "model_code": "000858",
+                    "sentence_codes": [
+                      "600519",
+                      "000858"
+                    ],
+                    "ignored_mentions": [],
+                    "code": "000858",
+                    "basis": "sentence_multi_company_quoted",
+                    "matched": "五粮液",
+                    "position": 15,
+                    "note": "同句多公司，按模型字段与句内一致的一项绑定"
+                  }
+                },
+                "period": {
+                  "year": 2024,
+                  "located_in": "quote",
+                  "matched_text": "2024"
+                }
+              },
+              "expected": null,
+              "calculation": null
+            }
+          ]
+        }
+      },
+      "comparison_operator_overrides_explicit_word": {
+        "sentence": "2024年贵州茅台营业收入低于五粮液。",
+        "model_operator": "exceed",
+        "expected": "100>80 与原文低于相反，不得返回证据支持",
+        "actual": {
+          "status": "证据支持",
+          "track": "deterministic",
+          "reason_code": "cross_company_comparison",
+          "reason": "贵州茅台 2024年年度（截至 2024-12-31）营业收入=100，五粮液=80，判断 贵州茅台>五粮液 成立",
+          "evidence_ids": [
+            "mt",
+            "wly"
+          ],
+          "grounding": {
+            "company": {
+              "a": {
+                "conflict": false,
+                "model_code": "600519",
+                "sentence_codes": [
+                  "600519",
+                  "000858"
+                ],
+                "ignored_mentions": [],
+                "code": "600519",
+                "basis": "sentence_first_company",
+                "matched": "贵州茅台",
+                "position": 5,
+                "note": "同句多公司，按引文中最先出现的主体绑定"
+              },
+              "b": {
+                "conflict": false,
+                "model_code": "000858",
+                "sentence_codes": [
+                  "600519",
+                  "000858"
+                ],
+                "ignored_mentions": [],
+                "code": "000858",
+                "basis": "sentence_multi_company_quoted",
+                "matched": "五粮液",
+                "position": 15,
+                "note": "同句多公司，按模型字段与句内一致的一项绑定"
+              }
+            },
+            "period": {
+              "year": 2024,
+              "located_in": "quote",
+              "matched_text": "2024"
+            }
+          },
+          "expected": null,
+          "calculation": null
+        }
+      }
+    }
+  },
+  "positive_controls_and_resume": {
+    "cross_company_positive": {
+      "status": "证据支持",
+      "evidence_ids": [
+        "mt",
+        "wly"
+      ]
+    },
+    "explicit_single_entity_positive": {
+      "status": "证据支持",
+      "company": "000858"
+    },
+    "precise_half_amount_positive": {
+      "verdict": "evidence_supported",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "h1"
+      ],
+      "calculation": {
+        "status": "match",
+        "value": "250",
+        "exact_value": "250",
+        "claimed_value": "250",
+        "operator": "eq",
+        "decimals": 0,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "0",
+        "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+        "claimed_unit": "元",
+        "actual_unit": "元",
+        "actual_value": "250"
+      },
+      "period": {
+        "period_kind": "half",
+        "period_start": "2024-01-01",
+        "period_end": "2024-06-30",
+        "document_id": "h1-doc",
+        "source_file": "data/mt.pdf",
+        "page": 5
+      },
+      "expected": null
+    },
+    "document_identity_positive": {
+      "status": "ok",
+      "document_key": "600519_2024::h1-doc",
+      "document_id": "h1-doc",
+      "period_kind": "half"
+    },
+    "unknown_cross_report_quarter_positive": {
+      "status": "not_comparable",
+      "value": null,
+      "reason": "跨报告可比性依据未知，未按同一口径处理",
+      "reasons": [
+        "accounting_policy_version 未声明",
+        "consolidation_basis 未声明",
+        "restatement_version 未声明"
+      ],
+      "comparability": {
+        "status": "unknown",
+        "internal": false,
+        "dimensions": {
+          "accounting_policy_version": "unknown",
+          "consolidation_basis": "unknown",
+          "restatement_version": "unknown"
+        },
+        "conflicts": [],
+        "gaps": [
+          "accounting_policy_version",
+          "consolidation_basis",
+          "restatement_version"
+        ],
+        "reasons": []
+      },
+      "operands": {
+        "current_ytd": "250",
+        "previous_ytd": "100"
+      },
+      "evidence_ids": [
+        "h1",
+        "q1"
+      ],
+      "period_start": "2024-04-01",
+      "period_end": "2024-06-30",
+      "attempted_value": "150",
+      "formula": "quarter = current_ytd - previous_ytd"
+    },
+    "declared_cross_report_quarter_positive": {
+      "status": "ok",
+      "value": "150",
+      "unit": "元",
+      "formula": "quarter = current_ytd - previous_ytd",
+      "period_start": "2024-04-01",
+      "period_end": "2024-06-30",
+      "operands": {
+        "current_ytd": "250",
+        "previous_ytd": "100"
+      },
+      "evidence_ids": [
+        "h1",
+        "q1"
+      ],
+      "comparability": {
+        "status": "satisfied",
+        "internal": false,
+        "dimensions": {
+          "accounting_policy_version": "satisfied",
+          "consolidation_basis": "satisfied",
+          "restatement_version": "satisfied"
+        },
+        "conflicts": [],
+        "gaps": [],
+        "reasons": []
+      }
+    },
+    "tool_error_resume_still_skipped": {
+      "initial_status": "completed",
+      "after_fixed_tool_status": "completed",
+      "additional_extractions": 0,
+      "reason_codes": [
+        "tool_execution_failed"
+      ]
+    },
+    "restart_positive": {
+      "status": "succeeded",
+      "result": {
+        "ok": true,
+        "value": "restored"
+      },
+      "cross_session_blocked": true,
+      "runs": 1
+    },
+    "compile_check": {
+      "count": 95,
+      "errors": []
+    }
+  },
+  "log_review": {
+    "archive_sha256": "d5dcb434508dfac5de737b876ddc2ecabc0e65f975e5a3a0788707f14e5dbe37",
+    "current_source_mismatches_vs_fix_record": [
+      "agent/test_upgrade.py"
+    ],
+    "tool_names": {
+      "pwsh": 61,
+      "read": 74,
+      "job_output": 6,
+      "load_workspace_dependencies": 1,
+      "grep": 10,
+      "todo_write": 2,
+      "write": 10,
+      "edit": 115,
+      "present": 1
+    },
+    "validation_output_markers": [
+      {
+        "seq": 163,
+        "matches": [
+          "Ran 13 tests in 0.003s"
+        ]
+      },
+      {
+        "seq": 229,
+        "matches": [
+          "Ran 322 tests in 36.255s"
+        ]
+      },
+      {
+        "seq": 357,
+        "matches": [
+          "结构审查通过"
+        ]
+      },
+      {
+        "seq": 359,
+        "matches": [
+          "文档检查通过"
+        ]
+      },
+      {
+        "seq": 630,
+        "matches": [
+          "Ran 11 tests in 0.003s"
+        ]
+      },
+      {
+        "seq": 652,
+        "matches": [
+          "Ran 2 tests in 0.000s"
+        ]
+      },
+      {
+        "seq": 660,
+        "matches": [
+          "Ran 51 tests in 6.608s",
+          "OK (skipped=1)"
+        ]
+      },
+      {
+        "seq": 714,
+        "matches": [
+          "Ran 15 tests in 0.010s"
+        ]
+      },
+      {
+        "seq": 724,
+        "matches": [
+          "Ran 15 tests in 0.006s"
+        ]
+      },
+      {
+        "seq": 756,
+        "matches": [
+          "Ran 322 tests in 36.417s"
+        ]
+      },
+      {
+        "seq": 800,
+        "matches": [
+          "Ran 53 tests in 3.588s"
+        ]
+      },
+      {
+        "seq": 1092,
+        "matches": [
+          "Ran 5 tests in 1.672s"
+        ]
+      },
+      {
+        "seq": 1102,
+        "matches": [
+          "Ran 34 tests in 0.219s"
+        ]
+      },
+      {
+        "seq": 1154,
+        "matches": [
+          "Ran 34 tests in 0.327s"
+        ]
+      },
+      {
+        "seq": 1182,
+        "matches": [
+          "Ran 36 tests in 0.250s"
+        ]
+      },
+      {
+        "seq": 1192,
+        "matches": [
+          "Ran 36 tests in 0.201s"
+        ]
+      },
+      {
+        "seq": 1208,
+        "matches": [
+          "Ran 358 tests in 39.483s",
+          "OK (skipped=1)"
+        ]
+      },
+      {
+        "seq": 1256,
+        "matches": [
+          "R1 PASS",
+          "R2 PASS",
+          "R3 PASS",
+          "R4 PASS",
+          "R5 PASS",
+          "R6 PASS",
+          "R7 PASS",
+          "R8 PASS",
+          "R9 PASS",
+          "R10 PASS",
+          "R11 PASS"
+        ]
+      },
+      {
+        "seq": 1298,
+        "matches": [
+          "Ran 358 tests in 35.746s",
+          "OK (skipped=1)"
+        ]
+      },
+      {
+        "seq": 1376,
+        "matches": [
+          "Ran 37 tests in 0.571s"
+        ]
+      },
+      {
+        "seq": 1384,
+        "matches": [
+          "Ran 358 tests in 35.175s",
+          "OK (skipped=1)"
+        ]
+      },
+      {
+        "seq": 1386,
+        "matches": [
+          "Ran 359 tests in 36.161s",
+          "OK (skipped=1)"
+        ]
+      }
+    ],
+    "relevant_command_timeline": [
+      {
+        "seq": 142,
+        "description": "Run baseline test suite",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": true
+      },
+      {
+        "seq": 211,
+        "description": "Run baseline test suite",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": true
+      },
+      {
+        "seq": 732,
+        "description": "Run full suite",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": true
+      },
+      {
+        "seq": 898,
+        "description": "Run offline report eval",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 910,
+        "description": "Run offline report eval",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 952,
+        "description": "Re-run offline report eval",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 972,
+        "description": "Re-run offline report eval",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 986,
+        "description": "Re-run offline report eval",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 1014,
+        "description": "Run E5c dry-run",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": true,
+        "dry_run": true,
+        "regression": false
+      },
+      {
+        "seq": 1022,
+        "description": "Debug rehearsal rows",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": true,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 1034,
+        "description": "Re-run E5c dry-run",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": true,
+        "dry_run": true,
+        "regression": false
+      },
+      {
+        "seq": 1048,
+        "description": "Run eval for one sample",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 1200,
+        "description": "Run full test suite",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": true
+      },
+      {
+        "seq": 1272,
+        "description": "Restore clobbered results history files",
+        "is_restore": true,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": false
+      },
+      {
+        "seq": 1280,
+        "description": "Regenerate eval artifacts",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": true,
+        "dry_run": true,
+        "regression": false
+      },
+      {
+        "seq": 1288,
+        "description": "Final full test suite",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": true
+      },
+      {
+        "seq": 1314,
+        "description": "Extend machine record with validation data",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": true,
+        "dry_run": false,
+        "regression": true
+      },
+      {
+        "seq": 1328,
+        "description": "Write fix report markdown",
+        "is_restore": false,
+        "report_eval": true,
+        "llm_eval": true,
+        "dry_run": true,
+        "regression": true
+      },
+      {
+        "seq": 1358,
+        "description": "Final verification run",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": true
+      },
+      {
+        "seq": 1386,
+        "description": "Final full suite with new test",
+        "is_restore": false,
+        "report_eval": false,
+        "llm_eval": false,
+        "dry_run": false,
+        "regression": true
+      }
+    ]
+  },
+  "reproduction_script": "\nimport collections, hashlib, json, pathlib, re, sys, tempfile, zipfile\nfrom unittest.mock import patch\nroot=pathlib.Path(r'D:\\Desktop\\fin-ai-agent')\nscratch=pathlib.Path(r'C:\\Users\\admin\\AppData\\Local\\Temp\\fin_acceptance_20261012_epp555rm')\nsys.path.insert(0,str(root/'agent'))\nfrom audit.claim_check import check_one_claim\nfrom audit.tools.compare import compare_companies\nfrom audit.tools.compute import compute_trend\nfrom audit.tools.search import search_text,document_key\nfrom eval_harness import ReplayClient,run_full_flow,score_atomic\nfrom materials import Run\ndef fact(code='600519',name='贵州茅台',year=2024,value='100',eid='mt',doc=None,**extra):\n    f={'evidence_id':eid,'company_code':code,'company_name':name,\n       'metric':'revenue','metric_name':'营业收入','period_year':year,'report_year':year,\n       'period_kind':'annual','period_start':f'{year}-01-01','period_end':f'{year}-12-31',\n       'duration_months':12,'comparison_group':f'{code}|{year}|table','document_id':doc or f'doc-{code}-{year}',\n       'source_file':f'data/{code}-{year}.pdf','source_sha256':hashlib.sha256(f'{code}|{year}|{doc or eid}'.encode()).hexdigest(),\n       'value':value,'unit':'元','normalized_value':value,'normalized_unit':'元',\n       'currency':'CNY','scope':'consolidated','adjustment':'as_reported','issues':[],\n       'page':5,'value_bbox':[0,0,1,1]}\n    f.update(extra);return f\ndef item(quote,**extra):\n    d={'claim_id':'C1','sentence_id':1,'quote':quote,'context_quote':None,\n       'claim_type':'amount','company_name':'贵州茅台','company_b':None,'comparison_operator':None,\n       'period_year':2024,'period_kind':'annual','metric_text':'营业收入','metric':'revenue',\n       'scope':'consolidated','kind':'amount','value':'100','unit':'元','operator':'eq',\n       'tolerance_pct':None,'direction':'unknown','currency':'CNY','qualifier':'exact',\n       'plain_claim':'示例','is_forecast':False,'ambiguity':'none','verification_action':'compare_amount'}\n    d.update(extra);return d\ndef compact(row):\n    return {k:row.get(k) for k in ('status','track','reason_code','reason','evidence_ids','grounding','expected','calculation')}\nprobes={}\nmt=fact();wly=fact(code='000858',name='五粮液',value='80',eid='wly')\nsentence='2024年贵州茅台营业收入为80元，五粮液营业收入为80元。'\nprobes['company_quote_overridden_within_same_sentence']={\n 'sentence':sentence,'quote':'贵州茅台营业收入为80元','model_company':'五粮液',\n 'expected':'茅台为100：该金额应确认错误或拒绝错配',\n 'actual':compact(check_one_claim(item('贵州茅台营业收入为80元',company_name='五粮液',value='80'),[mt,wly],sentence,sentence,'P1'))}\nold=fact(year=2023,value='80',eid='mt2023')\nsentence='2024年贵州茅台营业收入为80元。';context='2023年贵州茅台营业收入为80元。'\nprobes['period_model_context_overrides_explicit_year']={\n 'sentence':sentence,'model_year':2023,'context':context,\n 'expected':'2024年为100：拒绝用2023年80作支持',\n 'actual':compact(check_one_claim(item(sentence,period_year=2023,value='80',context_quote=context),[mt,old],sentence,context+'\\n'+sentence,'P2'))}\nsentence='2024年上半年贵州茅台营业收入高于五粮液。'\nhalf_mt=fact(value='50',eid='mt-h1',doc='mt-h1',period_kind='half',period_end='2024-06-30',duration_months=6)\nhalf_wly=fact(code='000858',name='五粮液',value='100',eid='wly-h1',doc='wly-h1',period_kind='half',period_end='2024-06-30',duration_months=6)\ncomparison=item(sentence,claim_type='comparison',company_b='五粮液',comparison_operator='exceed')\nprobes['comparison_discards_explicit_half_year_conflict']={\n 'sentence':sentence,'model_period_kind':'annual','expected':'半年50<100，拒绝年度100>80替代',\n 'actual':compact(check_one_claim(comparison,[mt,wly,half_mt,half_wly],sentence,sentence,'P3'))}\nsingle=fact(value='120',eid='mt-q3',period_kind='quarter',period_start='2024-07-01',period_end='2024-09-30',duration_months=3)\ncumulative=fact(code='000858',name='五粮液',value='100',eid='wly-ytd',period_kind='quarter',period_start='2024-01-01',period_end='2024-09-30',duration_months=9)\nprobes['comparison_single_quarter_vs_cumulative']={\n 'expected':'needs_review/period_mismatch：三个月不能和九个月累计直接比',\n 'actual':compare_companies([single,cumulative],company_a='600519',company_b='000858',metric='revenue',period_year=2024,operator='exceed')}\nseries=[fact(year=y,value=v,eid=f'mt-{y}') for y,v in ((2022,'100'),(2023,'120'),(2024,'150'))]\nfor name,kw in (('trend_wrong_report_kind',{'report_kind':'half'}),('trend_nonexistent_document',{'document_id':'missing'}),('trend_unknown_cross_report_basis',{})):\n probes[name]={'expected':'拒绝未匹配条件或未知跨报告可比性','actual':compute_trend(series,company_name_or_code='600519',metric='revenue',start_year=2022,end_year=2024,**kw)}\nunsafe=[*series[:-1],{**series[-1],'auto_usable':False,'review_reasons':['second_path_unresolved']}]\nprobes['trend_ignores_review_restriction']={'expected':'禁止使用明确待复核事实计算确定性趋势',\n 'actual':compute_trend(unsafe,company_name_or_code='600519',metric='revenue',start_year=2022,end_year=2024)}\nfull='营收为100元，归母净利润为50元。'\nchecks=[{'claim_id':'a','sentence_id':1,'original_sentence':full,'quote':'营收为100元','status':'证据支持','track':'deterministic','evidence_ids':['e1']},\n        {'claim_id':'b','sentence_id':1,'original_sentence':full,'quote':'归母净利润为50元','status':'确认错误','track':'deterministic','evidence_ids':['e2']}]\nstatements=[{'id':'a','sentence_id':1,'quote':'营收为100元','expect':{'kind':'judge','error':False}},\n            {'id':'b','sentence_id':1,'quote':'归母净利润为50元','expect':{'kind':'judge','error':True}}]\nprobes['atomic_score_reuses_first_row']={'expected':'两个判定均与金标一致，correct=2/wrong=0',\n 'actual':score_atomic({'status':'completed','checks':checks},statements)}\nmissing_statements=[{**s,'expect':{'kind':'judge','error':False}} for s in statements]\nprobes['atomic_score_hides_omitted_second_claim']={'expected':'只有一个原子结果，correct=1/omitted=1',\n 'actual':score_atomic({'status':'completed','checks':checks[:1]},missing_statements)}\ncurrent=fact(value='120',eid='mt-current')\nprevious=fact(year=2023,value='100',eid='mt-previous',report_year=2024,document_id=current['document_id'],comparison_group=current['comparison_group'])\nsentence='2024年贵州茅台营业收入下降。'\nprobes['direction_model_overrides_explicit_word']={'sentence':sentence,'model_direction':'up',\n 'expected':'100→120，与原文下降冲突，不能给证据支持',\n 'actual':compact(check_one_claim(item(sentence,claim_type='direction',direction='up',value=None,unit=None,operator='none'),[current,previous],sentence,sentence,'P4'))}\nwith tempfile.TemporaryDirectory(prefix='acceptance_tool_failure_') as temp:\n run=Run(pathlib.Path(temp),'acceptance-probe',{})\n sentence='2024年贵州茅台营业收入高于五粮液。'\n with patch('audit.tools.compare.compare_companies',side_effect=TypeError('acceptance injected tool failure')):\n  bundle=run_full_flow(sentence,[mt,wly],run,ReplayClient(items=[item(sentence,claim_type='comparison',company_b='五粮液',comparison_operator='exceed')]),use_loop=False)\n probes['tool_exception_is_completed']={'expected':'程序异常记为失败或partial，可恢复，不得复用为completed',\n  'actual':{'status':bundle['status'],'chunks':bundle['chunks'],'failed_chunks':bundle['failed_chunks'],\n            'unfinished_sentence_ids':bundle['unfinished_sentence_ids'],'checks':[compact(r) for r in bundle['checks']]}}\n# No real model or remote data requests.\nrecord={'project_root':str(root),'live_model_requests':0,'probes':probes}\n(scratch/'probes.json').write_text(json.dumps(record,ensure_ascii=False,indent=2),encoding='utf-8')\nfor name,p in probes.items():\n actual=p['actual']\n if isinstance(actual,dict) and 'summary' in actual:\n  actual={'summary':actual['summary'],'rows':[{k:r.get(k) for k in ('id','status','outcome','ok')} for r in actual['rows']]}\n elif name.startswith('trend_'):\n  actual={k:actual.get(k) for k in ('status','report_kind','series','cagr_pct','monotonic_up','error')}\n print(json.dumps({'probe':name,'expected':p['expected'],'actual':actual},ensure_ascii=False))\n\n# Cross-company model direction must also agree with the quoted wording.\nsentence='2024年贵州茅台营业收入低于五粮液。'\nprobes['comparison_operator_overrides_explicit_word']={\n 'sentence':sentence,'model_operator':'exceed','expected':'100>80 与原文低于相反，不得返回证据支持',\n 'actual':compact(check_one_claim(item(sentence,claim_type='comparison',company_b='五粮液',comparison_operator='exceed'),[mt,wly],sentence,sentence,'P5'))}\n(scratch/'probes.json').write_text(json.dumps({'project_root':str(root),'live_model_requests':0,'probes':probes},ensure_ascii=False,indent=2),encoding='utf-8')\nprint(json.dumps({'probe':'comparison_operator_overrides_explicit_word','actual':probes['comparison_operator_overrides_explicit_word']['actual']},ensure_ascii=False))\n",
+  "source_sha256": {
+    "agent/agent_loop.py": "f21195f7570f48bd49e1259a99c10ff0910661ce83355919176a27a78e6a9c7f",
+    "agent/announcements.py": "74306aa6d3fe4cfc1d501afb9f6647ee3314421975231ff74ef762d9bac20dc5",
+    "agent/api/__init__.py": "dbdc099135fb8d548ca91f0a31fee56eb148838366efb831d719af703e6d3951",
+    "agent/api/routes.py": "811bd709680a91d569d0beb040a57732b09116adfccdf3d93701e01b240c8821",
+    "agent/api/runtime_bridge.py": "114ea9884cc9105039f981e08206f14c4460cda0684f0afdb4a2ab088cc18b2e",
+    "agent/api/security.py": "bcaab18c44f8cc6f8d9551cfeac1c22cf45b3a831d17fe085d73840c7f224bce",
+    "agent/api/sse.py": "1c5b39a3bad793dc992102c0d9d95be408bf5fa72a6b6c6a97af6aa6395ee0cf",
+    "agent/audit/__init__.py": "30cab0e7de566bdfdb60f7205dfa051674453834f13ec5e1a04164ca79ff072c",
+    "agent/audit/claim_check.py": "9cbb6069efae206c52ccb526620c7b95799c13069ccf7c823044f0e6f2b9f25e",
+    "agent/audit/client.py": "e6b1d1d430e39b9fc84698221938dfb78240e806b3a458721183715c5ccaafce",
+    "agent/audit/grounding.py": "2b7e00fbcccdea7ff03064ad942c484b31c39d838c81fae5c7cf2ec46d30518f",
+    "agent/audit/loop.py": "5278a8961f0cc8d10baafb783bf677b78423fc7e052b3f943b6b1e2d396f8392",
+    "agent/audit/prompt.py": "50359962075e72e7571538201961bd33245c29f6221177d88bce139e3f61f971",
+    "agent/audit/report.py": "cb47fc4eb6cee727f3ca00ee0edc1d3fb7609f508b789f66ef6eca08b51944e1",
+    "agent/audit/schema.py": "3b07cf6e9deca761657ff9adf0bfdf74b28129c40278711da564c49008eae0ac",
+    "agent/audit/service.py": "de2df6c098605f28c718d00385e5a814a9ad70fb1eb9907c34192d384bc5dc6f",
+    "agent/audit/supplements.py": "615e3c8b34a80f0807ca224862f5b1a6f66f25c916bf7b67a4ad98786abe0508",
+    "agent/audit/tools/__init__.py": "0d8859bf260ec648532010dc4f64e335e64445c76751d826b575326067c95912",
+    "agent/audit/tools/compare.py": "e9e4742288966e055d3217b3fde7a116aad22b946ee64fc79c2691f5a2610c9f",
+    "agent/audit/tools/compute.py": "1ede3f236014836c69a3256d89d1a4d34be2f4e8ad7bf213393b378ff771da61",
+    "agent/audit/tools/dispatch.py": "e412f4c4f7d1190817130738db67c75ef32c0c86bc8fee982943897bcd84e61f",
+    "agent/audit/tools/events.py": "54129d51cec04ceb0fbbb5f735ed6961a65f9556d4a7cc0acb9afd15e71eb77b",
+    "agent/audit/tools/evidence.py": "2aa65ff6a06b99945aecf893f0d32ea8628cc084e77fce4c1041ba3d41b0bca4",
+    "agent/audit/tools/search.py": "0854c485f151949faa39db0652dcd4c81230ad66bf4976c3dcdc3760ac28a980",
+    "agent/audit/tools/specs.py": "07953d1c956b2b12b730ce87b100a93498e77ba4e583d7bdcfcd439b4afc028f",
+    "agent/audit_checks.py": "636a250254fbc9f134d627babbc61ca7c6aa6d456256cbea6f238f8b6316c3ff",
+    "agent/backend_runtime.py": "1707a49872bb9d5d956133a7f5758361cfee93d6e6a4a3cb1d13db448fa66525",
+    "agent/eval_harness.py": "2b23142aecda64712a38defc5c451a8ecc665c95a6a6a0600429bc6d36fc84ab",
+    "agent/extract.py": "c7c51e1dcbb002b6ab8929fa0425cdd5196af434b8145a8fdf612a14334b5f2b",
+    "agent/extract_cache.py": "cf9cc5aece89f41a0e79d79b189d0cda96b2d3e4e06aa129ba00b186fefba165",
+    "agent/extraction/__init__.py": "08e4c4f9dfd92dc6c10a587755f38f863128e84b0d4ea58c03560369a38951a0",
+    "agent/extraction/annual.py": "c21e61d907da711730cb9da30c4731e229a8a2d76790b9b488ad9024cf0bc8b3",
+    "agent/extraction/catalog.py": "786243757429d8fe517d9f1fd7aa936136ad04b67ed85b254f888c1a3e8705a9",
+    "agent/extraction/grid.py": "6824ffc1c8feff2d6c004c314a367ffa5f29936290c9d3764467cbf3a4f19843",
+    "agent/extraction/orchestrator.py": "e319b4437464629f2778b7b66c654d4ce5ad677ae50e2a1f0b1672f3a9ad7406",
+    "agent/finance.py": "7db0e85135380accebbf78c8d79f3a676096a4ef038789c2869dda53e559be60",
+    "agent/financial_signals.py": "15b08ac556b896b645c1cac73eeb60170a969e5e06351b26650214c2f52cdba7",
+    "agent/interim.py": "b658a039a22017d8cb9ea0ac45296e64a77443173f88058bb4fcb704cc5eaea4",
+    "agent/llm_check.py": "e0ab1bd0dbeb096e54151e8e4c3d957ff6cf09113f6a5a2a8ac9cc475c36fd05",
+    "agent/llm_http.py": "1d3e91be76af6f8d3a73be031b14cfdaf8f27ca3940a6500572883e6c6adaf71",
+    "agent/main.py": "ab6582109b28c4d535d7e1e5a84e9850f57d69583e8ea8c37cf1edadd25dc870",
+    "agent/materials.py": "c07904ece4502cb62626401df67992d08bfd6956cac1993a2fedcf5d45e8b8cb",
+    "agent/mcp_server.py": "b8e401f37f1b6c2b3257d46733dbb699aee5a6942d2ae80875827402a263dce7",
+    "agent/periods.py": "ce5c59ce4c758e2410a1facba6ca4abe5be90175f5366d003c6a418d1472bdd2",
+    "agent/qa.py": "0b3449779a3d4b5db4f75122a1aee86ec05fd0862585fb80d539fbddca070d00",
+    "agent/retrieval.py": "34be42a57b21d64d93348e8df79c9a2c564d711ebe4744005ceeeb43a4ed2c13",
+    "agent/runtime/__init__.py": "61f88ed98fb869b45b9bd7c0e9e469f34a5a105e0076485f425d6597293d4531",
+    "agent/runtime/event_bus.py": "da62600af6ff3cb4533208cee7a3d54f52795f9771bfa8f0a089c66e7cf713f6",
+    "agent/runtime/events.py": "fcf71baf3719b6d2cc5e7c93669a3a782616a37d7583bebee9bb0bda1ec09ec2",
+    "agent/runtime/redaction.py": "0b6d4997ded87a1d555d564cb357496054f42a16c9825f1cf1e92d82168a7d19",
+    "agent/runtime/run_manager.py": "f3446bc41e880e9b85aa5d77d13288b849bd947033b9a6939397a5809bca73cf",
+    "agent/runtime/sessions.py": "082d1be6873139f85c8c74742a9054fcfc83ad9702ce761d345effd67bd756ad",
+    "agent/test.py": "bd54294dfb0745a85efde242f920460526e6faad1fa8eee68738b832a9c4be83",
+    "agent/test_api.py": "cd18316aac8df2848f176a4af11b74c07ab9fd5e0056ce203e73bcf410de6ba7",
+    "agent/test_b4.py": "b935f836260efdfe81781de248d88cfebb5c6fc738d507a119f735010ace6353",
+    "agent/test_b6.py": "3814ab93013bb5b49d5f0df733d621ec076ce850f23b9ed7a4c162e51dafc48e",
+    "agent/test_b7.py": "acce7d857420be91f565fb062e795a55a7e80db2e94708ed0b988750876fd577",
+    "agent/test_backend.py": "76523242bf5d4b8b5b3b5df21bd6d0ea2de4f1ae7f0f14e77f96dba01773b206",
+    "agent/test_competition.py": "e59d56d43ad2c29674a1ac42b76669ecec83a9da1d79674fa90856bed8be6b85",
+    "agent/test_extraction.py": "b30aeb2695c17bdedbaf3e0ff8fca9634875faacbfe777dc6e61630222d46ecb",
+    "agent/test_runtime.py": "5a1fae63b024a62213f0a90dc98e56e031195366e5224a9bb416d2df0d024a17",
+    "agent/test_skill_mcp.py": "e4f7315fdd4fc7346e29a090f86e6928da1f3ee8a0e8a31bf6d20b34393261b7",
+    "agent/test_upgrade.py": "207552a656928da5973f0a11803617a2d594f097caede9ca1b69887cee1e533b",
+    "agent/test_web_assets.py": "14f769cb816cd8750a03130699c42985d1298293e76b1beee78e049dd938ecb0",
+    "agent/tools.py": "63014f5b0f5546d747d15399ef5e1dcf87c9ecc9ef5a0cd4962d84b79885fc77",
+    "agent/trace.py": "e594d6b7dbec93a69a5c3f9b6343a98aecb89f12a16397f57adb385f5d4053ae",
+    "agent/webui.py": "1d7b431e8fd64eb39ebeee957ec248de4f3cc11e1e406ffcaed48398ca1c7c81",
+    "agent/webui_app.py": "1e333db18dd076f2562e499a528291390838458b317dcd983e215da5b3416c42",
+    "agent/webui_http.py": "c04430b13669efdb7ad57a7ceaffcacdedd69f8d67d9355ebc0bb2d1684ee54a",
+    "agent/webui_page.py": "ed71e04e36df2791e40741227130ab031fd4083c14d64a0ed29f09b185f4dd55",
+    "agent/webui_pipeline.py": "8d6613d3ed32129f40685fdbf10f5e56ab3c91bb3cb0ff6696f3b0c25cca02ce",
+    "agent/words.py": "1d8383e61dbe7ab9c9d1e80a221202f0ca71b549791446ade8f10219ec85c0f1",
+    "scripts/b7_release_smoke.py": "50cf8edb73498e328bd775c03bfd437ba228adb8e8eefa4bacf17116e4a41d8b",
+    "scripts/b7_reverse_checks.py": "8079140b1f2d7fa96e3b4436ec35f9aa718d18d4dc9228f87598f81aed5cb4bb",
+    "scripts/build_competition_demos.py": "4ced1364bb4e12acda4056f34b7f2f0d41363eaf63574b80be16554e3b774c09",
+    "scripts/build_plan_pdf.py": "7a764b3002c9e14ef7bc8ddc84bcfd0122c579f6b715883726d0a05227eb20a0",
+    "scripts/check_docs.py": "c071c462f0d05f8fc3898ee7091efdf767f84a62c62aa2e7fa063e12cb168d81",
+    "scripts/check_sensitive.py": "0ccbc729c387e161fe5e4b6488268f630ba7a63089cc33e0444883ea6e5e48f9",
+    "scripts/data/debug_rows.py": "aa684b4a00fbb6ae1846145ca67c5f96620ade541c50da4054dec916d1f97006",
+    "scripts/data/extract_metrics.py": "06087432efb1acb3d2cf609e1fb6e63dba28fb91d2d13b862a51be3d47465cef",
+    "scripts/data/fetch_reports.py": "c15bdcdefb09874a347e5dc14f1c7fd1d9d938403af64dbfd973aa2c992c048f",
+    "scripts/eval/build_eval_set.py": "8a0b6ef12491372f06bc3218df3a9865a0c1d83863b8c9d5dfd74cac8f7727f6",
+    "scripts/eval/run_eval.py": "13a72f312d12bbec75531db49bf6c16570fe7a1e23e52ba590c7f77cb2a9e07b",
+    "scripts/eval/run_llm_eval.py": "065d2307b7c0ce4a238fcda947ca546b4ac6bc4d91fcf7ff79a9c0f5686fb4d6",
+    "scripts/eval/run_question_eval.py": "fe9d1819ebb64f30b47fe3a7ca125d769adac88a342e4cd0e48987af986faa0b",
+    "scripts/eval/run_report_eval.py": "5083f58eb7ff58fe601d49ab2894b834f4401e3fe81cf881fe4af92a78909841",
+    "scripts/eval/run_semantic_eval.py": "38127bf16197cd519831a1f1712090bde2596f6cf53eea51d91d3551d8ded8d4",
+    "scripts/full_extract_demo.py": "e950e45ef86d61f6880cb9bed421bc23a33789c34ad70df19ab4c3d99aa8bf4c",
+    "scripts/live_drill.py": "417ea6be21de51bace6fcef639d472215cd3a1ae5d0e68e5695c9d0a430688d6",
+    "scripts/llm_smoke.py": "534056fc67a65c43fefbbead9a993db30cb15e2b6cca417df84490dfd1cbe46e",
+    "scripts/quality/crosscheck.py": "119668e2f0cb0b9097b24433e1d17426d2200360014d7ef2db7129c5f6a3667c",
+    "scripts/review_structure.py": "ff71215fa271d021d0ff7ab2e6f4a06458d5785bd8f97f2c3c9f81a47721b8b7",
+    "scripts/setup_ocr.py": "808ef600dd8b6e99bd0f16c7ad6d1dde1f51e3993cf4c00fa120eda45fce58eb",
+    "scripts/site_build.py": "e249e0f3e2a69ab6c70d66acc3ada6bc7cf53529619ca63cfbbfff2b1ce8450e",
+    "scripts/tool_demo.py": "6dd56f36ed2c351344fe7d4189c048db9dcbf2b608aa0c87fb0c03b039908526"
+  },
+  "frontend_sha256": {
+    "docs/app.js": "d0a603fbf0d19bbe85acc09936c2e2e92b956b76e43bd72b3213cf6e62acfd09",
+    "docs/index.html": "645d528892da771cde9a56e15e56a1a94259f6e0b7c8fd8445b9d5803f2191d4",
+    "docs/style.css": "616e54acf2d193757b66c68eb2982f879edd2a8f430a971b9ab8286d01712d5f",
+    "docs/trace.js": "070dce9c3319c9ed3ddb67730a1fbc48d3ca452510d5cc7c0d1404372d03e642",
+    "web/css/components.css": "9b8b2bee95efe8ab324ad68e15de82d88dac9c401454856d739b81ca3fa8a378",
+    "web/css/layout.css": "d4c21c38046d980ef74a0ce35055f073e9fc49bd7a9051ea0ff61480efe4dd66",
+    "web/css/responsive.css": "f9d751238d2e3f1aeba8d934b874595822445961e8ffbd9f5f0121b95b97b980",
+    "web/css/tokens.css": "07099821fdb3cda073563114dd1101ef56171050b1f32423860cb2af10cf3cf5",
+    "web/favicon.svg": "1dbf0898d265039fc643d899e6a122b4148628de50ee34c60741e0815c0c1379",
+    "web/index.html": "659434cb6baffcd685a76372bbcec459a245b19b499cd9c7f3431d058a352a1e",
+    "web/js/api.js": "3d173df7fb30906cfa94cc483729bfb63f5093e5be463814b80f22a3fff6a10a",
+    "web/js/main.js": "4133d433aca0bff265b5b85f23a15d4347dfad07cfc61453aecbf73bbe5308d6",
+    "web/js/run-state.js": "9b8ccfea85c14d2c34ecdce349d2c46a78a2894e2b06375ee23c0b4112850f20",
+    "web/js/stream.js": "81822e453f8a7a5cd2a43c7c0fa537624deeaf965ccb476f456259827fa6a448",
+    "web/js/views/ask.js": "e6f5457dc9619b03528004788044a2626c6aa6334034641ce678017b26497b5b",
+    "web/js/views/results.js": "515a276ec021845447404a26bb8ace0cb6744b3ef3dbdb561961dd867a65b625",
+    "web/js/views/task.js": "e21ed57db47ec539f4b3c0f0456baa4b7652395cbc9e8631cf3bbbf999efdec1",
+    "web/js/views/trace.js": "9d6f8854f4d60db9439b187cd04bdf928041f139b2a9e495cb8f28c7474b9e0e",
+    "web/legacy/index.html": "3ba22810fa800765998f732a6d9d08ccdb63110e9e0da66db48c1662ed488788"
+  },
+  "frontend_unchanged": true,
+  "worktree_before_new_acceptance_files": " M agent/README.md\n M agent/api/routes.py\n M agent/audit/claim_check.py\n M agent/audit/grounding.py\n M agent/audit/service.py\n M agent/audit/tools/compare.py\n M agent/audit/tools/compute.py\n M agent/audit/tools/evidence.py\n M agent/audit/tools/search.py\n M agent/audit/tools/specs.py\n M agent/finance.py\n M agent/periods.py\n M agent/runtime/run_manager.py\n M agent/test_b7.py\n M agent/test_competition.py\n M agent/tools.py\n M agent/webui_http.py\n M agent/webui_page.py\n M agent/webui_pipeline.py\n M docs/refactor/evidence/B7/release-smoke.json\n M results/eval/e5c_report.md\n M results/eval/report_eval.json\n M results/eval/report_eval_report.md\n M scripts/eval/run_llm_eval.py\n M scripts/eval/run_report_eval.py\n?? agent/eval_harness.py\n?? agent/test_upgrade.py\n?? docs/results/\n?? docs/后端升级缺口评审-20261012.md\n?? results/backend_gap_review_20261012.json\n",
+  "delivery_notes": {
+    "new_files_outside_directories": [
+      "docs/results/后端升级修复说明-20261012.md",
+      "docs/results/backend_upgrade_fix_20261012.json"
+    ],
+    "historical_files_still_modified": [
+      "results/eval/e5c_report.md",
+      "results/eval/report_eval.json",
+      "results/eval/report_eval_report.md",
+      "docs/refactor/evidence/B7/release-smoke.json"
+    ],
+    "fingerprint_update_needed": [
+      "agent/test_upgrade.py"
+    ]
+  }
+}

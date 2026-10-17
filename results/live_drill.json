@@ -1,0 +1,46 @@
+[
+  {
+    "code": "600276",
+    "year": 2024,
+    "name": "恒瑞医药",
+    "ok": true,
+    "facts": 35,
+    "core_clean": 4,
+    "issues": 0,
+    "failed": 0,
+    "seconds": 2.35
+  },
+  {
+    "code": "300760",
+    "year": 2024,
+    "name": "迈瑞医疗",
+    "ok": true,
+    "facts": 29,
+    "core_clean": 4,
+    "issues": 0,
+    "failed": 0,
+    "seconds": 3.13
+  },
+  {
+    "code": "000002",
+    "year": 2023,
+    "name": "万科A",
+    "ok": true,
+    "facts": 24,
+    "core_clean": 3,
+    "issues": 2,
+    "failed": 0,
+    "seconds": 4.04
+  },
+  {
+    "code": "601318",
+    "year": 2024,
+    "name": "中国平安",
+    "ok": true,
+    "facts": 38,
+    "core_clean": 4,
+    "issues": 0,
+    "failed": 0,
+    "seconds": 9.19
+  }
+]

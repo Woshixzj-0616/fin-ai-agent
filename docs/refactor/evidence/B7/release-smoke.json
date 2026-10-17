@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-12T19:55:52+08:00",
+  "command": [
+    "D:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "D:\\Desktop\\fin-ai-agent\\agent\\webui_app.py",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "62701"
+  ],
+  "checks": {
+    "app": {
+      "path": "/app/",
+      "status": 200,
+      "ok": true,
+      "content_type": "text/html; charset=utf-8"
+    },
+    "legacy_page": {
+      "path": "/",
+      "status": 200,
+      "ok": true,
+      "content_type": "text/html; charset=utf-8"
+    },
+    "runs_api": {
+      "path": "/api/runs",
+      "status": 200,
+      "ok": true,
+      "content_type": "application/json; charset=utf-8"
+    },
+    "legacy_search_api": {
+      "path": "/api/search",
+      "status": 200,
+      "ok": true,
+      "content_type": "application/json; charset=utf-8"
+    }
+  },
+  "server_stdout": "",
+  "server_stderr": "",
+  "ok": true
+}

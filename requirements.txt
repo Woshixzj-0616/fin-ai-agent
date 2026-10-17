@@ -1,2 +1,4 @@
-# 数据脚本与阶段一网页服务共用同一组 Python 依赖
--r backend/requirements.txt
+# 本项目依赖（Python 3.14 已验证）
+pymupdf==1.28.2
+httpx==0.28.1
+-r six_module_engine/backend/requirements.txt

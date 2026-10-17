@@ -1,0 +1,340 @@
+{
+  "url": "http://127.0.0.1:8765/app/",
+  "pdf": "D:\\Desktop\\金融人工智能\\data\\raw\\000002_万科A_2024年年度报告.pdf",
+  "console_errors": [],
+  "request_failures": [
+    {
+      "url": "http://127.0.0.1:8765/api/runs/20261011_220203_108129db/events?after_seq=0",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "bad_responses": [],
+  "initial": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "scrollHeight": 1791,
+    "minLeft": 0,
+    "maxRight": 1440,
+    "status": "等待任务",
+    "sidebarStatus": "等待任务",
+    "runList": "尚无运行建立核查任务后会显示在这里。",
+    "eventCount": 0,
+    "evidenceCount": 0,
+    "resultText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。",
+    "sidebarVisible": "visible",
+    "toggleDisplay": "none",
+    "cancelDisabled": true
+  },
+  "completed": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "scrollHeight": 8910,
+    "minLeft": 0,
+    "maxRight": 1455.546875,
+    "status": "分析完成 · 万科A",
+    "sidebarStatus": "分析完成",
+    "runList": "万科A分析完成 · 20261011_220154_19ba2576",
+    "eventCount": 45,
+    "evidenceCount": 30,
+    "resultText": "核查结果证据与结论一致6不一致2待核验2问题3证据30营业收入第 11 页343176440712.96 元2024 · consolidated · as_reported营业收入第 11 页465739076702.23 元2023 · consolidated · as_reported营业收入第 11 页503838367358.76 元2022 · consolidated · as_reported归母净利润第 11 页-49478429211.96 元2024 · parent_shareholders · as_reported归母净利润第 11 页12162684368.86 元2023 · parent_shareholders · as_reported归母净利润第 11 页22688551801.52 元2022 · parent_shareholders · as_reported扣非归母净利润第 11 页-45393719289.83 元2024 · parent_shareholders · as_reported扣非归母净利润第 11 页9793841193.09 元2023 · parent_shareholders · as_reported扣非归母净利润第 11 页19832876302.45 元2022 · parent_shareholders · as_reported经营现金流净额第 11 页3799847632.35 元2024 · consolidated · as_reported经营现金流净额第 11 页3912323920.11 元2023 · consolidated · as_reported经营现金流净额第 11 页2750449478.44 元2022 · consolidated · as_reported基本每股收益第 11 页-4.17 元2024 · unknown · as_reported基本每股收益第 11 页1.03 元2023 · unknown · as_reported基本每股收益第 11 页1.96 元2022 · unknown · as_reported稀释每股收益第 11 页-4.17 元2024 · unknown · as_reported稀释每股收益第 11 页1.03 元2023 · unknown · as_reported稀释每股收益第 11 页1.96 元2022 · unknown · as_reported加权平均净资产收益率第 11 页-24.41 %2024 · unknown · as_reported加权平均净资产收益率第 11 页4.85 %2023 · unknown · as_reported加权平均净资产收益率第 11 页9.32 %2022 · unknown · as_reported总资产第 11 页1286259859765.82 元2024 · consolidated · as_reported总资产第 11 页1504850172117.83 元2023 · consolidated · as_reported总资产第 11 页1757804935896.04 元2022 · consolidated · as_reported归母净资产第 11 页202666487973.00 元2024 · parent_shareholders · as_reported归母净资产第 11 页250784613404.38 元2023 · parent_shareholders · as_reported归母净资产第 11 页243325374922.33 元2022 · parent_shareholders · as_reported每股净资产第 11 页17.09 元/股2024 · unknown · as_reported每股净资产第 11 页21.15 元/股2023 · unknown · as_reported每股净资产第 11 页21.05 元/股2022 · unknown · as_reported指标与裁决10指标本期上期页码营业收入343176440712.96465739076702.2311归母净利润-49478429211.9612162684368.8611扣非归母净利润-45393719289.839793841193.0911经营现金流净额3799847632.353912323920.1111基本每股收益-4.171.0311稀释每股收益-4.171.0311加权平均净资产收益率-24.414.8511总资产1286259859765.821504850172117.8311归母净资产202666487973.00250784613404.3811每股净资产17.0921.1511问题与失败3营业收入scope_unknown营业收入scope_unknown营业收入scope_unknown报告查看报告文本# 财务证据与分析\n\n使用明确的报告期间和比较值；同比要求上年同期间，环比要求相邻单季，调整后列优先。\n\n结论相对于所选原始文件；未自动认定其为截至今日最新有效披露版本。\n\n金额单位为人民币元；PDF页码从文件第一页开始计数，可能与印刷页码不同。\n\n年报披露同比及半年报、季报披露同比均按原文小数位数使用 ROUND_HALF_UP 核对；一致只表示报告内部算术一致。\n\n适用范围：当前指标目录与已识别的期间表头；24条固定参考答案尚待团队人工复签，新公司、新措辞和新版式的泛化能力尚未独立验证。\n\n| 公司 | 报告年度 / 本期期间 | 指标 | 本期 | 同报告上年同期 | 基期状态 | 复算同比（核对精度） | 披露同比 | 核对结果 | PDF页 |\n|---|---:|---|---:|---:|---|---|---|---|---:|\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 营业收入 | 343176440712.96 | 465739076702.23 | as_reported | not_comparable | -26.32% | 未核对（not_comparable） | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 归母净利润 | -49478429211.96 | 12162684368.86 | as_reported | -506.81% | -506.81% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 扣非归母净利润 | -45393719289.83 | 9793841193.09 | as_reported | -563.49% | -563.49% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 经营现金流净额 | 3799847632.35 | 3912323920.11 | as_reported | -2.87% | -2.87% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 基本每股收益 | -4.17 | 1.03 | as_reported | -504.85% | -504.23% | 不一致，需复核 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 稀释每股收益 | -4.17 | 1.03 | as_reported | -504.85% | -504.23% | 不一致，需复核 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 加权平均净资产收益率 | -24.41 | 4.85 | as_reported | -603.2990% | 未提取到 | 未核对（缺少披露值） | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 总资产 | 1286259859765.82 | 1504850172117.83 | as_reported | -14.53% | -14.53% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 归母净资产 | 202666487973.00 | 250784613404.38 | as_reported | -19.19% | -19.19% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 每股净资产 | 17.09 | 21.15 | as_reported | -19.20% | -19.19% | 一致 | 11 |\n\n## 辅助分析\n\n- 【事实】000002：归母净利润减扣非归母净利润（辅助观察非经常性项目影响） -4084709922.13元。这是差额计算，不构成错误或财务造假结论。\n- 【事实】000002：归母与扣非差额占归母利润绝对值的比例 -8.255536780748564671536645438380685710147%。差额仅作为非经常性损益影响线索，具体项目须查损益明细；归母为零时比例未定义。\n- 【事实】000002：剔除非经常性损益后的归母利润同比 -563.4924989579913923660228962308698871854%。使用扣非归母口径，不把扣非同比和归母同比混用。\n- 【事实】000002：归母利润与经营现金流同比差（百分点） -503.9302505137967997345960308百分点。归母利润和合并现金流的归属口径不同；差值为观察线索，不能等同现金转化率。\n\n## 单季环比\n\n| 公司 | 指标 | 单季期间 | 状态 | 环比 % | 证据 |\n|---|---|---|---|---|---|\n| — | — | — | 缺少可比较单季数据 | — | — |\n\n事实为原始字段及可复算结果；推论是待补证据的分析框架；本系统不生成投资观点。\n\n\n## 来源与待复核事项\n\n- 万科A 2024年 annual：[原始PDF](../results\\runs\\20261011_220154_19ba2576\\work\\data\\agent\\000002_2024_1933799635_734370d32036c1a18716e42f2e96c0f6ffd8a48c1fe115ecda945a09eb416ac0.pdf)；公告ID 1933799635；SHA-256 734370d32036c1a18716e42f2e96c0f6ffd8a48c1fe115ecda945a09eb416ac0。\n  披露日期状态：onsite_unverified；版本策略：first；需复核最新有效版本：否（仅指本次候选未发现冲突）。\n\n精确单元格、年份表头、单位币种依据、作用域依据及计算操作数见同目录JSON和events.jsonl。",
+    "sidebarVisible": "visible",
+    "toggleDisplay": "none",
+    "cancelDisabled": true,
+    "runId": "20261011_220154_19ba2576",
+    "eventSeqs": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45"
+    ]
+  },
+  "evidence": {
+    "naturalWidth": 953,
+    "naturalHeight": 1348,
+    "image": {
+      "left": 464.78125,
+      "top": 107.859375,
+      "right": 975.203125,
+      "bottom": 829.828125,
+      "width": 510.421875,
+      "height": 721.96875
+    },
+    "boxCount": 2,
+    "boxes": [
+      {
+        "left": 623.0625,
+        "top": 218,
+        "right": 698.953125,
+        "bottom": 232.28125,
+        "width": 75.890625,
+        "height": 14.28125
+      },
+      {
+        "left": 513.078125,
+        "top": 218,
+        "right": 623.0625,
+        "bottom": 232.28125,
+        "width": 109.984375,
+        "height": 14.28125
+      }
+    ],
+    "allInside": true
+  },
+  "reload": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "scrollHeight": 8910,
+    "minLeft": 0,
+    "maxRight": 1455.546875,
+    "status": "分析完成 · 万科A",
+    "sidebarStatus": "分析完成",
+    "runList": "万科A分析完成 · 20261011_220154_19ba2576",
+    "eventCount": 45,
+    "evidenceCount": 30,
+    "resultText": "核查结果证据与结论一致6不一致2待核验2问题3证据30营业收入第 11 页343176440712.96 元2024 · consolidated · as_reported营业收入第 11 页465739076702.23 元2023 · consolidated · as_reported营业收入第 11 页503838367358.76 元2022 · consolidated · as_reported归母净利润第 11 页-49478429211.96 元2024 · parent_shareholders · as_reported归母净利润第 11 页12162684368.86 元2023 · parent_shareholders · as_reported归母净利润第 11 页22688551801.52 元2022 · parent_shareholders · as_reported扣非归母净利润第 11 页-45393719289.83 元2024 · parent_shareholders · as_reported扣非归母净利润第 11 页9793841193.09 元2023 · parent_shareholders · as_reported扣非归母净利润第 11 页19832876302.45 元2022 · parent_shareholders · as_reported经营现金流净额第 11 页3799847632.35 元2024 · consolidated · as_reported经营现金流净额第 11 页3912323920.11 元2023 · consolidated · as_reported经营现金流净额第 11 页2750449478.44 元2022 · consolidated · as_reported基本每股收益第 11 页-4.17 元2024 · unknown · as_reported基本每股收益第 11 页1.03 元2023 · unknown · as_reported基本每股收益第 11 页1.96 元2022 · unknown · as_reported稀释每股收益第 11 页-4.17 元2024 · unknown · as_reported稀释每股收益第 11 页1.03 元2023 · unknown · as_reported稀释每股收益第 11 页1.96 元2022 · unknown · as_reported加权平均净资产收益率第 11 页-24.41 %2024 · unknown · as_reported加权平均净资产收益率第 11 页4.85 %2023 · unknown · as_reported加权平均净资产收益率第 11 页9.32 %2022 · unknown · as_reported总资产第 11 页1286259859765.82 元2024 · consolidated · as_reported总资产第 11 页1504850172117.83 元2023 · consolidated · as_reported总资产第 11 页1757804935896.04 元2022 · consolidated · as_reported归母净资产第 11 页202666487973.00 元2024 · parent_shareholders · as_reported归母净资产第 11 页250784613404.38 元2023 · parent_shareholders · as_reported归母净资产第 11 页243325374922.33 元2022 · parent_shareholders · as_reported每股净资产第 11 页17.09 元/股2024 · unknown · as_reported每股净资产第 11 页21.15 元/股2023 · unknown · as_reported每股净资产第 11 页21.05 元/股2022 · unknown · as_reported指标与裁决10指标本期上期页码营业收入343176440712.96465739076702.2311归母净利润-49478429211.9612162684368.8611扣非归母净利润-45393719289.839793841193.0911经营现金流净额3799847632.353912323920.1111基本每股收益-4.171.0311稀释每股收益-4.171.0311加权平均净资产收益率-24.414.8511总资产1286259859765.821504850172117.8311归母净资产202666487973.00250784613404.3811每股净资产17.0921.1511问题与失败3营业收入scope_unknown营业收入scope_unknown营业收入scope_unknown报告查看报告文本# 财务证据与分析\n\n使用明确的报告期间和比较值；同比要求上年同期间，环比要求相邻单季，调整后列优先。\n\n结论相对于所选原始文件；未自动认定其为截至今日最新有效披露版本。\n\n金额单位为人民币元；PDF页码从文件第一页开始计数，可能与印刷页码不同。\n\n年报披露同比及半年报、季报披露同比均按原文小数位数使用 ROUND_HALF_UP 核对；一致只表示报告内部算术一致。\n\n适用范围：当前指标目录与已识别的期间表头；24条固定参考答案尚待团队人工复签，新公司、新措辞和新版式的泛化能力尚未独立验证。\n\n| 公司 | 报告年度 / 本期期间 | 指标 | 本期 | 同报告上年同期 | 基期状态 | 复算同比（核对精度） | 披露同比 | 核对结果 | PDF页 |\n|---|---:|---|---:|---:|---|---|---|---|---:|\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 营业收入 | 343176440712.96 | 465739076702.23 | as_reported | not_comparable | -26.32% | 未核对（not_comparable） | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 归母净利润 | -49478429211.96 | 12162684368.86 | as_reported | -506.81% | -506.81% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 扣非归母净利润 | -45393719289.83 | 9793841193.09 | as_reported | -563.49% | -563.49% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 经营现金流净额 | 3799847632.35 | 3912323920.11 | as_reported | -2.87% | -2.87% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 基本每股收益 | -4.17 | 1.03 | as_reported | -504.85% | -504.23% | 不一致，需复核 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 稀释每股收益 | -4.17 | 1.03 | as_reported | -504.85% | -504.23% | 不一致，需复核 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 加权平均净资产收益率 | -24.41 | 4.85 | as_reported | -603.2990% | 未提取到 | 未核对（缺少披露值） | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 总资产 | 1286259859765.82 | 1504850172117.83 | as_reported | -14.53% | -14.53% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 归母净资产 | 202666487973.00 | 250784613404.38 | as_reported | -19.19% | -19.19% | 一致 | 11 |\n| 万科A | 2024 / 2024-01-01 至 2024-12-31 | 每股净资产 | 17.09 | 21.15 | as_reported | -19.20% | -19.19% | 一致 | 11 |\n\n## 辅助分析\n\n- 【事实】000002：归母净利润减扣非归母净利润（辅助观察非经常性项目影响） -4084709922.13元。这是差额计算，不构成错误或财务造假结论。\n- 【事实】000002：归母与扣非差额占归母利润绝对值的比例 -8.255536780748564671536645438380685710147%。差额仅作为非经常性损益影响线索，具体项目须查损益明细；归母为零时比例未定义。\n- 【事实】000002：剔除非经常性损益后的归母利润同比 -563.4924989579913923660228962308698871854%。使用扣非归母口径，不把扣非同比和归母同比混用。\n- 【事实】000002：归母利润与经营现金流同比差（百分点） -503.9302505137967997345960308百分点。归母利润和合并现金流的归属口径不同；差值为观察线索，不能等同现金转化率。\n\n## 单季环比\n\n| 公司 | 指标 | 单季期间 | 状态 | 环比 % | 证据 |\n|---|---|---|---|---|---|\n| — | — | — | 缺少可比较单季数据 | — | — |\n\n事实为原始字段及可复算结果；推论是待补证据的分析框架；本系统不生成投资观点。\n\n\n## 来源与待复核事项\n\n- 万科A 2024年 annual：[原始PDF](../results\\runs\\20261011_220154_19ba2576\\work\\data\\agent\\000002_2024_1933799635_734370d32036c1a18716e42f2e96c0f6ffd8a48c1fe115ecda945a09eb416ac0.pdf)；公告ID 1933799635；SHA-256 734370d32036c1a18716e42f2e96c0f6ffd8a48c1fe115ecda945a09eb416ac0。\n  披露日期状态：onsite_unverified；版本策略：first；需复核最新有效版本：否（仅指本次候选未发现冲突）。\n\n精确单元格、年份表头、单位币种依据、作用域依据及计算操作数见同目录JSON和events.jsonl。",
+    "sidebarVisible": "visible",
+    "toggleDisplay": "none",
+    "cancelDisabled": true,
+    "eventCountBefore": 45
+  },
+  "ask": {
+    "question": "有哪些待复核问题",
+    "answer": "万科A：抽取层标记 3 条待复核：\n· 营业收入（2024）：scope_unknown\n· 营业收入（2023）：scope_unknown\n· 营业收入（2022）：scope_unknown",
+    "evidence": [
+      "082c4ed1ef43b057226e8642",
+      "f3b1e4045b18d9f340fc76d8",
+      "361e63306b8a28529aec2561"
+    ],
+    "response": {
+      "url": "http://127.0.0.1:8765/api/runs/20261011_220154_19ba2576/ask",
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "answer": "万科A：抽取层标记 3 条待复核：\n· 营业收入（2024）：scope_unknown\n· 营业收入（2023）：scope_unknown\n· 营业收入（2022）：scope_unknown",
+        "evidence_ids": [
+          "082c4ed1ef43b057226e8642",
+          "f3b1e4045b18d9f340fc76d8",
+          "361e63306b8a28529aec2561"
+        ],
+        "citations": [
+          {
+            "evidence_id": "082c4ed1ef43b057226e8642",
+            "metric": "revenue",
+            "metric_name": "营业收入",
+            "period_year": 2024,
+            "period_label": "2024-01-01至2024-12-31",
+            "value": "343176440712.96",
+            "unit": "元",
+            "page": 11,
+            "page_image": "000002_2024_734370d3_p11.png"
+          },
+          {
+            "evidence_id": "f3b1e4045b18d9f340fc76d8",
+            "metric": "revenue",
+            "metric_name": "营业收入",
+            "period_year": 2023,
+            "period_label": "2023-01-01至2023-12-31",
+            "value": "465739076702.23",
+            "unit": "元",
+            "page": 11,
+            "page_image": "000002_2024_734370d3_p11.png"
+          },
+          {
+            "evidence_id": "361e63306b8a28529aec2561",
+            "metric": "revenue",
+            "metric_name": "营业收入",
+            "period_year": 2022,
+            "period_label": "2022-01-01至2022-12-31",
+            "value": "503838367358.76",
+            "unit": "元",
+            "page": 11,
+            "page_image": "000002_2024_734370d3_p11.png"
+          }
+        ],
+        "intent": {
+          "metric": null,
+          "period_year": 2024,
+          "kind": "issues",
+          "source": "deterministic",
+          "company_code": "000002"
+        },
+        "flagged_count": 3
+      }
+    }
+  },
+  "search": {
+    "hitCount": 8,
+    "text": "第 324 页 · 当前运行损 \n(10,139,042,190.80) \n \n21 \n营业收入及成本 \n \n \n2024 年 \n2023 年 \n收入 \n成",
+    "response": {
+      "url": "http://127.0.0.1:8765/api/runs/20261011_220154_19ba2576/search",
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "hits": [
+          {
+            "score": 1.0,
+            "page": 324,
+            "snippet": "损 \n(10,139,042,190.80) \n \n21 \n营业收入及成本 \n \n \n2024 年 \n2023 年 \n收入 \n成",
+            "match": "exact",
+            "channel": "substring"
+          },
+          {
+            "score": 1.0,
+            "page": 258,
+            "snippet": "\n利润表补充资料 \n \n \n2024 年 \n2023 年 \n营业收入 \n343,176,440,712.96 \n465,739,",
+            "match": "exact",
+            "channel": "substring"
+          },
+          {
+            "score": 1.0,
+            "page": 253,
+            "snippet": "4 年12 月31 日止年度财务报表 \n250 \n(3) \n营业收入的分解 \n \n2024 年本集团营业收入按主要的商品类型、经",
+            "match": "exact",
+            "channel": "substring"
+          },
+          {
+            "score": 1.0,
+            "page": 252,
+            "snippet": "24 年12 月31 日止年度财务报表 \n249 \n42 \n营业收入及成本 \n \n(1) \n营业收入及成本 \n \n \n2024 ",
+            "match": "exact",
+            "channel": "substring"
+          },
+          {
+            "score": 1.0,
+            "page": 234,
+            "snippet": "前折现率为9.75% (2023 年：\n10.7%)，预测期营业收入使用的加权平均增长率5.1% (2023 年：7.9%)，预",
+            "match": "exact",
+            "channel": "substring"
+          },
+          {
+            "score": 1.0,
+            "page": 233,
+            "snippet": "间为16%至17% (2023 年：16%至17%)，预测期营业收入使用的增长率区间为10%\n至11% (2023 年：10%至",
+            "match": "exact",
+            "channel": "substring"
+          },
+          {
+            "score": 1.0,
+            "page": 147,
+            "snippet": "事项 \n销售房地产开发项目产生的收入占贵集团\n2024 年度营业收入总额的83% 。 \n这些收入在满足以下所有条件时进行确认： ",
+            "match": "exact",
+            "channel": "substring"
+          },
+          {
+            "score": 1.0,
+            "page": 68,
+            "snippet": "，或少数团购现象产生较高营业额。报告期内，前5 名客户产生的营业收入约\n为人民币33.9 亿元，占本集团全年营业收入的比例为1.",
+            "match": "exact",
+            "channel": "substring"
+          }
+        ],
+        "channel": "bm25",
+        "note": "search_text 命中为相关段落检索，不能单独作为数值裁决依据；数值必须走 compare_claim",
+        "document_key": "000002_2024"
+      }
+    }
+  },
+  "cancel_response": {
+    "status": 200,
+    "body": {
+      "run_id": "20261011_220203_108129db",
+      "status": "cancelled"
+    }
+  },
+  "cancelled": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "scrollHeight": 1773,
+    "minLeft": 0,
+    "maxRight": 1440,
+    "status": "已取消 · 万科A",
+    "sidebarStatus": "已取消",
+    "runList": "万科A分析完成 · 20261011_220154_19ba2576万科A已取消 · 20261011_220203_108129db",
+    "eventCount": 3,
+    "evidenceCount": 0,
+    "resultText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。",
+    "sidebarVisible": "visible",
+    "toggleDisplay": "none",
+    "cancelDisabled": true
+  },
+  "mobile": {
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "scrollWidth": 390,
+    "scrollHeight": 2835,
+    "minLeft": 0,
+    "maxRight": 390,
+    "status": "已取消 · 万科A",
+    "sidebarStatus": "已取消",
+    "runList": "万科A分析完成 · 20261011_220154_19ba2576万科A已取消 · 20261011_220203_108129db",
+    "eventCount": 3,
+    "evidenceCount": 0,
+    "resultText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。",
+    "sidebarVisible": "hidden",
+    "toggleDisplay": "flex",
+    "cancelDisabled": true
+  },
+  "other_session": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "scrollHeight": 1791,
+    "minLeft": 0,
+    "maxRight": 1440,
+    "status": "等待任务",
+    "sidebarStatus": "等待任务",
+    "runList": "尚无运行建立核查任务后会显示在这里。",
+    "eventCount": 0,
+    "evidenceCount": 0,
+    "resultText": "核查结果证据与结论尚无核查结果结果将在运行完成后显示。",
+    "sidebarVisible": "visible",
+    "toggleDisplay": "none",
+    "cancelDisabled": true
+  },
+  "ok": true
+}

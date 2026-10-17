@@ -1,0 +1,43 @@
+{
+  "dispatch_names": [
+    "list_catalog",
+    "find_evidence",
+    "compute_yoy",
+    "compare_claim",
+    "compare_companies",
+    "compute_trend",
+    "search_text"
+  ],
+  "facade_dispatch_identity": true,
+  "facade_tool_names_identity": true,
+  "facade_tool_specs_identity": true,
+  "native_tools_equal_specs": true,
+  "openai_names": [
+    "list_catalog",
+    "find_evidence",
+    "compute_yoy",
+    "compare_claim",
+    "compare_companies",
+    "compute_trend",
+    "search_text",
+    "submit_claims"
+  ],
+  "spec_names": [
+    "list_catalog",
+    "find_evidence",
+    "compute_yoy",
+    "compare_claim",
+    "compare_companies",
+    "compute_trend",
+    "search_text"
+  ],
+  "tool_names": [
+    "list_catalog",
+    "find_evidence",
+    "compute_yoy",
+    "compare_claim",
+    "compare_companies",
+    "compute_trend",
+    "search_text"
+  ]
+}

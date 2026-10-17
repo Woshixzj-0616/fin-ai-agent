@@ -1,0 +1,153 @@
+{
+  "budget_exhausted": [
+    {
+      "arguments": {
+        "company_name_or_code": "600519",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "budget_before": 0,
+      "call_id": "json_r1_1",
+      "event": "agent_tool_start",
+      "protocol": "json_multi_step",
+      "round": 1,
+      "tool": "find_evidence"
+    },
+    {
+      "arguments": {
+        "company_name_or_code": "600519",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "budget_left": 0,
+      "call_id": "json_r1_1",
+      "duration_ms": 0.0,
+      "event": "agent_tool",
+      "evidence_ids": [],
+      "protocol": "json_multi_step",
+      "result": {
+        "error": "工具调用预算已用尽",
+        "status": "error"
+      },
+      "round": 1,
+      "status": "budget_exhausted",
+      "tool": "find_evidence"
+    }
+  ],
+  "json": [
+    {
+      "arguments": {
+        "company_name_or_code": "600519",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "budget_before": 30,
+      "call_id": "json_r1_1",
+      "event": "agent_tool_start",
+      "protocol": "json_multi_step",
+      "round": 1,
+      "tool": "find_evidence"
+    },
+    {
+      "arguments": {
+        "company_name_or_code": "600519",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "budget_left": 29,
+      "call_id": "json_r1_1",
+      "duration_ms": 0.019,
+      "event": "agent_tool",
+      "evidence_ids": [],
+      "protocol": "json_multi_step",
+      "result": {
+        "count": 1,
+        "items": [
+          {
+            "adjustment": "as_reported",
+            "company_code": "600519",
+            "evidence_id": "e1",
+            "issues": [],
+            "metric": "revenue",
+            "normalized_value": "100",
+            "page": 5,
+            "period_year": 2024,
+            "report_year": 2024,
+            "scope": "consolidated",
+            "unit": "元",
+            "value": "100",
+            "value_bbox": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ],
+        "status": "ok"
+      },
+      "round": 1,
+      "status": "ok",
+      "tool": "find_evidence"
+    }
+  ],
+  "json_native_complete_fields_equal": true,
+  "json_native_start_fields_equal": true,
+  "native": [
+    {
+      "arguments": {
+        "company_name_or_code": "600519",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "budget_before": 30,
+      "call_id": "provider-1",
+      "event": "agent_tool_start",
+      "protocol": "native_tool_calls",
+      "round": 1,
+      "tool": "find_evidence"
+    },
+    {
+      "arguments": {
+        "company_name_or_code": "600519",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "budget_left": 29,
+      "call_id": "provider-1",
+      "duration_ms": 0.014,
+      "event": "agent_tool",
+      "evidence_ids": [],
+      "protocol": "native_tool_calls",
+      "result": {
+        "count": 1,
+        "items": [
+          {
+            "adjustment": "as_reported",
+            "company_code": "600519",
+            "evidence_id": "e1",
+            "issues": [],
+            "metric": "revenue",
+            "normalized_value": "100",
+            "page": 5,
+            "period_year": 2024,
+            "report_year": 2024,
+            "scope": "consolidated",
+            "unit": "元",
+            "value": "100",
+            "value_bbox": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ],
+        "status": "ok"
+      },
+      "round": 1,
+      "status": "ok",
+      "tool": "find_evidence"
+    }
+  ]
+}

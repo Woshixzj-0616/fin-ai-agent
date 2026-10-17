@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-07T21:47:36+08:00",
+  "branch": "fix/competition-gaps",
+  "base_commit": "e0c145e19ad3de4659a2b127e4ab27e625fe7a1f",
+  "scope": "本地修复；未推送、未部署；不是提交合规全量验收",
+  "environment": {
+    "os": "Darwin",
+    "python": "3.14.5",
+    "PyMuPDF": "1.28.2"
+  },
+  "tests": {
+    "command": "python3 -B -m unittest discover -s agent -p 'test*.py'",
+    "total": 153,
+    "passed": 153,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_seconds": 19.219,
+    "log": "results/competition_test_results.txt",
+    "log_sha256": "d48c18570b3b9ecdac7d7fc760f7f65ef9e75cec0a886560c75116fdea0e9ad6",
+    "note": "模拟 HTTP 异常夹具消息已脱敏；非致命运行库提示保留"
+  },
+  "syntax": {
+    "python_files": 33,
+    "python": "passed",
+    "node_check": "passed",
+    "javascript": [
+      "docs/app.js",
+      "docs/trace.js",
+      "agent/webui.py 内嵌 JavaScript"
+    ]
+  },
+  "financial": {
+    "retested_annual_reports": 9,
+    "new_real_period_reports": 2,
+    "ledger_entries": 72,
+    "evidence": 365,
+    "period_report_evidence": 40,
+    "analysis_rows": 122,
+    "extraction_flags": 0,
+    "disclosed_yoy": {
+      "match": 54,
+      "unverified": 68
+    },
+    "q2_revenue": "38788396531.06",
+    "q2_revenue_qoq_percent": "-23.34454098948904231851575643332424061644",
+    "json_csv_parity": "passed"
+  },
+  "announcement_samples": [
+    {
+      "name": "真实复星股份质押公告",
+      "simulated": false,
+      "events": [
+        {
+          "type": "pledge",
+          "status": "extracted",
+          "missing_required": [],
+          "conflicts": []
+        }
+      ]
+    },
+    {
+      "name": "真实隧唐科技中标公告（预估金额需复核）",
+      "simulated": false,
+      "events": [
+        {
+          "type": "winning_bid",
+          "status": "needs_review",
+          "missing_required": [],
+          "conflicts": []
+        }
+      ]
+    },
+    {
+      "name": "模拟质押",
+      "simulated": true,
+      "events": [
+        {
+          "type": "pledge",
+          "status": "extracted",
+          "missing_required": [],
+          "conflicts": []
+        }
+      ]
+    },
+    {
+      "name": "模拟中标",
+      "simulated": true,
+      "events": [
+        {
+          "type": "winning_bid",
+          "status": "extracted",
+          "missing_required": [],
+          "conflicts": []
+        }
+      ]
+    },
+    {
+      "name": "模拟股权变动",
+      "simulated": true,
+      "events": [
+        {
+          "type": "equity_change",
+          "status": "extracted",
+          "missing_required": [],
+          "conflicts": []
+        }
+      ]
+    },
+    {
+      "name": "模拟扫描中标公告",
+      "simulated": true,
+      "events": [
+        {
+          "type": "winning_bid",
+          "status": "needs_review",
+          "missing_required": [],
+          "conflicts": []
+        }
+      ]
+    }
+  ],
+  "supplemental_audit": [
+    {
+      "id": "PE-DEMO",
+      "status": "确认错误",
+      "reason": "在所列输入和口径下倍数计算不一致",
+      "correction": {
+        "before": "20.00倍",
+        "after": "14.57倍",
+        "original_sentence": "贵州茅台2024年EPS口径，假设2026-10-07股价1000元/股，PE为20.00倍。",
+        "revised_sentence": "贵州茅台2024年EPS口径，假设2026-10-07股价1000元/股，PE为14.57倍。",
+        "apply_automatically": true,
+        "evidence_ids": [
+          "8f99c7cf09961c5159ac7771"
+        ]
+      }
+    },
+    {
+      "id": "REF-OOB",
+      "status": "确认错误",
+      "reason": "PDF 页序 999999 超出 1–143",
+      "correction": null
+    },
+    {
+      "id": "REF-SUPPORTED",
+      "status": "证据支持",
+      "reason": "引用页支持所核查内容",
+      "correction": null
+    },
+    {
+      "id": "REF-UNKNOWN",
+      "status": "口径冲突／需人工复核",
+      "reason": "请明确 PDF 页序或印刷页码；不默认两者相同",
+      "correction": null
+    }
+  ],
+  "browser": {
+    "method": "本地真实浏览器操作",
+    "static": [
+      "公告字段及原页高亮",
+      "PE/引用状态与修改片段",
+      "执行轨迹展开与证据定位",
+      "季度问答 10.54%"
+    ],
+    "live": [
+      "模拟扫描公告上传：5 字段全部复核",
+      "真实半年报 + 一季报：40 条证据与 Q2 环比",
+      "半年报身份标签",
+      "财报原页弹窗",
+      "季度问答 1—3 月及 10.54%"
+    ],
+    "console_errors_or_warnings": 0
+  },
+  "integrity": {
+    "analysis_run_id": "20261007_213958_140120b9",
+    "audit_run_id": "20261007_214346_70f1f37a",
+    "source_snapshot_files": 38,
+    "source_fingerprints": "passed",
+    "trace_evidence_links": "passed",
+    "page_files": "passed",
+    "output_sha256": {
+      "results/evidence.json": "77c1131b90c0eb4e11743740881619dc509e5f08f10231f396b5eeb2dcf720d2",
+      "results/evidence.csv": "7232c195e132c19f6100ed417fe18720df58d544f17a5a33951c77a5c87d53ac",
+      "results/analysis.json": "14cca849b700ed748f13a470a3d5823d83b18662e0fb4900fd9f72e9bc0bc424",
+      "results/analysis_events.jsonl": "77237d60bcc8791c2b22a441b7ebc872f2af45ed61f4dd68e5d36d06c1c86c63",
+      "results/audit_checks.json": "36621b51482b6fa3dce011a1072b49416bb618e8b44877d6c869779ffeedccbd",
+      "results/audit_events.jsonl": "1726860c97aeb62a17d6166785260ac43adc60ab028c8ff6d40f8effda3d396a",
+      "docs/data/bundle.json": "226c4331f05b3d7f17a9bf6a4016379d9728dfd4a575835c711127abe0bc6928"
+    },
+    "archived_source_fingerprints": "passed",
+    "financial_page_images": 21,
+    "temporary_upload_pages_excluded": "passed"
+  },
+  "llm": {
+    "environment_complete": false,
+    "real_provider_call_validated": false,
+    "protocol_regression": "模拟接口通过；需接入已授权真实服务"
+  },
+  "human_pending": [
+    "历史 24 条参考答案人工复签",
+    "独立盲测及基线对照",
+    "原 PDF 再分发权利、模型条款、协作源码许可证",
+    "真实 LLM 联通与日志",
+    "报名资料及视频实际录制"
+  ],
+  "pdf_visual_review": {
+    "plan_pages": 2,
+    "labeled_demo_pages": 3,
+    "scanned_demo_pages": 1,
+    "reviewed_all_pages": true
+  }
+}

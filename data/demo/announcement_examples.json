@@ -1,0 +1,3689 @@
+[
+  {
+    "schema_version": 1,
+    "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+    "event_type": "pledge",
+    "events": [
+      {
+        "event_id": "71921730fe603a15df869ee8",
+        "event_type": "pledge",
+        "event_name": "股份质押",
+        "company_code": null,
+        "company_name": null,
+        "fields": {
+          "pledgor": {
+            "value": "复星\n高科技",
+            "normalized_value": "复星高科技",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "复星\n高科技",
+                "normalized_value": "复星高科技",
+                "unit": null,
+                "issues": [],
+                "quote": "复星\n高科技",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  60.97999954223633,
+                  158.5399932861328,
+                  103.6500015258789,
+                  237.0399932861328
+                ],
+                "location_status": "table_cell",
+                "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                "table": 0,
+                "row": 1
+              }
+            ]
+          },
+          "shares": {
+            "value": "49000000",
+            "normalized_value": "49000000",
+            "unit": "股",
+            "normalized_unit": "股",
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "49000000",
+                "normalized_value": "49000000",
+                "unit": "股",
+                "issues": [],
+                "normalized_unit": "股",
+                "quote": "49,000,000",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  133.5500030517578,
+                  158.5399932861328,
+                  194.0,
+                  237.0399932861328
+                ],
+                "location_status": "table_cell",
+                "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                "table": 0,
+                "row": 1
+              }
+            ]
+          },
+          "pledgee": {
+            "value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+            "normalized_value": "中国工商银行股份有限公司上海市长宁支行",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+                "normalized_value": "中国工商银行股份有限公司上海市长宁支行",
+                "unit": null,
+                "issues": [],
+                "quote": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  353.3500061035156,
+                  158.5399932861328,
+                  402.8999938964844,
+                  237.0399932861328
+                ],
+                "location_status": "table_cell",
+                "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                "table": 0,
+                "row": 1
+              }
+            ]
+          },
+          "start_date": {
+            "value": "2025 年\n8 月\n14 日",
+            "normalized_value": "2025-08-14",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2025 年\n8 月\n14 日",
+                "normalized_value": "2025-08-14",
+                "unit": null,
+                "issues": [],
+                "quote": "2025 年\n8 月\n14 日",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  268.29998779296875,
+                  158.5399932861328,
+                  310.8500061035156,
+                  237.0399932861328
+                ],
+                "location_status": "table_cell",
+                "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                "table": 0,
+                "row": 1
+              }
+            ]
+          },
+          "end_date": {
+            "value": "2027 年\n8 月\n18 日",
+            "normalized_value": "2027-08-18",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2027 年\n8 月\n18 日",
+                "normalized_value": "2027-08-18",
+                "unit": null,
+                "issues": [],
+                "quote": "2027 年\n8 月\n18 日",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  310.8500061035156,
+                  158.5399932861328,
+                  353.3500061035156,
+                  237.0399932861328
+                ],
+                "location_status": "table_cell",
+                "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                "table": 0,
+                "row": 1
+              }
+            ]
+          },
+          "purpose": {
+            "value": null,
+            "normalized_value": null,
+            "status": "missing",
+            "evidence": []
+          },
+          "ratio_percent": {
+            "value": null,
+            "normalized_value": null,
+            "status": "missing",
+            "evidence": []
+          }
+        },
+        "missing_required": [],
+        "conflicts": [],
+        "status": "extracted",
+        "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+        "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+        "epistemic_type": "事实",
+        "channels": [
+          "table"
+        ],
+        "ocr_used": false,
+        "association_unresolved": false,
+        "currency": "CNY"
+      }
+    ],
+    "status": "completed",
+    "ocr_used": false,
+    "limits": "支持明确标签、表头及限定的中标通知正文句式；未提取字段不补猜。扫描 OCR 结果需人工复核。",
+    "sample_name": "真实复星股份质押公告",
+    "simulated": false,
+    "evidence": [
+      {
+        "evidence_id": "71921730fe603a15df869ee8_pledgor_0",
+        "metric_name": "pledgor",
+        "page": 2,
+        "page_image": "pages/announcement_426209dc7972_p2.png",
+        "value": "复星\n高科技",
+        "raw_value": "复星\n高科技",
+        "original_label": "pledgor",
+        "value_bbox": [
+          60.97999954223633,
+          158.5399932861328,
+          103.6500015258789,
+          237.0399932861328
+        ],
+        "unit": null,
+        "normalized_value": "复星高科技",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+        "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "71921730fe603a15df869ee8_shares_0",
+        "metric_name": "shares",
+        "page": 2,
+        "page_image": "pages/announcement_426209dc7972_p2.png",
+        "value": "49000000",
+        "raw_value": "49,000,000",
+        "original_label": "shares",
+        "value_bbox": [
+          133.5500030517578,
+          158.5399932861328,
+          194.0,
+          237.0399932861328
+        ],
+        "unit": "股",
+        "normalized_value": "49000000",
+        "normalized_unit": "股",
+        "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+        "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "71921730fe603a15df869ee8_pledgee_0",
+        "metric_name": "pledgee",
+        "page": 2,
+        "page_image": "pages/announcement_426209dc7972_p2.png",
+        "value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+        "raw_value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+        "original_label": "pledgee",
+        "value_bbox": [
+          353.3500061035156,
+          158.5399932861328,
+          402.8999938964844,
+          237.0399932861328
+        ],
+        "unit": null,
+        "normalized_value": "中国工商银行股份有限公司上海市长宁支行",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+        "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "71921730fe603a15df869ee8_start_date_0",
+        "metric_name": "start_date",
+        "page": 2,
+        "page_image": "pages/announcement_426209dc7972_p2.png",
+        "value": "2025 年\n8 月\n14 日",
+        "raw_value": "2025 年\n8 月\n14 日",
+        "original_label": "start_date",
+        "value_bbox": [
+          268.29998779296875,
+          158.5399932861328,
+          310.8500061035156,
+          237.0399932861328
+        ],
+        "unit": null,
+        "normalized_value": "2025-08-14",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+        "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "71921730fe603a15df869ee8_end_date_0",
+        "metric_name": "end_date",
+        "page": 2,
+        "page_image": "pages/announcement_426209dc7972_p2.png",
+        "value": "2027 年\n8 月\n18 日",
+        "raw_value": "2027 年\n8 月\n18 日",
+        "original_label": "end_date",
+        "value_bbox": [
+          310.8500061035156,
+          158.5399932861328,
+          353.3500061035156,
+          237.0399932861328
+        ],
+        "unit": null,
+        "normalized_value": "2027-08-18",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+        "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+        "extraction_method": "labeled_text_or_table"
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "time": "2026-10-07T21:32:31+08:00",
+        "run_id": "20261007_213231_65657b29",
+        "event": "run_started",
+        "title": "开始任务",
+        "actor": "程序",
+        "rule": "按本次参数创建隔离运行",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "command": "announcement-demo"
+        }
+      },
+      {
+        "step": 2,
+        "time": "2026-10-07T21:32:31+08:00",
+        "run_id": "20261007_213231_65657b29",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/demo/real/fosun_2025_pledge.pdf",
+          "sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+          "size_bytes": 108867
+        }
+      },
+      {
+        "step": 3,
+        "time": "2026-10-07T21:32:31+08:00",
+        "run_id": "20261007_213231_65657b29",
+        "event": "event_extracted",
+        "title": "公告事件字段",
+        "actor": "解析器",
+        "rule": "字段逐一挂原文位置；缺失或冲突明确标记",
+        "evidence_ids": [
+          "71921730fe603a15df869ee8_pledgor_0",
+          "71921730fe603a15df869ee8_shares_0",
+          "71921730fe603a15df869ee8_pledgee_0",
+          "71921730fe603a15df869ee8_start_date_0",
+          "71921730fe603a15df869ee8_end_date_0"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "71921730fe603a15df869ee8_pledgor_0",
+            "page": 2,
+            "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+            "value_bbox": [
+              60.97999954223633,
+              158.5399932861328,
+              103.6500015258789,
+              237.0399932861328
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "71921730fe603a15df869ee8_shares_0",
+            "page": 2,
+            "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+            "value_bbox": [
+              133.5500030517578,
+              158.5399932861328,
+              194.0,
+              237.0399932861328
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "71921730fe603a15df869ee8_pledgee_0",
+            "page": 2,
+            "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+            "value_bbox": [
+              353.3500061035156,
+              158.5399932861328,
+              402.8999938964844,
+              237.0399932861328
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "71921730fe603a15df869ee8_start_date_0",
+            "page": 2,
+            "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+            "value_bbox": [
+              268.29998779296875,
+              158.5399932861328,
+              310.8500061035156,
+              237.0399932861328
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "71921730fe603a15df869ee8_end_date_0",
+            "page": 2,
+            "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+            "value_bbox": [
+              310.8500061035156,
+              158.5399932861328,
+              353.3500061035156,
+              237.0399932861328
+            ],
+            "document_id": null
+          }
+        ],
+        "detail": {
+          "event_id": "71921730fe603a15df869ee8",
+          "event_type": "pledge",
+          "missing_required": [],
+          "conflicts": [],
+          "status": "extracted",
+          "fields": {
+            "pledgor": {
+              "value": "复星\n高科技",
+              "normalized_value": "复星高科技",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "复星\n高科技",
+                  "normalized_value": "复星高科技",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "复星\n高科技",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    60.97999954223633,
+                    158.5399932861328,
+                    103.6500015258789,
+                    237.0399932861328
+                  ],
+                  "location_status": "table_cell",
+                  "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                  "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                  "table": 0,
+                  "row": 1
+                }
+              ]
+            },
+            "shares": {
+              "value": "49000000",
+              "normalized_value": "49000000",
+              "unit": "股",
+              "normalized_unit": "股",
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "49000000",
+                  "normalized_value": "49000000",
+                  "unit": "股",
+                  "issues": [],
+                  "normalized_unit": "股",
+                  "quote": "49,000,000",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    133.5500030517578,
+                    158.5399932861328,
+                    194.0,
+                    237.0399932861328
+                  ],
+                  "location_status": "table_cell",
+                  "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                  "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                  "table": 0,
+                  "row": 1
+                }
+              ]
+            },
+            "pledgee": {
+              "value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+              "normalized_value": "中国工商银行股份有限公司上海市长宁支行",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+                  "normalized_value": "中国工商银行股份有限公司上海市长宁支行",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "中国工商\n银行股份\n有限公司\n上海市长\n宁支行",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    353.3500061035156,
+                    158.5399932861328,
+                    402.8999938964844,
+                    237.0399932861328
+                  ],
+                  "location_status": "table_cell",
+                  "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                  "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                  "table": 0,
+                  "row": 1
+                }
+              ]
+            },
+            "start_date": {
+              "value": "2025 年\n8 月\n14 日",
+              "normalized_value": "2025-08-14",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2025 年\n8 月\n14 日",
+                  "normalized_value": "2025-08-14",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "2025 年\n8 月\n14 日",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    268.29998779296875,
+                    158.5399932861328,
+                    310.8500061035156,
+                    237.0399932861328
+                  ],
+                  "location_status": "table_cell",
+                  "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                  "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                  "table": 0,
+                  "row": 1
+                }
+              ]
+            },
+            "end_date": {
+              "value": "2027 年\n8 月\n18 日",
+              "normalized_value": "2027-08-18",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2027 年\n8 月\n18 日",
+                  "normalized_value": "2027-08-18",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "2027 年\n8 月\n18 日",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    310.8500061035156,
+                    158.5399932861328,
+                    353.3500061035156,
+                    237.0399932861328
+                  ],
+                  "location_status": "table_cell",
+                  "source_file": "data/demo/real/fosun_2025_pledge.pdf",
+                  "source_sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+                  "table": 0,
+                  "row": 1
+                }
+              ]
+            },
+            "purpose": {
+              "value": null,
+              "normalized_value": null,
+              "status": "missing",
+              "evidence": []
+            },
+            "ratio_percent": {
+              "value": null,
+              "normalized_value": null,
+              "status": "missing",
+              "evidence": []
+            }
+          }
+        }
+      },
+      {
+        "step": 4,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213231_65657b29",
+        "event": "run_finished",
+        "title": "完成运行",
+        "actor": "程序",
+        "rule": "汇总结果并保存可复现记录",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "status": "completed",
+          "events": 1
+        }
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+    "event_type": "winning_bid",
+    "events": [
+      {
+        "event_id": "f0ddd0806b2258549b83905b",
+        "event_type": "winning_bid",
+        "event_name": "中标",
+        "company_code": null,
+        "company_name": null,
+        "fields": {
+          "project_name": {
+            "value": "市场经营AI云平台项目",
+            "normalized_value": "市场经营AI云平台项目",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "市场经营AI云平台项目",
+                "normalized_value": "市场经营AI云平台项目",
+                "unit": null,
+                "issues": [],
+                "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                "extraction_method": "explicit_bid_notice_sentence",
+                "semantic_role": "project_name"
+              }
+            ]
+          },
+          "winner": {
+            "value": "四川隧唐科技股份有限公司",
+            "normalized_value": "四川隧唐科技股份有限公司",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "四川隧唐科技股份有限公司",
+                "normalized_value": "四川隧唐科技股份有限公司",
+                "unit": null,
+                "issues": [],
+                "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                "extraction_method": "explicit_bid_notice_sentence",
+                "semantic_role": "winner"
+              }
+            ]
+          },
+          "customer": {
+            "value": "某央企单位",
+            "normalized_value": "某央企单位",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "某央企单位",
+                "normalized_value": "某央企单位",
+                "unit": null,
+                "issues": [],
+                "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                "extraction_method": "explicit_bid_notice_sentence",
+                "semantic_role": "customer"
+              }
+            ]
+          },
+          "amount": {
+            "value": "798000.00",
+            "normalized_value": "798000.00",
+            "unit": "元",
+            "normalized_unit": "元",
+            "status": "needs_review",
+            "evidence": [
+              {
+                "value": "798000.00",
+                "normalized_value": "798000.00",
+                "unit": "元",
+                "issues": [
+                  "estimated_amount_not_final_contract"
+                ],
+                "normalized_unit": "元",
+                "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                "extraction_method": "explicit_bid_notice_sentence",
+                "semantic_role": "amount"
+              }
+            ]
+          },
+          "announcement_date": {
+            "value": "2025年6月16日",
+            "normalized_value": "2025-06-16",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2025年6月16日",
+                "normalized_value": "2025-06-16",
+                "unit": null,
+                "issues": [],
+                "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                "extraction_method": "explicit_bid_notice_sentence",
+                "semantic_role": "notice_received_date"
+              }
+            ]
+          },
+          "term": {
+            "value": null,
+            "normalized_value": null,
+            "status": "missing",
+            "evidence": []
+          }
+        },
+        "missing_required": [],
+        "conflicts": [],
+        "status": "needs_review",
+        "source_file": "data/demo/real/suitang_2025_winning.pdf",
+        "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+        "epistemic_type": "事实",
+        "channels": [
+          "labeled_text"
+        ],
+        "ocr_used": false,
+        "association_unresolved": false,
+        "currency": "CNY"
+      }
+    ],
+    "status": "completed",
+    "ocr_used": false,
+    "limits": "支持明确标签、表头及限定的中标通知正文句式；未提取字段不补猜。扫描 OCR 结果需人工复核。",
+    "sample_name": "真实隧唐科技中标公告（预估金额需复核）",
+    "simulated": false,
+    "evidence": [
+      {
+        "evidence_id": "f0ddd0806b2258549b83905b_project_name_0",
+        "metric_name": "project_name",
+        "page": 1,
+        "page_image": "pages/announcement_b973fc984e7e_p1.png",
+        "value": "市场经营AI云平台项目",
+        "raw_value": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+        "original_label": "project_name",
+        "value_bbox": null,
+        "unit": null,
+        "normalized_value": "市场经营AI云平台项目",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/suitang_2025_winning.pdf",
+        "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "f0ddd0806b2258549b83905b_winner_0",
+        "metric_name": "winner",
+        "page": 1,
+        "page_image": "pages/announcement_b973fc984e7e_p1.png",
+        "value": "四川隧唐科技股份有限公司",
+        "raw_value": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+        "original_label": "winner",
+        "value_bbox": null,
+        "unit": null,
+        "normalized_value": "四川隧唐科技股份有限公司",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/suitang_2025_winning.pdf",
+        "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "f0ddd0806b2258549b83905b_customer_0",
+        "metric_name": "customer",
+        "page": 1,
+        "page_image": "pages/announcement_b973fc984e7e_p1.png",
+        "value": "某央企单位",
+        "raw_value": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+        "original_label": "customer",
+        "value_bbox": null,
+        "unit": null,
+        "normalized_value": "某央企单位",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/suitang_2025_winning.pdf",
+        "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "f0ddd0806b2258549b83905b_amount_0",
+        "metric_name": "amount",
+        "page": 1,
+        "page_image": "pages/announcement_b973fc984e7e_p1.png",
+        "value": "798000.00",
+        "raw_value": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+        "original_label": "amount",
+        "value_bbox": null,
+        "unit": "元",
+        "normalized_value": "798000.00",
+        "normalized_unit": "元",
+        "source_file": "data/demo/real/suitang_2025_winning.pdf",
+        "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "f0ddd0806b2258549b83905b_announcement_date_0",
+        "metric_name": "announcement_date",
+        "page": 1,
+        "page_image": "pages/announcement_b973fc984e7e_p1.png",
+        "value": "2025年6月16日",
+        "raw_value": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+        "original_label": "announcement_date",
+        "value_bbox": null,
+        "unit": null,
+        "normalized_value": "2025-06-16",
+        "normalized_unit": null,
+        "source_file": "data/demo/real/suitang_2025_winning.pdf",
+        "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+        "extraction_method": "labeled_text_or_table"
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_842e42ac",
+        "event": "run_started",
+        "title": "开始任务",
+        "actor": "程序",
+        "rule": "按本次参数创建隔离运行",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "command": "announcement-demo"
+        }
+      },
+      {
+        "step": 2,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_842e42ac",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/demo/real/suitang_2025_winning.pdf",
+          "sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+          "size_bytes": 121281
+        }
+      },
+      {
+        "step": 3,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_842e42ac",
+        "event": "event_extracted",
+        "title": "公告事件字段",
+        "actor": "解析器",
+        "rule": "字段逐一挂原文位置；缺失或冲突明确标记",
+        "evidence_ids": [
+          "f0ddd0806b2258549b83905b_project_name_0",
+          "f0ddd0806b2258549b83905b_winner_0",
+          "f0ddd0806b2258549b83905b_customer_0",
+          "f0ddd0806b2258549b83905b_amount_0",
+          "f0ddd0806b2258549b83905b_announcement_date_0"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "f0ddd0806b2258549b83905b_project_name_0",
+            "page": 1,
+            "source_file": "data/demo/real/suitang_2025_winning.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "f0ddd0806b2258549b83905b_winner_0",
+            "page": 1,
+            "source_file": "data/demo/real/suitang_2025_winning.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "f0ddd0806b2258549b83905b_customer_0",
+            "page": 1,
+            "source_file": "data/demo/real/suitang_2025_winning.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "f0ddd0806b2258549b83905b_amount_0",
+            "page": 1,
+            "source_file": "data/demo/real/suitang_2025_winning.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "f0ddd0806b2258549b83905b_announcement_date_0",
+            "page": 1,
+            "source_file": "data/demo/real/suitang_2025_winning.pdf",
+            "value_bbox": null,
+            "document_id": null
+          }
+        ],
+        "detail": {
+          "event_id": "f0ddd0806b2258549b83905b",
+          "event_type": "winning_bid",
+          "missing_required": [],
+          "conflicts": [],
+          "status": "needs_review",
+          "fields": {
+            "project_name": {
+              "value": "市场经营AI云平台项目",
+              "normalized_value": "市场经营AI云平台项目",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "市场经营AI云平台项目",
+                  "normalized_value": "市场经营AI云平台项目",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                  "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                  "extraction_method": "explicit_bid_notice_sentence",
+                  "semantic_role": "project_name"
+                }
+              ]
+            },
+            "winner": {
+              "value": "四川隧唐科技股份有限公司",
+              "normalized_value": "四川隧唐科技股份有限公司",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "四川隧唐科技股份有限公司",
+                  "normalized_value": "四川隧唐科技股份有限公司",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                  "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                  "extraction_method": "explicit_bid_notice_sentence",
+                  "semantic_role": "winner"
+                }
+              ]
+            },
+            "customer": {
+              "value": "某央企单位",
+              "normalized_value": "某央企单位",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "某央企单位",
+                  "normalized_value": "某央企单位",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                  "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                  "extraction_method": "explicit_bid_notice_sentence",
+                  "semantic_role": "customer"
+                }
+              ]
+            },
+            "amount": {
+              "value": "798000.00",
+              "normalized_value": "798000.00",
+              "unit": "元",
+              "normalized_unit": "元",
+              "status": "needs_review",
+              "evidence": [
+                {
+                  "value": "798000.00",
+                  "normalized_value": "798000.00",
+                  "unit": "元",
+                  "issues": [
+                    "estimated_amount_not_final_contract"
+                  ],
+                  "normalized_unit": "元",
+                  "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                  "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                  "extraction_method": "explicit_bid_notice_sentence",
+                  "semantic_role": "amount"
+                }
+              ]
+            },
+            "announcement_date": {
+              "value": "2025年6月16日",
+              "normalized_value": "2025-06-16",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2025年6月16日",
+                  "normalized_value": "2025-06-16",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "四川隧唐科技股份有限公司（以下简称“公司”）于2025年6月16日收到某央企单位关于市场经营AI云平台项目中标通知书，确认公司为该市场经营AI云平台项目中标单位，预估中标总价合计人民币798,000.00元",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/real/suitang_2025_winning.pdf",
+                  "source_sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+                  "extraction_method": "explicit_bid_notice_sentence",
+                  "semantic_role": "notice_received_date"
+                }
+              ]
+            },
+            "term": {
+              "value": null,
+              "normalized_value": null,
+              "status": "missing",
+              "evidence": []
+            }
+          }
+        }
+      },
+      {
+        "step": 4,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_842e42ac",
+        "event": "run_finished",
+        "title": "完成运行",
+        "actor": "程序",
+        "rule": "汇总结果并保存可复现记录",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "status": "completed",
+          "events": 1
+        }
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+    "event_type": "pledge",
+    "events": [
+      {
+        "event_id": "ce4c7ca258190a8bdbd2c4b7",
+        "event_type": "pledge",
+        "event_name": "股份质押",
+        "company_code": null,
+        "company_name": null,
+        "fields": {
+          "pledgor": {
+            "value": "模拟甲公司",
+            "normalized_value": "模拟甲公司",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "模拟甲公司",
+                "normalized_value": "模拟甲公司",
+                "unit": null,
+                "issues": [],
+                "quote": "股东名称：模拟甲公司",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  62.75526809692383,
+                  170.0,
+                  79.74626922607422
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "shares": {
+            "value": "100",
+            "normalized_value": "1000000",
+            "unit": "万股",
+            "normalized_unit": "股",
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "100",
+                "normalized_value": "1000000",
+                "unit": "万股",
+                "issues": [],
+                "normalized_unit": "股",
+                "quote": "质押数量：100万股",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  80.4979476928711,
+                  152.45001220703125,
+                  97.48894500732422
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "pledgee": {
+            "value": "模拟银行",
+            "normalized_value": "模拟银行",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "模拟银行",
+                "normalized_value": "模拟银行",
+                "unit": null,
+                "issues": [],
+                "quote": "质权人：模拟银行",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  92.0,
+                  98.24068450927734,
+                  144.0,
+                  115.23168182373047
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "start_date": {
+            "value": "2025年9月1日",
+            "normalized_value": "2025-09-01",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2025年9月1日",
+                "normalized_value": "2025-09-01",
+                "unit": null,
+                "issues": [],
+                "quote": "质押起始日：2025年9月1日",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  118.0,
+                  115.98336029052734,
+                  199.8999786376953,
+                  132.974365234375
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "end_date": {
+            "value": "2026年9月1日",
+            "normalized_value": "2026-09-01",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2026年9月1日",
+                "normalized_value": "2026-09-01",
+                "unit": null,
+                "issues": [],
+                "quote": "质押到期日：2026年9月1日",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  118.0,
+                  133.7260284423828,
+                  199.8999786376953,
+                  150.717041015625
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "purpose": {
+            "value": "经营周转",
+            "normalized_value": "经营周转",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "经营周转",
+                "normalized_value": "经营周转",
+                "unit": null,
+                "issues": [],
+                "quote": "质押用途：经营周转",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  151.46876525878906,
+                  157.0,
+                  168.45977783203125
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "ratio_percent": {
+            "value": "2.5",
+            "normalized_value": "2.5",
+            "unit": "%",
+            "normalized_unit": "%",
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2.5",
+                "normalized_value": "2.5",
+                "unit": "%",
+                "issues": [],
+                "normalized_unit": "%",
+                "quote": "占公司总股本比例：2.5%",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  157.0,
+                  169.21144104003906,
+                  185.5089874267578,
+                  186.20245361328125
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          }
+        },
+        "missing_required": [],
+        "conflicts": [],
+        "status": "extracted",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "epistemic_type": "事实",
+        "channels": [
+          "labeled_text"
+        ],
+        "ocr_used": false,
+        "association_unresolved": false,
+        "currency": "CNY"
+      }
+    ],
+    "status": "completed",
+    "ocr_used": false,
+    "limits": "支持明确标签、表头及限定的中标通知正文句式；未提取字段不补猜。扫描 OCR 结果需人工复核。",
+    "sample_name": "模拟质押",
+    "simulated": true,
+    "evidence": [
+      {
+        "evidence_id": "ce4c7ca258190a8bdbd2c4b7_pledgor_0",
+        "metric_name": "pledgor",
+        "page": 1,
+        "page_image": "pages/announcement_dacf667bdad5_p1.png",
+        "value": "模拟甲公司",
+        "raw_value": "股东名称：模拟甲公司",
+        "original_label": "pledgor",
+        "value_bbox": [
+          105.0,
+          62.75526809692383,
+          170.0,
+          79.74626922607422
+        ],
+        "unit": null,
+        "normalized_value": "模拟甲公司",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "ce4c7ca258190a8bdbd2c4b7_shares_0",
+        "metric_name": "shares",
+        "page": 1,
+        "page_image": "pages/announcement_dacf667bdad5_p1.png",
+        "value": "100",
+        "raw_value": "质押数量：100万股",
+        "original_label": "shares",
+        "value_bbox": [
+          105.0,
+          80.4979476928711,
+          152.45001220703125,
+          97.48894500732422
+        ],
+        "unit": "万股",
+        "normalized_value": "1000000",
+        "normalized_unit": "股",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "ce4c7ca258190a8bdbd2c4b7_pledgee_0",
+        "metric_name": "pledgee",
+        "page": 1,
+        "page_image": "pages/announcement_dacf667bdad5_p1.png",
+        "value": "模拟银行",
+        "raw_value": "质权人：模拟银行",
+        "original_label": "pledgee",
+        "value_bbox": [
+          92.0,
+          98.24068450927734,
+          144.0,
+          115.23168182373047
+        ],
+        "unit": null,
+        "normalized_value": "模拟银行",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "ce4c7ca258190a8bdbd2c4b7_start_date_0",
+        "metric_name": "start_date",
+        "page": 1,
+        "page_image": "pages/announcement_dacf667bdad5_p1.png",
+        "value": "2025年9月1日",
+        "raw_value": "质押起始日：2025年9月1日",
+        "original_label": "start_date",
+        "value_bbox": [
+          118.0,
+          115.98336029052734,
+          199.8999786376953,
+          132.974365234375
+        ],
+        "unit": null,
+        "normalized_value": "2025-09-01",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "ce4c7ca258190a8bdbd2c4b7_end_date_0",
+        "metric_name": "end_date",
+        "page": 1,
+        "page_image": "pages/announcement_dacf667bdad5_p1.png",
+        "value": "2026年9月1日",
+        "raw_value": "质押到期日：2026年9月1日",
+        "original_label": "end_date",
+        "value_bbox": [
+          118.0,
+          133.7260284423828,
+          199.8999786376953,
+          150.717041015625
+        ],
+        "unit": null,
+        "normalized_value": "2026-09-01",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "ce4c7ca258190a8bdbd2c4b7_purpose_0",
+        "metric_name": "purpose",
+        "page": 1,
+        "page_image": "pages/announcement_dacf667bdad5_p1.png",
+        "value": "经营周转",
+        "raw_value": "质押用途：经营周转",
+        "original_label": "purpose",
+        "value_bbox": [
+          105.0,
+          151.46876525878906,
+          157.0,
+          168.45977783203125
+        ],
+        "unit": null,
+        "normalized_value": "经营周转",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "ce4c7ca258190a8bdbd2c4b7_ratio_percent_0",
+        "metric_name": "ratio_percent",
+        "page": 1,
+        "page_image": "pages/announcement_dacf667bdad5_p1.png",
+        "value": "2.5",
+        "raw_value": "占公司总股本比例：2.5%",
+        "original_label": "ratio_percent",
+        "value_bbox": [
+          157.0,
+          169.21144104003906,
+          185.5089874267578,
+          186.20245361328125
+        ],
+        "unit": "%",
+        "normalized_value": "2.5",
+        "normalized_unit": "%",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_5686891c",
+        "event": "run_started",
+        "title": "开始任务",
+        "actor": "程序",
+        "rule": "按本次参数创建隔离运行",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "command": "announcement-demo"
+        }
+      },
+      {
+        "step": 2,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_5686891c",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/demo/模拟公告样例.pdf",
+          "sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+          "size_bytes": 1704826
+        }
+      },
+      {
+        "step": 3,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_5686891c",
+        "event": "event_extracted",
+        "title": "公告事件字段",
+        "actor": "解析器",
+        "rule": "字段逐一挂原文位置；缺失或冲突明确标记",
+        "evidence_ids": [
+          "ce4c7ca258190a8bdbd2c4b7_pledgor_0",
+          "ce4c7ca258190a8bdbd2c4b7_shares_0",
+          "ce4c7ca258190a8bdbd2c4b7_pledgee_0",
+          "ce4c7ca258190a8bdbd2c4b7_start_date_0",
+          "ce4c7ca258190a8bdbd2c4b7_end_date_0",
+          "ce4c7ca258190a8bdbd2c4b7_purpose_0",
+          "ce4c7ca258190a8bdbd2c4b7_ratio_percent_0"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ce4c7ca258190a8bdbd2c4b7_pledgor_0",
+            "page": 1,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              62.75526809692383,
+              170.0,
+              79.74626922607422
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "ce4c7ca258190a8bdbd2c4b7_shares_0",
+            "page": 1,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              80.4979476928711,
+              152.45001220703125,
+              97.48894500732422
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "ce4c7ca258190a8bdbd2c4b7_pledgee_0",
+            "page": 1,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              92.0,
+              98.24068450927734,
+              144.0,
+              115.23168182373047
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "ce4c7ca258190a8bdbd2c4b7_start_date_0",
+            "page": 1,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              118.0,
+              115.98336029052734,
+              199.8999786376953,
+              132.974365234375
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "ce4c7ca258190a8bdbd2c4b7_end_date_0",
+            "page": 1,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              118.0,
+              133.7260284423828,
+              199.8999786376953,
+              150.717041015625
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "ce4c7ca258190a8bdbd2c4b7_purpose_0",
+            "page": 1,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              151.46876525878906,
+              157.0,
+              168.45977783203125
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "ce4c7ca258190a8bdbd2c4b7_ratio_percent_0",
+            "page": 1,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              157.0,
+              169.21144104003906,
+              185.5089874267578,
+              186.20245361328125
+            ],
+            "document_id": null
+          }
+        ],
+        "detail": {
+          "event_id": "ce4c7ca258190a8bdbd2c4b7",
+          "event_type": "pledge",
+          "missing_required": [],
+          "conflicts": [],
+          "status": "extracted",
+          "fields": {
+            "pledgor": {
+              "value": "模拟甲公司",
+              "normalized_value": "模拟甲公司",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "模拟甲公司",
+                  "normalized_value": "模拟甲公司",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "股东名称：模拟甲公司",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    62.75526809692383,
+                    170.0,
+                    79.74626922607422
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "shares": {
+              "value": "100",
+              "normalized_value": "1000000",
+              "unit": "万股",
+              "normalized_unit": "股",
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "100",
+                  "normalized_value": "1000000",
+                  "unit": "万股",
+                  "issues": [],
+                  "normalized_unit": "股",
+                  "quote": "质押数量：100万股",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    80.4979476928711,
+                    152.45001220703125,
+                    97.48894500732422
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "pledgee": {
+              "value": "模拟银行",
+              "normalized_value": "模拟银行",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "模拟银行",
+                  "normalized_value": "模拟银行",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "质权人：模拟银行",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    92.0,
+                    98.24068450927734,
+                    144.0,
+                    115.23168182373047
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "start_date": {
+              "value": "2025年9月1日",
+              "normalized_value": "2025-09-01",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2025年9月1日",
+                  "normalized_value": "2025-09-01",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "质押起始日：2025年9月1日",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    118.0,
+                    115.98336029052734,
+                    199.8999786376953,
+                    132.974365234375
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "end_date": {
+              "value": "2026年9月1日",
+              "normalized_value": "2026-09-01",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2026年9月1日",
+                  "normalized_value": "2026-09-01",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "质押到期日：2026年9月1日",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    118.0,
+                    133.7260284423828,
+                    199.8999786376953,
+                    150.717041015625
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "purpose": {
+              "value": "经营周转",
+              "normalized_value": "经营周转",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "经营周转",
+                  "normalized_value": "经营周转",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "质押用途：经营周转",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    151.46876525878906,
+                    157.0,
+                    168.45977783203125
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "ratio_percent": {
+              "value": "2.5",
+              "normalized_value": "2.5",
+              "unit": "%",
+              "normalized_unit": "%",
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2.5",
+                  "normalized_value": "2.5",
+                  "unit": "%",
+                  "issues": [],
+                  "normalized_unit": "%",
+                  "quote": "占公司总股本比例：2.5%",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    157.0,
+                    169.21144104003906,
+                    185.5089874267578,
+                    186.20245361328125
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "step": 4,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_5686891c",
+        "event": "run_finished",
+        "title": "完成运行",
+        "actor": "程序",
+        "rule": "汇总结果并保存可复现记录",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "status": "completed",
+          "events": 1
+        }
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+    "event_type": "winning_bid",
+    "events": [
+      {
+        "event_id": "83501b0869115fae61a73e2a",
+        "event_type": "winning_bid",
+        "event_name": "中标",
+        "company_code": null,
+        "company_name": null,
+        "fields": {
+          "project_name": {
+            "value": "模拟智慧校园项目",
+            "normalized_value": "模拟智慧校园项目",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "模拟智慧校园项目",
+                "normalized_value": "模拟智慧校园项目",
+                "unit": null,
+                "issues": [],
+                "quote": "1、项目名称：模拟智慧校园项目",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  125.1500015258789,
+                  62.75526809692383,
+                  229.14999389648438,
+                  79.74626922607422
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "winner": {
+            "value": "模拟乙公司",
+            "normalized_value": "模拟乙公司",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "模拟乙公司",
+                "normalized_value": "模拟乙公司",
+                "unit": null,
+                "issues": [],
+                "quote": "2、中标人：模拟乙公司",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  112.1500015258789,
+                  80.4979476928711,
+                  177.14999389648438,
+                  97.48894500732422
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "customer": {
+            "value": "模拟高校",
+            "normalized_value": "模拟高校",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "模拟高校",
+                "normalized_value": "模拟高校",
+                "unit": null,
+                "issues": [],
+                "quote": "4、采购人：模拟高校",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  112.1500015258789,
+                  115.98336029052734,
+                  164.14999389648438,
+                  132.974365234375
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "amount": {
+            "value": "350",
+            "normalized_value": "3500000",
+            "unit": "万元",
+            "normalized_unit": "元",
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "350",
+                "normalized_value": "3500000",
+                "unit": "万元",
+                "issues": [],
+                "normalized_unit": "元",
+                "quote": "3、中标金额：人民币350万元",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  125.1500015258789,
+                  98.24068450927734,
+                  211.5999755859375,
+                  115.23168182373047
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "announcement_date": {
+            "value": "2025年9月1日",
+            "normalized_value": "2025-09-01",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2025年9月1日",
+                "normalized_value": "2025-09-01",
+                "unit": null,
+                "issues": [],
+                "quote": "5、公告日期：2025年9月1日",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  125.1500015258789,
+                  133.7260284423828,
+                  207.0499725341797,
+                  150.717041015625
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "term": {
+            "value": "180日",
+            "normalized_value": "180日",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "180日",
+                "normalized_value": "180日",
+                "unit": null,
+                "issues": [],
+                "quote": "6、合同期限：180日",
+                "page": 2,
+                "page_label": "",
+                "bbox": [
+                  125.1500015258789,
+                  151.46876525878906,
+                  159.59999084472656,
+                  168.45977783203125
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          }
+        },
+        "missing_required": [],
+        "conflicts": [],
+        "status": "extracted",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "epistemic_type": "事实",
+        "channels": [
+          "labeled_text"
+        ],
+        "ocr_used": false,
+        "association_unresolved": false,
+        "currency": "CNY"
+      }
+    ],
+    "status": "completed",
+    "ocr_used": false,
+    "limits": "支持明确标签、表头及限定的中标通知正文句式；未提取字段不补猜。扫描 OCR 结果需人工复核。",
+    "sample_name": "模拟中标",
+    "simulated": true,
+    "evidence": [
+      {
+        "evidence_id": "83501b0869115fae61a73e2a_project_name_0",
+        "metric_name": "project_name",
+        "page": 2,
+        "page_image": "pages/announcement_dacf667bdad5_p2.png",
+        "value": "模拟智慧校园项目",
+        "raw_value": "1、项目名称：模拟智慧校园项目",
+        "original_label": "project_name",
+        "value_bbox": [
+          125.1500015258789,
+          62.75526809692383,
+          229.14999389648438,
+          79.74626922607422
+        ],
+        "unit": null,
+        "normalized_value": "模拟智慧校园项目",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "83501b0869115fae61a73e2a_winner_0",
+        "metric_name": "winner",
+        "page": 2,
+        "page_image": "pages/announcement_dacf667bdad5_p2.png",
+        "value": "模拟乙公司",
+        "raw_value": "2、中标人：模拟乙公司",
+        "original_label": "winner",
+        "value_bbox": [
+          112.1500015258789,
+          80.4979476928711,
+          177.14999389648438,
+          97.48894500732422
+        ],
+        "unit": null,
+        "normalized_value": "模拟乙公司",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "83501b0869115fae61a73e2a_customer_0",
+        "metric_name": "customer",
+        "page": 2,
+        "page_image": "pages/announcement_dacf667bdad5_p2.png",
+        "value": "模拟高校",
+        "raw_value": "4、采购人：模拟高校",
+        "original_label": "customer",
+        "value_bbox": [
+          112.1500015258789,
+          115.98336029052734,
+          164.14999389648438,
+          132.974365234375
+        ],
+        "unit": null,
+        "normalized_value": "模拟高校",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "83501b0869115fae61a73e2a_amount_0",
+        "metric_name": "amount",
+        "page": 2,
+        "page_image": "pages/announcement_dacf667bdad5_p2.png",
+        "value": "350",
+        "raw_value": "3、中标金额：人民币350万元",
+        "original_label": "amount",
+        "value_bbox": [
+          125.1500015258789,
+          98.24068450927734,
+          211.5999755859375,
+          115.23168182373047
+        ],
+        "unit": "万元",
+        "normalized_value": "3500000",
+        "normalized_unit": "元",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "83501b0869115fae61a73e2a_announcement_date_0",
+        "metric_name": "announcement_date",
+        "page": 2,
+        "page_image": "pages/announcement_dacf667bdad5_p2.png",
+        "value": "2025年9月1日",
+        "raw_value": "5、公告日期：2025年9月1日",
+        "original_label": "announcement_date",
+        "value_bbox": [
+          125.1500015258789,
+          133.7260284423828,
+          207.0499725341797,
+          150.717041015625
+        ],
+        "unit": null,
+        "normalized_value": "2025-09-01",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "83501b0869115fae61a73e2a_term_0",
+        "metric_name": "term",
+        "page": 2,
+        "page_image": "pages/announcement_dacf667bdad5_p2.png",
+        "value": "180日",
+        "raw_value": "6、合同期限：180日",
+        "original_label": "term",
+        "value_bbox": [
+          125.1500015258789,
+          151.46876525878906,
+          159.59999084472656,
+          168.45977783203125
+        ],
+        "unit": null,
+        "normalized_value": "180日",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_f1833b9f",
+        "event": "run_started",
+        "title": "开始任务",
+        "actor": "程序",
+        "rule": "按本次参数创建隔离运行",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "command": "announcement-demo"
+        }
+      },
+      {
+        "step": 2,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_f1833b9f",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/demo/模拟公告样例.pdf",
+          "sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+          "size_bytes": 1704826
+        }
+      },
+      {
+        "step": 3,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_f1833b9f",
+        "event": "event_extracted",
+        "title": "公告事件字段",
+        "actor": "解析器",
+        "rule": "字段逐一挂原文位置；缺失或冲突明确标记",
+        "evidence_ids": [
+          "83501b0869115fae61a73e2a_project_name_0",
+          "83501b0869115fae61a73e2a_winner_0",
+          "83501b0869115fae61a73e2a_customer_0",
+          "83501b0869115fae61a73e2a_amount_0",
+          "83501b0869115fae61a73e2a_announcement_date_0",
+          "83501b0869115fae61a73e2a_term_0"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "83501b0869115fae61a73e2a_project_name_0",
+            "page": 2,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              125.1500015258789,
+              62.75526809692383,
+              229.14999389648438,
+              79.74626922607422
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "83501b0869115fae61a73e2a_winner_0",
+            "page": 2,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              112.1500015258789,
+              80.4979476928711,
+              177.14999389648438,
+              97.48894500732422
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "83501b0869115fae61a73e2a_customer_0",
+            "page": 2,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              112.1500015258789,
+              115.98336029052734,
+              164.14999389648438,
+              132.974365234375
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "83501b0869115fae61a73e2a_amount_0",
+            "page": 2,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              125.1500015258789,
+              98.24068450927734,
+              211.5999755859375,
+              115.23168182373047
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "83501b0869115fae61a73e2a_announcement_date_0",
+            "page": 2,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              125.1500015258789,
+              133.7260284423828,
+              207.0499725341797,
+              150.717041015625
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "83501b0869115fae61a73e2a_term_0",
+            "page": 2,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              125.1500015258789,
+              151.46876525878906,
+              159.59999084472656,
+              168.45977783203125
+            ],
+            "document_id": null
+          }
+        ],
+        "detail": {
+          "event_id": "83501b0869115fae61a73e2a",
+          "event_type": "winning_bid",
+          "missing_required": [],
+          "conflicts": [],
+          "status": "extracted",
+          "fields": {
+            "project_name": {
+              "value": "模拟智慧校园项目",
+              "normalized_value": "模拟智慧校园项目",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "模拟智慧校园项目",
+                  "normalized_value": "模拟智慧校园项目",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "1、项目名称：模拟智慧校园项目",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    125.1500015258789,
+                    62.75526809692383,
+                    229.14999389648438,
+                    79.74626922607422
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "winner": {
+              "value": "模拟乙公司",
+              "normalized_value": "模拟乙公司",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "模拟乙公司",
+                  "normalized_value": "模拟乙公司",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "2、中标人：模拟乙公司",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    112.1500015258789,
+                    80.4979476928711,
+                    177.14999389648438,
+                    97.48894500732422
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "customer": {
+              "value": "模拟高校",
+              "normalized_value": "模拟高校",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "模拟高校",
+                  "normalized_value": "模拟高校",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "4、采购人：模拟高校",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    112.1500015258789,
+                    115.98336029052734,
+                    164.14999389648438,
+                    132.974365234375
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "amount": {
+              "value": "350",
+              "normalized_value": "3500000",
+              "unit": "万元",
+              "normalized_unit": "元",
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "350",
+                  "normalized_value": "3500000",
+                  "unit": "万元",
+                  "issues": [],
+                  "normalized_unit": "元",
+                  "quote": "3、中标金额：人民币350万元",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    125.1500015258789,
+                    98.24068450927734,
+                    211.5999755859375,
+                    115.23168182373047
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "announcement_date": {
+              "value": "2025年9月1日",
+              "normalized_value": "2025-09-01",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2025年9月1日",
+                  "normalized_value": "2025-09-01",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "5、公告日期：2025年9月1日",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    125.1500015258789,
+                    133.7260284423828,
+                    207.0499725341797,
+                    150.717041015625
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "term": {
+              "value": "180日",
+              "normalized_value": "180日",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "180日",
+                  "normalized_value": "180日",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "6、合同期限：180日",
+                  "page": 2,
+                  "page_label": "",
+                  "bbox": [
+                    125.1500015258789,
+                    151.46876525878906,
+                    159.59999084472656,
+                    168.45977783203125
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "step": 4,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_f1833b9f",
+        "event": "run_finished",
+        "title": "完成运行",
+        "actor": "程序",
+        "rule": "汇总结果并保存可复现记录",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "status": "completed",
+          "events": 1
+        }
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+    "event_type": "equity_change",
+    "events": [
+      {
+        "event_id": "80b84902c0e0b2f093d5819e",
+        "event_type": "equity_change",
+        "event_name": "股权变动",
+        "company_code": null,
+        "company_name": null,
+        "fields": {
+          "seller": {
+            "value": "模拟甲公司",
+            "normalized_value": "模拟甲公司",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "模拟甲公司",
+                "normalized_value": "模拟甲公司",
+                "unit": null,
+                "issues": [],
+                "quote": "转让方：模拟甲公司",
+                "page": 3,
+                "page_label": "",
+                "bbox": [
+                  92.0,
+                  62.75526809692383,
+                  157.0,
+                  79.74626922607422
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "buyer": {
+            "value": "模拟乙公司",
+            "normalized_value": "模拟乙公司",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "模拟乙公司",
+                "normalized_value": "模拟乙公司",
+                "unit": null,
+                "issues": [],
+                "quote": "受让方：模拟乙公司",
+                "page": 3,
+                "page_label": "",
+                "bbox": [
+                  92.0,
+                  80.4979476928711,
+                  157.0,
+                  97.48894500732422
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "shares": {
+            "value": "200",
+            "normalized_value": "2000000",
+            "unit": "万股",
+            "normalized_unit": "股",
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "200",
+                "normalized_value": "2000000",
+                "unit": "万股",
+                "issues": [],
+                "normalized_unit": "股",
+                "quote": "转让股数：200万股",
+                "page": 3,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  98.24068450927734,
+                  152.45001220703125,
+                  115.23168182373047
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "ratio_percent": {
+            "value": "5",
+            "normalized_value": "5",
+            "unit": "%",
+            "normalized_unit": "%",
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "5",
+                "normalized_value": "5",
+                "unit": "%",
+                "issues": [],
+                "normalized_unit": "%",
+                "quote": "转让比例：5%",
+                "page": 3,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  133.7260284423828,
+                  122.86199951171875,
+                  150.717041015625
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "change_date": {
+            "value": "2025年9月2日",
+            "normalized_value": "2025-09-02",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "2025年9月2日",
+                "normalized_value": "2025-09-02",
+                "unit": null,
+                "issues": [],
+                "quote": "转让日期：2025年9月2日",
+                "page": 3,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  115.98336029052734,
+                  186.89999389648438,
+                  132.974365234375
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "change_method": {
+            "value": "协议转让",
+            "normalized_value": "协议转让",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "协议转让",
+                "normalized_value": "协议转让",
+                "unit": null,
+                "issues": [],
+                "quote": "转让方式：协议转让",
+                "page": 3,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  151.46876525878906,
+                  157.0,
+                  168.45977783203125
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          },
+          "amount": {
+            "value": "1200",
+            "normalized_value": "12000000",
+            "unit": "万元",
+            "normalized_unit": "元",
+            "status": "extracted",
+            "evidence": [
+              {
+                "value": "1200",
+                "normalized_value": "12000000",
+                "unit": "万元",
+                "issues": [],
+                "normalized_unit": "元",
+                "quote": "交易金额：人民币1200万元",
+                "page": 3,
+                "page_label": "",
+                "bbox": [
+                  105.0,
+                  169.21144104003906,
+                  198.5999755859375,
+                  186.20245361328125
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟公告样例.pdf",
+                "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+              }
+            ]
+          }
+        },
+        "missing_required": [],
+        "conflicts": [],
+        "status": "extracted",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "epistemic_type": "事实",
+        "channels": [
+          "labeled_text"
+        ],
+        "ocr_used": false,
+        "association_unresolved": false,
+        "currency": "CNY"
+      }
+    ],
+    "status": "completed",
+    "ocr_used": false,
+    "limits": "支持明确标签、表头及限定的中标通知正文句式；未提取字段不补猜。扫描 OCR 结果需人工复核。",
+    "sample_name": "模拟股权变动",
+    "simulated": true,
+    "evidence": [
+      {
+        "evidence_id": "80b84902c0e0b2f093d5819e_seller_0",
+        "metric_name": "seller",
+        "page": 3,
+        "page_image": "pages/announcement_dacf667bdad5_p3.png",
+        "value": "模拟甲公司",
+        "raw_value": "转让方：模拟甲公司",
+        "original_label": "seller",
+        "value_bbox": [
+          92.0,
+          62.75526809692383,
+          157.0,
+          79.74626922607422
+        ],
+        "unit": null,
+        "normalized_value": "模拟甲公司",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "80b84902c0e0b2f093d5819e_buyer_0",
+        "metric_name": "buyer",
+        "page": 3,
+        "page_image": "pages/announcement_dacf667bdad5_p3.png",
+        "value": "模拟乙公司",
+        "raw_value": "受让方：模拟乙公司",
+        "original_label": "buyer",
+        "value_bbox": [
+          92.0,
+          80.4979476928711,
+          157.0,
+          97.48894500732422
+        ],
+        "unit": null,
+        "normalized_value": "模拟乙公司",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "80b84902c0e0b2f093d5819e_shares_0",
+        "metric_name": "shares",
+        "page": 3,
+        "page_image": "pages/announcement_dacf667bdad5_p3.png",
+        "value": "200",
+        "raw_value": "转让股数：200万股",
+        "original_label": "shares",
+        "value_bbox": [
+          105.0,
+          98.24068450927734,
+          152.45001220703125,
+          115.23168182373047
+        ],
+        "unit": "万股",
+        "normalized_value": "2000000",
+        "normalized_unit": "股",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "80b84902c0e0b2f093d5819e_ratio_percent_0",
+        "metric_name": "ratio_percent",
+        "page": 3,
+        "page_image": "pages/announcement_dacf667bdad5_p3.png",
+        "value": "5",
+        "raw_value": "转让比例：5%",
+        "original_label": "ratio_percent",
+        "value_bbox": [
+          105.0,
+          133.7260284423828,
+          122.86199951171875,
+          150.717041015625
+        ],
+        "unit": "%",
+        "normalized_value": "5",
+        "normalized_unit": "%",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "80b84902c0e0b2f093d5819e_change_date_0",
+        "metric_name": "change_date",
+        "page": 3,
+        "page_image": "pages/announcement_dacf667bdad5_p3.png",
+        "value": "2025年9月2日",
+        "raw_value": "转让日期：2025年9月2日",
+        "original_label": "change_date",
+        "value_bbox": [
+          105.0,
+          115.98336029052734,
+          186.89999389648438,
+          132.974365234375
+        ],
+        "unit": null,
+        "normalized_value": "2025-09-02",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "80b84902c0e0b2f093d5819e_change_method_0",
+        "metric_name": "change_method",
+        "page": 3,
+        "page_image": "pages/announcement_dacf667bdad5_p3.png",
+        "value": "协议转让",
+        "raw_value": "转让方式：协议转让",
+        "original_label": "change_method",
+        "value_bbox": [
+          105.0,
+          151.46876525878906,
+          157.0,
+          168.45977783203125
+        ],
+        "unit": null,
+        "normalized_value": "协议转让",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      },
+      {
+        "evidence_id": "80b84902c0e0b2f093d5819e_amount_0",
+        "metric_name": "amount",
+        "page": 3,
+        "page_image": "pages/announcement_dacf667bdad5_p3.png",
+        "value": "1200",
+        "raw_value": "交易金额：人民币1200万元",
+        "original_label": "amount",
+        "value_bbox": [
+          105.0,
+          169.21144104003906,
+          198.5999755859375,
+          186.20245361328125
+        ],
+        "unit": "万元",
+        "normalized_value": "12000000",
+        "normalized_unit": "元",
+        "source_file": "data/demo/模拟公告样例.pdf",
+        "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+        "extraction_method": "labeled_text_or_table"
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_cc332364",
+        "event": "run_started",
+        "title": "开始任务",
+        "actor": "程序",
+        "rule": "按本次参数创建隔离运行",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "command": "announcement-demo"
+        }
+      },
+      {
+        "step": 2,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_cc332364",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/demo/模拟公告样例.pdf",
+          "sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca",
+          "size_bytes": 1704826
+        }
+      },
+      {
+        "step": 3,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_cc332364",
+        "event": "event_extracted",
+        "title": "公告事件字段",
+        "actor": "解析器",
+        "rule": "字段逐一挂原文位置；缺失或冲突明确标记",
+        "evidence_ids": [
+          "80b84902c0e0b2f093d5819e_seller_0",
+          "80b84902c0e0b2f093d5819e_buyer_0",
+          "80b84902c0e0b2f093d5819e_shares_0",
+          "80b84902c0e0b2f093d5819e_ratio_percent_0",
+          "80b84902c0e0b2f093d5819e_change_date_0",
+          "80b84902c0e0b2f093d5819e_change_method_0",
+          "80b84902c0e0b2f093d5819e_amount_0"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "80b84902c0e0b2f093d5819e_seller_0",
+            "page": 3,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              92.0,
+              62.75526809692383,
+              157.0,
+              79.74626922607422
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "80b84902c0e0b2f093d5819e_buyer_0",
+            "page": 3,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              92.0,
+              80.4979476928711,
+              157.0,
+              97.48894500732422
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "80b84902c0e0b2f093d5819e_shares_0",
+            "page": 3,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              98.24068450927734,
+              152.45001220703125,
+              115.23168182373047
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "80b84902c0e0b2f093d5819e_ratio_percent_0",
+            "page": 3,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              133.7260284423828,
+              122.86199951171875,
+              150.717041015625
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "80b84902c0e0b2f093d5819e_change_date_0",
+            "page": 3,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              115.98336029052734,
+              186.89999389648438,
+              132.974365234375
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "80b84902c0e0b2f093d5819e_change_method_0",
+            "page": 3,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              151.46876525878906,
+              157.0,
+              168.45977783203125
+            ],
+            "document_id": null
+          },
+          {
+            "evidence_id": "80b84902c0e0b2f093d5819e_amount_0",
+            "page": 3,
+            "source_file": "data/demo/模拟公告样例.pdf",
+            "value_bbox": [
+              105.0,
+              169.21144104003906,
+              198.5999755859375,
+              186.20245361328125
+            ],
+            "document_id": null
+          }
+        ],
+        "detail": {
+          "event_id": "80b84902c0e0b2f093d5819e",
+          "event_type": "equity_change",
+          "missing_required": [],
+          "conflicts": [],
+          "status": "extracted",
+          "fields": {
+            "seller": {
+              "value": "模拟甲公司",
+              "normalized_value": "模拟甲公司",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "模拟甲公司",
+                  "normalized_value": "模拟甲公司",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "转让方：模拟甲公司",
+                  "page": 3,
+                  "page_label": "",
+                  "bbox": [
+                    92.0,
+                    62.75526809692383,
+                    157.0,
+                    79.74626922607422
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "buyer": {
+              "value": "模拟乙公司",
+              "normalized_value": "模拟乙公司",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "模拟乙公司",
+                  "normalized_value": "模拟乙公司",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "受让方：模拟乙公司",
+                  "page": 3,
+                  "page_label": "",
+                  "bbox": [
+                    92.0,
+                    80.4979476928711,
+                    157.0,
+                    97.48894500732422
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "shares": {
+              "value": "200",
+              "normalized_value": "2000000",
+              "unit": "万股",
+              "normalized_unit": "股",
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "200",
+                  "normalized_value": "2000000",
+                  "unit": "万股",
+                  "issues": [],
+                  "normalized_unit": "股",
+                  "quote": "转让股数：200万股",
+                  "page": 3,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    98.24068450927734,
+                    152.45001220703125,
+                    115.23168182373047
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "ratio_percent": {
+              "value": "5",
+              "normalized_value": "5",
+              "unit": "%",
+              "normalized_unit": "%",
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "5",
+                  "normalized_value": "5",
+                  "unit": "%",
+                  "issues": [],
+                  "normalized_unit": "%",
+                  "quote": "转让比例：5%",
+                  "page": 3,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    133.7260284423828,
+                    122.86199951171875,
+                    150.717041015625
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "change_date": {
+              "value": "2025年9月2日",
+              "normalized_value": "2025-09-02",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "2025年9月2日",
+                  "normalized_value": "2025-09-02",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "转让日期：2025年9月2日",
+                  "page": 3,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    115.98336029052734,
+                    186.89999389648438,
+                    132.974365234375
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "change_method": {
+              "value": "协议转让",
+              "normalized_value": "协议转让",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "协议转让",
+                  "normalized_value": "协议转让",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "转让方式：协议转让",
+                  "page": 3,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    151.46876525878906,
+                    157.0,
+                    168.45977783203125
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            },
+            "amount": {
+              "value": "1200",
+              "normalized_value": "12000000",
+              "unit": "万元",
+              "normalized_unit": "元",
+              "status": "extracted",
+              "evidence": [
+                {
+                  "value": "1200",
+                  "normalized_value": "12000000",
+                  "unit": "万元",
+                  "issues": [],
+                  "normalized_unit": "元",
+                  "quote": "交易金额：人民币1200万元",
+                  "page": 3,
+                  "page_label": "",
+                  "bbox": [
+                    105.0,
+                    169.21144104003906,
+                    198.5999755859375,
+                    186.20245361328125
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟公告样例.pdf",
+                  "source_sha256": "dacf667bdad557eab7dce70731ecfd76e133fc0b39dfea890b542dde796c74ca"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "step": 4,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_cc332364",
+        "event": "run_finished",
+        "title": "完成运行",
+        "actor": "程序",
+        "rule": "汇总结果并保存可复现记录",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "status": "completed",
+          "events": 1
+        }
+      }
+    ]
+  },
+  {
+    "schema_version": 1,
+    "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+    "event_type": "winning_bid",
+    "events": [
+      {
+        "event_id": "9fee6b620964954d1efc6959",
+        "event_type": "winning_bid",
+        "event_name": "中标",
+        "company_code": null,
+        "company_name": null,
+        "fields": {
+          "project_name": {
+            "value": "模拟智慧校园项目",
+            "normalized_value": "模拟智慧校园项目",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "needs_review",
+            "evidence": [
+              {
+                "value": "模拟智慧校园项目",
+                "normalized_value": "模拟智慧校园项目",
+                "unit": null,
+                "issues": [],
+                "quote": "1、项目名称:模拟智慧校园项目",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/模拟扫描中标公告.pdf",
+                "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+              }
+            ]
+          },
+          "winner": {
+            "value": "模拟乙公司",
+            "normalized_value": "模拟乙公司",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "needs_review",
+            "evidence": [
+              {
+                "value": "模拟乙公司",
+                "normalized_value": "模拟乙公司",
+                "unit": null,
+                "issues": [],
+                "quote": "2、中标人:模拟乙公司",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/模拟扫描中标公告.pdf",
+                "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+              }
+            ]
+          },
+          "customer": {
+            "value": null,
+            "normalized_value": null,
+            "status": "missing",
+            "evidence": []
+          },
+          "amount": {
+            "value": "350",
+            "normalized_value": "3500000",
+            "unit": "万元",
+            "normalized_unit": "元",
+            "status": "needs_review",
+            "evidence": [
+              {
+                "value": "350",
+                "normalized_value": "3500000",
+                "unit": "万元",
+                "issues": [],
+                "normalized_unit": "元",
+                "quote": "3、中标金额:人民币350万元",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/模拟扫描中标公告.pdf",
+                "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+              }
+            ]
+          },
+          "announcement_date": {
+            "value": "2025年9月1日",
+            "normalized_value": "2025-09-01",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "needs_review",
+            "evidence": [
+              {
+                "value": "2025年9月1日",
+                "normalized_value": "2025-09-01",
+                "unit": null,
+                "issues": [],
+                "quote": "5、公告日期:2025年9月1日",
+                "page": 1,
+                "page_label": "",
+                "bbox": null,
+                "location_status": "multiple_or_unresolved",
+                "source_file": "data/demo/模拟扫描中标公告.pdf",
+                "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+              }
+            ]
+          },
+          "term": {
+            "value": "1808",
+            "normalized_value": "1808",
+            "unit": null,
+            "normalized_unit": null,
+            "status": "needs_review",
+            "evidence": [
+              {
+                "value": "1808",
+                "normalized_value": "1808",
+                "unit": null,
+                "issues": [],
+                "quote": "6、合同期限:1808",
+                "page": 1,
+                "page_label": "",
+                "bbox": [
+                  126.34303283691406,
+                  152.97943115234375,
+                  157.0972442626953,
+                  170.27435302734375
+                ],
+                "location_status": "unique",
+                "source_file": "data/demo/模拟扫描中标公告.pdf",
+                "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+              }
+            ]
+          }
+        },
+        "missing_required": [],
+        "conflicts": [],
+        "status": "needs_review",
+        "source_file": "data/demo/模拟扫描中标公告.pdf",
+        "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+        "epistemic_type": "事实",
+        "channels": [
+          "labeled_text"
+        ],
+        "ocr_used": true,
+        "association_unresolved": false,
+        "currency": "CNY"
+      }
+    ],
+    "status": "completed",
+    "ocr_used": true,
+    "limits": "支持明确标签、表头及限定的中标通知正文句式；未提取字段不补猜。扫描 OCR 结果需人工复核。",
+    "sample_name": "模拟扫描中标公告",
+    "simulated": true,
+    "evidence": [
+      {
+        "evidence_id": "9fee6b620964954d1efc6959_project_name_0",
+        "metric_name": "project_name",
+        "page": 1,
+        "page_image": "pages/announcement_f84ef7b3bc99_p1.png",
+        "value": "模拟智慧校园项目",
+        "raw_value": "1、项目名称:模拟智慧校园项目",
+        "original_label": "project_name",
+        "value_bbox": null,
+        "unit": null,
+        "normalized_value": "模拟智慧校园项目",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟扫描中标公告.pdf",
+        "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+        "extraction_method": "OCR / needs_review"
+      },
+      {
+        "evidence_id": "9fee6b620964954d1efc6959_winner_0",
+        "metric_name": "winner",
+        "page": 1,
+        "page_image": "pages/announcement_f84ef7b3bc99_p1.png",
+        "value": "模拟乙公司",
+        "raw_value": "2、中标人:模拟乙公司",
+        "original_label": "winner",
+        "value_bbox": null,
+        "unit": null,
+        "normalized_value": "模拟乙公司",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟扫描中标公告.pdf",
+        "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+        "extraction_method": "OCR / needs_review"
+      },
+      {
+        "evidence_id": "9fee6b620964954d1efc6959_amount_0",
+        "metric_name": "amount",
+        "page": 1,
+        "page_image": "pages/announcement_f84ef7b3bc99_p1.png",
+        "value": "350",
+        "raw_value": "3、中标金额:人民币350万元",
+        "original_label": "amount",
+        "value_bbox": null,
+        "unit": "万元",
+        "normalized_value": "3500000",
+        "normalized_unit": "元",
+        "source_file": "data/demo/模拟扫描中标公告.pdf",
+        "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+        "extraction_method": "OCR / needs_review"
+      },
+      {
+        "evidence_id": "9fee6b620964954d1efc6959_announcement_date_0",
+        "metric_name": "announcement_date",
+        "page": 1,
+        "page_image": "pages/announcement_f84ef7b3bc99_p1.png",
+        "value": "2025年9月1日",
+        "raw_value": "5、公告日期:2025年9月1日",
+        "original_label": "announcement_date",
+        "value_bbox": null,
+        "unit": null,
+        "normalized_value": "2025-09-01",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟扫描中标公告.pdf",
+        "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+        "extraction_method": "OCR / needs_review"
+      },
+      {
+        "evidence_id": "9fee6b620964954d1efc6959_term_0",
+        "metric_name": "term",
+        "page": 1,
+        "page_image": "pages/announcement_f84ef7b3bc99_p1.png",
+        "value": "1808",
+        "raw_value": "6、合同期限:1808",
+        "original_label": "term",
+        "value_bbox": [
+          126.34303283691406,
+          152.97943115234375,
+          157.0972442626953,
+          170.27435302734375
+        ],
+        "unit": null,
+        "normalized_value": "1808",
+        "normalized_unit": null,
+        "source_file": "data/demo/模拟扫描中标公告.pdf",
+        "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+        "extraction_method": "OCR / needs_review"
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_0ca6dd91",
+        "event": "run_started",
+        "title": "开始任务",
+        "actor": "程序",
+        "rule": "按本次参数创建隔离运行",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "command": "announcement-demo"
+        }
+      },
+      {
+        "step": 2,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_0ca6dd91",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/demo/模拟扫描中标公告.pdf",
+          "sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa",
+          "size_bytes": 46390
+        }
+      },
+      {
+        "step": 3,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_0ca6dd91",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/ocr/tessdata/chi_sim.traineddata",
+          "sha256": "a5fcb6f0db1e1d6d8522f39db4e848f05984669172e584e8d76b6b3141e1f730",
+          "size_bytes": 2469156
+        }
+      },
+      {
+        "step": 4,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_0ca6dd91",
+        "event": "file_read",
+        "title": "读取材料",
+        "actor": "程序",
+        "rule": "记录文件路径、SHA-256 与字节数",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "path": "/Users/wusirui/Desktop/金融人工智能竞赛/fin-ai-agent/data/ocr/tessdata/eng.traineddata",
+          "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+          "size_bytes": 4113088
+        }
+      },
+      {
+        "step": 5,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_0ca6dd91",
+        "event": "ocr_used",
+        "title": "识别扫描页",
+        "actor": "本地 OCR",
+        "rule": "记录语言数据指纹；所有识别字段转人工复核",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "page": 1,
+          "language": "chi_sim+eng",
+          "dpi": 200,
+          "language_data_sha256": {
+            "chi_sim": "a5fcb6f0db1e1d6d8522f39db4e848f05984669172e584e8d76b6b3141e1f730",
+            "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+          },
+          "status": "needs_review"
+        }
+      },
+      {
+        "step": 6,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_0ca6dd91",
+        "event": "event_extracted",
+        "title": "公告事件字段",
+        "actor": "解析器",
+        "rule": "字段逐一挂原文位置；缺失或冲突明确标记",
+        "evidence_ids": [
+          "9fee6b620964954d1efc6959_project_name_0",
+          "9fee6b620964954d1efc6959_winner_0",
+          "9fee6b620964954d1efc6959_amount_0",
+          "9fee6b620964954d1efc6959_announcement_date_0",
+          "9fee6b620964954d1efc6959_term_0"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "9fee6b620964954d1efc6959_project_name_0",
+            "page": 1,
+            "source_file": "data/demo/模拟扫描中标公告.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "9fee6b620964954d1efc6959_winner_0",
+            "page": 1,
+            "source_file": "data/demo/模拟扫描中标公告.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "9fee6b620964954d1efc6959_amount_0",
+            "page": 1,
+            "source_file": "data/demo/模拟扫描中标公告.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "9fee6b620964954d1efc6959_announcement_date_0",
+            "page": 1,
+            "source_file": "data/demo/模拟扫描中标公告.pdf",
+            "value_bbox": null,
+            "document_id": null
+          },
+          {
+            "evidence_id": "9fee6b620964954d1efc6959_term_0",
+            "page": 1,
+            "source_file": "data/demo/模拟扫描中标公告.pdf",
+            "value_bbox": [
+              126.34303283691406,
+              152.97943115234375,
+              157.0972442626953,
+              170.27435302734375
+            ],
+            "document_id": null
+          }
+        ],
+        "detail": {
+          "event_id": "9fee6b620964954d1efc6959",
+          "event_type": "winning_bid",
+          "missing_required": [],
+          "conflicts": [],
+          "status": "needs_review",
+          "fields": {
+            "project_name": {
+              "value": "模拟智慧校园项目",
+              "normalized_value": "模拟智慧校园项目",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "needs_review",
+              "evidence": [
+                {
+                  "value": "模拟智慧校园项目",
+                  "normalized_value": "模拟智慧校园项目",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "1、项目名称:模拟智慧校园项目",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/模拟扫描中标公告.pdf",
+                  "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+                }
+              ]
+            },
+            "winner": {
+              "value": "模拟乙公司",
+              "normalized_value": "模拟乙公司",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "needs_review",
+              "evidence": [
+                {
+                  "value": "模拟乙公司",
+                  "normalized_value": "模拟乙公司",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "2、中标人:模拟乙公司",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/模拟扫描中标公告.pdf",
+                  "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+                }
+              ]
+            },
+            "customer": {
+              "value": null,
+              "normalized_value": null,
+              "status": "missing",
+              "evidence": []
+            },
+            "amount": {
+              "value": "350",
+              "normalized_value": "3500000",
+              "unit": "万元",
+              "normalized_unit": "元",
+              "status": "needs_review",
+              "evidence": [
+                {
+                  "value": "350",
+                  "normalized_value": "3500000",
+                  "unit": "万元",
+                  "issues": [],
+                  "normalized_unit": "元",
+                  "quote": "3、中标金额:人民币350万元",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/模拟扫描中标公告.pdf",
+                  "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+                }
+              ]
+            },
+            "announcement_date": {
+              "value": "2025年9月1日",
+              "normalized_value": "2025-09-01",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "needs_review",
+              "evidence": [
+                {
+                  "value": "2025年9月1日",
+                  "normalized_value": "2025-09-01",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "5、公告日期:2025年9月1日",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": null,
+                  "location_status": "multiple_or_unresolved",
+                  "source_file": "data/demo/模拟扫描中标公告.pdf",
+                  "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+                }
+              ]
+            },
+            "term": {
+              "value": "1808",
+              "normalized_value": "1808",
+              "unit": null,
+              "normalized_unit": null,
+              "status": "needs_review",
+              "evidence": [
+                {
+                  "value": "1808",
+                  "normalized_value": "1808",
+                  "unit": null,
+                  "issues": [],
+                  "quote": "6、合同期限:1808",
+                  "page": 1,
+                  "page_label": "",
+                  "bbox": [
+                    126.34303283691406,
+                    152.97943115234375,
+                    157.0972442626953,
+                    170.27435302734375
+                  ],
+                  "location_status": "unique",
+                  "source_file": "data/demo/模拟扫描中标公告.pdf",
+                  "source_sha256": "f84ef7b3bc99138c192ced97b060686c9f666f369f5901041d7bae7a27fb87fa"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "step": 7,
+        "time": "2026-10-07T21:32:32+08:00",
+        "run_id": "20261007_213232_0ca6dd91",
+        "event": "run_finished",
+        "title": "完成运行",
+        "actor": "程序",
+        "rule": "汇总结果并保存可复现记录",
+        "evidence_ids": [],
+        "evidence": [],
+        "detail": {
+          "status": "completed",
+          "events": 1
+        }
+      }
+    ]
+  }
+]

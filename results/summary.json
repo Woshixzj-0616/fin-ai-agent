@@ -1,0 +1,23 @@
+{
+  "run_id": "20261014_153104_66775796",
+  "finished_at": "2026-10-14T15:31:05+08:00",
+  "output_sha256": {
+    "600519_2025_c80fb718_p5.png": "5ef5720c6f7eeeed36eaa1fe764b0e226091195052dd60d0566480ad7c26b60a",
+    "600519_2025_f3197b2a_p1.png": "b4b3d52a69090a9a10ec7d74ccd3d4d2b9adcd9cbb41643d5748e3aa4d9d0545",
+    "600519_2025_f3197b2a_p2.png": "ab37798625755ff82ca6b69b236c5208245400eb0b8c2abb4e7c696cfbfd9239",
+    "run.json": "d16eefa72f89adb66d75372eb7da5cdca70931d3f45eb9435118f411747f7374",
+    "trace.json": "8eadd1aba206de1ec71dcca25bd58423c92cec32a7671b4abfd752643a55e803",
+    "webui_evidence.json": "e69cebe0f4b484b774bae0705db422095eeda677007e6d4fd0f3cae52c81cbe4",
+    "webui_failures.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+  },
+  "history_policy": {
+    "keep_runs": 20,
+    "max_uncompressed_bytes": 52428800,
+    "oversized_latest": "保留完整本次运行，清除更早历史"
+  },
+  "status": "ok",
+  "materials": 2,
+  "evidence_count": 40,
+  "failures": 0,
+  "draft_checked": false
+}

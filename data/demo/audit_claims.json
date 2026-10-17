@@ -1,0 +1,56 @@
+[
+  {
+    "id": "PE-DEMO",
+    "kind": "valuation",
+    "sentence": "贵州茅台2024年EPS口径，假设2026-10-07股价1000元/股，PE为20.00倍。",
+    "company_code": "600519",
+    "period_year": 2024,
+    "multiple": "PE",
+    "basis": "annual",
+    "as_of": "2026-10-07",
+    "value": "20.00",
+    "numerator": {
+      "company_code": "600519",
+      "as_of": "2026-10-07",
+      "value": "1000",
+      "unit": "元/股",
+      "source": "synthetic_draft_assumption",
+      "source_quote": "假设2026-10-07股价1000元/股"
+    }
+  },
+  {
+    "id": "REF-OOB",
+    "kind": "reference",
+    "sentence": "贵州茅台2024年营业收入来自PDF页序999999页。",
+    "company_code": "600519",
+    "source_report_year": 2024,
+    "period_year": 2024,
+    "metric": "revenue",
+    "page": 999999,
+    "numbering": "physical"
+  },
+  {
+    "id": "REF-SUPPORTED",
+    "kind": "reference",
+    "sentence": "贵州茅台2024年营业收入1708.99亿元，见PDF页序5页。",
+    "company_code": "600519",
+    "source_report_year": 2024,
+    "period_year": 2024,
+    "metric": "revenue",
+    "page": 5,
+    "numbering": "physical",
+    "value": "1708.99",
+    "unit": "亿元"
+  },
+  {
+    "id": "REF-UNKNOWN",
+    "kind": "reference",
+    "sentence": "贵州茅台2024年营业收入见第58页。",
+    "company_code": "600519",
+    "source_report_year": 2024,
+    "period_year": 2024,
+    "metric": "revenue",
+    "page": 58,
+    "numbering": "unknown"
+  }
+]

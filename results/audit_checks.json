@@ -1,0 +1,148 @@
+{
+  "checks": [
+    {
+      "claim_id": "PE-DEMO",
+      "original_sentence": "贵州茅台2024年EPS口径，假设2026-10-07股价1000元/股，PE为20.00倍。",
+      "check_item": "valuation",
+      "kind": "valuation",
+      "status": "确认错误",
+      "track": "deterministic",
+      "epistemic_type": "事实",
+      "evidence_ids": [
+        "8f99c7cf09961c5159ac7771"
+      ],
+      "reason_code": "valuation_internal_consistency",
+      "reason": "在所列输入和口径下倍数计算不一致",
+      "calculation": {
+        "status": "mismatch",
+        "value": "14.57",
+        "exact_value": "14.56876456876456876456876456876456876457",
+        "claimed_value": "20.00",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "-5.431235431235431235431235431",
+        "formula": "round_half_up(actual, decimals)",
+        "multiple_calculation": {
+          "status": "ok",
+          "value": "14.56876456876456876456876456876456876457",
+          "unit": "倍",
+          "formula": "numerator / denominator",
+          "operands": {
+            "numerator": "1000",
+            "denominator": "68.64"
+          }
+        }
+      },
+      "suggestion": "将 20.00倍 改为 14.57倍；保留所列来源、期间与输入假设。",
+      "evidence": [
+        {
+          "evidence_id": "8f99c7cf09961c5159ac7771",
+          "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "基本每股收益",
+          "value": "68.64",
+          "unit": "元/股",
+          "value_bbox": [
+            284.93,
+            530.519,
+            311.33,
+            541.079
+          ]
+        }
+      ],
+      "verification_scope": "内部一致性（未独立核实草稿内的市场价格/企业价值）",
+      "assumptions": {
+        "multiple": "PE",
+        "as_of": "2026-10-07",
+        "basis": "annual",
+        "denominator_metric": "basic_eps",
+        "period_end": "2024-12-31",
+        "disclosure_date_status": "未自动证明估值时点已公开披露此报告"
+      },
+      "risks": "倍数核查不是估值区间或投资建议；价格时点、利润口径与输入真实性需另行核实。",
+      "correction": {
+        "before": "20.00倍",
+        "after": "14.57倍",
+        "original_sentence": "贵州茅台2024年EPS口径，假设2026-10-07股价1000元/股，PE为20.00倍。",
+        "revised_sentence": "贵州茅台2024年EPS口径，假设2026-10-07股价1000元/股，PE为14.57倍。",
+        "apply_automatically": true,
+        "evidence_ids": [
+          "8f99c7cf09961c5159ac7771"
+        ]
+      }
+    },
+    {
+      "claim_id": "REF-OOB",
+      "original_sentence": "贵州茅台2024年营业收入来自PDF页序999999页。",
+      "check_item": "reference",
+      "kind": "reference",
+      "status": "确认错误",
+      "track": "deterministic",
+      "epistemic_type": "事实",
+      "evidence_ids": [],
+      "reason_code": "reference_page_out_of_range",
+      "reason": "PDF 页序 999999 超出 1–143",
+      "calculation": null,
+      "suggestion": null,
+      "evidence": [],
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+      "page": 999999
+    },
+    {
+      "claim_id": "REF-SUPPORTED",
+      "original_sentence": "贵州茅台2024年营业收入1708.99亿元，见PDF页序5页。",
+      "check_item": "reference",
+      "kind": "reference",
+      "status": "证据支持",
+      "track": "deterministic",
+      "epistemic_type": "事实",
+      "evidence_ids": [
+        "80d5d67d35796958172e2d9f"
+      ],
+      "reason_code": "reference_supported",
+      "reason": "引用页支持所核查内容",
+      "calculation": null,
+      "suggestion": null,
+      "evidence": [
+        {
+          "evidence_id": "80d5d67d35796958172e2d9f",
+          "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "value_bbox": [
+            205.13,
+            263.06,
+            306.17,
+            277.73
+          ]
+        }
+      ],
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+      "page": 5,
+      "verification_scope": "来源页对所核查字段/逐字片段的支持性，不代表整段结论获证实"
+    },
+    {
+      "claim_id": "REF-UNKNOWN",
+      "original_sentence": "贵州茅台2024年营业收入见第58页。",
+      "check_item": "reference",
+      "kind": "reference",
+      "status": "口径冲突／需人工复核",
+      "track": "deterministic",
+      "epistemic_type": "事实",
+      "evidence_ids": [],
+      "reason_code": "reference_page_numbering_unknown",
+      "reason": "请明确 PDF 页序或印刷页码；不默认两者相同",
+      "calculation": null,
+      "suggestion": null,
+      "evidence": [],
+      "source_file": "data/raw/600519_贵州茅台_2024年年度报告.pdf",
+      "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+    }
+  ],
+  "run_id": "20261007_214346_70f1f37a",
+  "evidence_sha256": "77c1131b90c0eb4e11743740881619dc509e5f08f10231f396b5eeb2dcf720d2"
+}

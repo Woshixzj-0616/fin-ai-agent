@@ -8,6 +8,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+vendor/
 
 # --- 编辑器 / 系统 ---
 .vscode/
@@ -15,37 +16,28 @@ venv/
 Thumbs.db
 desktop.ini
 
-# 扩充财报语料较大；保留在本机，协作者可运行下载脚本按来源复现
-/data/raw/*.pdf
-/data/raw/versions/
-/data/cases/原始报告/*.pdf
+# --- 薄页面临时分析（不进正式台账）---
+results/webui_work/
+results/webui_*
+results/000000_*.png
+data/ocr/tessdata/
 
-# 阶段一：本地模型配置、上传文件和任务数据库
+# --- 抽取缓存（按 PDF 指纹本地重建，不入库）---
+data/cache/
+
+# --- 六模块集成工作台的运行期上传、抽取页与 SQLite 数据库 ---
+# 只保留首次运行用的五粮液 2023 样稿种子库与样例 PDF，其余运行数据不入库。
+six_module_engine/data/integrated_workbench/*
+!six_module_engine/data/integrated_workbench/integrated.seed.sqlite3
+!six_module_engine/data/integrated_workbench/uploads/
+six_module_engine/data/integrated_workbench/uploads/*
+!six_module_engine/data/integrated_workbench/uploads/603a98fb89234045a881b5f4b498cf68.pdf
+
+# Local browser runs and credentials never belong in the shared branch.
+results/runs/
 .env
-/data/app/
-/data/开发运行/
-/data/并行开发/
-/logs/*.log
-/frontend/dist/
-/frontend/node_modules/
-/frontend/dist/
-
-# 模块化副本的本机运行内容
-/backend/modules_legacy_*/
-/backend/workbenches/__pycache__/
-/modules/**/__pycache__/
-/frontend/**/node_modules/
-/frontend/**/dist/
-/launchers/**/logs/
-/launchers/**/data/
-/data/**/logs/
-/data/modular_workbench/
-
-# 本地凭据、报告和运行产物
 .env.*
 !.env.example
-*.sqlite
-*.sqlite3
-*.db
-*.log
-*.pdf
+.agents/
+skills-lock.json
+.mimosa/

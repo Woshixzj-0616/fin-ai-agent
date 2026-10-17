@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-12",
+  "violations": [],
+  "warnings": [
+    {
+      "path": "agent/test.py",
+      "lines": 1286,
+      "bytes": 70628,
+      "warning": "超过 1200 行或 80KiB；只审查不直接失败"
+    }
+  ],
+  "webui": {
+    "path": "agent/webui.py",
+    "lines": 108,
+    "limit": 300,
+    "ok": true
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "moutai_2025_q1",
+    "local_file": "data/demo/real/moutai_2025_q1.pdf",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-30/1223413786.PDF",
+    "sha256": "f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+    "page_count": 11,
+    "retrieved_on": "2026-10-07",
+    "simulated": false,
+    "license_status": "public_disclosure_redistribution_unverified"
+  },
+  {
+    "name": "moutai_2025_half",
+    "local_file": "data/demo/real/moutai_2025_half.pdf",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2025-08-13/1224462930.PDF",
+    "sha256": "c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+    "page_count": 103,
+    "retrieved_on": "2026-10-07",
+    "simulated": false,
+    "license_status": "public_disclosure_redistribution_unverified"
+  },
+  {
+    "name": "fosun_2025_pledge",
+    "local_file": "data/demo/real/fosun_2025_pledge.pdf",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2025-08-16/1224499267.PDF",
+    "sha256": "426209dc7972ac58cd585b8414eb365b17e422284a18daca3f86d15b9a35656c",
+    "page_count": 4,
+    "retrieved_on": "2026-10-07",
+    "simulated": false,
+    "license_status": "public_disclosure_redistribution_unverified"
+  },
+  {
+    "name": "suitang_2025_winning",
+    "local_file": "data/demo/real/suitang_2025_winning.pdf",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2025-06-17/1223898906.PDF",
+    "sha256": "b973fc984e7ef2983c408367353c09aabc857376938364313a0dc20fa82040a8",
+    "page_count": 2,
+    "retrieved_on": "2026-10-07",
+    "simulated": false,
+    "license_status": "public_disclosure_redistribution_unverified"
+  }
+]

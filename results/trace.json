@@ -1,0 +1,3620 @@
+{
+  "schema_version": 1,
+  "run_id": "20261014_153104_66775796",
+  "steps": [
+    {
+      "step": 1,
+      "time": "2026-10-14T15:31:04+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "run_started",
+      "title": "开始任务",
+      "actor": "程序",
+      "rule": "按本次参数创建隔离运行",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "command": "webui-live"
+      }
+    },
+    {
+      "step": 2,
+      "time": "2026-10-14T15:31:04+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "D:\\Desktop\\fin-ai-agent\\results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "sha256": "c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "size_bytes": 805855
+      }
+    },
+    {
+      "step": 3,
+      "time": "2026-10-14T15:31:04+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "material_registered",
+      "title": "登记来源",
+      "actor": "程序",
+      "rule": "公司、报告身份与内容指纹检查",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "reused": true,
+        "by_reference": false,
+        "sha256": "c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "source_url": "webui://c80fb7180169"
+      }
+    },
+    {
+      "step": 4,
+      "time": "2026-10-14T15:31:04+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "D:\\Desktop\\fin-ai-agent\\results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "sha256": "c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "size_bytes": 805855
+      }
+    },
+    {
+      "step": 5,
+      "time": "2026-10-14T15:31:04+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_channel",
+      "title": "抽取通道",
+      "actor": "解析器",
+      "rule": "按表头和几何坐标抽取，不补猜缺失值",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "channel": "interim_headers",
+        "page": 3,
+        "identity": {
+          "report_kind": "half",
+          "report_year": 2025,
+          "report_month": 6,
+          "report_period_end": "2025-06-30",
+          "identity_basis": "2025年半年度报告"
+        },
+        "evidence_ids": []
+      }
+    },
+    {
+      "step": 6,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_channel",
+      "title": "抽取通道",
+      "actor": "解析器",
+      "rule": "按表头和几何坐标抽取，不补猜缺失值",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "channel": "interim_headers",
+        "page": 4,
+        "identity": {
+          "report_kind": "half",
+          "report_year": 2025,
+          "report_month": 6,
+          "report_period_end": "2025-06-30",
+          "identity_basis": "2025年半年度报告"
+        },
+        "evidence_ids": []
+      }
+    },
+    {
+      "step": 7,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_channel",
+      "title": "抽取通道",
+      "actor": "解析器",
+      "rule": "按表头和几何坐标抽取，不补猜缺失值",
+      "evidence_ids": [
+        "8b10e5e4baa208aa0bb98379",
+        "c7346083f5e1438756b4b6f8",
+        "fe69ac2965534c858080c9e8",
+        "c752a845d2b34e77d885042d",
+        "5e042f5f972d95e54dd79c37",
+        "9e1ced76050e1432d3b6c83a",
+        "34c9dabd7c8bb971f1bdd56e",
+        "52154a2fe391c4a121dadba8",
+        "e99454e28036939181c55ffb",
+        "77166f0b67af10101dd8ab79",
+        "a803415f94cadd0ea3e91a70",
+        "e8d670f9d143c301c862513a",
+        "855310c58ae276b20dee1e20",
+        "0ca3715c764291b155cfdff5",
+        "0cebefe0d3faf65eaddce86f",
+        "636fc7f221f81db2eb8141bf",
+        "b12599016e9c741898c7cec0",
+        "bc05ab0cc18b5ce1f9a79b7e",
+        "9b2d775e5b1c038a3c13981a",
+        "4ad1c301ddda459031cfec93",
+        "a74b5fba0a896f03e35c3c98",
+        "51022eafe035fccabe4076da"
+      ],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "channel": "interim_headers",
+        "page": 5,
+        "identity": {
+          "report_kind": "half",
+          "report_year": 2025,
+          "report_month": 6,
+          "report_period_end": "2025-06-30",
+          "identity_basis": "2025年半年度报告"
+        },
+        "evidence_ids": [
+          "8b10e5e4baa208aa0bb98379",
+          "c7346083f5e1438756b4b6f8",
+          "fe69ac2965534c858080c9e8",
+          "c752a845d2b34e77d885042d",
+          "5e042f5f972d95e54dd79c37",
+          "9e1ced76050e1432d3b6c83a",
+          "34c9dabd7c8bb971f1bdd56e",
+          "52154a2fe391c4a121dadba8",
+          "e99454e28036939181c55ffb",
+          "77166f0b67af10101dd8ab79",
+          "a803415f94cadd0ea3e91a70",
+          "e8d670f9d143c301c862513a",
+          "855310c58ae276b20dee1e20",
+          "0ca3715c764291b155cfdff5",
+          "0cebefe0d3faf65eaddce86f",
+          "636fc7f221f81db2eb8141bf",
+          "b12599016e9c741898c7cec0",
+          "bc05ab0cc18b5ce1f9a79b7e",
+          "9b2d775e5b1c038a3c13981a",
+          "4ad1c301ddda459031cfec93",
+          "a74b5fba0a896f03e35c3c98",
+          "51022eafe035fccabe4076da"
+        ]
+      }
+    },
+    {
+      "step": 8,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "8b10e5e4baa208aa0bb98379"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "revenue",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "8b10e5e4baa208aa0bb98379",
+        "candidate_evidence_ids": [
+          "8b10e5e4baa208aa0bb98379"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 9,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "c7346083f5e1438756b4b6f8"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "revenue",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "c7346083f5e1438756b4b6f8",
+        "candidate_evidence_ids": [
+          "c7346083f5e1438756b4b6f8"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 10,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "fe69ac2965534c858080c9e8"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_net_profit",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "fe69ac2965534c858080c9e8",
+        "candidate_evidence_ids": [
+          "fe69ac2965534c858080c9e8"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 11,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "c752a845d2b34e77d885042d"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_net_profit",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "c752a845d2b34e77d885042d",
+        "candidate_evidence_ids": [
+          "c752a845d2b34e77d885042d"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 12,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "5e042f5f972d95e54dd79c37"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "adjusted_parent_net_profit",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "5e042f5f972d95e54dd79c37",
+        "candidate_evidence_ids": [
+          "5e042f5f972d95e54dd79c37"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 13,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "9e1ced76050e1432d3b6c83a"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "adjusted_parent_net_profit",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "9e1ced76050e1432d3b6c83a",
+        "candidate_evidence_ids": [
+          "9e1ced76050e1432d3b6c83a"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 14,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "34c9dabd7c8bb971f1bdd56e"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "operating_cash_flow",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "34c9dabd7c8bb971f1bdd56e",
+        "candidate_evidence_ids": [
+          "34c9dabd7c8bb971f1bdd56e"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 15,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "52154a2fe391c4a121dadba8"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "operating_cash_flow",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "52154a2fe391c4a121dadba8",
+        "candidate_evidence_ids": [
+          "52154a2fe391c4a121dadba8"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 16,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "e99454e28036939181c55ffb"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_equity",
+          "2025-06-30",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "e99454e28036939181c55ffb",
+        "candidate_evidence_ids": [
+          "e99454e28036939181c55ffb"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 17,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "77166f0b67af10101dd8ab79"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_equity",
+          "2024-12-31",
+          "2024-12-31"
+        ],
+        "winner_evidence_id": "77166f0b67af10101dd8ab79",
+        "candidate_evidence_ids": [
+          "77166f0b67af10101dd8ab79"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 18,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "a803415f94cadd0ea3e91a70"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "total_assets",
+          "2025-06-30",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "a803415f94cadd0ea3e91a70",
+        "candidate_evidence_ids": [
+          "a803415f94cadd0ea3e91a70"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 19,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "e8d670f9d143c301c862513a"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "total_assets",
+          "2024-12-31",
+          "2024-12-31"
+        ],
+        "winner_evidence_id": "e8d670f9d143c301c862513a",
+        "candidate_evidence_ids": [
+          "e8d670f9d143c301c862513a"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 20,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "855310c58ae276b20dee1e20"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "basic_eps",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "855310c58ae276b20dee1e20",
+        "candidate_evidence_ids": [
+          "855310c58ae276b20dee1e20"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 21,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "0ca3715c764291b155cfdff5"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "basic_eps",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "0ca3715c764291b155cfdff5",
+        "candidate_evidence_ids": [
+          "0ca3715c764291b155cfdff5"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 22,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "0cebefe0d3faf65eaddce86f"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "diluted_eps",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "0cebefe0d3faf65eaddce86f",
+        "candidate_evidence_ids": [
+          "0cebefe0d3faf65eaddce86f"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 23,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "636fc7f221f81db2eb8141bf"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "diluted_eps",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "636fc7f221f81db2eb8141bf",
+        "candidate_evidence_ids": [
+          "636fc7f221f81db2eb8141bf"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 24,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "b12599016e9c741898c7cec0"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "deducted_basic_eps",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "b12599016e9c741898c7cec0",
+        "candidate_evidence_ids": [
+          "b12599016e9c741898c7cec0"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 25,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "bc05ab0cc18b5ce1f9a79b7e"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "deducted_basic_eps",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "bc05ab0cc18b5ce1f9a79b7e",
+        "candidate_evidence_ids": [
+          "bc05ab0cc18b5ce1f9a79b7e"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 26,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "9b2d775e5b1c038a3c13981a"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "weighted_roe",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "9b2d775e5b1c038a3c13981a",
+        "candidate_evidence_ids": [
+          "9b2d775e5b1c038a3c13981a"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 27,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "4ad1c301ddda459031cfec93"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "weighted_roe",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "4ad1c301ddda459031cfec93",
+        "candidate_evidence_ids": [
+          "4ad1c301ddda459031cfec93"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 28,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "a74b5fba0a896f03e35c3c98"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "deducted_weighted_roe",
+          "2025-01-01",
+          "2025-06-30"
+        ],
+        "winner_evidence_id": "a74b5fba0a896f03e35c3c98",
+        "candidate_evidence_ids": [
+          "a74b5fba0a896f03e35c3c98"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 29,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "51022eafe035fccabe4076da"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "deducted_weighted_roe",
+          "2024-01-01",
+          "2024-06-30"
+        ],
+        "winner_evidence_id": "51022eafe035fccabe4076da",
+        "candidate_evidence_ids": [
+          "51022eafe035fccabe4076da"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 30,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_completed",
+      "title": "抽取完成",
+      "actor": "解析器",
+      "rule": "检查核心字段、单位与口径",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "evidence_count": 22,
+        "report_kind": "half",
+        "needs_review": 0
+      }
+    },
+    {
+      "step": 31,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "D:\\Desktop\\fin-ai-agent\\results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "sha256": "f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "size_bytes": 154608
+      }
+    },
+    {
+      "step": 32,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "material_registered",
+      "title": "登记来源",
+      "actor": "程序",
+      "rule": "公司、报告身份与内容指纹检查",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "reused": true,
+        "by_reference": false,
+        "sha256": "f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "source_url": "webui://f3197b2a4ef7"
+      }
+    },
+    {
+      "step": 33,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "file_read",
+      "title": "读取材料",
+      "actor": "程序",
+      "rule": "记录文件路径、SHA-256 与字节数",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "path": "D:\\Desktop\\fin-ai-agent\\results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "sha256": "f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "size_bytes": 154608
+      }
+    },
+    {
+      "step": 34,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_channel",
+      "title": "抽取通道",
+      "actor": "解析器",
+      "rule": "按表头和几何坐标抽取，不补猜缺失值",
+      "evidence_ids": [
+        "8abfab90d95e82adece53483",
+        "c899e0e5684c0950ef3f452a",
+        "9255efc647c227bb661125ee",
+        "e58fc8de962228bd7bc639df",
+        "0f3a6cab2bd2001e34e333c9",
+        "8f23f00eec1838adb1b8f7fa",
+        "8c1a690841061c1c7447f7c2",
+        "4e4933707152f7b97bba1265",
+        "ddecfd64f9d12a57acdcf4fd",
+        "51d67cc5e3c2099b7f8229e4",
+        "4569fddeddec6ffc2e73fac6",
+        "96dfef68153e44d58e0afe06",
+        "b393b9ed5787fe54c193f678",
+        "4b28d211c47fd0cc0ba38b14"
+      ],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "channel": "interim_headers",
+        "page": 1,
+        "identity": {
+          "report_kind": "quarter",
+          "report_year": 2025,
+          "report_month": 3,
+          "report_period_end": "2025-03-31",
+          "identity_basis": "2025年第一季度报告"
+        },
+        "evidence_ids": [
+          "8abfab90d95e82adece53483",
+          "c899e0e5684c0950ef3f452a",
+          "9255efc647c227bb661125ee",
+          "e58fc8de962228bd7bc639df",
+          "0f3a6cab2bd2001e34e333c9",
+          "8f23f00eec1838adb1b8f7fa",
+          "8c1a690841061c1c7447f7c2",
+          "4e4933707152f7b97bba1265",
+          "ddecfd64f9d12a57acdcf4fd",
+          "51d67cc5e3c2099b7f8229e4",
+          "4569fddeddec6ffc2e73fac6",
+          "96dfef68153e44d58e0afe06",
+          "b393b9ed5787fe54c193f678",
+          "4b28d211c47fd0cc0ba38b14"
+        ]
+      }
+    },
+    {
+      "step": 35,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "period_header_carry",
+      "title": "跨页表头",
+      "actor": "解析器",
+      "rule": "仅相邻页、列边界相同的续表沿用已确认表头",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "page": 2,
+        "source_page": 1,
+        "rule": "adjacent_page_matching_column_boundaries",
+        "headers": {
+          "1": {
+            "text": "本报告期末",
+            "bbox": [
+              223.4,
+              747.49,
+              332.5,
+              765.89
+            ]
+          },
+          "2": {
+            "text": "上年度末",
+            "bbox": [
+              332.5,
+              747.49,
+              441.6,
+              765.89
+            ]
+          }
+        }
+      }
+    },
+    {
+      "step": 36,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_channel",
+      "title": "抽取通道",
+      "actor": "解析器",
+      "rule": "按表头和几何坐标抽取，不补猜缺失值",
+      "evidence_ids": [
+        "584bfa5653661f891e221e7f",
+        "663b417d4459165412cf42be",
+        "f8416a73efa012f600aadd21",
+        "50c00b9b9ef939d8476df42c"
+      ],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "channel": "interim_headers",
+        "page": 2,
+        "identity": {
+          "report_kind": "quarter",
+          "report_year": 2025,
+          "report_month": 3,
+          "report_period_end": "2025-03-31",
+          "identity_basis": "2025年第一季度报告"
+        },
+        "evidence_ids": [
+          "584bfa5653661f891e221e7f",
+          "663b417d4459165412cf42be",
+          "f8416a73efa012f600aadd21",
+          "50c00b9b9ef939d8476df42c"
+        ]
+      }
+    },
+    {
+      "step": 37,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "8abfab90d95e82adece53483"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "revenue",
+          "2025-01-01",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "8abfab90d95e82adece53483",
+        "candidate_evidence_ids": [
+          "8abfab90d95e82adece53483"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 38,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "c899e0e5684c0950ef3f452a"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "revenue",
+          "2024-01-01",
+          "2024-03-31"
+        ],
+        "winner_evidence_id": "c899e0e5684c0950ef3f452a",
+        "candidate_evidence_ids": [
+          "c899e0e5684c0950ef3f452a"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 39,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "9255efc647c227bb661125ee"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_net_profit",
+          "2025-01-01",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "9255efc647c227bb661125ee",
+        "candidate_evidence_ids": [
+          "9255efc647c227bb661125ee"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 40,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "e58fc8de962228bd7bc639df"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_net_profit",
+          "2024-01-01",
+          "2024-03-31"
+        ],
+        "winner_evidence_id": "e58fc8de962228bd7bc639df",
+        "candidate_evidence_ids": [
+          "e58fc8de962228bd7bc639df"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 41,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "0f3a6cab2bd2001e34e333c9"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "adjusted_parent_net_profit",
+          "2025-01-01",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "0f3a6cab2bd2001e34e333c9",
+        "candidate_evidence_ids": [
+          "0f3a6cab2bd2001e34e333c9"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 42,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "8f23f00eec1838adb1b8f7fa"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "adjusted_parent_net_profit",
+          "2024-01-01",
+          "2024-03-31"
+        ],
+        "winner_evidence_id": "8f23f00eec1838adb1b8f7fa",
+        "candidate_evidence_ids": [
+          "8f23f00eec1838adb1b8f7fa"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 43,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "8c1a690841061c1c7447f7c2"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "operating_cash_flow",
+          "2025-01-01",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "8c1a690841061c1c7447f7c2",
+        "candidate_evidence_ids": [
+          "8c1a690841061c1c7447f7c2"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 44,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "4e4933707152f7b97bba1265"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "operating_cash_flow",
+          "2024-01-01",
+          "2024-03-31"
+        ],
+        "winner_evidence_id": "4e4933707152f7b97bba1265",
+        "candidate_evidence_ids": [
+          "4e4933707152f7b97bba1265"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 45,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "ddecfd64f9d12a57acdcf4fd"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "basic_eps",
+          "2025-01-01",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "ddecfd64f9d12a57acdcf4fd",
+        "candidate_evidence_ids": [
+          "ddecfd64f9d12a57acdcf4fd"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 46,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "51d67cc5e3c2099b7f8229e4"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "basic_eps",
+          "2024-01-01",
+          "2024-03-31"
+        ],
+        "winner_evidence_id": "51d67cc5e3c2099b7f8229e4",
+        "candidate_evidence_ids": [
+          "51d67cc5e3c2099b7f8229e4"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 47,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "4569fddeddec6ffc2e73fac6"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "diluted_eps",
+          "2025-01-01",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "4569fddeddec6ffc2e73fac6",
+        "candidate_evidence_ids": [
+          "4569fddeddec6ffc2e73fac6"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 48,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "96dfef68153e44d58e0afe06"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "diluted_eps",
+          "2024-01-01",
+          "2024-03-31"
+        ],
+        "winner_evidence_id": "96dfef68153e44d58e0afe06",
+        "candidate_evidence_ids": [
+          "96dfef68153e44d58e0afe06"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 49,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "b393b9ed5787fe54c193f678"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "weighted_roe",
+          "2025-01-01",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "b393b9ed5787fe54c193f678",
+        "candidate_evidence_ids": [
+          "b393b9ed5787fe54c193f678"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 50,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "4b28d211c47fd0cc0ba38b14"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "weighted_roe",
+          "2024-01-01",
+          "2024-03-31"
+        ],
+        "winner_evidence_id": "4b28d211c47fd0cc0ba38b14",
+        "candidate_evidence_ids": [
+          "4b28d211c47fd0cc0ba38b14"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 51,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "584bfa5653661f891e221e7f"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "total_assets",
+          "2025-03-31",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "584bfa5653661f891e221e7f",
+        "candidate_evidence_ids": [
+          "584bfa5653661f891e221e7f"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 52,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "663b417d4459165412cf42be"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "total_assets",
+          "2024-12-31",
+          "2024-12-31"
+        ],
+        "winner_evidence_id": "663b417d4459165412cf42be",
+        "candidate_evidence_ids": [
+          "663b417d4459165412cf42be"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 53,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "f8416a73efa012f600aadd21"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_equity",
+          "2025-03-31",
+          "2025-03-31"
+        ],
+        "winner_evidence_id": "f8416a73efa012f600aadd21",
+        "candidate_evidence_ids": [
+          "f8416a73efa012f600aadd21"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 54,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_dedup",
+      "title": "合并与去重",
+      "actor": "解析器",
+      "rule": "按明确期间合并；冲突值保留待复核",
+      "evidence_ids": [
+        "50c00b9b9ef939d8476df42c"
+      ],
+      "evidence": [],
+      "detail": {
+        "key": [
+          "parent_equity",
+          "2024-12-31",
+          "2024-12-31"
+        ],
+        "winner_evidence_id": "50c00b9b9ef939d8476df42c",
+        "candidate_evidence_ids": [
+          "50c00b9b9ef939d8476df42c"
+        ],
+        "issues": []
+      }
+    },
+    {
+      "step": 55,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "extraction_completed",
+      "title": "抽取完成",
+      "actor": "解析器",
+      "rule": "检查核心字段、单位与口径",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "evidence_count": 18,
+        "report_kind": "quarter",
+        "needs_review": 0
+      }
+    },
+    {
+      "step": 56,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8b10e5e4baa208aa0bb98379",
+        "c7346083f5e1438756b4b6f8"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "revenue",
+        "metric_name": "营业收入",
+        "current": "89389354416.84",
+        "previous": "81930977667.75",
+        "previous_adjustment": "as_reported",
+        "scope": "consolidated",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "9.103243927267080771750186924584247068223",
+          "unit": "%",
+          "operands": {
+            "current": "89389354416.84",
+            "previous": "81930977667.75"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "8b10e5e4baa208aa0bb98379",
+            "c7346083f5e1438756b4b6f8"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "8b10e5e4baa208aa0bb98379",
+        "previous_evidence_id": "c7346083f5e1438756b4b6f8",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 57,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "fe69ac2965534c858080c9e8",
+        "c752a845d2b34e77d885042d"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "parent_net_profit",
+        "metric_name": "归母净利润",
+        "current": "45402962298.10",
+        "previous": "41695610983.37",
+        "previous_adjustment": "as_reported",
+        "scope": "parent_shareholders",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "8.891466577162404195928698149507732366035",
+          "unit": "%",
+          "operands": {
+            "current": "45402962298.10",
+            "previous": "41695610983.37"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "fe69ac2965534c858080c9e8",
+            "c752a845d2b34e77d885042d"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "fe69ac2965534c858080c9e8",
+        "previous_evidence_id": "c752a845d2b34e77d885042d",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 58,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "5e042f5f972d95e54dd79c37",
+        "9e1ced76050e1432d3b6c83a"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "adjusted_parent_net_profit",
+        "metric_name": "扣非归母净利润",
+        "current": "45390247623.82",
+        "previous": "41670097819.99",
+        "previous_adjustment": "as_reported",
+        "scope": "parent_shareholders",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "8.927624360040181836165423280937276528640",
+          "unit": "%",
+          "operands": {
+            "current": "45390247623.82",
+            "previous": "41670097819.99"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "5e042f5f972d95e54dd79c37",
+            "9e1ced76050e1432d3b6c83a"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "5e042f5f972d95e54dd79c37",
+        "previous_evidence_id": "9e1ced76050e1432d3b6c83a",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 59,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "34c9dabd7c8bb971f1bdd56e",
+        "52154a2fe391c4a121dadba8"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "operating_cash_flow",
+        "metric_name": "经营现金流净额",
+        "current": "13119061031.33",
+        "previous": "36621833812.63",
+        "previous_adjustment": "as_reported",
+        "scope": "consolidated",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "-64.17694127920610113313405247031941140260",
+          "unit": "%",
+          "operands": {
+            "current": "13119061031.33",
+            "previous": "36621833812.63"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "34c9dabd7c8bb971f1bdd56e",
+            "52154a2fe391c4a121dadba8"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "34c9dabd7c8bb971f1bdd56e",
+        "previous_evidence_id": "52154a2fe391c4a121dadba8",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 60,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "e99454e28036939181c55ffb"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "parent_equity",
+        "metric_name": "归母净资产",
+        "current": "238646536390.48",
+        "previous": null,
+        "previous_adjustment": null,
+        "scope": "parent_shareholders",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据"
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "e99454e28036939181c55ffb",
+        "previous_evidence_id": null,
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "instant",
+        "period_start": "2025-06-30",
+        "period_end": "2025-06-30",
+        "duration_months": 0
+      }
+    },
+    {
+      "step": 61,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "a803415f94cadd0ea3e91a70"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "total_assets",
+        "metric_name": "总资产",
+        "current": "292257789095.51",
+        "previous": null,
+        "previous_adjustment": null,
+        "scope": "consolidated",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据"
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "a803415f94cadd0ea3e91a70",
+        "previous_evidence_id": null,
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "instant",
+        "period_start": "2025-06-30",
+        "period_end": "2025-06-30",
+        "duration_months": 0
+      }
+    },
+    {
+      "step": 62,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "855310c58ae276b20dee1e20",
+        "0ca3715c764291b155cfdff5"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "basic_eps",
+        "metric_name": "基本每股收益",
+        "current": "36.18",
+        "previous": "33.19",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "元/股",
+        "yoy": {
+          "status": "ok",
+          "value": "9.008737571557698101837902982826152455559",
+          "unit": "%",
+          "operands": {
+            "current": "36.18",
+            "previous": "33.19"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "855310c58ae276b20dee1e20",
+            "0ca3715c764291b155cfdff5"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "855310c58ae276b20dee1e20",
+        "previous_evidence_id": "0ca3715c764291b155cfdff5",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 63,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "0cebefe0d3faf65eaddce86f",
+        "636fc7f221f81db2eb8141bf"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "diluted_eps",
+        "metric_name": "稀释每股收益",
+        "current": "36.18",
+        "previous": "33.19",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "元/股",
+        "yoy": {
+          "status": "ok",
+          "value": "9.008737571557698101837902982826152455559",
+          "unit": "%",
+          "operands": {
+            "current": "36.18",
+            "previous": "33.19"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "0cebefe0d3faf65eaddce86f",
+            "636fc7f221f81db2eb8141bf"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "0cebefe0d3faf65eaddce86f",
+        "previous_evidence_id": "636fc7f221f81db2eb8141bf",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 64,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "b12599016e9c741898c7cec0",
+        "bc05ab0cc18b5ce1f9a79b7e"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "deducted_basic_eps",
+        "metric_name": "扣非基本每股收益",
+        "current": "36.17",
+        "previous": "33.17",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "元/股",
+        "yoy": {
+          "status": "ok",
+          "value": "9.044317154054868857401266204401567681640",
+          "unit": "%",
+          "operands": {
+            "current": "36.17",
+            "previous": "33.17"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "b12599016e9c741898c7cec0",
+            "bc05ab0cc18b5ce1f9a79b7e"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "b12599016e9c741898c7cec0",
+        "previous_evidence_id": "bc05ab0cc18b5ce1f9a79b7e",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 65,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "9b2d775e5b1c038a3c13981a",
+        "4ad1c301ddda459031cfec93"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "weighted_roe",
+        "metric_name": "加权平均净资产收益率",
+        "current": "17.89",
+        "previous": "17.63",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "%",
+        "yoy": {
+          "status": "ok",
+          "value": "1.474758933635847986386840612592172433352",
+          "unit": "%",
+          "operands": {
+            "current": "17.89",
+            "previous": "17.63"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "9b2d775e5b1c038a3c13981a",
+            "4ad1c301ddda459031cfec93"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "9b2d775e5b1c038a3c13981a",
+        "previous_evidence_id": "4ad1c301ddda459031cfec93",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 66,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "a74b5fba0a896f03e35c3c98",
+        "51022eafe035fccabe4076da"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "deducted_weighted_roe",
+        "metric_name": "扣非加权平均净资产收益率",
+        "current": "17.88",
+        "previous": "17.62",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "%",
+        "yoy": {
+          "status": "ok",
+          "value": "1.475595913734392735527809307604994324631",
+          "unit": "%",
+          "operands": {
+            "current": "17.88",
+            "previous": "17.62"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "a74b5fba0a896f03e35c3c98",
+            "51022eafe035fccabe4076da"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "a74b5fba0a896f03e35c3c98",
+        "previous_evidence_id": "51022eafe035fccabe4076da",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c.pdf",
+        "page": 5,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "epistemic_type": "事实",
+        "period_kind": "half",
+        "period_start": "2025-01-01",
+        "period_end": "2025-06-30",
+        "duration_months": 6
+      }
+    },
+    {
+      "step": 67,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8abfab90d95e82adece53483",
+        "c899e0e5684c0950ef3f452a"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "revenue",
+        "metric_name": "营业收入",
+        "current": "50600957885.78",
+        "previous": "45775517043.29",
+        "previous_adjustment": "as_reported",
+        "scope": "consolidated",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "10.54153214244761175615871006057428999606",
+          "unit": "%",
+          "operands": {
+            "current": "50600957885.78",
+            "previous": "45775517043.29"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "8abfab90d95e82adece53483",
+            "c899e0e5684c0950ef3f452a"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "8abfab90d95e82adece53483",
+        "previous_evidence_id": "c899e0e5684c0950ef3f452a",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 1,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "quarter",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "duration_months": 3
+      }
+    },
+    {
+      "step": 68,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "9255efc647c227bb661125ee",
+        "e58fc8de962228bd7bc639df"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "parent_net_profit",
+        "metric_name": "归母净利润",
+        "current": "26847474238.76",
+        "previous": "24065262374.15",
+        "previous_adjustment": "as_reported",
+        "scope": "parent_shareholders",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "11.56111170264466916900788490961369384086",
+          "unit": "%",
+          "operands": {
+            "current": "26847474238.76",
+            "previous": "24065262374.15"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "9255efc647c227bb661125ee",
+            "e58fc8de962228bd7bc639df"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "9255efc647c227bb661125ee",
+        "previous_evidence_id": "e58fc8de962228bd7bc639df",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 1,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "quarter",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "duration_months": 3
+      }
+    },
+    {
+      "step": 69,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "0f3a6cab2bd2001e34e333c9",
+        "8f23f00eec1838adb1b8f7fa"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "adjusted_parent_net_profit",
+        "metric_name": "扣非归母净利润",
+        "current": "26849883702.90",
+        "previous": "24051471185.69",
+        "previous_adjustment": "as_reported",
+        "scope": "parent_shareholders",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "11.63509914052568512735813658552807923612",
+          "unit": "%",
+          "operands": {
+            "current": "26849883702.90",
+            "previous": "24051471185.69"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "0f3a6cab2bd2001e34e333c9",
+            "8f23f00eec1838adb1b8f7fa"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "0f3a6cab2bd2001e34e333c9",
+        "previous_evidence_id": "8f23f00eec1838adb1b8f7fa",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 1,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "quarter",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "duration_months": 3
+      }
+    },
+    {
+      "step": 70,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8c1a690841061c1c7447f7c2",
+        "4e4933707152f7b97bba1265"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "operating_cash_flow",
+        "metric_name": "经营现金流净额",
+        "current": "8809195646.38",
+        "previous": "9187422415.09",
+        "previous_adjustment": "as_reported",
+        "scope": "consolidated",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "ok",
+          "value": "-4.116788709842888944397593587189407201884",
+          "unit": "%",
+          "operands": {
+            "current": "8809195646.38",
+            "previous": "9187422415.09"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "8c1a690841061c1c7447f7c2",
+            "4e4933707152f7b97bba1265"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "8c1a690841061c1c7447f7c2",
+        "previous_evidence_id": "4e4933707152f7b97bba1265",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 1,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "quarter",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "duration_months": 3
+      }
+    },
+    {
+      "step": 71,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "ddecfd64f9d12a57acdcf4fd",
+        "51d67cc5e3c2099b7f8229e4"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "basic_eps",
+        "metric_name": "基本每股收益",
+        "current": "21.38",
+        "previous": "19.16",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "元/股",
+        "yoy": {
+          "status": "ok",
+          "value": "11.58663883089770354906054279749478079332",
+          "unit": "%",
+          "operands": {
+            "current": "21.38",
+            "previous": "19.16"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "ddecfd64f9d12a57acdcf4fd",
+            "51d67cc5e3c2099b7f8229e4"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "ddecfd64f9d12a57acdcf4fd",
+        "previous_evidence_id": "51d67cc5e3c2099b7f8229e4",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 1,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "quarter",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "duration_months": 3
+      }
+    },
+    {
+      "step": 72,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "4569fddeddec6ffc2e73fac6",
+        "96dfef68153e44d58e0afe06"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "diluted_eps",
+        "metric_name": "稀释每股收益",
+        "current": "21.38",
+        "previous": "19.16",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "元/股",
+        "yoy": {
+          "status": "ok",
+          "value": "11.58663883089770354906054279749478079332",
+          "unit": "%",
+          "operands": {
+            "current": "21.38",
+            "previous": "19.16"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "4569fddeddec6ffc2e73fac6",
+            "96dfef68153e44d58e0afe06"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "4569fddeddec6ffc2e73fac6",
+        "previous_evidence_id": "96dfef68153e44d58e0afe06",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 1,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "quarter",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "duration_months": 3
+      }
+    },
+    {
+      "step": 73,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "b393b9ed5787fe54c193f678",
+        "4b28d211c47fd0cc0ba38b14"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "weighted_roe",
+        "metric_name": "加权平均净资产收益率",
+        "current": "10.92",
+        "previous": "10.57",
+        "previous_adjustment": "as_reported",
+        "scope": "unknown",
+        "currency": "CNY",
+        "unit": "%",
+        "yoy": {
+          "status": "ok",
+          "value": "3.311258278145695364238410596026490066225",
+          "unit": "%",
+          "operands": {
+            "current": "10.92",
+            "previous": "10.57"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "b393b9ed5787fe54c193f678",
+            "4b28d211c47fd0cc0ba38b14"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "b393b9ed5787fe54c193f678",
+        "previous_evidence_id": "4b28d211c47fd0cc0ba38b14",
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 1,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "quarter",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "duration_months": 3
+      }
+    },
+    {
+      "step": 74,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "584bfa5653661f891e221e7f"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "total_assets",
+        "metric_name": "总资产",
+        "current": "312368697395.05",
+        "previous": null,
+        "previous_adjustment": null,
+        "scope": "consolidated",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据"
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "584bfa5653661f891e221e7f",
+        "previous_evidence_id": null,
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 2,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "instant",
+        "period_start": "2025-03-31",
+        "period_end": "2025-03-31",
+        "duration_months": 0
+      }
+    },
+    {
+      "step": 75,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "f8416a73efa012f600aadd21"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "period_yoy",
+        "company_code": "600519",
+        "company_name": "贵州茅台酒",
+        "report_year": 2025,
+        "metric": "parent_equity",
+        "metric_name": "归母净资产",
+        "current": "258357842676.41",
+        "previous": null,
+        "previous_adjustment": null,
+        "scope": "parent_shareholders",
+        "currency": "CNY",
+        "unit": "元",
+        "yoy": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据"
+        },
+        "reported_yoy": null,
+        "reported_yoy_check": null,
+        "evidence_id": "f8416a73efa012f600aadd21",
+        "previous_evidence_id": null,
+        "source_file": "results\\webui_work\\data\\agent\\600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128.pdf",
+        "page": 2,
+        "issues": [],
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "epistemic_type": "事实",
+        "period_kind": "instant",
+        "period_start": "2025-03-31",
+        "period_end": "2025-03-31",
+        "duration_months": 0
+      }
+    },
+    {
+      "step": 76,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "fe69ac2965534c858080c9e8",
+        "5e042f5f972d95e54dd79c37"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "auxiliary_signal",
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "type": "profit_minus_adjusted_profit",
+        "description": "归母净利润减扣非归母净利润（辅助观察非经常性项目影响）",
+        "value": "12714674.28",
+        "unit": "元",
+        "formula": "parent_net_profit - adjusted_parent_net_profit",
+        "evidence_ids": [
+          "fe69ac2965534c858080c9e8",
+          "5e042f5f972d95e54dd79c37"
+        ],
+        "interpretation": "这是差额计算，不构成错误或财务造假结论。",
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 77,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "fe69ac2965534c858080c9e8",
+        "c752a845d2b34e77d885042d",
+        "34c9dabd7c8bb971f1bdd56e",
+        "52154a2fe391c4a121dadba8"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "auxiliary_signal",
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "type": "profit_up_cash_down",
+        "description": "归母净利润增长，同时经营现金流净额下降，建议结合现金流明细复核。",
+        "evidence_ids": [
+          "fe69ac2965534c858080c9e8",
+          "c752a845d2b34e77d885042d",
+          "34c9dabd7c8bb971f1bdd56e",
+          "52154a2fe391c4a121dadba8"
+        ],
+        "interpretation": "归母利润与合并经营现金流的归属口径不同；这里只比较各自同比方向，不作等式核验。",
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 78,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "9255efc647c227bb661125ee",
+        "0f3a6cab2bd2001e34e333c9"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "auxiliary_signal",
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "type": "profit_minus_adjusted_profit",
+        "description": "归母净利润减扣非归母净利润（辅助观察非经常性项目影响）",
+        "value": "-2409464.14",
+        "unit": "元",
+        "formula": "parent_net_profit - adjusted_parent_net_profit",
+        "evidence_ids": [
+          "9255efc647c227bb661125ee",
+          "0f3a6cab2bd2001e34e333c9"
+        ],
+        "interpretation": "这是差额计算，不构成错误或财务造假结论。",
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 79,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "9255efc647c227bb661125ee",
+        "e58fc8de962228bd7bc639df",
+        "8c1a690841061c1c7447f7c2",
+        "4e4933707152f7b97bba1265"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "auxiliary_signal",
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "type": "profit_up_cash_down",
+        "description": "归母净利润增长，同时经营现金流净额下降，建议结合现金流明细复核。",
+        "evidence_ids": [
+          "9255efc647c227bb661125ee",
+          "e58fc8de962228bd7bc639df",
+          "8c1a690841061c1c7447f7c2",
+          "4e4933707152f7b97bba1265"
+        ],
+        "interpretation": "归母利润与合并经营现金流的归属口径不同；这里只比较各自同比方向，不作等式核验。",
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 80,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "fe69ac2965534c858080c9e8",
+        "5e042f5f972d95e54dd79c37"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "type": "nonrecurring_profit_share",
+        "epistemic_type": "事实",
+        "description": "归母与扣非差额占归母利润绝对值的比例",
+        "value": "0.02800406325146779509093372109495098010555",
+        "unit": "%",
+        "calculation": {
+          "status": "ok",
+          "value": "0.02800406325146779509093372109495098010555",
+          "unit": "%",
+          "formula": "numerator / denominator * 100",
+          "operands": {
+            "numerator": "12714674.28",
+            "denominator": "45402962298.10"
+          }
+        },
+        "evidence_ids": [
+          "fe69ac2965534c858080c9e8",
+          "5e042f5f972d95e54dd79c37"
+        ],
+        "interpretation": "差额仅作为非经常性损益影响线索，具体项目须查损益明细；归母为零时比例未定义。"
+      }
+    },
+    {
+      "step": 81,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "5e042f5f972d95e54dd79c37",
+        "9e1ced76050e1432d3b6c83a"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "type": "adjusted_profit_growth",
+        "epistemic_type": "事实",
+        "description": "剔除非经常性损益后的归母利润同比",
+        "value": "8.927624360040181836165423280937276528640",
+        "unit": "%",
+        "calculation": {
+          "status": "ok",
+          "value": "8.927624360040181836165423280937276528640",
+          "unit": "%",
+          "operands": {
+            "current": "45390247623.82",
+            "previous": "41670097819.99"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "5e042f5f972d95e54dd79c37",
+            "9e1ced76050e1432d3b6c83a"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "evidence_ids": [
+          "5e042f5f972d95e54dd79c37",
+          "9e1ced76050e1432d3b6c83a"
+        ],
+        "interpretation": "使用扣非归母口径，不把扣非同比和归母同比混用。"
+      }
+    },
+    {
+      "step": 82,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "fe69ac2965534c858080c9e8",
+        "c752a845d2b34e77d885042d",
+        "34c9dabd7c8bb971f1bdd56e",
+        "52154a2fe391c4a121dadba8"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "type": "profit_cash_growth_gap",
+        "epistemic_type": "事实",
+        "description": "归母利润与经营现金流同比差（百分点）；增长方向相反",
+        "value": "73.06840785636850532906275062",
+        "unit": "百分点",
+        "opposite_direction": true,
+        "calculation": {
+          "formula": "profit_yoy - cashflow_yoy",
+          "operands": {
+            "profit_yoy": "8.891466577162404195928698149507732366035",
+            "cashflow_yoy": "-64.17694127920610113313405247031941140260"
+          }
+        },
+        "evidence_ids": [
+          "fe69ac2965534c858080c9e8",
+          "c752a845d2b34e77d885042d",
+          "34c9dabd7c8bb971f1bdd56e",
+          "52154a2fe391c4a121dadba8"
+        ],
+        "interpretation": "归母利润和合并现金流的归属口径不同；差值为观察线索，不能等同现金转化率。"
+      }
+    },
+    {
+      "step": 83,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8b10e5e4baa208aa0bb98379",
+        "fe69ac2965534c858080c9e8"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-c80fb71801694690_c80fb7180169469053c396e65315414368bcfa9f1f1d4e3bf793c8fb327e6b0c",
+        "type": "performance_driver_framework",
+        "epistemic_type": "推论",
+        "description": "业绩变化原因复核框架：收入规模 → 利润率 → 费用与非经常性项目 → 回款",
+        "evidence_ids": [
+          "8b10e5e4baa208aa0bb98379",
+          "fe69ac2965534c858080c9e8"
+        ],
+        "observations": {
+          "revenue_yoy": {
+            "status": "ok",
+            "value": "9.103243927267080771750186924584247068223",
+            "unit": "%",
+            "operands": {
+              "current": "89389354416.84",
+              "previous": "81930977667.75"
+            },
+            "formula": "(current - previous) / previous * 100",
+            "negative_policy": "review",
+            "growth_kind": "yoy",
+            "evidence_ids": [
+              "8b10e5e4baa208aa0bb98379",
+              "c7346083f5e1438756b4b6f8"
+            ],
+            "comparability": {
+              "status": "satisfied",
+              "internal": true,
+              "dimensions": {
+                "accounting_policy_version": "satisfied",
+                "consolidation_basis": "satisfied",
+                "restatement_version": "satisfied"
+              },
+              "conflicts": [],
+              "gaps": [],
+              "reasons": []
+            }
+          },
+          "profit_yoy": {
+            "status": "ok",
+            "value": "8.891466577162404195928698149507732366035",
+            "unit": "%",
+            "operands": {
+              "current": "45402962298.10",
+              "previous": "41695610983.37"
+            },
+            "formula": "(current - previous) / previous * 100",
+            "negative_policy": "review",
+            "growth_kind": "yoy",
+            "evidence_ids": [
+              "fe69ac2965534c858080c9e8",
+              "c752a845d2b34e77d885042d"
+            ],
+            "comparability": {
+              "status": "satisfied",
+              "internal": true,
+              "dimensions": {
+                "accounting_policy_version": "satisfied",
+                "consolidation_basis": "satisfied",
+                "restatement_version": "satisfied"
+              },
+              "conflicts": [],
+              "gaps": [],
+              "reasons": []
+            }
+          }
+        },
+        "interpretation": "已知事实只支持收入和利润变化。毛利率、费用率及回款原因缺少明细时列为待补证据，不自动作因果归因。"
+      }
+    },
+    {
+      "step": 84,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "9255efc647c227bb661125ee",
+        "0f3a6cab2bd2001e34e333c9"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "type": "nonrecurring_profit_share",
+        "epistemic_type": "事实",
+        "description": "归母与扣非差额占归母利润绝对值的比例",
+        "value": "-0.008974639917975708745788143043014883524974",
+        "unit": "%",
+        "calculation": {
+          "status": "ok",
+          "value": "-0.008974639917975708745788143043014883524974",
+          "unit": "%",
+          "formula": "numerator / denominator * 100",
+          "operands": {
+            "numerator": "-2409464.14",
+            "denominator": "26847474238.76"
+          }
+        },
+        "evidence_ids": [
+          "9255efc647c227bb661125ee",
+          "0f3a6cab2bd2001e34e333c9"
+        ],
+        "interpretation": "差额仅作为非经常性损益影响线索，具体项目须查损益明细；归母为零时比例未定义。"
+      }
+    },
+    {
+      "step": 85,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "0f3a6cab2bd2001e34e333c9",
+        "8f23f00eec1838adb1b8f7fa"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "type": "adjusted_profit_growth",
+        "epistemic_type": "事实",
+        "description": "剔除非经常性损益后的归母利润同比",
+        "value": "11.63509914052568512735813658552807923612",
+        "unit": "%",
+        "calculation": {
+          "status": "ok",
+          "value": "11.63509914052568512735813658552807923612",
+          "unit": "%",
+          "operands": {
+            "current": "26849883702.90",
+            "previous": "24051471185.69"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "growth_kind": "yoy",
+          "evidence_ids": [
+            "0f3a6cab2bd2001e34e333c9",
+            "8f23f00eec1838adb1b8f7fa"
+          ],
+          "comparability": {
+            "status": "satisfied",
+            "internal": true,
+            "dimensions": {
+              "accounting_policy_version": "satisfied",
+              "consolidation_basis": "satisfied",
+              "restatement_version": "satisfied"
+            },
+            "conflicts": [],
+            "gaps": [],
+            "reasons": []
+          }
+        },
+        "evidence_ids": [
+          "0f3a6cab2bd2001e34e333c9",
+          "8f23f00eec1838adb1b8f7fa"
+        ],
+        "interpretation": "使用扣非归母口径，不把扣非同比和归母同比混用。"
+      }
+    },
+    {
+      "step": 86,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "9255efc647c227bb661125ee",
+        "e58fc8de962228bd7bc639df",
+        "8c1a690841061c1c7447f7c2",
+        "4e4933707152f7b97bba1265"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "type": "profit_cash_growth_gap",
+        "epistemic_type": "事实",
+        "description": "归母利润与经营现金流同比差（百分点）；增长方向相反",
+        "value": "15.67790041248755811340547850",
+        "unit": "百分点",
+        "opposite_direction": true,
+        "calculation": {
+          "formula": "profit_yoy - cashflow_yoy",
+          "operands": {
+            "profit_yoy": "11.56111170264466916900788490961369384086",
+            "cashflow_yoy": "-4.116788709842888944397593587189407201884"
+          }
+        },
+        "evidence_ids": [
+          "9255efc647c227bb661125ee",
+          "e58fc8de962228bd7bc639df",
+          "8c1a690841061c1c7447f7c2",
+          "4e4933707152f7b97bba1265"
+        ],
+        "interpretation": "归母利润和合并现金流的归属口径不同；差值为观察线索，不能等同现金转化率。"
+      }
+    },
+    {
+      "step": 87,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8abfab90d95e82adece53483",
+        "9255efc647c227bb661125ee"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "financial_signal",
+        "document_id": "600519_2025_LOCAL-f3197b2a4ef7b617_f3197b2a4ef7b617bec762b99613eecaf8ea27d1950d4bed5e9ce5f1943d1128",
+        "type": "performance_driver_framework",
+        "epistemic_type": "推论",
+        "description": "业绩变化原因复核框架：收入规模 → 利润率 → 费用与非经常性项目 → 回款",
+        "evidence_ids": [
+          "8abfab90d95e82adece53483",
+          "9255efc647c227bb661125ee"
+        ],
+        "observations": {
+          "revenue_yoy": {
+            "status": "ok",
+            "value": "10.54153214244761175615871006057428999606",
+            "unit": "%",
+            "operands": {
+              "current": "50600957885.78",
+              "previous": "45775517043.29"
+            },
+            "formula": "(current - previous) / previous * 100",
+            "negative_policy": "review",
+            "growth_kind": "yoy",
+            "evidence_ids": [
+              "8abfab90d95e82adece53483",
+              "c899e0e5684c0950ef3f452a"
+            ],
+            "comparability": {
+              "status": "satisfied",
+              "internal": true,
+              "dimensions": {
+                "accounting_policy_version": "satisfied",
+                "consolidation_basis": "satisfied",
+                "restatement_version": "satisfied"
+              },
+              "conflicts": [],
+              "gaps": [],
+              "reasons": []
+            }
+          },
+          "profit_yoy": {
+            "status": "ok",
+            "value": "11.56111170264466916900788490961369384086",
+            "unit": "%",
+            "operands": {
+              "current": "26847474238.76",
+              "previous": "24065262374.15"
+            },
+            "formula": "(current - previous) / previous * 100",
+            "negative_policy": "review",
+            "growth_kind": "yoy",
+            "evidence_ids": [
+              "9255efc647c227bb661125ee",
+              "e58fc8de962228bd7bc639df"
+            ],
+            "comparability": {
+              "status": "satisfied",
+              "internal": true,
+              "dimensions": {
+                "accounting_policy_version": "satisfied",
+                "consolidation_basis": "satisfied",
+                "restatement_version": "satisfied"
+              },
+              "conflicts": [],
+              "gaps": [],
+              "reasons": []
+            }
+          }
+        },
+        "interpretation": "已知事实只支持收入和利润变化。毛利率、费用率及回款原因缺少明细时列为待补证据，不自动作因果归因。"
+      }
+    },
+    {
+      "step": 88,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8b10e5e4baa208aa0bb98379",
+        "8abfab90d95e82adece53483"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "derive_quarter",
+        "evidence_ids": [
+          "8b10e5e4baa208aa0bb98379",
+          "8abfab90d95e82adece53483"
+        ],
+        "calculation": {
+          "status": "not_comparable",
+          "value": null,
+          "reason": "跨报告可比性依据未知，未按同一口径处理",
+          "reasons": [
+            "accounting_policy_version 未声明",
+            "consolidation_basis 未声明",
+            "restatement_version 未声明"
+          ],
+          "comparability": {
+            "status": "unknown",
+            "internal": false,
+            "dimensions": {
+              "accounting_policy_version": "unknown",
+              "consolidation_basis": "unknown",
+              "restatement_version": "unknown"
+            },
+            "conflicts": [],
+            "gaps": [
+              "accounting_policy_version",
+              "consolidation_basis",
+              "restatement_version"
+            ],
+            "reasons": []
+          },
+          "operands": {
+            "current_ytd": "89389354416.84",
+            "previous_ytd": "50600957885.78"
+          },
+          "evidence_ids": [
+            "8b10e5e4baa208aa0bb98379",
+            "8abfab90d95e82adece53483"
+          ],
+          "period_start": "2025-04-01",
+          "period_end": "2025-06-30",
+          "attempted_value": "38788396531.06",
+          "formula": "quarter = current_ytd - previous_ytd"
+        }
+      }
+    },
+    {
+      "step": 89,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "fe69ac2965534c858080c9e8",
+        "9255efc647c227bb661125ee"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "derive_quarter",
+        "evidence_ids": [
+          "fe69ac2965534c858080c9e8",
+          "9255efc647c227bb661125ee"
+        ],
+        "calculation": {
+          "status": "not_comparable",
+          "value": null,
+          "reason": "跨报告可比性依据未知，未按同一口径处理",
+          "reasons": [
+            "accounting_policy_version 未声明",
+            "consolidation_basis 未声明",
+            "restatement_version 未声明"
+          ],
+          "comparability": {
+            "status": "unknown",
+            "internal": false,
+            "dimensions": {
+              "accounting_policy_version": "unknown",
+              "consolidation_basis": "unknown",
+              "restatement_version": "unknown"
+            },
+            "conflicts": [],
+            "gaps": [
+              "accounting_policy_version",
+              "consolidation_basis",
+              "restatement_version"
+            ],
+            "reasons": []
+          },
+          "operands": {
+            "current_ytd": "45402962298.10",
+            "previous_ytd": "26847474238.76"
+          },
+          "evidence_ids": [
+            "fe69ac2965534c858080c9e8",
+            "9255efc647c227bb661125ee"
+          ],
+          "period_start": "2025-04-01",
+          "period_end": "2025-06-30",
+          "attempted_value": "18555488059.34",
+          "formula": "quarter = current_ytd - previous_ytd"
+        }
+      }
+    },
+    {
+      "step": 90,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "5e042f5f972d95e54dd79c37",
+        "0f3a6cab2bd2001e34e333c9"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "derive_quarter",
+        "evidence_ids": [
+          "5e042f5f972d95e54dd79c37",
+          "0f3a6cab2bd2001e34e333c9"
+        ],
+        "calculation": {
+          "status": "not_comparable",
+          "value": null,
+          "reason": "跨报告可比性依据未知，未按同一口径处理",
+          "reasons": [
+            "accounting_policy_version 未声明",
+            "consolidation_basis 未声明",
+            "restatement_version 未声明"
+          ],
+          "comparability": {
+            "status": "unknown",
+            "internal": false,
+            "dimensions": {
+              "accounting_policy_version": "unknown",
+              "consolidation_basis": "unknown",
+              "restatement_version": "unknown"
+            },
+            "conflicts": [],
+            "gaps": [
+              "accounting_policy_version",
+              "consolidation_basis",
+              "restatement_version"
+            ],
+            "reasons": []
+          },
+          "operands": {
+            "current_ytd": "45390247623.82",
+            "previous_ytd": "26849883702.90"
+          },
+          "evidence_ids": [
+            "5e042f5f972d95e54dd79c37",
+            "0f3a6cab2bd2001e34e333c9"
+          ],
+          "period_start": "2025-04-01",
+          "period_end": "2025-06-30",
+          "attempted_value": "18540363920.92",
+          "formula": "quarter = current_ytd - previous_ytd"
+        }
+      }
+    },
+    {
+      "step": 91,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "34c9dabd7c8bb971f1bdd56e",
+        "8c1a690841061c1c7447f7c2"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "derive_quarter",
+        "evidence_ids": [
+          "34c9dabd7c8bb971f1bdd56e",
+          "8c1a690841061c1c7447f7c2"
+        ],
+        "calculation": {
+          "status": "not_comparable",
+          "value": null,
+          "reason": "跨报告可比性依据未知，未按同一口径处理",
+          "reasons": [
+            "accounting_policy_version 未声明",
+            "consolidation_basis 未声明",
+            "restatement_version 未声明"
+          ],
+          "comparability": {
+            "status": "unknown",
+            "internal": false,
+            "dimensions": {
+              "accounting_policy_version": "unknown",
+              "consolidation_basis": "unknown",
+              "restatement_version": "unknown"
+            },
+            "conflicts": [],
+            "gaps": [
+              "accounting_policy_version",
+              "consolidation_basis",
+              "restatement_version"
+            ],
+            "reasons": []
+          },
+          "operands": {
+            "current_ytd": "13119061031.33",
+            "previous_ytd": "8809195646.38"
+          },
+          "evidence_ids": [
+            "34c9dabd7c8bb971f1bdd56e",
+            "8c1a690841061c1c7447f7c2"
+          ],
+          "period_start": "2025-04-01",
+          "period_end": "2025-06-30",
+          "attempted_value": "4309865384.95",
+          "formula": "quarter = current_ytd - previous_ytd"
+        }
+      }
+    },
+    {
+      "step": 92,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8abfab90d95e82adece53483"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "quarter_qoq",
+        "company_code": "600519",
+        "metric": "revenue",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "qoq": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据",
+          "evidence_ids": [
+            "8abfab90d95e82adece53483"
+          ]
+        },
+        "derivation": null,
+        "evidence_ids": [
+          "8abfab90d95e82adece53483"
+        ],
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 93,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "9255efc647c227bb661125ee"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "quarter_qoq",
+        "company_code": "600519",
+        "metric": "parent_net_profit",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "qoq": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据",
+          "evidence_ids": [
+            "9255efc647c227bb661125ee"
+          ]
+        },
+        "derivation": null,
+        "evidence_ids": [
+          "9255efc647c227bb661125ee"
+        ],
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 94,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "0f3a6cab2bd2001e34e333c9"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "quarter_qoq",
+        "company_code": "600519",
+        "metric": "adjusted_parent_net_profit",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "qoq": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据",
+          "evidence_ids": [
+            "0f3a6cab2bd2001e34e333c9"
+          ]
+        },
+        "derivation": null,
+        "evidence_ids": [
+          "0f3a6cab2bd2001e34e333c9"
+        ],
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 95,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "calculation",
+      "title": "确定性计算",
+      "actor": "Python / Decimal",
+      "rule": "记录公式、操作数、期间与容差",
+      "evidence_ids": [
+        "8c1a690841061c1c7447f7c2"
+      ],
+      "evidence": [],
+      "detail": {
+        "operation": "quarter_qoq",
+        "company_code": "600519",
+        "metric": "operating_cash_flow",
+        "period_start": "2025-01-01",
+        "period_end": "2025-03-31",
+        "qoq": {
+          "status": "missing",
+          "value": null,
+          "reason": "缺少唯一可比期间数据",
+          "evidence_ids": [
+            "8c1a690841061c1c7447f7c2"
+          ]
+        },
+        "derivation": null,
+        "evidence_ids": [
+          "8c1a690841061c1c7447f7c2"
+        ],
+        "epistemic_type": "事实"
+      }
+    },
+    {
+      "step": 96,
+      "time": "2026-10-14T15:31:05+08:00",
+      "run_id": "20261014_153104_66775796",
+      "event": "run_finished",
+      "title": "完成运行",
+      "actor": "程序",
+      "rule": "汇总结果并保存可复现记录",
+      "evidence_ids": [],
+      "evidence": [],
+      "detail": {
+        "status": "ok",
+        "materials": 2,
+        "evidence_count": 40,
+        "failures": 0,
+        "draft_checked": false
+      }
+    }
+  ]
+}

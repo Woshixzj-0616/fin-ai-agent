@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-12",
+  "environment": {
+    "kind": "clean-venv",
+    "path": "D:\\codex\\tmp\\fin-ai-b7-venv",
+    "python": "D:\\codex\\tmp\\fin-ai-b7-venv\\Scripts\\python.exe",
+    "python_version": "3.14.6",
+    "dependencies": [
+      "pymupdf==1.28.2",
+      "httpx==0.28.1"
+    ]
+  },
+  "commands": [
+    {
+      "command": "python -B scripts/check_sensitive.py",
+      "exit_code": 0,
+      "result": "扫描 170 个文本文件通过，无敏感信息命中"
+    },
+    {
+      "command": "python -B scripts/check_docs.py",
+      "exit_code": 0,
+      "result": "59 个 Markdown 文件通过"
+    },
+    {
+      "command": "python -B scripts/review_structure.py",
+      "exit_code": 0,
+      "result": "0 项违规，1 项体量警告，webui.py 108 行"
+    },
+    {
+      "command": "python -B -m compileall -q agent scripts",
+      "exit_code": 0,
+      "result": "通过"
+    },
+    {
+      "command": "python -B -m unittest discover -s agent -p 'test*.py'",
+      "exit_code": 0,
+      "result": "Ran 322 tests，OK (skipped=1)"
+    },
+    {
+      "command": "python -B scripts/b7_release_smoke.py",
+      "exit_code": 0,
+      "result": "app、legacy_page、runs_api、legacy_search_api 全部通过"
+    },
+    {
+      "command": "python -B scripts/b7_reverse_checks.py",
+      "exit_code": 0,
+      "result": "R1-R11 全部 PASS"
+    }
+  ],
+  "github_actions": {
+    "status": "completed",
+    "conclusion": "success",
+    "workflow": "CI",
+    "run_id": 38154092186,
+    "url": "https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186",
+    "head_sha": "84c3f42e383b45a105c10712bc613adf620ac59a",
+    "event": "push",
+    "jobs": [
+      {
+        "name": "test (3.11)",
+        "job_id": 114513355827,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186/job/114513355827"
+      },
+      {
+        "name": "test (3.12)",
+        "job_id": 114513355690,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Woshixzj-0616/fin-ai-agent/actions/runs/38154092186/job/114513355690"
+      }
+    ]
+  }
+}

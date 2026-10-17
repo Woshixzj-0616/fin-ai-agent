@@ -1,0 +1,1376 @@
+{
+  "documents": {
+    "600519_2021_1212755849_f65effdde58bcea99fd6bdb53f61b31d5c432e6dfb2661e5caf05156a433ea5a": {
+      "company": "600519 贵州茅台",
+      "year": 2021,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 2.7
+    },
+    "600519_2022_1216281757_de394171306b9f2c7d79f54990de2a9e9c99feb54413150180179e24f0d83358": {
+      "company": "600519 贵州茅台",
+      "year": 2022,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 2.9
+    },
+    "600519_2023_1219506510_2125ff97a452ea79b0d784e2432f7d224b6aecc330b644b593477d69e22f4ed1": {
+      "company": "600519 贵州茅台",
+      "year": 2023,
+      "evidence": 47,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.6
+    },
+    "600519_2024_1222993920_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30": {
+      "company": "600519 贵州茅台",
+      "year": 2024,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.4
+    },
+    "600519_2025_1225114741_474905deeaf0f875fc0a1b097a626c0c7852c427faadc5d7fc7816cbf45ea288": {
+      "company": "600519 贵州茅台",
+      "year": 2025,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 2.5
+    },
+    "000858_2021_1213222211_b4a35e397801da6cd4ebb27e31d59a104bc94188b282e2f138d8e92d6a9532b5": {
+      "company": "000858 五粮液",
+      "year": 2021,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.3
+    },
+    "000858_2022_1216689063_41240ddcd434c2a3b2c33b4643b031b2007c6e6dcd7a132f7a4d471f00993064": {
+      "company": "000858 五粮液",
+      "year": 2022,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 2.4
+    },
+    "000858_2023_1219873658_1aab0efbe751c145990ac9652c3aff165452ee060bf22a0fe0412996a55e8566": {
+      "company": "000858 五粮液",
+      "year": 2023,
+      "evidence": 45,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.9
+    },
+    "000858_2024_1223311527_b737191a758994a35e9442d46847de771fe48b758feb9a7f35601def922435e7": {
+      "company": "000858 五粮液",
+      "year": 2024,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.7
+    },
+    "000858_2025_1225273091_09133e1f44b3bb4b2cebe211529ad68f5b04b6be10b43870f2a78c947d5910a4": {
+      "company": "000858 五粮液",
+      "year": 2025,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.2
+    },
+    "600887_2021_1213169501_49935af2e517fe10592bc943f3de4321ecd837d7dda0cf26f86495325b9ed6eb": {
+      "company": "600887 伊利股份",
+      "year": 2021,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.2
+    },
+    "600887_2022_1216664083_9b555197f8a45f40ea4b9f336aae05345798fe6d96ad116c0c3f2bf4e19edab8": {
+      "company": "600887 伊利股份",
+      "year": 2022,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.6
+    },
+    "600887_2023_1219916433_d56b0be917eb89a07f092a3ecf1c269aea9f1698c51b648a53f69a0759ef44fe": {
+      "company": "600887 伊利股份",
+      "year": 2023,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 4.9
+    },
+    "600887_2024_1223421123_a82a81e52f52da3cd1b7f38ded08625dc18e3d4522b15d3ef76bf921e54c1f43": {
+      "company": "600887 伊利股份",
+      "year": 2024,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.6
+    },
+    "600887_2025_1225259562_d17b8c541c42f65d092317093eb0cfbb5aeed4f44eafa2d2f6182041cdcdbaac": {
+      "company": "600887 伊利股份",
+      "year": 2025,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.8
+    },
+    "000333_2021_1213264815_f1210d6e006e00963492edbf4cc79884b0febdffa50a82ed2d291fa694369def": {
+      "company": "000333 美的集团",
+      "year": 2021,
+      "evidence": 42,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.0
+    },
+    "000333_2022_1216695045_444a83cb76f66242b15c2a83796312b0aa618dc90e280702a0b93fa7aac80688": {
+      "company": "000333 美的集团",
+      "year": 2022,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.5
+    },
+    "000333_2023_1219429374_22f4915d91ada74a37eab8d074aef4c15420f3b1a8b5f5bd5777c00f97d58b86": {
+      "company": "000333 美的集团",
+      "year": 2023,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.6
+    },
+    "000333_2024_1222951181_b17a9b9b84bca1d2a4e4a3cadc5dd5ba5c85e3f1fd2d758acd3315b5b040ecd9": {
+      "company": "000333 美的集团",
+      "year": 2024,
+      "evidence": 21,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_net_profit",
+        "revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.0
+    },
+    "000333_2025_1225065145_16f95f70527db59dcf2736f276a9479cf7ee917e5f71e4f6cbbe83acbad9f4b6": {
+      "company": "000333 美的集团",
+      "year": 2025,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 3,
+      "sec": 4.7
+    },
+    "000651_2021_1213262535_96065ec44285bce7a9c0cbee25dfeb2368ec4552d72f06ebf3ecab35136e2444": {
+      "company": "000651 格力电器",
+      "year": 2021,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 4.0
+    },
+    "000651_2022_1216702261_7cfc80c2badbf4cd74c5adc080d5072b02cd6c700b04fa7ca0ac44cb8b8fe987": {
+      "company": "000651 格力电器",
+      "year": 2022,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 4.0
+    },
+    "000651_2023_1219928418_32ebc475a2291ce4f1b5c1a9f9da55227e03192f07e75041e976c29d213ec8aa": {
+      "company": "000651 格力电器",
+      "year": 2023,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.7
+    },
+    "000651_2024_1223330631_c7184706caf5f57c04a795990967cfc4f4253024e02f8bdaffe2b260df2c6006": {
+      "company": "000651 格力电器",
+      "year": 2024,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.1
+    },
+    "000651_2025_1225250396_7cc972f2d199e2ec3797cc5da479e8268afa59b77875770de3bcd3648242fb8c": {
+      "company": "000651 格力电器",
+      "year": 2025,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 1.7
+    },
+    "600276_2021_1213053755_ee82b8ecf661ebd8701149e3ddef16282cbfd2530d0626a1a9abd1241d2526c4": {
+      "company": "600276 恒瑞医药",
+      "year": 2021,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 2.4
+    },
+    "600276_2022_1216518776_958bf49bbade87f62e7f867d18d9a00cb8f1bd29245cd61d22b45ab6bb24112f": {
+      "company": "600276 恒瑞医药",
+      "year": 2022,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 6,
+      "sec": 3.3
+    },
+    "600276_2023_1219650115_4fe601137654acbb46898486bb61501678ba952426e66e7b0efbbd8fa48639cc": {
+      "company": "600276 恒瑞医药",
+      "year": 2023,
+      "evidence": 32,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.3
+    },
+    "600276_2024_1222961962_7fad40fef23755f81ce5322f45483ea257ef026ebf1f7f5655c8d5998d7049fc": {
+      "company": "600276 恒瑞医药",
+      "year": 2024,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.1
+    },
+    "600276_2025_1225032585_fae80e2d132f5b6f2bfbb8bcdfd40e1267edb91d689389d63c8e291b0856ace6": {
+      "company": "600276 恒瑞医药",
+      "year": 2025,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 2.0
+    },
+    "300760_2021_1212976151_4713e195d75eb35e171eebc5c10508f23c9ac4c3cc8a7407f686c618e4cb8a43": {
+      "company": "300760 迈瑞医疗",
+      "year": 2021,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.9
+    },
+    "300760_2022_1216645583_71f358f99b963479727886a996f4dc138ab2fc69d48fe753c8e5e4d02df2a71a": {
+      "company": "300760 迈瑞医疗",
+      "year": 2022,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 4.0
+    },
+    "300760_2023_1219856065_9659c94de7c62249e711711daf13ebf8ec978476fa42edfb8178ea9ccf2afa88": {
+      "company": "300760 迈瑞医疗",
+      "year": 2023,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.4
+    },
+    "300760_2024_1223371173_4bb8bfaa68fbbe2c9a07198a32e3228ecfcf067e1ddd42fa44fa52fdca63622b": {
+      "company": "300760 迈瑞医疗",
+      "year": 2024,
+      "evidence": 29,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 6.3
+    },
+    "300760_2025_1225059012_b740bc7c4c8839639cf1f86ad0ebac0405924c9b2b595958509e6d8659ba41c3": {
+      "company": "300760 迈瑞医疗",
+      "year": 2025,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.4
+    },
+    "002594_2021_1212730520_a6577bb6293bffc6c443a177cc10207a57ec21c355434a39ba4952270a38061f": {
+      "company": "002594 比亚迪",
+      "year": 2021,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.4
+    },
+    "002594_2022_1216246589_1c65401fdc00cccef9b9333cf8d9aacade25aca3cc26accef3e537a07618fe09": {
+      "company": "002594 比亚迪",
+      "year": 2022,
+      "evidence": 26,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 6.7
+    },
+    "002594_2023_1219412018_959b00a12055470a63962303d90557dca90e84d104d92025aeb70805aa7cc036": {
+      "company": "002594 比亚迪",
+      "year": 2023,
+      "evidence": 26,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 6.4
+    },
+    "002594_2024_1222881496_e9c2d7fdd088e151ccb6c8ad3d95587b2b014b10f2c9731508d23ce07fde4de3": {
+      "company": "002594 比亚迪",
+      "year": 2024,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 6.2
+    },
+    "002594_2025_1225045351_710d8b2e08e37ba521f1c4071d2c3e2369d3cadabc21a45073215d9f72138b0b": {
+      "company": "002594 比亚迪",
+      "year": 2025,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.1
+    },
+    "601088_2021_1212687181_d5d3e92f6749f052a0daef9a2d000109cc4b4d9e47e8729e0f98d74a8ba82b30": {
+      "company": "601088 中国神华",
+      "year": 2021,
+      "evidence": 33,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 7.2
+    },
+    "601088_2022_1216223000_10eec7dee0b418ea817fd4e9cc955aef8ce269a741928e60c7f313927a836a17": {
+      "company": "601088 中国神华",
+      "year": 2022,
+      "evidence": 36,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 6.0
+    },
+    "601088_2023_1219390021_451aaacb1779c2572807a0f25985d8c18db355c2b40f3eef0a673210c9820bf9": {
+      "company": "601088 中国神华",
+      "year": 2023,
+      "evidence": 36,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 7.4
+    },
+    "601088_2024_1222870380_4b3a8db26ae2fb07083966fadea0f92535cfbe6d0791c3318c6511113b138e8f": {
+      "company": "601088 中国神华",
+      "year": 2024,
+      "evidence": 34,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 7.0
+    },
+    "601088_2025_1225064293_7068df1231922b8a2fcfd0336d9ae6550dabf7c7edc152d680089df8cc126bd2": {
+      "company": "601088 中国神华",
+      "year": 2025,
+      "evidence": 36,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 7.9
+    },
+    "600036_2021_1212626208_d657eedc6ebd56dfb3052bcb599aab34b2c5eaab42cd3c0a238aafda863f9cf6": {
+      "company": "600036 招商银行",
+      "year": 2021,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.2
+    },
+    "600036_2022_1216221326_9a74951387b3792dc4080ad4d3b03a13b2cc0db91548c15cd193b4a41ae0d051": {
+      "company": "600036 招商银行",
+      "year": 2022,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 11.4
+    },
+    "600036_2023_1219403503_948a390b579a8d46f281d3f88a346b4388f1bb6b82a90db61d5cd48b4627598a": {
+      "company": "600036 招商银行",
+      "year": 2023,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 13.8
+    },
+    "600036_2024_1222895154_44a8759c94e1ba92f1d96897ca3778592d9a7eb33b53420c19268f0b140d81c3": {
+      "company": "600036 招商银行",
+      "year": 2024,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 13.4
+    },
+    "600036_2025_1225047590_abe612a273468072b176dd51ea460c1e1596f8ca729cbc6db3fa28ba9a57ea79": {
+      "company": "600036 招商银行",
+      "year": 2025,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 22.6
+    },
+    "601318_2021_1212609975_44c088008b1ce70b02e95ff1ccf8233f6c3b77ca98a01835b83d36d6d1f98615": {
+      "company": "601318 中国平安",
+      "year": 2021,
+      "evidence": 36,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 9.9
+    },
+    "601318_2022_1216129433_7937751ba39685c8e79d09a77f1c15aae1d1f6e0b6fdfe37f444b503035ce746": {
+      "company": "601318 中国平安",
+      "year": 2022,
+      "evidence": 36,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 7.9
+    },
+    "601318_2023_1219376072_f55538814200d77a61492ba216e45508f487064207bca6a4d90c7b55add43823": {
+      "company": "601318 中国平安",
+      "year": 2023,
+      "evidence": 42,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 1,
+      "sec": 7.3
+    },
+    "601318_2024_1222847447_6ffff1cade59c64c8178494c083cac8a4011ef5ae2fed32f85dd488a64a809b2": {
+      "company": "601318 中国平安",
+      "year": 2024,
+      "evidence": 38,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 12.5
+    },
+    "601318_2025_1225038263_860c455bbad9be59d3d1bf64bf683733feb79157212532df44b91d49a0b03c2a": {
+      "company": "601318 中国平安",
+      "year": 2025,
+      "evidence": 36,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 21.6
+    },
+    "000002_2021_1212750450_442f1f49615919ca12698ea41bd2ad1f372b776e06625c03ba95294995ff516d": {
+      "company": "000002 万科A",
+      "year": 2021,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 3,
+      "sec": 6.8
+    },
+    "000002_2022_1216273938_f07519762f9176f9e69b92a9e52ca42f5b9e71e71f285bac95585c5d6f82ae71": {
+      "company": "000002 万科A",
+      "year": 2022,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 3,
+      "sec": 6.0
+    },
+    "000002_2023_1219487237_511a089558610e86605841f39b98f67993bd444c1e23018a204e704706882d0d": {
+      "company": "000002 万科A",
+      "year": 2023,
+      "evidence": 22,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 2,
+      "sec": 5.8
+    },
+    "000002_2024_1222974139_734370d32036c1a18716e42f2e96c0f6ffd8a48c1fe115ecda945a09eb416ac0": {
+      "company": "000002 万科A",
+      "year": 2024,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 3,
+      "sec": 5.4
+    },
+    "000002_2025_1225067794_b2befc9da2a9e09c798702c351e6af65a4b148e32baa07737b941edc2caf1eba": {
+      "company": "000002 万科A",
+      "year": 2025,
+      "evidence": 30,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "book_value_per_share",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 3,
+      "sec": 4.8
+    },
+    "600900_2021_1213270599_aa088913bd86f59aa480d7b627a2d09b2d30c3c5faedfb35954f6f04a33604fe": {
+      "company": "600900 长江电力",
+      "year": 2021,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.7
+    },
+    "600900_2022_1216664110_3378a0ab9893d296ef9227131034dd6f011c5705493dd56f638ce2b39b06d2aa": {
+      "company": "600900 长江电力",
+      "year": 2022,
+      "evidence": 35,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 4.5
+    },
+    "600900_2023_1219922588_a32aa92211f533bef9bd426a29158060d6bed4a31fca6c9f6805fd8659c90d38": {
+      "company": "600900 长江电力",
+      "year": 2023,
+      "evidence": 46,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.9
+    },
+    "600900_2024_1223421172_556767ca1f7c06bb679c827aa6522ff9927d2a63dc2ab64b57194fdc57192048": {
+      "company": "600900 长江电力",
+      "year": 2024,
+      "evidence": 41,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.8
+    },
+    "600900_2025_1225262036_aa0cdb92e3aad81b1e6454594a64cacbcfeb9013b10dd31f47a93a94e7a70f91": {
+      "company": "600900 长江电力",
+      "year": 2025,
+      "evidence": 41,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "deducted_basic_eps",
+        "deducted_weighted_roe",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "total_revenue",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 3.7
+    },
+    "002415_2021_1212941495_7dde9ab08dc17b0c8a98fbeb2297f8541606b0122d3218b9d3d2989ff229980a": {
+      "company": "002415 海康威视",
+      "year": 2021,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.4
+    },
+    "002415_2022_1216417187_8ba8401a64c8229d5a434e6031875b4486f69b5850c65e3f2d0fd83ffe7a67ab": {
+      "company": "002415 海康威视",
+      "year": 2022,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 5.8
+    },
+    "002415_2023_1219703072_258cd87781e0ea36f2e4e73521d8e6c4ab740612969102d2c31a6ac279f5f67f": {
+      "company": "002415 海康威视",
+      "year": 2023,
+      "evidence": 36,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 4.9
+    },
+    "002415_2024_1223153152_f1a8771d81d6ed723c4d1a7d552400cf408cca4752033f5bbd0f88ae2729757b": {
+      "company": "002415 海康威视",
+      "year": 2024,
+      "evidence": 42,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 4,
+      "sec": 5.6
+    },
+    "002415_2025_1225123062_a805779efb81bea8158e119ad7c733c4669b8d492dc03c7613199970bfa4b8b2": {
+      "company": "002415 海康威视",
+      "year": 2025,
+      "evidence": 27,
+      "metrics": [
+        "adjusted_parent_net_profit",
+        "basic_eps",
+        "diluted_eps",
+        "operating_cash_flow",
+        "parent_equity",
+        "parent_net_profit",
+        "revenue",
+        "total_assets",
+        "weighted_roe"
+      ],
+      "issues": 0,
+      "sec": 7.7
+    }
+  },
+  "failures": [],
+  "total_evidence": 2270,
+  "elapsed_sec": 404.1
+}

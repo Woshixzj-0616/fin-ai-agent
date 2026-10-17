@@ -1,0 +1,1852 @@
+{
+  "schema_version": 2,
+  "run_id": "20261014_152757_1a5272c7",
+  "status": "completed",
+  "mode": "native_tool_calls",
+  "model": "deepseek-chat",
+  "provider_host": "api.deepseek.com",
+  "response_format": "json_object",
+  "sentences": [
+    {
+      "sentence_id": 1,
+      "text": "贵州茅台2024年合并口径营业收入为1708.99亿元。"
+    },
+    {
+      "sentence_id": 2,
+      "text": "贵州茅台2024年合并口径营业收入为1965.34亿元。"
+    },
+    {
+      "sentence_id": 3,
+      "text": "贵州茅台2024年合并口径营业收入为1708.99万元。"
+    },
+    {
+      "sentence_id": 4,
+      "text": "贵州茅台2024年合并口径营业收入同比增长15.71%。"
+    },
+    {
+      "sentence_id": 5,
+      "text": "贵州茅台2024年合并口径营业收入同比下降15.71%。"
+    },
+    {
+      "sentence_id": 6,
+      "text": "贵州茅台2024年合并口径营业收入较2023年上升。"
+    },
+    {
+      "sentence_id": 7,
+      "text": "贵州茅台2024年归母净利润为862.28亿元。"
+    },
+    {
+      "sentence_id": 8,
+      "text": "预计贵州茅台2025年合并口径营业收入同比增长10%。"
+    },
+    {
+      "sentence_id": 9,
+      "text": "五粮液2024年合并口径营业收入为1708.99亿元。"
+    }
+  ],
+  "sentence_ledger": [
+    {
+      "sentence_id": 1,
+      "text": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "sentence_id": 2,
+      "text": "贵州茅台2024年合并口径营业收入为1965.34亿元。",
+      "start": 31,
+      "end": 59
+    },
+    {
+      "sentence_id": 3,
+      "text": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+      "start": 62,
+      "end": 90
+    },
+    {
+      "sentence_id": 4,
+      "text": "贵州茅台2024年合并口径营业收入同比增长15.71%。",
+      "start": 93,
+      "end": 121
+    },
+    {
+      "sentence_id": 5,
+      "text": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+      "start": 124,
+      "end": 152
+    },
+    {
+      "sentence_id": 6,
+      "text": "贵州茅台2024年合并口径营业收入较2023年上升。",
+      "start": 155,
+      "end": 181
+    },
+    {
+      "sentence_id": 7,
+      "text": "贵州茅台2024年归母净利润为862.28亿元。",
+      "start": 184,
+      "end": 208
+    },
+    {
+      "sentence_id": 8,
+      "text": "预计贵州茅台2025年合并口径营业收入同比增长10%。",
+      "start": 211,
+      "end": 238
+    },
+    {
+      "sentence_id": 9,
+      "text": "五粮液2024年合并口径营业收入为1708.99亿元。",
+      "start": 241,
+      "end": 268
+    }
+  ],
+  "parsed": {
+    "items": [
+      {
+        "claim_id": "c1",
+        "sentence_id": 1,
+        "quote": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+        "context_quote": null,
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "amount",
+        "value": "1708.99",
+        "unit": "亿元",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      },
+      {
+        "claim_id": "c2",
+        "sentence_id": 2,
+        "quote": "贵州茅台2024年合并口径营业收入为1965.34亿元。",
+        "context_quote": null,
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "amount",
+        "value": "1965.34",
+        "unit": "亿元",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年合并口径营业收入为1965.34亿元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      },
+      {
+        "claim_id": "c3",
+        "sentence_id": 3,
+        "quote": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+        "context_quote": null,
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "amount",
+        "value": "1708.99",
+        "unit": "万元",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      },
+      {
+        "claim_id": "c4",
+        "sentence_id": 4,
+        "quote": "贵州茅台2024年合并口径营业收入同比增长15.71%。",
+        "context_quote": null,
+        "claim_type": "yoy",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "yoy",
+        "value": "15.71",
+        "unit": "%",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "up",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年合并口径营业收入同比增长15.71%。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_yoy"
+      },
+      {
+        "claim_id": "c5",
+        "sentence_id": 5,
+        "quote": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+        "context_quote": null,
+        "claim_type": "yoy",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "yoy",
+        "value": "15.71",
+        "unit": "%",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "down",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_yoy"
+      },
+      {
+        "claim_id": "c6",
+        "sentence_id": 6,
+        "quote": "贵州茅台2024年合并口径营业收入较2023年上升。",
+        "context_quote": null,
+        "claim_type": "direction",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "yoy",
+        "value": null,
+        "unit": null,
+        "operator": "none",
+        "tolerance_pct": null,
+        "direction": "up",
+        "currency": "CNY",
+        "qualifier": "unknown",
+        "plain_claim": "贵州茅台2024年合并口径营业收入较2023年上升。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "check_direction"
+      },
+      {
+        "claim_id": "c7",
+        "sentence_id": 7,
+        "quote": "贵州茅台2024年归母净利润为862.28亿元。",
+        "context_quote": null,
+        "claim_type": "amount",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "归母净利润",
+        "metric": "parent_net_profit",
+        "scope": "parent_shareholders",
+        "kind": "amount",
+        "value": "862.28",
+        "unit": "亿元",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "贵州茅台2024年归母净利润为862.28亿元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "compare_amount"
+      },
+      {
+        "claim_id": "c8",
+        "sentence_id": 8,
+        "quote": "预计贵州茅台2025年合并口径营业收入同比增长10%。",
+        "context_quote": null,
+        "claim_type": "forecast",
+        "company_name": "贵州茅台",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2025,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "yoy",
+        "value": "10",
+        "unit": "%",
+        "operator": "approx",
+        "tolerance_pct": null,
+        "direction": "up",
+        "currency": "CNY",
+        "qualifier": "approximate",
+        "plain_claim": "预计贵州茅台2025年合并口径营业收入同比增长10%。",
+        "is_forecast": true,
+        "ambiguity": "none",
+        "verification_action": "mark_forecast"
+      },
+      {
+        "claim_id": "c9",
+        "sentence_id": 9,
+        "quote": "五粮液2024年合并口径营业收入为1708.99亿元。",
+        "context_quote": null,
+        "claim_type": "amount",
+        "company_name": "五粮液",
+        "company_b": null,
+        "comparison_operator": null,
+        "period_year": 2024,
+        "period_kind": "annual",
+        "metric_text": "营业收入",
+        "metric": "revenue",
+        "scope": "consolidated",
+        "kind": "amount",
+        "value": "1708.99",
+        "unit": "亿元",
+        "operator": "eq",
+        "tolerance_pct": null,
+        "direction": "unknown",
+        "currency": "CNY",
+        "qualifier": "exact",
+        "plain_claim": "五粮液2024年合并口径营业收入为1708.99亿元。",
+        "is_forecast": false,
+        "ambiguity": "none",
+        "verification_action": "needs_review"
+      }
+    ],
+    "unclaimed_sentences": []
+  },
+  "checks": [
+    {
+      "claim_id": "C1",
+      "atom_key": "{\"claim_type\": \"amount\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"unknown\", \"is_forecast\": false, \"kind\": \"amount\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"eq\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"exact\", \"quote\": \"贵州茅台2024年合并口径营业收入为1708.99亿元。\", \"scope\": \"consolidated\", \"sentence_id\": 1, \"tolerance_pct\": null, \"unit\": \"亿元\", \"value\": \"1708.99\"}",
+      "original_sentence": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+      "quote": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+      "track": "deterministic",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "90b9e57bf6b244be21e84176"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "90b9e57bf6b244be21e84176",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "170899152276.34",
+          "unit": "元",
+          "period_year": 2024,
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "scope": "consolidated",
+          "value_bbox": [
+            205.13,
+            263.06,
+            306.17,
+            277.73
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "match",
+        "value": "1708.99",
+        "exact_value": "1708.9915227634",
+        "claimed_value": "1708.99",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "0.0015227634",
+        "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+        "claimed_unit": "亿元",
+        "actual_unit": "元",
+        "actual_value": "170899152276.34"
+      },
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "check_item": "amount",
+      "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+      "page": 5,
+      "normalized_claim": {
+        "id": "C1",
+        "sentence": "贵州茅台2024年合并口径营业收入为1708.99亿元。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "revenue",
+        "kind": "amount",
+        "value": "1708.99",
+        "unit": "亿元",
+        "currency": "CNY",
+        "scope": "consolidated",
+        "period_kind": "annual",
+        "report_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 1
+    },
+    {
+      "claim_id": "C2",
+      "atom_key": "{\"claim_type\": \"amount\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"unknown\", \"is_forecast\": false, \"kind\": \"amount\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"eq\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"exact\", \"quote\": \"贵州茅台2024年合并口径营业收入为1965.34亿元。\", \"scope\": \"consolidated\", \"sentence_id\": 2, \"tolerance_pct\": null, \"unit\": \"亿元\", \"value\": \"1965.34\"}",
+      "original_sentence": "贵州茅台2024年合并口径营业收入为1965.34亿元。",
+      "quote": "贵州茅台2024年合并口径营业收入为1965.34亿元。",
+      "track": "review",
+      "status": "证据不足",
+      "reason_code": "unresolved_period",
+      "reason": "年度未明确或无法从原文定位，不猜测相对日期",
+      "evidence_ids": [],
+      "evidence": [],
+      "calculation": null,
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年合并口径营业收入为1965.34亿元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": null,
+          "matched_text": null,
+          "ambiguous": true
+        }
+      },
+      "sentence_id": 2
+    },
+    {
+      "claim_id": "C3",
+      "atom_key": "{\"claim_type\": \"amount\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"unknown\", \"is_forecast\": false, \"kind\": \"amount\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"eq\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"exact\", \"quote\": \"贵州茅台2024年合并口径营业收入为1708.99万元。\", \"scope\": \"consolidated\", \"sentence_id\": 3, \"tolerance_pct\": null, \"unit\": \"万元\", \"value\": \"1708.99\"}",
+      "original_sentence": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+      "quote": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+      "track": "deterministic",
+      "status": "确认错误",
+      "reason_code": "deterministic_check",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "90b9e57bf6b244be21e84176"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "90b9e57bf6b244be21e84176",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "170899152276.34",
+          "unit": "元",
+          "period_year": 2024,
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "scope": "consolidated",
+          "value_bbox": [
+            205.13,
+            263.06,
+            306.17,
+            277.73
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "mismatch",
+        "value": "17089915.23",
+        "exact_value": "17089915.227634",
+        "claimed_value": "1708.99",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "17088206.237634",
+        "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+        "claimed_unit": "万元",
+        "actual_unit": "元",
+        "actual_value": "170899152276.34"
+      },
+      "expected": "17089915.23",
+      "suggestion": "将该核查项改为 17089915.23万元，并引用所列年报页码。",
+      "plain_claim": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "check_item": "amount",
+      "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+      "page": 5,
+      "correction": {
+        "field": "revenue",
+        "before": "1708.99万元",
+        "after": "17089915.23万元",
+        "original_sentence": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+        "revised_sentence": "贵州茅台2024年合并口径营业收入为17089915.23万元。",
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176"
+        ],
+        "page": 5,
+        "apply_automatically": true,
+        "condition": "只替换已核实的数值字段；不等式或未定位片段需人工编辑"
+      },
+      "normalized_claim": {
+        "id": "C3",
+        "sentence": "贵州茅台2024年合并口径营业收入为1708.99万元。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "revenue",
+        "kind": "amount",
+        "value": "1708.99",
+        "unit": "万元",
+        "currency": "CNY",
+        "scope": "consolidated",
+        "period_kind": "annual",
+        "report_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 3
+    },
+    {
+      "claim_id": "C4",
+      "atom_key": "{\"claim_type\": \"yoy\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"up\", \"is_forecast\": false, \"kind\": \"yoy\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"eq\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"exact\", \"quote\": \"贵州茅台2024年合并口径营业收入同比增长15.71%。\", \"scope\": \"consolidated\", \"sentence_id\": 4, \"tolerance_pct\": null, \"unit\": \"%\", \"value\": \"15.71\"}",
+      "original_sentence": "贵州茅台2024年合并口径营业收入同比增长15.71%。",
+      "quote": "贵州茅台2024年合并口径营业收入同比增长15.71%。",
+      "track": "deterministic",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "90b9e57bf6b244be21e84176",
+        "d3fe304c4c3a83041491c5b2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "90b9e57bf6b244be21e84176",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "170899152276.34",
+          "unit": "元",
+          "period_year": 2024,
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "scope": "consolidated",
+          "value_bbox": [
+            205.13,
+            263.06,
+            306.17,
+            277.73
+          ]
+        },
+        {
+          "evidence_id": "d3fe304c4c3a83041491c5b2",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "147693604994.14",
+          "unit": "元",
+          "period_year": 2023,
+          "period_kind": "annual",
+          "period_start": "2023-01-01",
+          "period_end": "2023-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "scope": "consolidated",
+          "value_bbox": [
+            306.17,
+            263.06,
+            397.99,
+            277.73
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "match",
+        "value": "15.71",
+        "exact_value": "15.71195129479080718889266823791667239671",
+        "claimed_value": "15.71",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "0.001951294790807188892668237917",
+        "formula": "round_half_up(yoy_percent, claimed_decimal_places)",
+        "claimed_unit": "%",
+        "yoy_calculation": {
+          "status": "ok",
+          "value": "15.71195129479080718889266823791667239671",
+          "unit": "%",
+          "operands": {
+            "current": "170899152276.34",
+            "previous": "147693604994.14"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176",
+            "d3fe304c4c3a83041491c5b2"
+          ]
+        }
+      },
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年合并口径营业收入同比增长15.71%。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "yoy"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "check_item": "yoy",
+      "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+      "page": 5,
+      "normalized_claim": {
+        "id": "C4",
+        "sentence": "贵州茅台2024年合并口径营业收入同比增长15.71%。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "revenue",
+        "kind": "yoy",
+        "value": "15.71",
+        "unit": "%",
+        "currency": "CNY",
+        "scope": "consolidated",
+        "period_kind": "annual",
+        "report_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 4
+    },
+    {
+      "claim_id": "C5",
+      "atom_key": "{\"claim_type\": \"yoy\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"down\", \"is_forecast\": false, \"kind\": \"yoy\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"eq\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"exact\", \"quote\": \"贵州茅台2024年合并口径营业收入同比下降15.71%。\", \"scope\": \"consolidated\", \"sentence_id\": 5, \"tolerance_pct\": null, \"unit\": \"%\", \"value\": \"15.71\"}",
+      "original_sentence": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+      "quote": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+      "track": "deterministic",
+      "status": "确认错误",
+      "reason_code": "deterministic_check",
+      "reason": "可比口径下陈述值与证据或计算结果不同",
+      "evidence_ids": [
+        "90b9e57bf6b244be21e84176",
+        "d3fe304c4c3a83041491c5b2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "90b9e57bf6b244be21e84176",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "170899152276.34",
+          "unit": "元",
+          "period_year": 2024,
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "scope": "consolidated",
+          "value_bbox": [
+            205.13,
+            263.06,
+            306.17,
+            277.73
+          ]
+        },
+        {
+          "evidence_id": "d3fe304c4c3a83041491c5b2",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "营业收入",
+          "value": "147693604994.14",
+          "unit": "元",
+          "period_year": 2023,
+          "period_kind": "annual",
+          "period_start": "2023-01-01",
+          "period_end": "2023-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "scope": "consolidated",
+          "value_bbox": [
+            306.17,
+            263.06,
+            397.99,
+            277.73
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "mismatch",
+        "value": "15.71",
+        "exact_value": "15.71195129479080718889266823791667239671",
+        "claimed_value": "-15.71",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "31.42195129479080718889266824",
+        "formula": "round_half_up(yoy_percent, claimed_decimal_places)",
+        "claimed_unit": "%",
+        "yoy_calculation": {
+          "status": "ok",
+          "value": "15.71195129479080718889266823791667239671",
+          "unit": "%",
+          "operands": {
+            "current": "170899152276.34",
+            "previous": "147693604994.14"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176",
+            "d3fe304c4c3a83041491c5b2"
+          ]
+        }
+      },
+      "expected": "15.71",
+      "suggestion": "将该核查项改为 15.71%，并引用所列年报页码。",
+      "plain_claim": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "yoy"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "check_item": "yoy",
+      "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+      "page": 5,
+      "correction": {
+        "field": "revenue",
+        "before": "-15.71%",
+        "after": "15.71%",
+        "original_sentence": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+        "revised_sentence": null,
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176",
+          "d3fe304c4c3a83041491c5b2"
+        ],
+        "page": 5,
+        "apply_automatically": false,
+        "condition": "只替换已核实的数值字段；不等式或未定位片段需人工编辑"
+      },
+      "normalized_claim": {
+        "id": "C5",
+        "sentence": "贵州茅台2024年合并口径营业收入同比下降15.71%。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "revenue",
+        "kind": "yoy",
+        "value": "-15.71",
+        "unit": "%",
+        "currency": "CNY",
+        "scope": "consolidated",
+        "period_kind": "annual",
+        "report_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 5
+    },
+    {
+      "claim_id": "C6",
+      "atom_key": "{\"claim_type\": \"direction\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"up\", \"is_forecast\": false, \"kind\": \"yoy\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"none\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"unknown\", \"quote\": \"贵州茅台2024年合并口径营业收入较2023年上升。\", \"scope\": \"consolidated\", \"sentence_id\": 6, \"tolerance_pct\": null, \"unit\": null, \"value\": null}",
+      "original_sentence": "贵州茅台2024年合并口径营业收入较2023年上升。",
+      "quote": "贵州茅台2024年合并口径营业收入较2023年上升。",
+      "track": "review",
+      "status": "证据不足",
+      "reason_code": "unresolved_period",
+      "reason": "年度未明确或无法从原文定位，不猜测相对日期",
+      "evidence_ids": [],
+      "evidence": [],
+      "calculation": null,
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年合并口径营业收入较2023年上升。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "direction"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": null,
+          "matched_text": null,
+          "ambiguous": true
+        }
+      },
+      "sentence_id": 6
+    },
+    {
+      "claim_id": "C7",
+      "atom_key": "{\"claim_type\": \"amount\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"unknown\", \"is_forecast\": false, \"kind\": \"amount\", \"metric\": \"parent_net_profit\", \"metric_text\": \"归母净利润\", \"operator\": \"eq\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"exact\", \"quote\": \"贵州茅台2024年归母净利润为862.28亿元。\", \"scope\": \"parent_shareholders\", \"sentence_id\": 7, \"tolerance_pct\": null, \"unit\": \"亿元\", \"value\": \"862.28\"}",
+      "original_sentence": "贵州茅台2024年归母净利润为862.28亿元。",
+      "quote": "贵州茅台2024年归母净利润为862.28亿元。",
+      "track": "deterministic",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "reason": "单位、口径和陈述精度下与原文证据一致",
+      "evidence_ids": [
+        "9069bd51512aeff0eead7874"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "9069bd51512aeff0eead7874",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "page": 5,
+          "metric_name": "归母净利润",
+          "value": "86228146421.62",
+          "unit": "元",
+          "period_year": 2024,
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "scope": "parent_shareholders",
+          "value_bbox": [
+            205.13,
+            277.73,
+            306.17,
+            301.61
+          ]
+        }
+      ],
+      "calculation": {
+        "status": "match",
+        "value": "862.28",
+        "exact_value": "862.2814642162",
+        "claimed_value": "862.28",
+        "operator": "eq",
+        "decimals": 2,
+        "rounding": "ROUND_HALF_UP",
+        "difference": "0.0014642162",
+        "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+        "claimed_unit": "亿元",
+        "actual_unit": "元",
+        "actual_value": "86228146421.62"
+      },
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "贵州茅台2024年归母净利润为862.28亿元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": "600519",
+          "sentence_codes": [
+            "600519"
+          ],
+          "ignored_mentions": [],
+          "code": "600519",
+          "basis": "sentence_company",
+          "matched": "贵州茅台",
+          "position": 0,
+          "note": null
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "check_item": "amount",
+      "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+      "page": 5,
+      "normalized_claim": {
+        "id": "C7",
+        "sentence": "贵州茅台2024年归母净利润为862.28亿元。",
+        "company_code": "600519",
+        "period_year": 2024,
+        "source_report_year": 2024,
+        "metric": "parent_net_profit",
+        "kind": "amount",
+        "value": "862.28",
+        "unit": "亿元",
+        "currency": "CNY",
+        "scope": "parent_shareholders",
+        "period_kind": "annual",
+        "report_kind": "annual",
+        "operator": "eq",
+        "tolerance_pct": null
+      },
+      "sentence_id": 7
+    },
+    {
+      "claim_id": "C8",
+      "atom_key": "{\"claim_type\": \"forecast\", \"company_b\": null, \"company_name\": \"贵州茅台\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"up\", \"is_forecast\": true, \"kind\": \"yoy\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"approx\", \"period_kind\": \"annual\", \"period_year\": 2025, \"qualifier\": \"approximate\", \"quote\": \"预计贵州茅台2025年合并口径营业收入同比增长10%。\", \"scope\": \"consolidated\", \"sentence_id\": 8, \"tolerance_pct\": null, \"unit\": \"%\", \"value\": \"10\"}",
+      "original_sentence": "预计贵州茅台2025年合并口径营业收入同比增长10%。",
+      "quote": "预计贵州茅台2025年合并口径营业收入同比增长10%。",
+      "track": "model",
+      "status": "模型判断",
+      "reason_code": "forecast_marked_only",
+      "reason": "预测/目标类陈述：已标记，不拿历史年报数值证伪；请结合业绩预告等另行核实",
+      "evidence_ids": [],
+      "evidence": [],
+      "calculation": null,
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "预计贵州茅台2025年合并口径营业收入同比增长10%。",
+      "interpretation": {
+        "is_forecast": true,
+        "ambiguity": "none",
+        "claim_type": "forecast"
+      },
+      "grounding": {
+        "company": null,
+        "period": null
+      },
+      "sentence_id": 8
+    },
+    {
+      "claim_id": "C9",
+      "atom_key": "{\"claim_type\": \"amount\", \"company_b\": null, \"company_name\": \"五粮液\", \"comparison_operator\": null, \"currency\": \"CNY\", \"direction\": \"unknown\", \"is_forecast\": false, \"kind\": \"amount\", \"metric\": \"revenue\", \"metric_text\": \"营业收入\", \"operator\": \"eq\", \"period_kind\": \"annual\", \"period_year\": 2024, \"qualifier\": \"exact\", \"quote\": \"五粮液2024年合并口径营业收入为1708.99亿元。\", \"scope\": \"consolidated\", \"sentence_id\": 9, \"tolerance_pct\": null, \"unit\": \"亿元\", \"value\": \"1708.99\"}",
+      "original_sentence": "五粮液2024年合并口径营业收入为1708.99亿元。",
+      "quote": "五粮液2024年合并口径营业收入为1708.99亿元。",
+      "track": "review",
+      "status": "证据不足",
+      "reason_code": "unresolved_company",
+      "reason": "原文公司名称/代码无法对应到本次已加载材料，或无法在草稿中定位，不猜测公司",
+      "evidence_ids": [],
+      "evidence": [],
+      "calculation": null,
+      "expected": null,
+      "suggestion": null,
+      "plain_claim": "五粮液2024年合并口径营业收入为1708.99亿元。",
+      "interpretation": {
+        "is_forecast": false,
+        "ambiguity": "none",
+        "claim_type": "amount"
+      },
+      "grounding": {
+        "company": {
+          "conflict": false,
+          "model_code": null,
+          "sentence_codes": [
+            "000858"
+          ],
+          "ignored_mentions": [],
+          "code": null,
+          "basis": "sentence_company",
+          "matched": "五粮液",
+          "position": 0,
+          "note": "句内公司不在本次已加载材料中"
+        },
+        "period": {
+          "year": 2024,
+          "model_year": 2024,
+          "conflict": false,
+          "located_in": "quote",
+          "matched_text": "2024"
+        }
+      },
+      "sentence_id": 9
+    }
+  ],
+  "tools_used": [
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "status": "ok"
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024
+      },
+      "status": "ok"
+    },
+    {
+      "round": 1,
+      "name": "compute_yoy",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "year": 2024
+      },
+      "status": "ok"
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "五粮液",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "status": "error"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1708.99",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "status": "证据支持"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1965.34",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "status": "确认错误"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1708.99",
+        "claimed_unit": "万元",
+        "operator": "eq"
+      },
+      "status": "确认错误"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "yoy",
+        "claimed_value": "15.71",
+        "claimed_unit": "%",
+        "operator": "eq",
+        "direction": "up"
+      },
+      "status": "证据支持"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "yoy",
+        "claimed_value": "15.71",
+        "claimed_unit": "%",
+        "operator": "eq",
+        "direction": "down"
+      },
+      "status": "确认错误"
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "862.28",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "status": "口径冲突／需人工复核"
+    },
+    {
+      "round": 3,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "862.28",
+        "claimed_unit": "亿元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "status": "证据支持"
+    }
+  ],
+  "tool_results": [
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "items": [
+          {
+            "evidence_id": "90b9e57bf6b244be21e84176",
+            "company_code": "600519",
+            "company_name": "贵州茅台酒",
+            "metric": "revenue",
+            "period_year": 2024,
+            "report_year": 2024,
+            "period_kind": "annual",
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31",
+            "duration_months": 12,
+            "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+            "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+            "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+            "value": "170899152276.34",
+            "unit": "元",
+            "normalized_value": "170899152276.34",
+            "normalized_unit": "元",
+            "page": 5,
+            "value_bbox": [
+              205.13,
+              263.06,
+              306.17,
+              277.73
+            ],
+            "scope": "consolidated",
+            "adjustment": "as_reported",
+            "issues": [],
+            "auto_usable": null,
+            "review_reasons": [],
+            "second_path_check": null
+          }
+        ]
+      }
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "ok",
+        "count": 1,
+        "items": [
+          {
+            "evidence_id": "9069bd51512aeff0eead7874",
+            "company_code": "600519",
+            "company_name": "贵州茅台酒",
+            "metric": "parent_net_profit",
+            "period_year": 2024,
+            "report_year": 2024,
+            "period_kind": "annual",
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31",
+            "duration_months": 12,
+            "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+            "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+            "source_sha256": "5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+            "value": "86228146421.62",
+            "unit": "元",
+            "normalized_value": "86228146421.62",
+            "normalized_unit": "元",
+            "page": 5,
+            "value_bbox": [
+              205.13,
+              277.73,
+              306.17,
+              301.61
+            ],
+            "scope": "parent_shareholders",
+            "adjustment": "as_reported",
+            "issues": [],
+            "auto_usable": null,
+            "review_reasons": [],
+            "second_path_check": null
+          }
+        ]
+      }
+    },
+    {
+      "round": 1,
+      "name": "compute_yoy",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "year": 2024
+      },
+      "result": {
+        "status": "ok",
+        "yoy": {
+          "status": "ok",
+          "value": "15.71195129479080718889266823791667239671",
+          "unit": "%",
+          "operands": {
+            "current": "170899152276.34",
+            "previous": "147693604994.14"
+          },
+          "formula": "(current - previous) / previous * 100",
+          "negative_policy": "review",
+          "evidence_ids": [
+            "90b9e57bf6b244be21e84176",
+            "d3fe304c4c3a83041491c5b2"
+          ]
+        },
+        "current_evidence_id": "90b9e57bf6b244be21e84176",
+        "previous_evidence_id": "d3fe304c4c3a83041491c5b2",
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "name": "find_evidence",
+      "arguments": {
+        "company_name_or_code": "五粮液",
+        "metric": "revenue",
+        "period_year": 2024
+      },
+      "result": {
+        "status": "error",
+        "error": "公司无法对应到本次已加载材料",
+        "company": "五粮液"
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1708.99",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "result": {
+        "verdict": "evidence_supported",
+        "status": "证据支持",
+        "reason_code": "deterministic_check",
+        "reason": "单位、口径和陈述精度下与原文证据一致",
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176"
+        ],
+        "calculation": {
+          "status": "match",
+          "value": "1708.99",
+          "exact_value": "1708.9915227634",
+          "claimed_value": "1708.99",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "0.0015227634",
+          "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+          "claimed_unit": "亿元",
+          "actual_unit": "元",
+          "actual_value": "170899152276.34"
+        },
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "page": 5
+        },
+        "expected": null
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1965.34",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "result": {
+        "verdict": "confirmed_error",
+        "status": "确认错误",
+        "reason_code": "deterministic_check",
+        "reason": "可比口径下陈述值与证据或计算结果不同",
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176"
+        ],
+        "calculation": {
+          "status": "mismatch",
+          "value": "1708.99",
+          "exact_value": "1708.9915227634",
+          "claimed_value": "1965.34",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "-256.3484772366",
+          "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+          "claimed_unit": "亿元",
+          "actual_unit": "元",
+          "actual_value": "170899152276.34"
+        },
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "page": 5
+        },
+        "expected": "1708.99"
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "1708.99",
+        "claimed_unit": "万元",
+        "operator": "eq"
+      },
+      "result": {
+        "verdict": "confirmed_error",
+        "status": "确认错误",
+        "reason_code": "deterministic_check",
+        "reason": "可比口径下陈述值与证据或计算结果不同",
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176"
+        ],
+        "calculation": {
+          "status": "mismatch",
+          "value": "17089915.23",
+          "exact_value": "17089915.227634",
+          "claimed_value": "1708.99",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "17088206.237634",
+          "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+          "claimed_unit": "万元",
+          "actual_unit": "元",
+          "actual_value": "170899152276.34"
+        },
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "page": 5
+        },
+        "expected": "17089915.23"
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "yoy",
+        "claimed_value": "15.71",
+        "claimed_unit": "%",
+        "operator": "eq",
+        "direction": "up"
+      },
+      "result": {
+        "verdict": "evidence_supported",
+        "status": "证据支持",
+        "reason_code": "deterministic_check",
+        "reason": "单位、口径和陈述精度下与原文证据一致",
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176",
+          "d3fe304c4c3a83041491c5b2"
+        ],
+        "calculation": {
+          "status": "match",
+          "value": "15.71",
+          "exact_value": "15.71195129479080718889266823791667239671",
+          "claimed_value": "15.71",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "0.001951294790807188892668237917",
+          "formula": "round_half_up(yoy_percent, claimed_decimal_places)",
+          "claimed_unit": "%",
+          "yoy_calculation": {
+            "status": "ok",
+            "value": "15.71195129479080718889266823791667239671",
+            "unit": "%",
+            "operands": {
+              "current": "170899152276.34",
+              "previous": "147693604994.14"
+            },
+            "formula": "(current - previous) / previous * 100",
+            "negative_policy": "review",
+            "evidence_ids": [
+              "90b9e57bf6b244be21e84176",
+              "d3fe304c4c3a83041491c5b2"
+            ]
+          }
+        },
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "page": 5
+        },
+        "expected": null
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "revenue",
+        "period_year": 2024,
+        "kind": "yoy",
+        "claimed_value": "15.71",
+        "claimed_unit": "%",
+        "operator": "eq",
+        "direction": "down"
+      },
+      "result": {
+        "verdict": "confirmed_error",
+        "status": "确认错误",
+        "reason_code": "deterministic_check",
+        "reason": "可比口径下陈述值与证据或计算结果不同",
+        "evidence_ids": [
+          "90b9e57bf6b244be21e84176",
+          "d3fe304c4c3a83041491c5b2"
+        ],
+        "calculation": {
+          "status": "mismatch",
+          "value": "15.71",
+          "exact_value": "15.71195129479080718889266823791667239671",
+          "claimed_value": "-15.71",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "31.42195129479080718889266824",
+          "formula": "round_half_up(yoy_percent, claimed_decimal_places)",
+          "claimed_unit": "%",
+          "yoy_calculation": {
+            "status": "ok",
+            "value": "15.71195129479080718889266823791667239671",
+            "unit": "%",
+            "operands": {
+              "current": "170899152276.34",
+              "previous": "147693604994.14"
+            },
+            "formula": "(current - previous) / previous * 100",
+            "negative_policy": "review",
+            "evidence_ids": [
+              "90b9e57bf6b244be21e84176",
+              "d3fe304c4c3a83041491c5b2"
+            ]
+          }
+        },
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "page": 5
+        },
+        "expected": "15.71"
+      }
+    },
+    {
+      "round": 2,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "862.28",
+        "claimed_unit": "亿元",
+        "operator": "eq"
+      },
+      "result": {
+        "verdict": "needs_review",
+        "status": "口径冲突／需人工复核",
+        "reason_code": "scope 不明确或不一致",
+        "reason": "scope 不明确或不一致",
+        "evidence_ids": [
+          "9069bd51512aeff0eead7874"
+        ],
+        "calculation": null,
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "page": 5
+        },
+        "expected": null
+      }
+    },
+    {
+      "round": 3,
+      "name": "compare_claim",
+      "arguments": {
+        "company_name_or_code": "贵州茅台",
+        "metric": "parent_net_profit",
+        "period_year": 2024,
+        "kind": "amount",
+        "claimed_value": "862.28",
+        "claimed_unit": "亿元",
+        "operator": "eq",
+        "scope": "parent_shareholders"
+      },
+      "result": {
+        "verdict": "evidence_supported",
+        "status": "证据支持",
+        "reason_code": "deterministic_check",
+        "reason": "单位、口径和陈述精度下与原文证据一致",
+        "evidence_ids": [
+          "9069bd51512aeff0eead7874"
+        ],
+        "calculation": {
+          "status": "match",
+          "value": "862.28",
+          "exact_value": "862.2814642162",
+          "claimed_value": "862.28",
+          "operator": "eq",
+          "decimals": 2,
+          "rounding": "ROUND_HALF_UP",
+          "difference": "0.0014642162",
+          "formula": "round_half_up(actual, decimals) | unit=actual * source_factor / target_factor",
+          "claimed_unit": "亿元",
+          "actual_unit": "元",
+          "actual_value": "86228146421.62"
+        },
+        "period": {
+          "period_kind": "annual",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "document_id": "600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30",
+          "source_file": "results\\webui_work\\data\\agent\\600519_2024_LOCAL-5299f4940e2ce4e9_5299f4940e2ce4e91084b73dc457d558b9d335fa76fbfee6227e4254eb7f4a30.pdf",
+          "page": 5
+        },
+        "expected": null
+      }
+    }
+  ],
+  "counts": {
+    "证据支持": 3,
+    "证据不足": 3,
+    "确认错误": 2,
+    "模型判断": 1
+  },
+  "tracks": {
+    "deterministic": 5,
+    "review": 3,
+    "model": 1
+  },
+  "chunks": [
+    {
+      "chunk_id": 1,
+      "status": "completed",
+      "sentence_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "start": 0,
+      "end": 268,
+      "elapsed_seconds": 17.6493
+    }
+  ],
+  "failed_chunks": [],
+  "unfinished_sentence_ids": [],
+  "checkpoint_file": "text_checkpoint_47303c59c8b52940097c2dfb.json",
+  "binding_sha256": "47303c59c8b52940097c2dfb9cbe3d91c1b0ea8fe382adeff1c53877bffeb7f2",
+  "execution": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "started_at": "2026-10-14T07:28:00.442181+00:00",
+        "request_sha256": "2d589a6513dcebb636b62cd1bada612746b6694879c66b6c1091f81ac89b4d8f",
+        "reserved_tokens": 21452,
+        "tokens": 3990,
+        "status": 200,
+        "elapsed_seconds": 2.3891
+      },
+      {
+        "attempt": 2,
+        "started_at": "2026-10-14T07:28:02.847051+00:00",
+        "request_sha256": "fad095749fc6b942f539aa60c143e26c15fb23816f5220c404eb73de812ffa26",
+        "reserved_tokens": 25743,
+        "tokens": 6029,
+        "status": 200,
+        "elapsed_seconds": 3.715
+      },
+      {
+        "attempt": 3,
+        "started_at": "2026-10-14T07:28:06.595124+00:00",
+        "request_sha256": "333476ad32ebdc4747d30460ed5e5ced5a6c27b37885be9ea58041a743700865",
+        "reserved_tokens": 35192,
+        "tokens": 8675,
+        "status": 200,
+        "elapsed_seconds": 2.4899
+      },
+      {
+        "attempt": 4,
+        "started_at": "2026-10-14T07:28:09.097043+00:00",
+        "request_sha256": "5e006c5af04a140ca7baa79a18592e6fac4d945d8e571be006ec50275a88afc6",
+        "reserved_tokens": 36861,
+        "tokens": 11061,
+        "status": 200,
+        "elapsed_seconds": 8.9771
+      }
+    ],
+    "tool_calls": 11,
+    "tokens_charged": 29755,
+    "known_tokens": 29755,
+    "unknown_attempts": 0,
+    "active_seconds": 17.66,
+    "token_accounting": "已返回用量按实际值；未知尝试保留请求UTF-8字节数+输出上限预占"
+  },
+  "observed_models": [
+    "deepseek-flash"
+  ],
+  "config": {
+    "http": {
+      "timeout_seconds": 60,
+      "request_deadline_seconds": 240,
+      "max_retries": 3,
+      "max_output_tokens": 8192
+    },
+    "document": {
+      "deadline_seconds": 600,
+      "max_characters": 240000,
+      "max_sentences": 2000,
+      "chunk_characters": 12000,
+      "chunk_sentences": 40,
+      "max_http_attempts": 40,
+      "token_budget": 500000
+    },
+    "sources": {
+      "timeout_seconds": 20,
+      "request_deadline_seconds": 60,
+      "task_deadline_seconds": 600,
+      "max_attempts": 3,
+      "max_http_attempts": 120,
+      "min_interval_milliseconds": 1000,
+      "max_redirects": 5,
+      "max_bytes": 104857600
+    },
+    "tools": {
+      "max_rounds": 5,
+      "max_calls": 30,
+      "max_repairs": 2
+    }
+  }
+}

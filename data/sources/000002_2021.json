@@ -1,0 +1,21 @@
+{
+  "code": "000002",
+  "name": "万科A",
+  "year": 2021,
+  "title": "2021年年度报告",
+  "publish_date": "2022-03-31T00:00:00+08:00",
+  "announcement_id": "1212750450",
+  "source_url": "https://static.cninfo.com.cn/finalpage/2022-03-31/1212750450.PDF",
+  "source_site": "巨潮资讯网 www.cninfo.com.cn（上市公司公开公告）",
+  "local_file": "data/raw/000002_万科A_2021年年度报告.pdf",
+  "last_checked_at": "2026-09-27T18:09:37+08:00",
+  "policy": "first",
+  "needs_manual_review": false,
+  "license_status": "公开披露材料；使用条款与再分发权限待人工核实，非默认开放许可",
+  "run_id": "20260927_180815_8603647e",
+  "size_bytes": 7951239,
+  "sha256": "442f1f49615919ca12698ea41bd2ad1f372b776e06625c03ba95294995ff516d",
+  "pages": 322,
+  "fetched_at": "2026-09-27T18:09:38+08:00",
+  "first_fetched_at": "2026-09-27T18:09:38+08:00"
+}

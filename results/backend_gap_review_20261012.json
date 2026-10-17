@@ -1,0 +1,268 @@
+{
+  "review_date": "2026-10-12",
+  "timezone": "Asia/Shanghai",
+  "project_root": "D:/Desktop/fin-ai-agent",
+  "branch": "main",
+  "head": "ca806e43972e4e78baf5cf197457349f53767a7e",
+  "project_policy": "从本次起使用该克隆项目；本次仅评审，不修改业务源码或前端，不提交或推送；用户自行上传。",
+  "initial_worktree": "clean",
+  "source_sha256": {
+    "agent/agent_loop.py": "f21195f7570f48bd49e1259a99c10ff0910661ce83355919176a27a78e6a9c7f",
+    "agent/announcements.py": "74306aa6d3fe4cfc1d501afb9f6647ee3314421975231ff74ef762d9bac20dc5",
+    "agent/api/__init__.py": "dbdc099135fb8d548ca91f0a31fee56eb148838366efb831d719af703e6d3951",
+    "agent/api/routes.py": "34207aa9b9bd5ae5b682da4d38cb2e3975ea782c51c6d2fcbdf5354af330b6e1",
+    "agent/api/runtime_bridge.py": "114ea9884cc9105039f981e08206f14c4460cda0684f0afdb4a2ab088cc18b2e",
+    "agent/api/security.py": "bcaab18c44f8cc6f8d9551cfeac1c22cf45b3a831d17fe085d73840c7f224bce",
+    "agent/api/sse.py": "1c5b39a3bad793dc992102c0d9d95be408bf5fa72a6b6c6a97af6aa6395ee0cf",
+    "agent/audit/__init__.py": "30cab0e7de566bdfdb60f7205dfa051674453834f13ec5e1a04164ca79ff072c",
+    "agent/audit/claim_check.py": "cef85e405db61a07c83c74d3aa5e7fed1979932e1f71a59c5dcc79a9f8579714",
+    "agent/audit/client.py": "e6b1d1d430e39b9fc84698221938dfb78240e806b3a458721183715c5ccaafce",
+    "agent/audit/grounding.py": "63c120029f46cdee033f3c0ceb99b0790e95f74c1cf9a15006196f69aa67be81",
+    "agent/audit/loop.py": "5278a8961f0cc8d10baafb783bf677b78423fc7e052b3f943b6b1e2d396f8392",
+    "agent/audit/prompt.py": "50359962075e72e7571538201961bd33245c29f6221177d88bce139e3f61f971",
+    "agent/audit/report.py": "cb47fc4eb6cee727f3ca00ee0edc1d3fb7609f508b789f66ef6eca08b51944e1",
+    "agent/audit/schema.py": "3b07cf6e9deca761657ff9adf0bfdf74b28129c40278711da564c49008eae0ac",
+    "agent/audit/service.py": "54bc7c44a40e2e60b94361cc7c1a334c4dc632bbc3a6d67594e0a82b2fc5a6ec",
+    "agent/audit/supplements.py": "615e3c8b34a80f0807ca224862f5b1a6f66f25c916bf7b67a4ad98786abe0508",
+    "agent/audit/tools/__init__.py": "0d8859bf260ec648532010dc4f64e335e64445c76751d826b575326067c95912",
+    "agent/audit/tools/compare.py": "1aa1ddbd0457bb2341c52f682b15620fccf9fb6e290c9ae30b0d2ee2b966890d",
+    "agent/audit/tools/compute.py": "26b72f8944895734ade83eaacbcf49a1e7cabee4f3dd0c237bcea0eea3eb8158",
+    "agent/audit/tools/dispatch.py": "e412f4c4f7d1190817130738db67c75ef32c0c86bc8fee982943897bcd84e61f",
+    "agent/audit/tools/events.py": "54129d51cec04ceb0fbbb5f735ed6961a65f9556d4a7cc0acb9afd15e71eb77b",
+    "agent/audit/tools/evidence.py": "da52b5abfbb7bc69a10181fd86d2175c096e0b8b11a2d72c9913d3c0cec5585a",
+    "agent/audit/tools/search.py": "1f71d08884b2320ddbc0980cea9c54fa530246f016ca1730ddd49bc1d9e7852f",
+    "agent/audit/tools/specs.py": "e44261e070f4352136cc031d7f4131ed4d0f6849472e33c3f8fcd4bd8b3a25a2",
+    "agent/audit_checks.py": "636a250254fbc9f134d627babbc61ca7c6aa6d456256cbea6f238f8b6316c3ff",
+    "agent/backend_runtime.py": "1707a49872bb9d5d956133a7f5758361cfee93d6e6a4a3cb1d13db448fa66525",
+    "agent/extract.py": "c7c51e1dcbb002b6ab8929fa0425cdd5196af434b8145a8fdf612a14334b5f2b",
+    "agent/extract_cache.py": "cf9cc5aece89f41a0e79d79b189d0cda96b2d3e4e06aa129ba00b186fefba165",
+    "agent/extraction/__init__.py": "08e4c4f9dfd92dc6c10a587755f38f863128e84b0d4ea58c03560369a38951a0",
+    "agent/extraction/annual.py": "c21e61d907da711730cb9da30c4731e229a8a2d76790b9b488ad9024cf0bc8b3",
+    "agent/extraction/catalog.py": "786243757429d8fe517d9f1fd7aa936136ad04b67ed85b254f888c1a3e8705a9",
+    "agent/extraction/grid.py": "6824ffc1c8feff2d6c004c314a367ffa5f29936290c9d3764467cbf3a4f19843",
+    "agent/extraction/orchestrator.py": "e319b4437464629f2778b7b66c654d4ce5ad677ae50e2a1f0b1672f3a9ad7406",
+    "agent/finance.py": "b89975f8bf2205bd4f827be60f6c5a0635befa1d2058014cc35cd6213bb7d8ff",
+    "agent/financial_signals.py": "15b08ac556b896b645c1cac73eeb60170a969e5e06351b26650214c2f52cdba7",
+    "agent/interim.py": "b658a039a22017d8cb9ea0ac45296e64a77443173f88058bb4fcb704cc5eaea4",
+    "agent/llm_check.py": "e0ab1bd0dbeb096e54151e8e4c3d957ff6cf09113f6a5a2a8ac9cc475c36fd05",
+    "agent/llm_http.py": "1d3e91be76af6f8d3a73be031b14cfdaf8f27ca3940a6500572883e6c6adaf71",
+    "agent/main.py": "ab6582109b28c4d535d7e1e5a84e9850f57d69583e8ea8c37cf1edadd25dc870",
+    "agent/materials.py": "c07904ece4502cb62626401df67992d08bfd6956cac1993a2fedcf5d45e8b8cb",
+    "agent/mcp_server.py": "b8e401f37f1b6c2b3257d46733dbb699aee5a6942d2ae80875827402a263dce7",
+    "agent/periods.py": "65cfd07aa6a4843f8ca1f7225f2b8430ebc5f4cc236de0df1af3d3c580de229b",
+    "agent/qa.py": "0b3449779a3d4b5db4f75122a1aee86ec05fd0862585fb80d539fbddca070d00",
+    "agent/retrieval.py": "34be42a57b21d64d93348e8df79c9a2c564d711ebe4744005ceeeb43a4ed2c13",
+    "agent/runtime/__init__.py": "61f88ed98fb869b45b9bd7c0e9e469f34a5a105e0076485f425d6597293d4531",
+    "agent/runtime/event_bus.py": "da62600af6ff3cb4533208cee7a3d54f52795f9771bfa8f0a089c66e7cf713f6",
+    "agent/runtime/events.py": "fcf71baf3719b6d2cc5e7c93669a3a782616a37d7583bebee9bb0bda1ec09ec2",
+    "agent/runtime/redaction.py": "0b6d4997ded87a1d555d564cb357496054f42a16c9825f1cf1e92d82168a7d19",
+    "agent/runtime/run_manager.py": "58cd69c5be47f6aaa68b8d4eaec1a4d1a23613f1a1ba23f127be81173280cdfc",
+    "agent/runtime/sessions.py": "082d1be6873139f85c8c74742a9054fcfc83ad9702ce761d345effd67bd756ad",
+    "agent/test.py": "bd54294dfb0745a85efde242f920460526e6faad1fa8eee68738b832a9c4be83",
+    "agent/test_api.py": "cd18316aac8df2848f176a4af11b74c07ab9fd5e0056ce203e73bcf410de6ba7",
+    "agent/test_b4.py": "b935f836260efdfe81781de248d88cfebb5c6fc738d507a119f735010ace6353",
+    "agent/test_b6.py": "3814ab93013bb5b49d5f0df733d621ec076ce850f23b9ed7a4c162e51dafc48e",
+    "agent/test_b7.py": "e4e25ed72a75308aed78d348aecef21f9bd50fd787dbeb49bed4e54d7adef9c1",
+    "agent/test_backend.py": "76523242bf5d4b8b5b3b5df21bd6d0ea2de4f1ae7f0f14e77f96dba01773b206",
+    "agent/test_competition.py": "c7b55b722bbf39061638ccd8e5321e88387251d8e6a3ade175826f6369ca252a",
+    "agent/test_extraction.py": "b30aeb2695c17bdedbaf3e0ff8fca9634875faacbfe777dc6e61630222d46ecb",
+    "agent/test_runtime.py": "5a1fae63b024a62213f0a90dc98e56e031195366e5224a9bb416d2df0d024a17",
+    "agent/test_skill_mcp.py": "e4f7315fdd4fc7346e29a090f86e6928da1f3ee8a0e8a31bf6d20b34393261b7",
+    "agent/test_web_assets.py": "14f769cb816cd8750a03130699c42985d1298293e76b1beee78e049dd938ecb0",
+    "agent/tools.py": "3e0c8f33939edca0c2637d085067ab732add341c5bb7b3a817726ad4f12c7a38",
+    "agent/trace.py": "e594d6b7dbec93a69a5c3f9b6343a98aecb89f12a16397f57adb385f5d4053ae",
+    "agent/webui.py": "1d7b431e8fd64eb39ebeee957ec248de4f3cc11e1e406ffcaed48398ca1c7c81",
+    "agent/webui_app.py": "1e333db18dd076f2562e499a528291390838458b317dcd983e215da5b3416c42",
+    "agent/webui_http.py": "0eaa244718fe5cde8895a2a2608f921f2129853f8b848645a49bffc36361b475",
+    "agent/webui_page.py": "ac34f656000d5c58f78b3e1562a40e0d19acd470f9c0fea10c5272b2ca63e898",
+    "agent/webui_pipeline.py": "a18fe3d7149eacf6968079317100acfeccd67e947ee3dc93d32dc9de3631a7f3",
+    "agent/words.py": "1d8383e61dbe7ab9c9d1e80a221202f0ca71b549791446ade8f10219ec85c0f1",
+    "scripts/eval/build_eval_set.py": "8a0b6ef12491372f06bc3218df3a9865a0c1d83863b8c9d5dfd74cac8f7727f6",
+    "scripts/eval/run_eval.py": "13a72f312d12bbec75531db49bf6c16570fe7a1e23e52ba590c7f77cb2a9e07b",
+    "scripts/eval/run_llm_eval.py": "a737beb57a8c7cbef2781691564f4848b4ca77019c6d87462cd5ef5a2fe08e21",
+    "scripts/eval/run_question_eval.py": "fe9d1819ebb64f30b47fe3a7ca125d769adac88a342e4cd0e48987af986faa0b",
+    "scripts/eval/run_report_eval.py": "653598967a8cfcbbf12c0aa1e847ebea04336fd04443f857f0c48db84ad6d4ed",
+    "scripts/eval/run_semantic_eval.py": "38127bf16197cd519831a1f1712090bde2596f6cf53eea51d91d3551d8ded8d4",
+    "agent/backend_config.json": "655bf854f8da3b3d5feca2bc16446e49ef55d2b49edf55f1456dc20a30eeee81",
+    "requirements.txt": "fa3343e0b1d572606005b61929b710dba4b846f514f886a67ebcbd64556621e2",
+    ".github/workflows/ci.yml": "88e5c2f50c4075958d079ee8e7bb51d3f97361f3edf718280e475be28272996f"
+  },
+  "frontend_sha256": {
+    "docs/app.js": "d0a603fbf0d19bbe85acc09936c2e2e92b956b76e43bd72b3213cf6e62acfd09",
+    "docs/index.html": "645d528892da771cde9a56e15e56a1a94259f6e0b7c8fd8445b9d5803f2191d4",
+    "docs/style.css": "616e54acf2d193757b66c68eb2982f879edd2a8f430a971b9ab8286d01712d5f",
+    "docs/trace.js": "070dce9c3319c9ed3ddb67730a1fbc48d3ca452510d5cc7c0d1404372d03e642",
+    "web/css/components.css": "9b8b2bee95efe8ab324ad68e15de82d88dac9c401454856d739b81ca3fa8a378",
+    "web/css/layout.css": "d4c21c38046d980ef74a0ce35055f073e9fc49bd7a9051ea0ff61480efe4dd66",
+    "web/css/responsive.css": "f9d751238d2e3f1aeba8d934b874595822445961e8ffbd9f5f0121b95b97b980",
+    "web/css/tokens.css": "07099821fdb3cda073563114dd1101ef56171050b1f32423860cb2af10cf3cf5",
+    "web/favicon.svg": "1dbf0898d265039fc643d899e6a122b4148628de50ee34c60741e0815c0c1379",
+    "web/index.html": "659434cb6baffcd685a76372bbcec459a245b19b499cd9c7f3431d058a352a1e",
+    "web/js/api.js": "3d173df7fb30906cfa94cc483729bfb63f5093e5be463814b80f22a3fff6a10a",
+    "web/js/main.js": "4133d433aca0bff265b5b85f23a15d4347dfad07cfc61453aecbf73bbe5308d6",
+    "web/js/run-state.js": "9b8ccfea85c14d2c34ecdce349d2c46a78a2894e2b06375ee23c0b4112850f20",
+    "web/js/stream.js": "81822e453f8a7a5cd2a43c7c0fa537624deeaf965ccb476f456259827fa6a448",
+    "web/js/views/ask.js": "e6f5457dc9619b03528004788044a2626c6aa6334034641ce678017b26497b5b",
+    "web/js/views/results.js": "515a276ec021845447404a26bb8ace0cb6744b3ef3dbdb561961dd867a65b625",
+    "web/js/views/task.js": "e21ed57db47ec539f4b3c0f0456baa4b7652395cbc9e8631cf3bbbf999efdec1",
+    "web/js/views/trace.js": "9d6f8854f4d60db9439b187cd04bdf928041f139b2a9e495cb8f28c7474b9e0e",
+    "web/legacy/index.html": "3ba22810fa800765998f732a6d9d08ccdb63110e9e0da66db48c1662ed488788"
+  },
+  "fin_metric_catalog_count": 14,
+  "fin_marked_adjudicable_count": 8,
+  "validation": {
+    "python": "3.12.14",
+    "pymupdf": "1.28.2",
+    "httpx": "0.28.1",
+    "command": "python -B -X utf8 -m unittest discover -s agent -p test*.py",
+    "tests_run": 322,
+    "passed": 320,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 1,
+    "elapsed_seconds": 21.767,
+    "failing_test": "test_b7.B7WebCompatibilityTests.test_webui_is_a_thin_compatibility_facade",
+    "failure_cause": "webui_page.py 用 newline='' 保留 CRLF，test_b7.py 的 read_text 转为 LF，Windows 克隆的页面有 931 个 CRLF。",
+    "skipped_reason": "可选 OCR 语言数据未配置",
+    "live_model_requests": 0,
+    "external_data_api_requests": 0,
+    "limitation": "功能回归和合成协议复现，不是独立业务盲测或模型准确率测试。"
+  },
+  "current_behavior_probes": [
+    {
+      "probe": "direction_without_number",
+      "status": "模型判断",
+      "reason_code": "no_numeric_constraint",
+      "evidence_ids": []
+    },
+    {
+      "probe": "qualitative_cause",
+      "status": "模型判断",
+      "reason_code": "qualitative_statement",
+      "evidence_ids": []
+    },
+    {
+      "probe": "company_name_from_other_paragraph",
+      "status": "证据支持",
+      "reason_code": "deterministic_check",
+      "evidence_ids": [
+        "2024"
+      ]
+    },
+    {
+      "probe": "quarter_with_unknown_policy_and_scope_metadata",
+      "status": "ok",
+      "value": "150"
+    },
+    {
+      "probe": "tool_same_year_quarter_and_half",
+      "status": "ambiguous",
+      "count": 2
+    },
+    {
+      "probe": "tool_half_amount_with_one_correct_fact",
+      "status": "口径冲突／需人工复核",
+      "verdict": "needs_review",
+      "reason": "period_kind 不明确或不一致"
+    },
+    {
+      "probe": "natural_language_cross_company_comparison",
+      "exception": "TypeError",
+      "message": "compare_companies() missing 1 required keyword-only argument: 'operator'"
+    },
+    {
+      "probe": "cross_company_tool_control_with_operator",
+      "verdict": "evidence_supported",
+      "evidence_ids": [
+        "2024",
+        "wuliangye"
+      ]
+    },
+    {
+      "probe": "manager_restart_existing_completed_run",
+      "state_on_disk": true,
+      "visible_after_restart": false,
+      "list_count_after_restart": 0,
+      "exception": "RunNotVisible"
+    },
+    {
+      "probe": "full_check_text_cross_company_failure",
+      "exception": "TypeError",
+      "completed_chunk_count": 1,
+      "final_text_checks_written": false,
+      "final_text_report_written": false,
+      "live_model_requests": 0
+    }
+  ],
+  "highest_priority_findings": [
+    {
+      "id": "company_grounding",
+      "path": "agent/audit/grounding.py",
+      "line": 19,
+      "status": "reproduced",
+      "description": "句内五粮液、模型填前文贵州茅台时，可用茅台证据形成证据支持。"
+    },
+    {
+      "id": "comparison_operator_missing",
+      "path": "agent/audit/claim_check.py",
+      "line": 49,
+      "status": "reproduced_in_full_flow",
+      "description": "跨公司分支漏传 compare_companies 必需的 operator，TypeError 中断草稿流程；已完成块检查点保留但最终报告未写出。"
+    },
+    {
+      "id": "tool_period_and_document_identity",
+      "path": "agent/audit/tools/compare.py",
+      "line": 37,
+      "status": "reproduced",
+      "description": "compare_claim 固定 period_kind=annual；正确半年金额也需复核。find_evidence 没有精确期间参数。"
+    },
+    {
+      "id": "body_text_identity",
+      "path": "agent/webui_pipeline.py",
+      "line": 200,
+      "status": "confirmed_from_source",
+      "description": "正文 key 使用公司_年度，同年多报告写同一个键。"
+    },
+    {
+      "id": "windows_line_endings",
+      "path": "agent/webui_page.py",
+      "line": 13,
+      "status": "current_regression_failure",
+      "description": "后端读取与测试读取的换行规则不一致。"
+    },
+    {
+      "id": "runtime_restart_restore",
+      "path": "agent/runtime/run_manager.py",
+      "line": 264,
+      "status": "reproduced",
+      "description": "已完成结果存在磁盘，新 RunManager 的 get_run/list_runs 不恢复旧上下文。"
+    }
+  ],
+  "previously_addressed": [
+    "后端模块拆分与兼容门面",
+    "新 Web API 的运行隔离和持久事件",
+    "脱敏及安全边界工程",
+    "CI 定义、质量脚本与源码归档",
+    "已合入集中配置、分块恢复、预算与质量限制"
+  ],
+  "backend_only_scope": {
+    "preserve_frontend_paths": [
+      "web/**",
+      "docs/app.js",
+      "docs/trace.js",
+      "docs/index.html",
+      "docs/style.css"
+    ],
+    "preserve_api_result_fields": [
+      "checks",
+      "evidence",
+      "status",
+      "reason",
+      "calculation",
+      "expected",
+      "suggestion",
+      "report_md"
+    ],
+    "notes": "新增业务能力优先落到现有检查行、证据及报告中；旧工具/API 调用保留兼容。"
+  }
+}
