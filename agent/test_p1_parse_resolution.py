@@ -62,6 +62,12 @@ class ParseResolutionTests(unittest.TestCase):
                  scope="parent_shareholders", document_id="mt-profit", comparison_group="mt-profit"),
         ]
 
+    def run_case(self, case):
+        sentence = case["sentence"]
+        draft = case.get("draft", sentence)
+        item = protocol_item(quote=sentence, **case.get("item", {}))
+        return check_one_claim(item, self.facts, sentence, draft, "C1")
+
     def test_fixture_has_at_least_twenty_unique_cases(self):
         cases = self.fixture["cases"]
         ids = [case["id"] for case in cases]
@@ -71,10 +77,7 @@ class ParseResolutionTests(unittest.TestCase):
     def test_cases_have_explainable_resolution_and_no_silent_binding(self):
         for case in self.fixture["cases"]:
             with self.subTest(case=case["id"], name=case["name"]):
-                sentence = case["sentence"]
-                draft = case.get("draft", sentence)
-                item = protocol_item(quote=sentence, **case.get("item", {}))
-                row = check_one_claim(item, self.facts, sentence, draft, "C1")
+                row = self.run_case(case)
                 resolution = row.get("resolution")
                 self.assertIsInstance(resolution, dict, row)
                 self.assertEqual(resolution.get("status"), case["expect"]["resolution"], row)
@@ -96,6 +99,23 @@ class ParseResolutionTests(unittest.TestCase):
                     self.assertNotIn("normalized_claim", row,
                                      f"{case['id']} 未唯一解析却产生了确定核查对象")
                     self.assertTrue(resolution.get("next_action"), row)
+
+    def test_silent_wrong_binding_metric_is_zero(self):
+        metrics = {"cases": 0, "safe_stops": 0, "silent_wrong_binding": 0,
+                   "missing_action": 0}
+        for case in self.fixture["cases"]:
+            row = self.run_case(case)
+            resolution = row.get("resolution") or {}
+            metrics["cases"] += 1
+            if resolution.get("status") != "unique":
+                metrics["safe_stops"] += 1
+                if "normalized_claim" in row:
+                    metrics["silent_wrong_binding"] += 1
+                if not resolution.get("next_action"):
+                    metrics["missing_action"] += 1
+        self.assertGreaterEqual(metrics["cases"], 20)
+        self.assertEqual(metrics["silent_wrong_binding"], 0, metrics)
+        self.assertEqual(metrics["missing_action"], 0, metrics)
 
     def test_report_displays_resolution_candidates_and_action(self):
         row = {

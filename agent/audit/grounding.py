@@ -164,6 +164,7 @@ def resolve_subject(name, *, sentence: str, context: str = "", draft: str = "",
     ignored = [m["matched"] for m in weak if m not in effective]
     base = {"conflict": False, "model_code": model_code, "sentence_codes": [m["code"] for m in all_mentions],
             "ignored_mentions": ignored}
+    base["candidate_codes"] = list(base["sentence_codes"])
     if len(effective) == 1:
         only = effective[0]
         loaded = _loaded(only["code"], facts)
@@ -211,6 +212,12 @@ def resolve_subject(name, *, sentence: str, context: str = "", draft: str = "",
     # 草稿是最后一层（最宽松），且都不会覆盖句内已明确的主体。
     where = _locate(name, ("context", context), ("draft", draft)) if name else None
     if model_code and context and name in context:
+        context_codes = [row["code"] for row in explicit_companies(context, facts)]
+        if len(set(context_codes)) > 1:
+            return {**base, "code": None, "basis": "ambiguous_context_companies",
+                    "matched": None, "position": None, "conflict": bool(model_code),
+                    "candidate_codes": context_codes,
+                    "note": "上下文出现多家公司，模型字段不能强选主体"}
         return {**base, "code": model_code, "basis": "inherited_context", "matched": name,
                 "position": None, "note": None}
     paragraph_mention = unique_company_in(paragraph, facts) if paragraph and paragraph != sentence else None
@@ -227,6 +234,13 @@ def resolve_subject(name, *, sentence: str, context: str = "", draft: str = "",
                 "conflict": bool(model_code and model_code != mention["code"]),
                 "reference_text": reference["text"][:80], "note": None}
     if model_code and where:
+        layer_text = context if where == "context" else draft
+        layer_codes = [row["code"] for row in explicit_companies(layer_text, facts)]
+        if len(set(layer_codes)) > 1:
+            return {**base, "code": None, "basis": f"ambiguous_{where}_companies",
+                    "matched": None, "position": None, "conflict": bool(model_code),
+                    "candidate_codes": layer_codes,
+                    "note": "上下文出现多家公司，模型字段不能强选主体"}
         return {**base, "code": model_code, "basis": f"inherited_{where}", "matched": name,
                 "position": None, "note": None}
     if where and not model_code:

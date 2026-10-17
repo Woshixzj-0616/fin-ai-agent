@@ -11,6 +11,13 @@ def render_report(results: list[dict], *, model: str, run_id: str,
         return str(value or "—").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("|", "\\|").replace("\n", " ")
 
     det = [r for r in results if r.get("track") == "deterministic" and r.get("status") in {"确认错误", "证据支持"}]
+    def resolution_brief(result):
+        resolution = result.get("resolution") or {}
+        candidates = "、".join(
+            f"{row.get('code')}:{row.get('matched') or row.get('name')}"
+            for row in resolution.get("candidates") or [])
+        conflicts = "、".join(str(row.get("field")) for row in resolution.get("conflicts") or [])
+        return candidates, conflicts
     model_rows = [r for r in results if r.get("track") == "model"]
     review = [r for r in results if r.get("track") != "model" and r not in det]
 
@@ -46,11 +53,18 @@ def render_report(results: list[dict], *, model: str, run_id: str,
         lines.append("| — | （无） | | | |")
 
     lines += ["", "## C. 需人工 / 证据不足", "",
-              "| ID | 原因码 | 说明 |", "|---|---|---|"]
+              "| ID | 原因码 | 解析状态 | 候选/冲突 | 下一步动作 | 说明 |",
+              "|---|---|---|---|---|---|"]
     for result in review:
-        lines.append(f"| {result['claim_id']} | {cell(result.get('reason_code'))} | {cell(result.get('reason'))} |")
+        resolution = result.get("resolution") or {}
+        candidates, conflicts = resolution_brief(result)
+        action = (resolution.get("next_action") or {}).get("message")
+        lines.append(
+            f"| {result['claim_id']} | {cell(result.get('reason_code'))} | "
+            f"{cell(resolution.get('status'))} | {cell(' '.join(x for x in (candidates, conflicts) if x))} | "
+            f"{cell(action)} | {cell(result.get('reason'))} |")
     if not review:
-        lines.append("| — | （无） | |")
+        lines.append("| — | — | — | — | — | （无） |")
 
     lines += ["", "## 程序计算明细（仅 A 栏）", ""]
     for result in det:

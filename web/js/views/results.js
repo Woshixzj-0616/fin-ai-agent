@@ -220,6 +220,23 @@ function renderChecks(bundle, evidence) {
     const quote = document.createElement("blockquote");
     quote.textContent = check.quote || check.original_sentence || check.plain_claim || "—";
     card.append(title, quote);
+    const resolution = check.resolution;
+    if (resolution) {
+      const candidates = (resolution.candidates || [])
+        .map(item => `${item.code || "—"}:${item.matched || item.name || "—"}`).join("、");
+      const conflicts = (resolution.conflicts || []).map(item => item.field).filter(Boolean).join("、");
+      for (const [label, value] of [
+        ["解析", resolution.label || resolution.status],
+        ["候选", candidates],
+        ["冲突字段", conflicts],
+        ["下一步", resolution.next_action?.message],
+      ]) {
+        if (!value) continue;
+        const detail = document.createElement("p");
+        detail.textContent = `${label}：${value}`;
+        card.append(detail);
+      }
+    }
     for (const [label, value] of [["依据", check.reason], ["修改建议", check.suggestion],
       ["替换", check.correction ? `${textValue(check.correction.before)} → ${textValue(check.correction.after)}` : null]]) {
       if (!value) continue;
