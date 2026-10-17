@@ -33,6 +33,13 @@ class OnsiteBundleTests(unittest.TestCase):
         )
         self.assertGreaterEqual(report["material_count"], 5)
 
+    def test_incomplete_bundle_is_blocked_without_crashing(self):
+        with tempfile.TemporaryDirectory(prefix="onsite_missing_") as directory:
+            report = onsite_demo.inspect_bundle(Path(directory))
+
+        self.assertFalse(report["ready"])
+        self.assertTrue(any("缺少文件" in problem for problem in report["problems"]))
+
     def test_failure_playbook_covers_required_offline_drills(self):
         drills = onsite_demo.failure_playbook()
 
