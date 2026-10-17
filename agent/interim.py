@@ -6,7 +6,7 @@ import re
 from finance import NON_AMOUNT_UNITS, convert, decimal, text
 from materials import sha256
 from periods import STOCK_METRICS, end_date, report_period
-from words import METRIC_UNIT, page_rows
+from words import HEADER_MAX_ABOVE, METRIC_UNIT, page_rows
 
 
 def compact(raw):
@@ -32,11 +32,45 @@ def disclosed_change(raw, header: dict, bbox, page: int):
             "decimals": max(0, -number.as_tuple().exponent),
             "bbox": bbox, "page": page, "header": header}, "extracted"
 
+_EXPLICIT_RANGE = re.compile(
+    r"(?:由)?((?:19|20)\d{2})年(\d{1,2})月(\d{1,2})日(?:起)?"
+    r"\s*(?:至|—|－|-)\s*(?:(\d{4})年)?(\d{1,2})月(\d{1,2})日"
+)
+_EXPLICIT_AS_OF = re.compile(r"(?:于|截至)((?:19|20)\d{2})年(\d{1,2})月(\d{1,2})日")
 
 def header_period(label: str, identity: dict, stock: bool) -> dict | None:
     label = compact(label)
     if re.search(r"比|增减|增长|变动|百分点", label):
         return None
+    as_of = _EXPLICIT_AS_OF.search(label)
+    if stock and as_of:
+        year, month, day = map(int, as_of.groups())
+        instant = f"{year}-{month:02d}-{day:02d}"
+        return {"period_year": year, "period_start": instant, "period_end": instant,
+                "period_kind": "instant", "duration_months": 0, "period_basis": "instant"}
+    explicit_range = _EXPLICIT_RANGE.search(label)
+    if explicit_range and not stock:
+        start_year, start_month, start_day, end_year, end_month, end_day = explicit_range.groups()
+        start_year = int(start_year)
+        end_year = int(end_year or start_year)
+        start_month, start_day, end_month, end_day = map(int, (start_month, start_day, end_month, end_day))
+        from datetime import date as date_type
+        try:
+            start = date_type(start_year, start_month, start_day)
+            end = date_type(end_year, end_month, end_day)
+        except ValueError:
+            return None
+        if start > end:
+            return None
+        months = (end.year - start.year) * 12 + end.month - start.month + 1
+        kind = identity.get("report_kind") if identity.get("report_kind") in {"half", "quarter"} else (
+            "half" if months == 6 else "quarter" if months == 3 else None)
+        if kind is None:
+            return None
+        basis = "cumulative" if start.month == 1 and start.day == 1 else "single_quarter"
+        return {"period_year": end.year, "period_start": start.isoformat(),
+                "period_end": end.isoformat(), "period_kind": kind,
+                "duration_months": months, "period_basis": basis}
     y, month = identity["report_year"], identity["report_month"]
     previous = bool(re.search(r"上年同期|上年年初至|上期", label))
     if stock:
@@ -127,7 +161,8 @@ def extract_interim(document, material: dict, run) -> list[dict]:
                       "issues": issues, "extraction_method": method})
 
     for page, content in zip(document, texts):
-        is_summary = any(s in compact(content) for s in ("主要会计数据", "主要财务指标"))
+        is_summary = any(s in compact(content) for s in (
+            "主要会计数据", "主要财务指标", "主要财务数据"))
         continuation = carry if carry and carry["page"] == page.number - 1 else None
         if not is_summary and not continuation:
             carry = None
@@ -207,15 +242,26 @@ def extract_interim(document, material: dict, run) -> list[dict]:
                 for cell in row["cells"][1:]:
                     cx = (cell["x0"] + cell["x1"]) / 2
                     chunks = [c for prev in rows[:ri] for c in prev["cells"]
-                              if c["y1"] < cell["y0"] and cell["y0"]-c["y1"] < 150
+                              if c["y1"] < cell["y0"] and cell["y0"]-c["y1"] < HEADER_MAX_ABOVE
                               and c["x0"]-6 <= cx <= c["x1"]+6]
-                    # 最近表头以及紧邻其下的折行部分；不吃进其他数值行。
-                    anchors = [i for i, c in enumerate(chunks) if re.search(r"本报告期|上年同期|年初至|本期|上年度末", c["text"])]
-                    if not anchors:
+                    # 同一表头可能折成多行；取与数值行最近、纵向间距连续的整组。
+                    header_candidates = [chunk for chunk in chunks if not re.fullmatch(
+                        r"[-+−]?\d[\d,，]*(?:\.\d+)?(?:[%％]|pp)?|[（(][\d,，.]+[）)]",
+                        compact(chunk["text"]))]
+                    groups = []
+                    for chunk in header_candidates:
+                        if groups and chunk["y0"] - groups[-1][-1]["y1"] <= 25:
+                            groups[-1].append(chunk)
+                        else:
+                            groups.append([chunk])
+                    header_cells = groups[-1] if groups else []
+                    if not any(re.search(
+                            r"本报告期|上年同期|年初至|本期|上年度末|由(?:19|20)\d{2}年|于(?:19|20)\d{2}年",
+                            chunk["text"]) for chunk in header_cells):
                         continue
-                    anchor = anchors[-1]
-                    header_text = "".join(c["text"] for c in chunks[anchor:])
-                    header = {"text": header_text, "bbox": box([chunks[anchor][k] for k in ("x0", "y0", "x1", "y1")])}
+                    header_text = "".join(chunk["text"] for chunk in header_cells)
+                    header = {"text": header_text, "bbox": box([header_cells[0][k] for k in (
+                        "x0", "y0", "x1", "y1")])}
                     emit(page, raw_label, cell["text"], box([label[k] for k in ("x0", "y0", "x1", "y1")]),
                          box([cell[k] for k in ("x0", "y0", "x1", "y1")]), header, box(page.rect),
                          "interim_words_headers", content, reported, disclosure_status)

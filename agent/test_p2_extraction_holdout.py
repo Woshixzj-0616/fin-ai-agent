@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import unittest
 
-from extraction_holdout import compare_extraction
+from extraction_holdout import compare_extraction, run_holdout
+from materials import ROOT
 
 
 def gold(ident: str, metric: str, name: str, value: str, unit: str, page: int = 2) -> dict:
@@ -77,6 +78,16 @@ class ExtractionHoldoutMetricTests(unittest.TestCase):
         self.assertEqual(result["missing"], 1)
         self.assertEqual(result["material_failures"], 1)
         self.assertEqual(result["silent_errors"], 0)
+
+
+class RealExtractionHoldoutTests(unittest.TestCase):
+    def test_four_materials_match_all_twenty_target_facts(self):
+        protocol = ROOT / "data" / "extraction_holdout" / "manifest.json"
+        report = run_holdout(ROOT, protocol)["report"]
+        self.assertEqual(report["material_failures"], 0, report)
+        self.assertEqual(report["total"], 20)
+        self.assertEqual(report["correct"], 20, report)
+        self.assertEqual(report["silent_errors"], 0, report)
 
 
 if __name__ == "__main__":
