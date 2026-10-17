@@ -1,11 +1,16 @@
 import subprocess
 import sys
+import tempfile
+import threading
 import unittest
 from pathlib import Path
 
 import main as cli_main
 
 import onsite_demo
+from llm_http import LLMHttp, TransportError
+from materials import validate_pdf
+from runtime.run_manager import RunManager, RunStatus
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,7 +27,7 @@ class OnsiteBundleTests(unittest.TestCase):
             {
                 "missing_evidence": 1,
                 "scope_conflict": 1,
-                "supported": 3,
+                "supported": 4,
                 "wrong_value": 2,
             },
         )
@@ -37,6 +42,51 @@ class OnsiteBundleTests(unittest.TestCase):
         )
         self.assertTrue(all(drill["offline_only"] for drill in drills))
         self.assertTrue(all(drill["visible_signal"] for drill in drills))
+
+    def test_network_failure_has_an_explicit_local_error(self):
+        transport = LLMHttp(
+            "https://127.0.0.1:1/v1/chat/completions",
+            "offline-drill",
+            timeout=0.2,
+            max_retries=0,
+            request_deadline=1,
+        )
+        try:
+            with self.assertRaisesRegex(TransportError, "连接失败或超时|总时限已用尽"):
+                transport.post_json({"model": "offline-drill", "messages": []})
+        finally:
+            transport.close()
+
+    def test_model_timeout_keeps_checkpoint_without_final_result(self):
+        with tempfile.TemporaryDirectory(prefix="onsite_timeout_") as directory:
+            manager = RunManager(Path(directory), shutdown_timeout=0.2)
+            started = threading.Event()
+
+            def slow_target(run):
+                run.output("checkpoint.json").write_text(
+                    '{"completed_chunks": 1}', encoding="utf-8")
+                started.set()
+                run.cancelled_event.wait(2)
+                run.raise_if_cancelled()
+
+            try:
+                run = manager.create_run("onsite-drill", "model_timeout", {})
+                manager.start(run.id, slow_target, timeout=0.05)
+                self.assertTrue(started.wait(1))
+                completed = manager.wait(run.id, timeout=2)
+                snapshot = completed.snapshot()
+
+                self.assertEqual(completed.status, RunStatus.CANCELLED)
+                self.assertEqual(snapshot["cancel_reason"], "timeout")
+                self.assertTrue((run.folder / "checkpoint.json").is_file())
+                self.assertFalse((run.folder / "result.json").exists())
+                self.assertIn("\"reason\": \"timeout\"", run.events_path.read_text(encoding="utf-8"))
+            finally:
+                manager.close()
+
+    def test_material_format_error_is_rejected_not_wrapped_as_success(self):
+        with self.assertRaisesRegex(ValueError, "不是PDF文件"):
+            validate_pdf(b"<html>Access denied</html>")
 
     def test_cli_demo_uses_isolated_run_root(self):
         command = onsite_demo.cli_demo_command(

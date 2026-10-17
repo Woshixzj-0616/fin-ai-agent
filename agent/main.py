@@ -193,6 +193,7 @@ def evaluate_gold(facts: list[dict], gold: dict) -> dict:
 
 def parser() -> argparse.ArgumentParser:
     app = argparse.ArgumentParser(description="第一条线：材料登记 → 财务证据 → 确定性分析")
+    app.add_argument("--run-root", type=Path, default=ROOT, help="运行产物根目录；现场演示可指向隔离目录")
     commands = app.add_subparsers(dest="command", required=True)
     importer = commands.add_parser("import-existing", help="复制并验证旧项目9份材料，不修改旧工程")
     importer.add_argument("--source", type=Path, required=True)
@@ -256,7 +257,7 @@ def main() -> int:
         # 不将环境变量或认证信息序列化到run.json。
         parameters = {"command": "check-text", "file": str(args.file), "model": client.model,
                       "provider_host": client.host, "response_format": client.mode}
-    run = Run(ROOT, args.command, parameters)
+    run = Run(args.run_root, args.command, parameters)
     print(f"运行记录：{run.folder}", flush=True)
     try:
         if args.command == "announcement":
