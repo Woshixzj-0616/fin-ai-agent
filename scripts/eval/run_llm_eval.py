@@ -94,10 +94,24 @@ def gold_items_for(sentence: dict, idx: int) -> list[dict]:
                 item["claim_id"] = f"G{idx}_{atom_index}"
             items.extend(built)
         return items
-    if sentence.get("gold") in {"qualitative", "ambiguous_metric"} and not sentence.get("value"):
-        return []
     company = sentence.get("company_name", "贵州茅台")
-    metric = sentence.get("metric", "revenue")
+    qualitative = (sentence.get("gold") in {"qualitative", "ambiguous_metric"}
+                   and not sentence.get("value"))
+    if qualitative:
+        metric = sentence.get("metric") or "unknown"
+        metric_text = sentence.get("metric_text") or ""
+        default_claim_type = "qualitative"
+        default_kind = "unknown"
+        default_operator = "none"
+        default_action = "needs_review"
+    else:
+        metric = sentence.get("metric", "revenue")
+        metric_text = sentence.get("metric_text", "营业收入")
+        default_claim_type = ("yoy" if sentence.get("kind") == "yoy"
+                              else "amount" if sentence.get("value") else "qualitative")
+        default_kind = "amount"
+        default_operator = "eq"
+        default_action = "compare_amount"
     # 归母类指标的口径是 parent_shareholders；自检样例按协议正确声明，避免把口径冲突当模型错误。
     scope = sentence.get("scope") or ("parent_shareholders"
                                       if metric in {"parent_net_profit", "adjusted_parent_net_profit"}
@@ -107,17 +121,17 @@ def gold_items_for(sentence: dict, idx: int) -> list[dict]:
         "sentence_id": idx,
         "quote": sentence["text"],
         "context_quote": None,
-        "claim_type": sentence.get("claim_type", "amount" if sentence.get("value") else "qualitative"),
+        "claim_type": sentence.get("claim_type") or default_claim_type,
         "company_name": company,
         "period_year": sentence.get("period_year"),
         "period_kind": "annual",
-        "metric_text": sentence.get("metric_text", "营业收入"),
+        "metric_text": metric_text,
         "metric": metric,
         "scope": scope,
-        "kind": sentence.get("kind", "amount"),
+        "kind": sentence.get("kind") or default_kind,
         "value": sentence.get("value"),
         "unit": sentence.get("unit"),
-        "operator": sentence.get("operator", "eq"),
+        "operator": sentence.get("operator") or default_operator,
         "tolerance_pct": sentence.get("tolerance_pct"),
         "direction": sentence.get("direction", "unknown"),
         "currency": "CNY",
@@ -125,7 +139,7 @@ def gold_items_for(sentence: dict, idx: int) -> list[dict]:
         "plain_claim": sentence["text"][:40],
         "is_forecast": bool(sentence.get("is_forecast")),
         "ambiguity": sentence.get("ambiguity", "none"),
-        "verification_action": sentence.get("verification_action", "compare_amount"),
+        "verification_action": sentence.get("verification_action") or default_action,
     }
     return [item]
 

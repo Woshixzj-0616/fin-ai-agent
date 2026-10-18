@@ -2,14 +2,19 @@
 from __future__ import annotations
 
 import re
+import os
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pymupdf
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "docs" / "初赛" / "计划书.md"
-OUT = ROOT / "docs" / "初赛" / "计划书.pdf"
+OUT = ROOT / "docs" / "初赛" / "计划书-20261017.pdf"
+BUILD = OUT.with_name(OUT.stem + "-build.pdf")
+NUMBERED = OUT.with_name(OUT.stem + "-numbered.pdf")
 
 
 def md_to_html(text: str) -> str:
@@ -36,9 +41,9 @@ def md_to_html(text: str) -> str:
             out.append("</ul>")
             in_list = False
         if line.startswith("## "):
-            out.append(f"<h2>{line[3:]}</h2>")
+            out.append(f"<p class='section'>{line[3:]}</p>")
         elif line.startswith("### "):
-            out.append(f"<h3>{line[4:]}</h3>")
+            out.append(f"<p class='subsection'>{line[4:]}</p>")
         elif line.startswith("# "):
             out.append(f"<h1>{line[2:]}</h1>")
         elif line.startswith("- "):
@@ -62,11 +67,13 @@ def md_to_html(text: str) -> str:
     body = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", body)
     body = re.sub(r"`([^`]+)`", r"<code>\1</code>", body)
     css = """
-    body { font-family: sans-serif; font-size: 11px; line-height: 1.45; color: #222; }
-    h1 { font-size: 20px; color: #1a365d; border-bottom: 2px solid #2b6cb0; padding-bottom: 6px; }
-    h2 { font-size: 15px; color: #2b6cb0; margin-top: 16px; }
-    h3 { font-size: 12px; color: #2c5282; }
+    @page { size: A4; margin: 17mm 16mm 16mm; }
+    body { font-family: "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; font-size: 10.5pt; line-height: 1.55; color: #222; margin: 0; }
+    h1 { font-size: 20pt; color: #1a365d; border-bottom: 2px solid #2b6cb0; padding-bottom: 6px; }
+    p.section { font-size: 15pt; font-weight: bold; color: #2b6cb0; margin: 16px 0 6px; break-after: avoid; }
+    p.subsection { font-size: 12pt; font-weight: bold; color: #2c5282; margin: 10px 0 4px; break-after: avoid; }
     table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    tr { break-inside: avoid; }
     th, td { border: 1px solid #cbd5e0; padding: 4px 6px; text-align: left; }
     th { background: #edf2f7; }
     blockquote { color: #4a5568; border-left: 3px solid #a0aec0; margin: 6px 0; padding: 2px 10px; }
@@ -79,19 +86,54 @@ def md_to_html(text: str) -> str:
 
 def main() -> int:
     html = md_to_html(SRC.read_text(encoding="utf-8"))
-    story = pymupdf.Story(html=html)
-    writer = pymupdf.DocumentWriter(str(OUT))
-    mediabox = pymupdf.paper_rect("a4")
-    where = mediabox + (40, 40, -40, -40)
-    more, pages = 1, 0
-    while more:
-        device = writer.begin_page(mediabox)
-        more, _ = story.place(where)
-        story.draw(device)
-        writer.end_page()
-        pages += 1
-    writer.close()
-    print(f"已生成 {OUT}（{pages} 页）")
+    browser = Path("C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+    if not browser.exists():
+        browser = Path("C:/Program Files/Google/Chrome/Application/chrome.exe")
+    if not browser.exists():
+        raise FileNotFoundError("未找到 Edge 或 Chrome，无法生成 PDF")
+    BUILD.unlink(missing_ok=True)
+    with tempfile.TemporaryDirectory(prefix="fin_plan_") as temp_dir:
+        temp = Path(temp_dir)
+        html_path = temp / "plan.html"
+        profile = temp / "browser-profile"
+        html_path.write_text(html, encoding="utf-8")
+        profile.mkdir()
+        result = subprocess.run(
+            [
+                str(browser),
+                "--headless=new",
+                "--disable-gpu",
+                "--disable-extensions",
+                "--no-first-run",
+                "--no-pdf-header-footer",
+                "--print-to-pdf-no-header",
+                f"--user-data-dir={profile}",
+                f"--print-to-pdf={BUILD}",
+                html_path.as_uri(),
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=120,
+            check=False,
+        )
+    if result.returncode != 0 or not BUILD.exists():
+        raise RuntimeError((result.stderr or result.stdout or "浏览器未生成 PDF").strip())
+    doc = pymupdf.open(BUILD)
+    total = doc.page_count
+    for index, page in enumerate(doc, start=1):
+        label = f"{index} / {total}"
+        point = pymupdf.Point(page.rect.width / 2 - 10, page.rect.height - 20)
+        page.insert_text(point, label, fontsize=8, fontname="helv", color=(0.35, 0.35, 0.35))
+    doc.save(NUMBERED, garbage=4, deflate=True)
+    doc.close()
+    os.replace(NUMBERED, OUT)
+    try:
+        BUILD.unlink(missing_ok=True)
+    except PermissionError:
+        print(f"临时文件暂时被占用，已保留：{BUILD}")
+    print(f"已生成 {OUT}（{total} 页）")
     return 0
 
 

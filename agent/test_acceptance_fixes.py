@@ -117,6 +117,37 @@ class AtomicAlignmentTests(unittest.TestCase):
         out = field_rows({"parsed": {"items": items[::-1]}}, {"sentences": [sentence]})
         self.assertEqual((out["exact_match"], out["total"]), (2, 2))
 
+    def test_field_scoring_aligns_qualitative_gold_item(self):
+        from scripts.eval.run_llm_eval import field_rows, gold_items_for
+        sentence = {"id": "f3", "text": "公司经营质量明显改善。",
+                    "company_name": "贵州茅台", "period_year": 2024,
+                    "claim_type": "qualitative", "gold": "qualitative"}
+        item = gold_items_for(sentence, 1)[0]
+        out = field_rows({"parsed": {"items": [item]}}, {"sentences": [sentence]})
+        self.assertEqual((out["extra_predictions"], out["extracted"],
+                          out["exact_match"]), (0, 1, 1))
+        self.assertEqual(out["field_avg"], 1)
+
+    def test_numeric_prediction_for_qualitative_gold_is_not_an_exact_match(self):
+        from scripts.eval.run_llm_eval import field_rows, gold_items_for
+        sentence = {"id": "f4", "text": "公司净利润创新高。",
+                    "company_name": "贵州茅台", "period_year": 2024,
+                    "claim_type": "qualitative", "gold": "ambiguous_metric"}
+        item = gold_items_for(sentence, 1)[0] | {"claim_type": "amount", "value": "100",
+                                                "unit": "元", "operator": "eq"}
+        out = field_rows({"parsed": {"items": [item]}}, {"sentences": [sentence]})
+        self.assertEqual((out["extra_predictions"], out["extracted"],
+                          out["exact_match"]), (0, 1, 0))
+        self.assertLess(out["field_avg"], 1)
+
+    def test_yoy_gold_infers_claim_type_from_kind(self):
+        from scripts.eval.run_llm_eval import gold_items_for
+        sentence = {"id": "f5", "text": "营业收入同比增长10%。",
+                    "company_name": "贵州茅台", "period_year": 2024,
+                    "metric": "revenue", "kind": "yoy", "value": "10",
+                    "unit": "%", "gold": "should_judge"}
+        self.assertEqual(gold_items_for(sentence, 1)[0]["claim_type"], "yoy")
+
 
 class GroundingConflictTests(unittest.TestCase):
     def setUp(self):
