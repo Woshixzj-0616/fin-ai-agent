@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT / "agent"))
 from materials import write_json  # noqa: E402
 from stability import run_offline_fault_matrix  # noqa: E402
 
-OFFLINE_SECRET = "p3-offline-test-credential"
+OFFLINE_TEST_CREDENTIAL = "p3-offline-test-credential"
 
 
 def render_markdown(result: dict) -> str:
@@ -58,7 +58,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path,
                         default=ROOT / "results" / "stability" / "p3-baseline-20261017")
     args = parser.parse_args(argv)
-    result = run_offline_fault_matrix(OFFLINE_SECRET)
+    result = run_offline_fault_matrix(OFFLINE_TEST_CREDENTIAL)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     summary = render_markdown(result)
