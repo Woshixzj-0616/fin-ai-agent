@@ -12,7 +12,7 @@ import pymupdf
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "docs" / "初赛" / "计划书.md"
-OUT = ROOT / "docs" / "初赛" / "计划书-20261017.pdf"
+OUT = ROOT / "docs" / "初赛" / "计划书.pdf"
 BUILD = OUT.with_name(OUT.stem + "-build.pdf")
 NUMBERED = OUT.with_name(OUT.stem + "-numbered.pdf")
 
