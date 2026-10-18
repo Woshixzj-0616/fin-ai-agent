@@ -2,3 +2,5 @@
 *.png binary
 *.zip binary
 *.csv whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+data/holdout/dataset.sha256 text eol=lf
+data/holdout/*.json text eol=lf
