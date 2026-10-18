@@ -9,8 +9,17 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_PARTS = {".git", ".venv", "venv", "__pycache__", "node_modules"}
+GENERATED_PARTS = {"results", "work"}
 CONTROL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+
+
+def _is_generated_output(path: Path, root: Path) -> bool:
+    try:
+        relative = path.resolve().relative_to(root.resolve())
+    except ValueError:
+        return False
+    return bool(relative.parts) and relative.parts[0] in GENERATED_PARTS
 
 
 def _markdown_files(root: Path, paths: list[Path]) -> list[Path]:
@@ -29,7 +38,7 @@ def _markdown_files(root: Path, paths: list[Path]) -> list[Path]:
             for path in candidates
             if path.is_file()
             and not any(part in SKIP_PARTS for part in path.parts)
-            and (bool(paths) or not path.resolve().is_relative_to(root / "results" / "runs"))
+            and (bool(paths) or not _is_generated_output(path, root))
         }
     )
 

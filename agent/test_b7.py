@@ -582,6 +582,23 @@ class B7ArchiveAndQualityTests(unittest.TestCase):
             self.assertTrue(review_structure._forbidden_imports(bad_py))
             self.assertEqual(review_structure._forbidden_imports(good_py), [])
 
+    def test_docs_scan_skips_generated_outputs_by_default(self):
+        from scripts import check_docs
+
+        with tempfile.TemporaryDirectory(prefix="b7_docs_scope_") as temp:
+            root = Path(temp)
+            good = root / "docs" / "guide.md"
+            generated = root / "results" / "holdout" / "report.md"
+            work = root / "work" / "debug.md"
+            for path in (good, generated, work):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("[坏链](missing.pdf)\n", encoding="utf-8")
+
+            default_files = check_docs._markdown_files(root, [])
+            self.assertIn(good.resolve(), default_files)
+            self.assertNotIn(generated.resolve(), default_files)
+            self.assertNotIn(work.resolve(), default_files)
+            self.assertIn(generated.resolve(), check_docs._markdown_files(root, [generated]))
 
 class B7InventoryTests(unittest.TestCase):
     def test_inventory_has_complete_frozen_rows(self):
