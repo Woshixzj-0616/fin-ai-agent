@@ -460,7 +460,8 @@ class RealReportIntegrationTests(unittest.TestCase):
         self.assertEqual(report.count("| 一致 |"), matched)
         self.assertGreaterEqual(matched, 36)
         self.assertIn("年报披露同比", report)
-        self.assertIn("尚待团队人工复签", report)
+        self.assertIn("24条固定参考答案已完成AI辅助原文复核，项目采用", report)
+        self.assertIn("未进行独立人工复签", report)
 
 
 class ReportTests(unittest.TestCase):

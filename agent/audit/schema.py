@@ -67,8 +67,9 @@ METRIC_NOTE = {
     "total_revenue": "营业总收入 ≠ 营业收入，禁止互替",
     "revenue": "营业收入 ≠ 营业总收入",
 }
-UNITS = {"元": "元", "万元": "万元", "万": "万元", "亿元": "亿元", "亿": "亿元",
-         "%": "%", "％": "%", "元/股": "元/股"}
+UNITS = {"元": "元", "千元": "千元", "万元": "万元", "万": "万元",
+         "百万元": "百万元", "亿元": "亿元", "亿": "亿元",
+         "%": "%", "％": "%", "元/股": "元/股", "元／股": "元/股"}
 OPERATORS = ("eq", "approx", "exceed", "at_least", "at_most", "below", "none")
 CLAIM_TYPES = ("amount", "yoy", "direction", "comparison", "qualitative", "forecast", "other")
 SECRET_PATTERN = re.compile(r"sk-[A-Za-z0-9_-]{20,}")

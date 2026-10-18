@@ -1,0 +1,86 @@
+{
+  "schema_version": 2,
+  "dataset_id": "fin-ai-p2-extraction-holdout-20261017-v2",
+  "created_at": "2026-10-17T00:00:00+08:00",
+  "status": "frozen",
+  "purpose": "在首批四份文字版材料上增加确定性扫描页挑战，验证 OCR 可解释转复核与自动准确率分栏；不把合成扫描页冒充独立公司样本。",
+  "supersedes": "fin-ai-p2-extraction-holdout-20261017-v1",
+  "source_dataset": {
+    "path": "data/holdout",
+    "dataset_id": "fin-ai-p0-holdout-20261017-v2",
+    "dataset_version": "d177c78430d84c29d70fa7d2d87d258e4a34d2734112916c7f24f2b11e8f3c36"
+  },
+  "holdout_companies": [
+    "600941",
+    "601899"
+  ],
+  "material_ids": [
+    "600941-2025-annual-summary",
+    "601899-2025-annual-summary",
+    "600941-2026-q1",
+    "601899-2026-interim-summary"
+  ],
+  "derived_materials": [
+    {
+      "document_id": "600941-2025-annual-summary-p7-scan",
+      "source_document_id": "600941-2025-annual-summary",
+      "source_page": 7,
+      "render_scale": 2.5,
+      "mode": "ocr",
+      "target_metrics": [
+        "revenue",
+        "parent_net_profit",
+        "operating_cash_flow",
+        "total_assets",
+        "parent_equity"
+      ],
+      "target_fact_count": 5,
+      "sample_origin": "deterministic_rasterized_page",
+      "independent_sample": false
+    }
+  ],
+  "target_metrics": [
+    "revenue",
+    "parent_net_profit",
+    "operating_cash_flow",
+    "parent_equity",
+    "total_assets"
+  ],
+  "target_fact_count": 25,
+  "automatic_target_fact_count": 20,
+  "ocr_target_fact_count": 5,
+  "target_field_checks": [
+    "normalized_value",
+    "period_start",
+    "period_end",
+    "period_kind",
+    "normalized_unit",
+    "page",
+    "original_label",
+    "label_bbox",
+    "value_bbox"
+  ],
+  "ocr": {
+    "enabled": true,
+    "languages": [
+      "chi_sim",
+      "eng"
+    ],
+    "language_data_sha256": {
+      "chi_sim": "a5fcb6f0db1e1d6d8522f39db4e848f05984669172e584e8d76b6b3141e1f730",
+      "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+    },
+    "policy": "OCR facts are always needs_review and are excluded from automatic accuracy."
+  },
+  "independent_from_development_set": true,
+  "independent_review": false,
+  "blind_status": "首批文字材料是留出回归集；扫描页由留出页确定性栅格化生成，只验证 OCR 通道，不是独立盲测样本。",
+  "acceptance": {
+    "material_failures": 0,
+    "automatic_correct": 20,
+    "automatic_total": 20,
+    "ocr_review": 5,
+    "ocr_target_total": 5,
+    "silent_errors": 0
+  }
+}

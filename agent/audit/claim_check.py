@@ -6,8 +6,10 @@ import re
 
 from audit.grounding import resolve_period, resolve_subject, segments
 from audit.prompt import FORECAST, FUZZY
+from audit.resolution import (mark_conflict, resolution_for_subject, resolution_for_subjects,
+                          source_scope, unit_candidates)
 from audit.schema import METRICS, OPERATORS, UNITS, LLMError, schema, validate_schema
-from finance import check_claim, decimal, evidence_yoy, select_previous, text
+from finance import check_claim, decimal, evidence_yoy, scope_agnostic, select_previous, text
 
 UP_WORDS = re.compile(r"增长|上升|提高|增加|增厚|上行|改善")
 DOWN_WORDS = re.compile(r"下降|减少|降低|下滑|回落|收窄|恶化")
@@ -103,8 +105,19 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                   "claim_type": item.get("claim_type") or item.get("kind"),
               },
               "grounding": {"company": None, "period": None}}
+    output["resolution"] = {
+        "status": "not_evaluated",
+        "label": "未进入解析",
+        "candidates": [],
+        "conflicts": [],
+        "next_action": None,
+    }
 
     def stop(code, reason, status="口径冲突／需人工复核", track="review"):
+        if output["resolution"].get("status") == "not_evaluated":
+            output["resolution"].update(status="candidates", label="候选待定",
+                                     next_action={"code": "review_input",
+                                                  "message": "补全原文、公司、期间或单位后重试，或转人工复核"})
         output.update(reason_code=code, reason=reason, status=status, track=track)
         return output
 
@@ -148,6 +161,8 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                 "company": {"a": subject_a, "b": subject_b},
                 "period": bind_period(item.get("period_year")),
             }
+            output["resolution"] = resolution_for_subjects(
+                [subject_a, subject_b], source_text=source + "\n" + draft, facts=facts)
             if subject_a.get("conflict") or subject_b.get("conflict"):
                 output["interpretation"]["model_company_conflict"] = True
             code_a, code_b = subject_a.get("code"), subject_b.get("code")
@@ -164,9 +179,18 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                 return stop("comparison_same_company", "比较双方解析为同一公司，不能构成跨公司比较", "证据不足")
             period_binding = output["grounding"]["period"]
             if period_binding.get("conflict"):
+                mark_conflict(output["resolution"], status="period_conflict", field="period_year",
+                              source_value=period_binding.get("year"), model_value=item.get("period_year"),
+                              basis=period_binding.get("located_in") or "unknown",
+                              source_text=period_binding.get("matched_text") or sentence,
+                              action_code="confirm_period", action_message="按原文年度修正期间后重跑")
                 return stop("model_parse_conflict", "模型年度与本句/引文明示年度不一致")
             year = period_binding.get("year")
             if year is None or not period_binding.get("located_in"):
+                mark_conflict(output["resolution"], status="period_conflict", field="period_year",
+                              source_value=None, model_value=item.get("period_year"), basis="missing",
+                              source_text=sentence, action_code="confirm_period",
+                              action_message="补全年份或选择明确期间后重跑")
                 return stop("unresolved_period", "比较期间无法在原文唯一定位", "证据不足")
             if period_binding.get("baseline_year") is not None and period_binding["baseline_year"] != year:
                 return stop("unsupported_comparison_period", "跨公司比较的两侧年份不同，现有工具不能按同一年份替代", "证据不足")
@@ -184,10 +208,30 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
             raw_metric = next((key for key, names in METRICS.items() if metric_text in names), None)
             if metric_text not in quote or raw_metric != item.get("metric"):
                 return stop("model_parse_conflict", "比较指标未在引文定位或分类不一致")
+            explicit_scope = source_scope(source)
+            if (explicit_scope and not scope_agnostic(raw_metric, item.get("unit"))
+                    and item.get("scope") != explicit_scope["scope"]):
+                mark_conflict(output["resolution"], status="scope_conflict", field="scope",
+                              source_value=explicit_scope, model_value=item.get("scope"),
+                              basis="source_text", source_text=explicit_scope["matched"],
+                              action_code="confirm_scope",
+                              action_message="按原文归母/合并/母公司口径修正后重跑，或转人工复核")
+                return stop("model_parse_conflict", "比较口径与原文的归母/合并/母公司表达不一致")
             period_fields = _precise_period({**item, "period_year": year}, quote + "\n" + sentence)
             if period_fields.get("conflict"):
+                mark_conflict(output["resolution"], status="period_conflict", field="period_kind",
+                              source_value=quote + "\n" + sentence,
+                              model_value=item.get("period_kind"), basis="source_text",
+                              source_text=quote + "\n" + sentence,
+                              action_code="confirm_period",
+                              action_message="按原文半年/季度/年度分类修正后重跑")
                 return stop("model_parse_conflict", "模型期间分类与原文半年/季度表达不一致")
             if period_fields.get("unsupported"):
+                mark_conflict(output["resolution"], status="period_conflict", field="period_start",
+                              source_value=None, model_value=item.get("period_kind"), basis="missing",
+                              source_text=quote + "\n" + sentence,
+                              action_code="confirm_period",
+                              action_message="补全比较期间起止后重跑，不退回全年值")
                 return stop("unsupported_period", "比较期间起止未明确，不能退回全年值", "证据不足")
             period_fields = _period_filters(period_fields)
             if year:
@@ -230,6 +274,8 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
         "company": subject,
         "period": bind_period(year),
     }
+    output["resolution"] = resolution_for_subject(
+        subject, source_text=source + "\n" + draft, facts=facts)
     if subject.get("conflict"):
         output["interpretation"]["model_company_conflict"] = True
     if not subject.get("code"):
@@ -240,9 +286,19 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                     "证据不足")
     code = subject["code"]
     if output["grounding"]["period"].get("conflict"):
+        binding = output["grounding"]["period"]
+        mark_conflict(output["resolution"], status="period_conflict", field="period_year",
+                      source_value=binding.get("year"), model_value=item.get("period_year"),
+                      basis=binding.get("located_in") or "unknown",
+                      source_text=binding.get("matched_text") or sentence,
+                      action_code="confirm_period", action_message="按原文年度修正期间后重跑")
         return stop("model_parse_conflict", "模型年度与本句/引文明示年度不一致")
     year = output["grounding"]["period"].get("year")
     if year is None or not output["grounding"]["period"].get("located_in"):
+        mark_conflict(output["resolution"], status="period_conflict", field="period_year",
+                      source_value=None, model_value=item.get("period_year"), basis="missing",
+                      source_text=sentence, action_code="confirm_period",
+                      action_message="补全年份或选择明确期间后重跑")
         return stop("unresolved_period", "年度未明确或无法从原文定位，不猜测相对日期", "证据不足")
     metric_text = item["metric_text"]
     if not metric_text or (metric_text not in quote and metric_text not in context):
@@ -255,12 +311,30 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                     "指标不在目录内（营收/营业总收入/归母/扣非/经营现金流/EPS/加权ROE/总资产）", "证据不足")
     if item["metric"] != metric and item["metric"] not in {"unknown", "unsupported"}:
         return stop("model_parse_conflict", "模型指标分类与原文指标名称不一致")
+    explicit_scope = source_scope(source)
+    if (explicit_scope and not scope_agnostic(metric, item.get("unit"))
+            and item.get("scope") != explicit_scope["scope"]):
+        mark_conflict(output["resolution"], status="scope_conflict", field="scope",
+                      source_value=explicit_scope,
+                      model_value=item.get("scope"), basis="source_text",
+                      source_text=explicit_scope["matched"], action_code="confirm_scope",
+                      action_message="按原文归母/合并/母公司口径修正后重跑，或转人工复核")
+        return stop("model_parse_conflict", "模型统计口径与原文的归母/合并/母公司表达不一致")
     period_binding = output["grounding"]["period"]
     period_fields = _precise_period({**item, "period_year": year},
                                     period_binding.get("current_text") or quote + "\n" + sentence)
     if period_fields.get("conflict"):
+        mark_conflict(output["resolution"], status="period_conflict", field="period_kind",
+                      source_value=period_binding.get("current_text") or sentence,
+                      model_value=item.get("period_kind"), basis="source_text",
+                      source_text=period_binding.get("current_text") or sentence,
+                      action_code="confirm_period", action_message="按原文半年/季度/年度分类修正后重跑")
         return stop("model_parse_conflict", "模型期间分类与原文的半年/单季/累计表达不一致")
     if period_fields.get("unsupported"):
+        mark_conflict(output["resolution"], status="period_conflict", field="period_start",
+                      source_value=None, model_value=item.get("period_kind"), basis="missing",
+                      source_text=quote + "\n" + sentence, action_code="confirm_period",
+                      action_message="补全季度/半年的明确起止后重跑，不退回全年值")
         return stop("unsupported_period", "季度/半年期间没有明确起止，不能与全年值混比")
     if item.get("claim_type") == "direction" and (item.get("value") is None
                                                  or (item.get("operator") or "eq") == "none"):
@@ -277,7 +351,20 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                     "含约数或不等表达，但未给运算符；请标 operator=approx/exceed/… 或改写为精确数")
 
     raw_value, raw_unit = item["value"], item["unit"]
+    source_units = unit_candidates(quote, raw_value)
+    normalized_model_unit = UNITS.get(raw_unit, raw_unit)
+    normalized_source_units = {UNITS.get(row["unit"], row["unit"]) for row in source_units}
+    if source_units and normalized_model_unit not in normalized_source_units:
+        mark_conflict(output["resolution"], status="unit_conflict", field="unit",
+                      source_value=source_units, model_value=raw_unit, basis="source_number_unit",
+                      source_text=quote, action_code="confirm_unit",
+                      action_message="按原文数值直接对应的单位修正后重跑，不做默认换算")
+        return stop("ungrounded_unit", "模型单位未与原文同一数值直接对应；拒绝按默认倍率猜测")
     if raw_value is None or raw_unit not in UNITS or raw_unit not in quote:
+        if not source_units and output["resolution"].get("status") == "unique":
+            output["resolution"].update(status="candidates", label="候选待定",
+                                         next_action={"code": "confirm_unit",
+                                                      "message": "补全并核对数值单位后重跑"})
         return stop("unsupported_value_or_unit", "数值或单位未明确，或该表达暂不支持")
     normalize = lambda s: s.replace(",", "").replace("，", "").replace("−", "-").lstrip("+")
     numbers = re.findall(r"[-+−]?\d[\d,，]*(?:\.\d+)?", quote)

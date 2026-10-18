@@ -88,8 +88,8 @@ def report_markdown(analysis: dict, materials: list[dict], checks: list[dict] | 
     lines = ["# 财务证据与分析", "", analysis["basis"], "", analysis["limits"], "",
              "金额单位为人民币元；PDF页码从文件第一页开始计数，可能与印刷页码不同。", "",
              "年报披露同比及半年报、季报披露同比均按原文小数位数使用 ROUND_HALF_UP 核对；一致只表示报告内部算术一致。", "",
-             "适用范围：当前指标目录与已识别的期间表头；24条固定参考答案尚待团队人工复签，"
-             "新公司、新措辞和新版式的泛化能力尚未独立验证。", "",
+             "适用范围：当前指标目录与已识别的期间表头；24条固定参考答案已完成AI辅助原文复核，项目采用；"
+             "未进行独立人工复签，新公司、新措辞和新版式的泛化能力尚未独立验证。", "",
              "| 公司 | 报告年度 / 本期期间 | 指标 / 比较类型 | 本期 | 比较基期 | 基期状态 | 复算变化（核对精度） | 披露变化 | 核对结果 | PDF页 |",
              "|---|---:|---|---:|---:|---|---|---|---|---:|"]
     for row in analysis["rows"]:
@@ -193,6 +193,7 @@ def evaluate_gold(facts: list[dict], gold: dict) -> dict:
 
 def parser() -> argparse.ArgumentParser:
     app = argparse.ArgumentParser(description="第一条线：材料登记 → 财务证据 → 确定性分析")
+    app.add_argument("--run-root", type=Path, default=ROOT, help="运行产物根目录；现场演示可指向隔离目录")
     commands = app.add_subparsers(dest="command", required=True)
     importer = commands.add_parser("import-existing", help="复制并验证旧项目9份材料，不修改旧工程")
     importer.add_argument("--source", type=Path, required=True)
@@ -256,7 +257,7 @@ def main() -> int:
         # 不将环境变量或认证信息序列化到run.json。
         parameters = {"command": "check-text", "file": str(args.file), "model": client.model,
                       "provider_host": client.host, "response_format": client.mode}
-    run = Run(ROOT, args.command, parameters)
+    run = Run(args.run_root, args.command, parameters)
     print(f"运行记录：{run.folder}", flush=True)
     try:
         if args.command == "announcement":
