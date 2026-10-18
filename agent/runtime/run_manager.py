@@ -262,7 +262,6 @@ class RunContext:
             self._status = RunStatus.CANCELLED
             self._cancel_reason = str(reason or "user")
             self.finished_at = timestamp_now()
-            self.cancelled_event.set()
             self._write_state()
         self.event(
             "run_cancelled",
@@ -273,6 +272,7 @@ class RunContext:
             status=RunStatus.CANCELLED.value,
             payload={"reason": self._cancel_reason},
         )
+        self.cancelled_event.set()
         return True
 
     def raise_if_cancelled(self) -> None:
