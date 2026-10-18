@@ -10,7 +10,7 @@
     "max_characters": 240000,
     "max_sentences": 2000,
     "chunk_characters": 12000,
-    "chunk_sentences": 40,
+    "chunk_sentences": 20,
     "max_http_attempts": 40,
     "token_budget": 500000
   },

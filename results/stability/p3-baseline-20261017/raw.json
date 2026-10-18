@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "ok": true,
+  "case_count": 8,
+  "cases": [
+    {
+      "name": "timeout",
+      "code": "timeout",
+      "attempts": 1,
+      "passed": true,
+      "recovered": false
+    },
+    {
+      "name": "rate_limited",
+      "code": "rate_limited",
+      "attempts": 2,
+      "passed": true,
+      "recovered": true
+    },
+    {
+      "name": "auth_failed",
+      "code": "auth_failed",
+      "attempts": 1,
+      "passed": true,
+      "recovered": false
+    },
+    {
+      "name": "invalid_response",
+      "code": "invalid_response",
+      "attempts": 1,
+      "passed": true,
+      "recovered": false
+    },
+    {
+      "name": "truncated_response",
+      "code": "response_truncated",
+      "attempts": 0,
+      "passed": true,
+      "recovered": false
+    },
+    {
+      "name": "model_identity_changed",
+      "code": "model_identity_changed",
+      "attempts": 0,
+      "passed": true,
+      "recovered": false
+    },
+    {
+      "name": "partial_success",
+      "code": "upstream_unavailable",
+      "attempts": 2,
+      "passed": true,
+      "recovered": false
+    },
+    {
+      "name": "secret_safety",
+      "code": "secret_blocked",
+      "attempts": 1,
+      "passed": true,
+      "recovered": false
+    }
+  ]
+}

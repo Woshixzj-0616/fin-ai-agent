@@ -243,7 +243,8 @@ def check_one_claim(item: dict, facts: list[dict], sentence: str, draft: str, cl
                         report_kind=item.get("period_kind") if item.get("period_kind") in PERIOD_KINDS else None,
                         **period_fields)
                 except (ValueError, ArithmeticError, KeyError, TypeError) as exc:
-                    output.update(execution_failed=True, error_type=type(exc).__name__)
+                    output.update(execution_failed=True, error_type=type(exc).__name__,
+                                  failure_code="tool_failed")
                     return stop("tool_execution_failed",
                                 f"跨公司比较工具未能完成：{type(exc).__name__}: {exc}", "证据不足")
                 if result.get("verdict") in ("evidence_supported", "confirmed_error"):
@@ -564,6 +565,7 @@ def check_payload(payload: dict, sentences: list[dict], draft: str, facts: list[
                       "original_sentence": sentence_map[item["sentence_id"]],
                       "quote": item["quote"], "status": "证据不足", "track": "review",
                       "reason_code": "tool_execution_failed", "execution_failed": True,
+                      "failure_code": "tool_failed",
                       "error_type": type(exc).__name__, "reason": f"{type(exc).__name__}: {exc}",
                       "evidence_ids": [], "evidence": [], "calculation": None,
                       "expected": None, "suggestion": None, "plain_claim": item.get("plain_claim"),

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "kind": "p3-live-long-document",
+  "generated_at": "2026-10-17T15:33:20.532545+00:00",
+  "runs_requested": 3,
+  "runs_completed": 3,
+  "repeats": 4,
+  "characters": 4923,
+  "sentences": 120,
+  "chunk_sentences": 20,
+  "chunk_characters": 12000,
+  "use_loop": false,
+  "runs": [
+    {
+      "run": 1,
+      "status": "completed",
+      "elapsed_seconds": 71.3888,
+      "active_seconds": 71.2576,
+      "sentences": 120,
+      "chunks": 6,
+      "completed_chunks": 6,
+      "failed_chunks": 0,
+      "failure_codes": {},
+      "unfinished": 0,
+      "requests": 6,
+      "known_tokens": 42663,
+      "tokens_charged": 42663,
+      "unknown_attempts": 0,
+      "tool_calls": 0,
+      "model": "deepseek-chat",
+      "provider_host": "api.deepseek.com",
+      "response_format": "json_object",
+      "observed_models": [
+        "deepseek-flash"
+      ],
+      "signature": "fc9cd5a991b26c15de5e736a15d3988b32fe4ce6852ad5d6b8bee0e6f5f19f32"
+    },
+    {
+      "run": 2,
+      "status": "completed",
+      "elapsed_seconds": 64.3431,
+      "active_seconds": 64.2163,
+      "sentences": 120,
+      "chunks": 6,
+      "completed_chunks": 6,
+      "failed_chunks": 0,
+      "failure_codes": {},
+      "unfinished": 0,
+      "requests": 6,
+      "known_tokens": 42668,
+      "tokens_charged": 42668,
+      "unknown_attempts": 0,
+      "tool_calls": 0,
+      "model": "deepseek-chat",
+      "provider_host": "api.deepseek.com",
+      "response_format": "json_object",
+      "observed_models": [
+        "deepseek-flash"
+      ],
+      "signature": "fc9cd5a991b26c15de5e736a15d3988b32fe4ce6852ad5d6b8bee0e6f5f19f32"
+    },
+    {
+      "run": 3,
+      "status": "completed",
+      "elapsed_seconds": 64.7319,
+      "active_seconds": 64.5966,
+      "sentences": 120,
+      "chunks": 6,
+      "completed_chunks": 6,
+      "failed_chunks": 0,
+      "failure_codes": {},
+      "unfinished": 0,
+      "requests": 6,
+      "known_tokens": 42655,
+      "tokens_charged": 42655,
+      "unknown_attempts": 0,
+      "tool_calls": 0,
+      "model": "deepseek-chat",
+      "provider_host": "api.deepseek.com",
+      "response_format": "json_object",
+      "observed_models": [
+        "deepseek-flash"
+      ],
+      "signature": "fc9cd5a991b26c15de5e736a15d3988b32fe4ce6852ad5d6b8bee0e6f5f19f32"
+    }
+  ],
+  "consistency": {
+    "rate": 1.0,
+    "consistent": true,
+    "unique_signatures": 1,
+    "majority_runs": 3
+  },
+  "assessment": {
+    "ok": true,
+    "status": "PASS",
+    "checks": {
+      "at_least_two_runs": true,
+      "multi_chunk": true,
+      "all_runs_completed": true,
+      "no_unfinished_sentences": true,
+      "no_failed_chunks": true,
+      "real_provider_requests": true,
+      "known_token_usage": true,
+      "observed_model_identity": true,
+      "stable_model_identity": true,
+      "consistent": true
+    },
+    "failed_criteria": [],
+    "observed_models": [
+      "deepseek-flash"
+    ]
+  }
+}
